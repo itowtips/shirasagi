@@ -1,0 +1,19 @@
+<dl class="see mod-circle-body">
+  <dt><%= @model.t :activity %></dt>
+  <dd><%=br @item.send :activity %></dd>
+
+  <dt><%= @model.t :venue %></dt>
+  <dd><%=br @item.send :venue %></dd>
+
+  <dt><%= @model.t :address %></dt>
+  <dd><%=br @item.send :address %></dd>
+
+  <dt><%= @model.t :hours %></dt>
+  <dd><%=br @item.send :hours %></dd>
+
+  <dt><%= @model.t :message %></dt>
+  <dd><%=br @item.send :message %></dd>
+
+  <dt><%= @model.t :related_url %></dt>
+  <dd><%= link_to(@item.related_url, @item.related_url, target: "_blank") %></dd>
+</dl>

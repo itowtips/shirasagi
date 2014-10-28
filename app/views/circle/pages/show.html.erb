@@ -1,0 +1,88 @@
+<div class="addon-views">
+  <div id="circle-info" class="addon-view">
+    <header>
+      <h2><%= t("modules.addons.circle/body") %></h2>
+    </header>
+    <dl class="see body">
+      <dt><%= @model.t :activity %></dt>
+      <dd><%=br @item.send :activity %></dd>
+
+      <dt><%= @model.t :venue %></dt>
+      <dd><%=br @item.send :venue %></dd>
+
+      <dt><%= @model.t :address %></dt>
+      <dd><%=br @item.send :address %></dd>
+
+      <dt><%= @model.t :hours %></dt>
+      <dd><%=br @item.send :hours %></dd>
+
+      <dt><%= @model.t :message %></dt>
+      <dd><%=br @item.send :message %></dd>
+
+      <dt><%= @model.t :related_url %></dt>
+      <dd><%= link_to(@item.related_url, @item.related_url, target: "_blank")  %></dd>
+
+      <% @item.additional_info.each do |info| %>
+        <dt><%=br info[:field] %></dt>
+        <dd><%=br info[:value] %></dd>
+      <% end %>
+
+      <dt><%= t("modules.addons.circle/category/category") %></dt>
+      <dd><%= @item.send(:categories).pluck(:name).join(", ") %></dd>
+
+      <dt><%= t("modules.addons.circle/location/location") %></dt>
+      <dd><%= @item.send(:locations).pluck(:name).join(", ") %></dd>
+    </dl>
+
+    <div class="summary image">
+      <% if @summary_image.present? %>
+        <p>
+          <% if @cur_node.allowed?(:edit, @cur_user, site: @cur_site) %>
+            <%= link_to edit_circle_image_path(cid: @item.id, id: @summary_image.id) do %>
+              <% thumb_size = { width: @summary_image.image_thumb_width, height: @summary_image.image_thumb_height }.to_query %>
+              <%= image_tag @summary_image.image.thumb_url + "?" + thumb_size, alt: @summary_image.image_alt %>
+            <% end %>
+          <% else %>
+            <%= link_to circle_image_path(cid: @item.id, id: @summary_image.id) do %>
+              <% thumb_size = { width: @summary_image.image_thumb_width, height: @summary_image.image_thumb_height }.to_query %>
+              <%= image_tag @summary_image.image.thumb_url + "?" + thumb_size, alt: @summary_image.image_alt %>
+            <% end %>
+          <% end %>
+        </p>
+        <% if @summary_image.image_comment.present? %>
+          <p><%= @summary_image.image_comment %></p>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="clear"></div>
+    <% if @images.present? %>
+      <header>
+        <h2><%= t("circle.image") %></h2>
+      </header>
+      <div class="images">
+        <% @images.each do |img| %>
+          <div class="image">
+            <p>
+              <% if @cur_node.allowed?(:edit, @cur_user, site: @cur_site) %>
+                <%= link_to edit_circle_image_path(cid: @item.id, id: img.id) do %>
+                  <% thumb_size = { width: img.image_thumb_width, height: img.image_thumb_height }.to_query %>
+                  <%= image_tag img.image.thumb_url + "?" + thumb_size, alt: img.image_alt %>
+                <% end %>
+              <% else %>
+                <%= link_to circle_image_path(cid: @item.id, id: img.id) do %>
+                  <% thumb_size = { width: img.image_thumb_width, height: img.image_thumb_height }.to_query %>
+                  <%= image_tag img.image.thumb_url + "?" + thumb_size, alt: img.image_alt %>
+                <% end %>
+              <% end %>
+            </p>
+            <% if img.image_comment.present? %>
+              <p><%= img.image_comment %></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="clear"></div>
+  </div>
+</div>

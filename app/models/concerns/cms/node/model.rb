@@ -8,6 +8,8 @@ module Cms::Node::Model
   include Facility::Reference::Category
   include Facility::Reference::Location
   include Facility::Reference::Use
+  include Circle::Reference::Category
+  include Circle::Reference::Location
 
   included do
     store_in collection: "cms_nodes"
