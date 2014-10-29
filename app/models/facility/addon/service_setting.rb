@@ -1,11 +1,11 @@
 module Facility::Addon
-  module FeatureSetting
+  module ServiceSetting
     extend SS::Addon
     extend ActiveSupport::Concern
 
     included do
-      embeds_ids :st_features, class_name: "Facility::Node::Feature"
-      permit_params st_feature_ids: []
+      embeds_ids :st_services, class_name: "Facility::Node::Service"
+      permit_params st_service_ids: []
     end
 
     set_order 510

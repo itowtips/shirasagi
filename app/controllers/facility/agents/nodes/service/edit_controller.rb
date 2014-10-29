@@ -1,6 +1,6 @@
-module Facility::Agents::Nodes::Feature
+module Facility::Agents::Nodes::Service
   class EditController < ApplicationController
     include Cms::NodeFilter::Edit
-    model Facility::Node::Feature
+    model Facility::Node::Service
   end
 end

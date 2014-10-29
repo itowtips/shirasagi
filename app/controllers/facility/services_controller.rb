@@ -1,8 +1,8 @@
-class Facility::FeaturesController < ApplicationController
+class Facility::ServicesController < ApplicationController
   include Cms::BaseFilter
   include Cms::NodeFilter
 
-  model Facility::Node::Feature
+  model Facility::Node::Service
 
   prepend_view_path "app/views/cms/node/nodes"
   navi_view "facility/main/navi"
@@ -18,7 +18,7 @@ class Facility::FeaturesController < ApplicationController
     end
 
     def pre_params
-      { route: "facility/feature" }
+      { route: "facility/service" }
     end
 
   public
