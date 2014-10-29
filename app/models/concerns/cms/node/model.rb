@@ -3,11 +3,12 @@ module Cms::Node::Model
   extend SS::Translation
   include Cms::Content
   include Cms::Reference::Layout
+  include Cms::Reference::PageLayout
   include Cms::Reference::StCategory
   include Cms::Addon::Meta
   include Facility::Reference::Category
+  include Facility::Reference::Feature
   include Facility::Reference::Location
-  include Facility::Reference::Use
   include Circle::Reference::Category
   include Circle::Reference::Location
 

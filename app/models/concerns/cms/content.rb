@@ -27,7 +27,17 @@ module Cms::Content
     before_validation :validate_filename
     after_validation :set_depth, if: ->{ filename.present? }
 
-    scope :public, ->{ where state: "public" }
+    scope :public, ->(date = nil) {
+      if date.nil?
+        where state: "public"
+      else
+        date = date.dup
+        where("$and" => [
+          { "$or" => [ { state: "public", :released.lte => date }, { :release_date.lte => date } ] },
+          { "$or" => [ { close_date: nil }, { :close_date.gt => date } ] },
+        ])
+      end
+    }
     scope :filename, ->(name) { where filename: name.sub(/^\//, "") }
     scope :node, ->(node) {
       node ? where(filename: /^#{node.filename}\//, depth: node.depth + 1) : where(depth: 1)
@@ -46,8 +56,7 @@ module Cms::Content
         return criteria if params.blank?
 
         if params[:name].present?
-          words = params[:name].split(/[\s　]+/).uniq.compact.map {|w| /\Q#{w}\E/ }
-          criteria = criteria.all_in name: words
+          criteria = criteria.search_text params[:name]
         end
         criteria
       end
@@ -103,6 +112,14 @@ module Cms::Content
 
     def state_private_options
       [%w(公開待ち ready)]
+    end
+
+    def t_state
+      if state == "public" || state == "ready" || state == "closed"
+        I18n.t("views.state.#{state}")
+      else
+        ""
+      end
     end
 
     def parent

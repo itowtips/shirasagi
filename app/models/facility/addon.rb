@@ -8,9 +8,9 @@ module Facility::Addon
       field :address, type: String
       field :tel, type: String
       field :fax, type: String
-      field :homepage, type: String
+      field :related_url, type: String
 
-      permit_params :kana, :address, :tel, :fax, :homepage
+      permit_params :kana, :address, :tel, :fax, :related_url
     end
 
     set_order 200
@@ -64,7 +64,7 @@ module Facility::Addon
     included do
       field :image_alt, type: String
       field :image_comment, type: String
-      field :image_thumb_width, type: Integer, default: 260
+      field :image_thumb_width, type: Integer, default: 160
       field :image_thumb_height, type: Integer, default: 120
 
       permit_params :image_alt, :image_comment, :image_thumb_width, :image_thumb_height

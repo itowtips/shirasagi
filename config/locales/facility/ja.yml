@@ -14,7 +14,7 @@ ja:
       search: 施設の地域を検索
       setting: 施設の地域を選択
       name: 地域
-    use:
+    feature:
       setting: 用途設定
       index: 施設の用途を設定する
       search: 施設の用途を検索
@@ -34,6 +34,7 @@ ja:
     button:
       add_info: 項目を追加する
       del_info: 削除
+      del_info_confirm: 項目を削除してよろしいですか？
     submit:
       search: この条件で検索する
       reset: 検索条件をリセットする
@@ -47,19 +48,19 @@ ja:
       facility/image: 施設写真
       facility/image_info: 写真情報
       facility/pointer_image: ポインタ画像
-      facility/location/location: 施設の地域
-      facility/location/setting: 施設の地域
-      facility/use/use: 施設の用途
-      facility/use/setting: 施設の用途
-      facility/category/category: 施設の種類
-      facility/category/setting: 施設の種類
+      facility/location: 施設の地域
+      facility/location_setting: 施設の地域
+      facility/feature: 施設の用途
+      facility/feature_setting: 施設の用途
+      facility/category: 施設の種類
+      facility/category_setting: 施設の種類
 
   cms:
     nodes:
       facility/page: 施設情報
       facility/node: 施設リスト
       facility/category: 施設の種類
-      facility/use: 施設の用途
+      facility/feature: 施設の用途
       facility/location: 施設のある地域
       facility/search: 施設検索
 
@@ -71,7 +72,7 @@ ja:
         address: 住所
         tel: 電話番号
         fax: FAX
-        homepage: URL
+        related_url: URL
         field: 項目名
         value: 内容
       facility/image:
@@ -81,4 +82,44 @@ ja:
         image_thumb_width: 幅
         image_thumb_height: 高さ
 
+  tooltip:
+    facility/addon/body:
+      kana:
+        - ページタイトル（施設名）のふりがなを設定します。
+      address:
+        - 施設の住所を設定します。
+      tel:
+        - 施設の電話番号を設定します。
+      fax:
+        - 施設のファクシミリ番号を入力します。
+      homepage:
+        - 施設のホームページアドレスを入力します。
+    facility/addon/additional_info:
+      field:
+        - 追加情報の項目名を設定します。
+      value:
+        - 左欄項目の内容を設定します。
+    facility/addon/pointer_image:
+      image:
+        - |-
+          施設検索結果の地図表示時に表示するポインタ画像を設定します。
+          このカテゴリが設定された施設のポインタ画像が変更されます。
+    facility/addon/category:
+      categories:
+        - 施設の種類を設定します。
+    facility/addon/category_setting:
+      st_categories:
+        - 検索または施設作成時に使用する施設種類を設定します。
+    facility/addon/location:
+      locations:
+        - 施設の地域を設定します。
+    facility/addon/location_setting:
+      st_locations:
+        - 検索または施設作成時に使用する施設地域を設定します。
+    facility/addon/feature:
+      features:
+        - 施設の用途を設定します。
+    facility/addon/feature_setting:
+      st_features:
+        - 検索または施設作成時に使用する施設用途を設定します。
 

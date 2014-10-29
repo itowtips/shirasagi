@@ -2,6 +2,8 @@ module Cms::PublicFilter
   extend ActiveSupport::Concern
   include Cms::PublicFilter::Node
   include Cms::PublicFilter::Page
+  include Mobile::PublicFilter
+  include Kana::PublicFilter
 
   cattr_accessor(:filters) { [] }
 
@@ -50,20 +52,17 @@ module Cms::PublicFilter
 
     def set_request_path
       @cur_path ||= request.env["REQUEST_PATH"]
+      cur_path = @cur_path.dup
 
-      path = @cur_path.dup
-      @@filters.each do |name|
-        send("set_path_with_#{name}")
-        if path != @cur_path
-          @filter = name
-          break
-        end
+      @@filters.each do |filter|
+        send(filter)
+        break if cur_path != @cur_path
       end
     end
 
     def redirect_slash
       return unless request.get?
-      redirect_to "#{request.env["REQUEST_PATH"]}/"
+      redirect_to "#{request.path}/"
     end
 
     def deny_path
@@ -108,6 +107,10 @@ module Cms::PublicFilter
       return unless Fs.exists?(file)
       response.headers["Expires"] = 1.days.from_now.httpdate if file =~ /\.(css|js|gif|jpg|png)$/
       response.headers["Last-Modified"] = CGI::rfc1123_date(Fs.stat(file).mtime)
+
+      if Fs.mode == :grid_fs
+        return send_data Fs.binread(file), type: Fs.content_type(file)
+      end
       send_file file, disposition: :inline, x_sendfile: true
     end
 

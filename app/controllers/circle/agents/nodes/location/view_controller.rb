@@ -24,7 +24,7 @@ module Circle::Agents::Nodes::Location
 
         @items = Circle::Node::Page.site(@cur_site).public.
           in(location_ids: @cur_node.id).
-          where(condition).
+          where(condition_hash).
           order_by(@cur_node.sort_hash).
           page(params[:page]).
           per(@cur_node.limit)

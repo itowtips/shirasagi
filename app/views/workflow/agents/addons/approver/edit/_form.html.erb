@@ -1,13 +1,14 @@
 <%= coffee do %>
 $ ->
-  $(".addon-menu").find("[data-id=#addon-workflow-addons-approver]").remove()
-  $("#addon-workflow-addons-approver").remove()
+  $(".addon-menu").find("[data-id=#addon-workflow-agents-addons-approver]").remove()
+  $("#addon-workflow-agents-addons-approver").remove()
 
   state = $("#item_state").parent()
   state.prev().remove()
   state.remove()
 
   <% if @item.allowed?(:release, @cur_user) %>
+  $(".save").val "<%= t 'draft_save' %>"
   $("<input />").attr("type", "submit")
     .attr("name", "publish_save")
     .attr("value", "<%= t 'publish_save' %>")
