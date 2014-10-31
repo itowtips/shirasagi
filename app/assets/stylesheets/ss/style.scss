@@ -153,9 +153,12 @@ textarea.ace_text-input {
   @include main-view;
 }
 .addon-view {
-  margin: 0px 0px 10px;
+  margin: 0px 0px 20px;
+  padding-left: 10px;
   header {
     min-width: 130px;
+    margin-left: -10px;
+    margin-bottom: 10px;
     border-bottom: $border-white;
     color: $black;
     font-size: 120%;
@@ -440,16 +443,17 @@ input.date, input.datetime {
 // event
 
 .mod-event-additional-info {
+  dt {
+    width: 140px;
+  }
   dd.value {
     font-weight: bold;
-    padding-left: 40px;
   }
-  textarea {
-    width: 80%;
+  dd textarea {
+    width: 70%;
   }
   .clear {
-    position: relative;
-    bottom: 60px;
+    vertical-align: top;
   }
 }
 
@@ -525,16 +529,17 @@ textarea.marker-text {
 // facility
 
 .mod-facility-additional-info {
+  dt {
+    width: 140px;
+  }
   dd.value {
     font-weight: bold;
-    padding-left: 40px;
   }
-  textarea {
-    width: 80%;
+  dd textarea {
+    width: 70%;
   }
   .clear {
-    position: relative;
-    bottom: 60px;
+    vertical-align: top;
   }
 }
 #facility-info {
