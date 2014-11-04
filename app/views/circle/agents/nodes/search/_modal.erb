@@ -5,10 +5,10 @@ $ ->
     return false
 <% end %>
 
-<%= form_tag "./result.html", multipart: true, method: "get" do %>
-  <div class="category">
+<%= form_tag search_path, multipart: true, method: "get" do %>
+  <div class="keyword">
     <h2><%= t("circle.keyword.name") %></h2>
-    <%= text_field_tag 'q[keyword]', "" %>
+    <%= text_field_tag 'q[keyword]', @keyword %>
   </div>
 
   <div class="category">
@@ -16,7 +16,7 @@ $ ->
     <%= hidden_field_tag 'q[category_ids][]', "" %>
     <% @cur_node.st_categories.each do |cate| %>
       <div class="<%= cate.basename %>">
-        <%= check_box_tag 'q[category_ids][]', cate.id, nil,
+        <%= check_box_tag 'q[category_ids][]', cate.id, @categories.pluck(:_id).index(cate.id),
           { :id => "q_category_ids_#{cate.id}", :class => "prop"} %>
         <label for=<%= "q_category_ids_#{cate.id}" %>><%= cate.name %></label>
       </div>
@@ -28,14 +28,15 @@ $ ->
     <%= hidden_field_tag 'q[location_ids][]', "" %>
     <% @cur_node.st_locations.each do |cate| %>
       <div class="<%= cate.basename %>">
-        <%= check_box_tag 'q[location_ids][]', cate.id, nil,
+        <%= check_box_tag 'q[location_ids][]', cate.id, @locations.pluck(:_id).index(cate.id),
           { :id => "q_location_ids_#{cate.id}", :class => "prop"} %>
-        <label for=<%= "q_location_ids_#{cate.id}" %>><%= cate.name %></label>
+      <label for=<%= "q_location_ids_#{cate.id}" %>><%= cate.name %></label>
       </div>
     <% end %>
-    <footer class="send">
-      <%= submit_tag t('circle.submit.search'), name: nil %>
-      <%= submit_tag t('circle.submit.reset'), name: nil, class: :reset %>
-    </footer>
   </div>
+
+  <footer class="send">
+    <%= submit_tag t('circle.submit.search'), name: nil %>
+    <%= submit_tag t('circle.submit.reset'), name: nil, class: :reset %>
+  </footer>
 <% end %>
