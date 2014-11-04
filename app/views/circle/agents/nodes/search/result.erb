@@ -26,15 +26,19 @@ $ ->
   <% @items.each do |item| %>
     <div class="column">
       <p class="name"><%= link_to item.name, item.url %></p>
-      <p class="categories">
-        <% item.categories.each do |cate| %>
-          <% if @cur_node.conditions.present? %>
-            <%= link_to cate.name, cate.url + "?" + { cond: @cur_node.conditions.to_a }.to_query %>
-          <% else %>
-            <%= link_to cate.name, cate.url %>
+      <div class="categories">
+        <ul>
+          <% item.categories.each do |cate| %>
+            <li class="<%= cate.basename %>">
+              <% if @cur_node.conditions.present? %>
+                <%= link_to cate.name, cate.url + "?" + { cond: @cur_node.conditions.to_a }.to_query %>
+              <% else %>
+                <%= link_to cate.name, cate.url %>
+              <% end %>
+            </li>
           <% end %>
-        <% end %>
-      </p>
+        </ul>
+      </div>
       <p class="activity"><%= item.activity %></p>
     </div>
   <% end %>
