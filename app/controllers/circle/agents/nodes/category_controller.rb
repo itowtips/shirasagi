@@ -22,7 +22,7 @@ class Circle::Agents::Nodes::CategoryController < ApplicationController
       end
 
       @items = Circle::Node::Page.site(@cur_site).public.
-        in(category_ids: @cur_node.id).
+        where(@cur_node.condition_hash).
         where(condition_hash).
         order_by(@cur_node.sort_hash).
         page(params[:page]).

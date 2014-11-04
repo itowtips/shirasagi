@@ -35,9 +35,30 @@ module Circle::Node
     public
       def condition_hash
         cond = []
+
+        cond << { filename: /^#{filename}\// } if conditions.blank?
+        conditions.each do |url|
+          node = Cms::Node.filename(url).first
+          next unless node
+          cond << { filename: /^#{node.filename}\//, depth: node.depth + 1 }
+        end
+
+        { '$or' => cond }
+      end
+  end
+
+  class Category
+    include Cms::Node::Model
+    include Cms::Addon::NodeList
+
+    default_scope ->{ where(route: "circle/category") }
+
+    public
+      def condition_hash
+        cond = []
         cids = []
 
-        cond << {} if conditions.blank?
+        cids << id
         conditions.each do |url|
           node = Cms::Node.filename(url).first
           next unless node
@@ -50,17 +71,27 @@ module Circle::Node
       end
   end
 
-  class Category
-    include Cms::Node::Model
-    include Cms::Addon::NodeList
-
-    default_scope ->{ where(route: "circle/category") }
-  end
-
   class Location
     include Cms::Node::Model
     include Cms::Addon::NodeList
 
     default_scope ->{ where(route: "circle/location") }
+
+    public
+      def condition_hash
+        cond = []
+        cids = []
+
+        cids << id
+        conditions.each do |url|
+          node = Cms::Node.filename(url).first
+          next unless node
+          cond << { filename: /^#{node.filename}\//, depth: node.depth + 1 }
+          cids << node.id
+        end
+        cond << { :location_ids.in => cids } if cids.present?
+
+        { '$or' => cond }
+      end
   end
 end
