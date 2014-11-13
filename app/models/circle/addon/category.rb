@@ -1,4 +1,4 @@
-module Circle::Addon::Category
+module Circle::Addon
   module Category
     extend SS::Addon
     extend ActiveSupport::Concern

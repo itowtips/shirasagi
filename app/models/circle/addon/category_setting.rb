@@ -1,5 +1,5 @@
-module Circle::Addon::Category
-  module Setting
+module Circle::Addon
+  module CategorySetting
     extend SS::Addon
     extend ActiveSupport::Concern
 

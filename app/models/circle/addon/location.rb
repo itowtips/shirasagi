@@ -1,4 +1,4 @@
-module Circle::Addon::Location
+module Circle::Addon
   module Location
     extend SS::Addon
     extend ActiveSupport::Concern

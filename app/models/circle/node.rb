@@ -8,8 +8,8 @@ module Circle::Node
   class Node
     include Cms::Node::Model
     include Cms::Addon::NodeList
-    include Circle::Addon::Category::Setting
-    include Circle::Addon::Location::Setting
+    include Circle::Addon::CategorySetting
+    include Circle::Addon::LocationSetting
 
     default_scope ->{ where(route: "circle/node") }
   end
@@ -18,8 +18,8 @@ module Circle::Node
     include Cms::Node::Model
     include Circle::Addon::Body
     include Circle::Addon::AdditionalInfo
-    include Circle::Addon::Category::Category
-    include Circle::Addon::Location::Location
+    include Circle::Addon::Category
+    include Circle::Addon::Location
 
     default_scope ->{ where(route: "circle/page") }
   end
@@ -27,8 +27,8 @@ module Circle::Node
   class Search
     include Cms::Node::Model
     include Cms::Addon::NodeList
-    include Circle::Addon::Category::Setting
-    include Circle::Addon::Location::Setting
+    include Circle::Addon::CategorySetting
+    include Circle::Addon::LocationSetting
 
     default_scope ->{ where(route: "circle/search") }
 

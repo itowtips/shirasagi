@@ -1,5 +1,5 @@
-module Circle::Addon::Location
-  module Setting
+module Circle::Addon
+  module LocationSetting
     extend SS::Addon
     extend ActiveSupport::Concern
 

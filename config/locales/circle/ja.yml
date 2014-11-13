@@ -40,10 +40,10 @@ ja:
       circle/additional_info: 追加情報
       circle/image: サークル写真
       circle/image_info: 写真情報
-      circle/location/location: サークルの地域
-      circle/location/setting: サークルの地域
-      circle/category/category: サークルのジャンル
-      circle/category/setting: サークルのジャンル
+      circle/location: サークルの地域
+      circle/location_setting: サークルの地域
+      circle/category: サークルのジャンル
+      circle/category_setting: サークルのジャンル
 
   cms:
     nodes:
