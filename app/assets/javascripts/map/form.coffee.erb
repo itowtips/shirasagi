@@ -17,18 +17,60 @@ class @Map_Form
     latlon = ele.val().split(',')
     return new google.maps.LatLng(parseFloat(latlon[0]), parseFloat(latlon[1]))
 
+  @attachMessage: (id) ->
+    google.maps.event.addListener Map.markers[id], 'click', (event) ->
+      if(Map.openedInfo)
+        Map.openedInfo.close()
+      $('dd[data-id = "' + id + '"]').each ->
+        name = $(this).find(".marker-name").val()
+        text = $(this).find(".marker-text").val()
+        if name != "" || text != ""
+          marker_html = '<div class="marker-info">'
+          if name != ""
+            marker_html += '<p>' + name + '</p>'
+          if text != ""
+            $.each text.split(/[\r\n]+/), ->
+              if this.match(/^https?:\/\//)
+                marker_html += '<p><a href="' + this + '">' + this + '</a></p>'
+              else
+                marker_html += '<p>' + this + '</p>'
+
+          Map.openedInfo = new google.maps.InfoWindow(content: marker_html, maxWidth: 260)
+          Map.openedInfo.open(Map.markers[id].getMap(), Map.markers[id])
+        return false
+      return
+    return
+
+  @geocoderSearch: (address) ->
+    geocoder = new google.maps.Geocoder()
+    geocoder.geocode(
+      { "address" : address, "region" : "jp" },
+      (results, status) ->
+        if(status==google.maps.GeocoderStatus.OK)
+          result = results[0]
+          Map.map.setCenter(result.geometry.location)
+          if (result.geometry.viewport)
+            Map.map.fitBounds(result.geometry.viewport)
+        else
+          alert("座標を取得できませんでした。")
+        return
+    )
+    return false
+
   @clonePointForm: ()->
     if $(".mod-map dd.marker").length < Map_Form.maxPointForm
       cln = $(".mod-map dd.marker:last").clone(false).insertAfter($(".mod-map dd.marker:last"))
       cln.attr("data-id",Map_Form.dataID)
       Map_Form.dataID += 1
       cln.find("input,textarea").val ""
-      cln.find(".marker-name").val("マーカー名")
+      cln.find(".marker-name").val("")
       cln.find(".clear-marker").on 'click', ->
         Map_Form.clearPointForm(cln)
-
       cln.find(".set-marker").on 'click', ->
         Map_Form.createMarker(cln)
+      cln.find(".marker-name").on 'keypress', (e)->
+        if e.which == 13
+          return false
     return
 
   @clearPointForm: (ele)->
@@ -53,14 +95,16 @@ class @Map_Form
 
   @createMarker: (ele)->
     if $(".mod-map .clicked").val() != ""
-      ele.find(".marker-loc").val $(".mod-map .clicked").val()
+      ele.find(".marker-loc").val($(".mod-map .clicked").val())
+      dataId = parseInt(ele.attr("data-id"))
 
-      if Map.markers[parseInt(ele.attr("data-id"))]
-        Map.markers[parseInt(ele.attr("data-id"))].setMap(null)
-      Map.markers[parseInt(ele.attr("data-id"))] = new google.maps.Marker(
+      if Map.markers[dataId]
+        Map.markers[dataId].setMap(null)
+      Map.markers[dataId] = new google.maps.Marker(
         position: Map_Form.getMapLoc(ele.find(".marker-loc")),
         map: Map.map
       )
+      Map_Form.attachMessage(dataId)
     return
 
   @setMarkers: ()->
@@ -75,17 +119,30 @@ class @Map_Form
         map: Map.map,
       )
 
-    $(".mod-map .add-marker").on 'click', ->
+    $(".mod-map .add-marker").on 'click', (e) ->
       Map_Form.clonePointForm()
       return false
 
-    $(".mod-map .clear-marker").on 'click', ->
+    $(".mod-map .clear-marker").on 'click', (e)->
       Map_Form.clearPointForm($(this).closest("dd.marker"))
       return false
 
-    $(".mod-map .set-marker").on 'click', ->
+    $(".mod-map .set-marker").on 'click', (e)->
       Map_Form.createMarker($(this).closest("dd.marker"))
       return false
+
+    $(".mod-map .location-search").on 'click', (e)->
+      Map_Form.geocoderSearch($(".mod-map .keyword").val())
+      return false
+
+    $(".mod-map .keyword").on 'keypress', (e)->
+      if e.which == 13
+        Map_Form.geocoderSearch($(this).val())
+        return false
+
+    $(".mod-map .marker-name").on 'keypress', (e)->
+      if e.which == 13
+        return false
 
     Map.markers = []
     markerBounds = new google.maps.LatLngBounds()
@@ -99,6 +156,7 @@ class @Map_Form
           position: loc,
           map: Map.map
         )
+        Map_Form.attachMessage(Map_Form.dataID)
         markerBounds.extend(loc)
       Map_Form.dataID += 1
 
