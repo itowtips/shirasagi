@@ -1,6 +1,8 @@
 ja:
   circle:
     circle: サークル
+    node: サークル一覧
+    search: サークル検索
     page: サークル情報
     keyword:
       name: キーワード

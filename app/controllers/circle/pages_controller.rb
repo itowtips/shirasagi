@@ -5,15 +5,9 @@ class Circle::PagesController < ApplicationController
   model Circle::Node::Page
 
   prepend_view_path "app/views/cms/node/nodes"
-  navi_view "circle/main/navi"
   menu_view "circle/page/menu"
 
   private
-    def set_item
-      super
-      raise "404" if @item.id == @cur_node.id
-    end
-
     def fix_params
       { cur_user: @cur_user, cur_site: @cur_site, cur_node: @cur_node }
     end

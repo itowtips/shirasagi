@@ -27,10 +27,10 @@
         <dd><%=br info[:value] %></dd>
       <% end %>
 
-      <dt><%= t("modules.addons.circle/category/category") %></dt>
+      <dt><%= t("modules.addons.circle/category") %></dt>
       <dd><%= @item.send(:categories).pluck(:name).join(", ") %></dd>
 
-      <dt><%= t("modules.addons.circle/location/location") %></dt>
+      <dt><%= t("modules.addons.circle/location") %></dt>
       <dd><%= @item.send(:locations).pluck(:name).join(", ") %></dd>
     </dl>
 

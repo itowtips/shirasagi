@@ -7,7 +7,7 @@ SS::Application.routes.draw do
   end
 
   content "circle" do
-    get "/" => "main#index", as: :main
+    get "/" => redirect { |p, req| "#{req.path}/searches" }, as: :main
     resources :pages, concerns: :deletion
     resources :nodes, concerns: :deletion
     resources :searches, concerns: :deletion
