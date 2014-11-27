@@ -7,6 +7,7 @@ class Blog::Page
   include Cms::Addon::RelatedPage
   include Category::Addon::Category
   include Workflow::Addon::Approver
+  include Blog::Addon::Weather
 
   before_save :seq_filename, if: ->{ basename.blank? }
 

@@ -1,6 +1,17 @@
 ja:
   blog:
     page: ブログページ
+    sunny: ☀
+    cloudy: ☁
+    rain: ☂
+    snow: ☃
 
   modules:
     blog: ブログ
+    addons:
+      blog/weather: 今日の天気
+
+  mongoid:
+    attributes:
+      cms/page/model:
+        weather: 天気
