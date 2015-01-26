@@ -5,6 +5,7 @@ ja:
     cloudy: ☁
     rain: ☂
     snow: ☃
+    thunder: "⚡"
 
   modules:
     blog: ブログ
