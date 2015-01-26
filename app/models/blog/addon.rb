@@ -17,4 +17,17 @@ module Blog::Addon
         end
     end
   end
+
+  module Author
+    extend ActiveSupport::Concern
+    extend SS::Addon
+
+    set_order 210
+
+    included do
+      field :author, type: String
+      permit_params :author
+    end
+  end
+
 end

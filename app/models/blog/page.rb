@@ -8,6 +8,7 @@ class Blog::Page
   include Category::Addon::Category
   include Workflow::Addon::Approver
   include Blog::Addon::Weather
+  include Blog::Addon::Author
 
   before_save :seq_filename, if: ->{ basename.blank? }
 

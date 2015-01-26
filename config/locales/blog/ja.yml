@@ -6,13 +6,16 @@ ja:
     rain: ☂
     snow: ☃
     thunder: "⚡"
+    author_comment: 'この記事は%{author}が作成しました'
 
   modules:
     blog: ブログ
     addons:
       blog/weather: 今日の天気
+      blog/author: 作成者
 
   mongoid:
     attributes:
       cms/page/model:
         weather: 天気
+        author: 書いた人
