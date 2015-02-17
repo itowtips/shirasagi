@@ -16,4 +16,7 @@
 
   <dt><%= @model.t :related_url %></dt>
   <dd><%= link_to(@item.related_url, @item.related_url, target: "_blank") if @item.related_url.present? %></dd>
+
+  <dt><%= @model.t :related_url2 %></dt>
+  <dd><%= link_to(@item.related_url2, @item.related_url2, target: "_blank") if @item.related_url2.present? %></dd>
 </dl>

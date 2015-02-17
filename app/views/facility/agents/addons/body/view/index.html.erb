@@ -24,8 +24,15 @@
     <dd><%= @cur_node.fax %></dd>
   <% end %>
 
-  <% if @cur_node.related_url.present? %>
+  <% if @cur_node.related_url.present? || @cur_node.related_url2.present? %>
     <dt><%= @cur_node.class.t :related_url %></dt>
-    <dd><%= link_to(@cur_node.related_url, @cur_node.related_url, target: "_blank") %></dd>
+
+    <% if @cur_node.related_url.present? %>
+      <dd><%= link_to(@cur_node.related_url, @cur_node.related_url, target: "_blank") %></dd>
+    <% end %>
+
+    <% if @cur_node.related_url2.present? %>
+      <dd><%= link_to(@cur_node.related_url2, @cur_node.related_url2, target: "_blank") %></dd>
+    <% end %>
   <% end %>
 </dl>

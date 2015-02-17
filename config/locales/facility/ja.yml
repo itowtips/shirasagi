@@ -93,6 +93,7 @@ ja:
         services: 施設の用途
         locations: 施設の地域
         additional_info: 追加情報
+        related_url2: URL2
         field: 項目名
         value: 内容
         map_points: 座標

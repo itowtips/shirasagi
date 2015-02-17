@@ -22,8 +22,17 @@
       <dt><%= @item.class.t :fax %></dt>
       <dd><%= @item.fax %></dd>
 
-      <dt><%= @item.class.t :related_url %></dt>
-      <dd><%= link_to(@item.related_url, @item.related_url, target: "_blank") if @item.related_url.present? %></dd>
+      <% if @item.related_url.present? || @item.related_url2.present? %>
+        <dt><%= @item.class.t :related_url %></dt>
+
+        <% if @item.related_url.present? %>
+          <dd><%= link_to(@item.related_url, @item.related_url, target: "_blank") %></dd>
+        <% end %>
+
+        <% if @item.related_url2.present? %>
+          <dd><%= link_to(@item.related_url2, @item.related_url2, target: "_blank") %></dd>
+        <% end %>
+      <% end %>
 
       <% @item.additional_info.each do |info| %>
         <dt><%=br info[:field] %></dt>
