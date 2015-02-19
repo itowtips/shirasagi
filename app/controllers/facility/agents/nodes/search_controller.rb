@@ -27,10 +27,14 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
 
     def set_markers
       @markers = []
+      images = SS::File.where(model: /facility\//).map {|image| [image.id, image.url]}.to_h
+
       @items.each do |item|
-        category_ids = item.categories.pluck(:_id)
-        image_ids    = item.categories.pluck(:image_id)
-        image_url    = SS::File.find(image_ids.first).url rescue nil
+        categories   = item.categories.entries
+        category_ids = categories.map(&:id)
+        image_id     = categories.map(&:image_id).first
+
+        image_url = images[image_id]
         marker_info  = view_context.render_marker_info(item)
 
         maps = Facility::Map.site(@cur_site).public.
@@ -52,8 +56,52 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
     end
 
     def map
-      set_items
-      set_markers
+      #set_items
+
+      @category_ids = params[:category_ids].select(&:present?).map(&:to_i) rescue nil
+      @service_ids  = params[:service_ids].select(&:present?).map(&:to_i) rescue nil
+      @location_ids = params[:location_ids].select(&:present?).map(&:to_i) rescue nil
+
+      q_category = @category_ids.present? ? { category_ids: @category_ids } : {}
+      q_service  = @service_ids.present? ? { service_ids: @service_ids } : {}
+      q_location = @location_ids.present? ? { location_ids: @location_ids } : {}
+
+      @categories = Facility::Node::Category.in(_id: @category_ids)
+      @services   = Facility::Node::Service.in(_id: @service_ids)
+      @locations  = Facility::Node::Location.in(_id: @location_ids)
+
+      @items = []
+
+      images = SS::File.where(model: /facility\//).map {|image| [image.id, image.url]}.to_h
+      @markers = []
+      Facility::Map.site(@cur_site).public.each do |map|
+
+        parent_path = ::File.dirname(map.filename)
+        item = Facility::Node::Page.site(@cur_site).
+          where(@cur_node.condition_hash).
+          in_path(parent_path).
+          in(q_category).
+          in(q_service).
+          in(q_location).first
+
+        next unless item
+
+        @items << item
+
+        categories   = item.categories.entries
+        category_ids = categories.map(&:id)
+        image_id     = categories.map(&:image_id).first
+
+        image_url = images[image_id]
+        marker_info  = view_context.render_marker_info(item)
+
+        map.map_points.each do |point|
+          point[:html] = marker_info
+          point[:category] = category_ids
+          point[:image] = image_url if image_url.present?
+          @markers.push point
+        end
+      end
     end
 
     def map_all
