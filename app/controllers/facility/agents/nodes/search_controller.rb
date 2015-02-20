@@ -3,7 +3,16 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
   helper Cms::ListHelper
   helper Map::MapHelper
 
+  before_action :short_url
+
   private
+    def short_url
+      cond = { site_id: @cur_site.id, url: request.url }
+
+      item = Cms::ShortUrl.find_or_create_by(cond)
+      redirect_to "#{@cur_site.url}short/#{item.id}"
+    end
+
     def set_items
       @category_ids = params[:category_ids].select(&:present?).map(&:to_i) rescue nil
       @service_ids  = params[:service_ids].select(&:present?).map(&:to_i) rescue nil

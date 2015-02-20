@@ -1,9 +1,5 @@
 module Cms::PublicFilter
   extend ActiveSupport::Concern
-  include Cms::PublicFilter::Node
-  include Cms::PublicFilter::Page
-  include Mobile::PublicFilter
-  include Kana::PublicFilter
 
   included do
     rescue_from StandardError, with: :rescue_action
@@ -14,6 +10,7 @@ module Cms::PublicFilter
     before_action :parse_path
     before_action :compile_scss
     before_action :x_sendfile, if: ->{ filters.blank? }
+    #before_action :render_short_url
   end
 
   public
@@ -154,5 +151,13 @@ module Cms::PublicFilter
 
       file = "#{Rails.public_path}/#{status}.html"
       Fs.exists?(file) ? file : "#{Rails.public_path}/500.html"
+    end
+
+    def render_short_url
+      if @cur_path =~ /^short\/.+?$/
+        item = Cms::ShortUrl.find(params[:id])
+        raise item.to_h.to_s
+        raise "404"
+      end
     end
 end
