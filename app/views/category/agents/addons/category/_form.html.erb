@@ -1,5 +1,7 @@
 <%
 
+return render(text: "") unless @item.allowed?(:release, @cur_user, site: @cur_site)
+
 @f = f
 
 if @cur_node && @cur_node.becomes_with_route.st_categories.present?

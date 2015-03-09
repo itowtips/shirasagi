@@ -1,3 +1,4 @@
+<% return render(text: "") unless @item.allowed?(:release, @cur_user, site: @cur_site) %>
 <% return "" if @item.categories.blank? %>
 
 <dl class="see">
