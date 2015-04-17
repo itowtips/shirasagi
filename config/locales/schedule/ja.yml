@@ -1,0 +1,10 @@
+ja:
+  schedule:
+    options:
+      kind:
+        daily: 毎日
+        weekly: 毎週
+        monthly: 毎月
+      repeat_by:
+        date: 日付
+        week: 曜日
