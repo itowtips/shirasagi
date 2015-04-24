@@ -8,6 +8,6 @@ module Circle::Addon
       permit_params category_ids: []
     end
 
-    set_order 300
+    set_order 280
   end
 end

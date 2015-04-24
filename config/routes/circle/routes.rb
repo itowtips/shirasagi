@@ -34,10 +34,10 @@ SS::Application.routes.draw do
   end
 
   namespace "circle", path: ".:site/circle" do
-    get "/search_categories" => "search_categories#index"
-    post "/search_categories" => "search_categories#search"
-    get "/search_locations" => "search_locations#index"
-    post "/search_locations" => "search_locations#search"
+    namespace "apis" do
+      get "categories" => "categories#index"
+      get "locations" => "locations#index"
+    end
   end
 
   namespace "circle", path: ".u:user/circle", module: "circle", user: /\d+/ do

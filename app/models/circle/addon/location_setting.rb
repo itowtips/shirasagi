@@ -8,6 +8,6 @@ module Circle::Addon
       permit_params st_location_ids: []
     end
 
-    set_order 520
+    set_order 490
   end
 end
