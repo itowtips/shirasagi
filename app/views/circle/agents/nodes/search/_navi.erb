@@ -1,0 +1,12 @@
+<dl class="condition">
+  <dt class="keyword"><%= t("circle.keyword.name") %></dt>
+  <dd><%= @keyword %></dd>
+  <dt class="category"><%= t("circle.category.name") %></dt>
+  <dd><%= @categories.pluck(:name).join("、") %></dd>
+  <dt class="location"><%= t("circle.location.name") %></dt>
+  <dd><%= @locations.pluck(:name).join("、") %></dd>
+</dl>
+
+<p><%= link_to t("circle.submit.change"), "#", class: "ajax-box" %></p>
+
+<h2 class="result"><%= t("circle.result") %><span><%= @items.count %></span><%= t("circle.count") %></h2>

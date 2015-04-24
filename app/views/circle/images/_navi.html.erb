@@ -1,0 +1,18 @@
+<%= node_navi do %>
+
+<nav class="sub-menu">
+  <header><h1><%= t "circle.circle" %></h1></header>
+  <% if @cur_node.parent.present? %>
+    <div>
+      <%= link_to :"circle.page", circle_page_path(cid: @cur_node.parent.id, id: @cur_node.id), class: "icon-node" %>
+    </div>
+  <% end %>
+  <div>
+    <%= link_to :"circle.image", circle_images_path, class: "icon-page" %>
+  </div>
+  <div>
+    <%= link_to :"circle.map", circle_maps_path, class: "icon-page" %>
+  </div>
+</nav>
+
+<% end %>

@@ -1,0 +1,36 @@
+<%= coffee do %>
+$ ->
+  @deleteContent = ->
+    $(".file-view").remove()
+    return false
+
+<% end %>
+
+<dl class="see">
+  <dd class="wide">
+    <%= link_to :upload, circle_temp_files_path(@cur_user), class: "ajax-box" %>
+
+    <div id="selected-files">
+      <%= f.hidden_field "image_id", value: "", class: "hidden-ids" %>
+
+      <% if @item.image.present? %>
+        <div class="file-view">
+          <a class="thumb" href="<%= view_circle_temp_file_path(user: @cur_user, id: @item.image) %>" target="_blank">
+            <% if @item.image.image? %>
+              <img src="<%= thumb_circle_temp_file_path(user: @cur_user, id: @item.image) %>" alt="<%= @item.image.basename %>" />
+            <% else %>
+              <span class="ext icon-<%= @item.image.extname %>"><%= @item.image.extname %></span>
+            <% end %>
+          </a>
+          <div class="name">
+            <input type="hidden" name="item[image_id]" value="<%= @item.image.id %>"/>
+            <%= @item.image.basename %>
+          </div>
+          <div class="action delete">
+            <%= link_to t("views.button.delete"), "#", onclick: "deleteContent();" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </dd>
+</dl>

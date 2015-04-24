@@ -1,0 +1,36 @@
+<dl class="see body">
+  <% if @cur_node.activity.present? %>
+    <dt><%= @cur_node.t :activity %></dt>
+    <dd><%=br @cur_node.send :activity %></dd>
+  <% end %>
+
+  <% if @cur_node.venue.present? %>
+    <dt><%= @cur_node.t :venue %></dt>
+    <dd><%=br @cur_node.send :venue %></dd>
+  <% end %>
+
+  <% if @cur_node.address.present? %>
+    <dt><%= @cur_node.t :address %></dt>
+    <dd><%=br @cur_node.send :address %></dd>
+  <% end %>
+
+  <% if @cur_node.hours.present? %>
+    <dt><%= @cur_node.t :hours %></dt>
+    <dd><%=br @cur_node.send :hours %></dd>
+  <% end %>
+
+  <% if @cur_node.message.present? %>
+    <dt><%= @cur_node.t :message %></dt>
+    <dd><%=br @cur_node.send :message %></dd>
+  <% end %>
+
+  <% if @cur_node.related_url.present? %>
+    <dt><%= @cur_node.t :related_url %></dt>
+    <dd><%= link_to(@cur_node.related_url, @cur_node.related_url, target: "_blank") %></dd>
+  <% end %>
+
+  <% if @cur_node.contact.present? %>
+    <dt><%= @cur_node.t :contact %></dt>
+    <dd><%=br @cur_node.send :contact %></dd>
+  <% end %>
+</dl>
