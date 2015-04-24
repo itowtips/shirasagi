@@ -1,0 +1,10 @@
+<%= node_navi :circle do %>
+
+  <% if @cur_node.parent.present? %>
+    <h3><%= link_to :"circle.page", circle_page_path(cid: @cur_node.parent.id, id: @cur_node.id), class: "icon-node" %></h3>
+  <% end %>
+
+  <h3><%= link_to :"circle.image", circle_images_path, class: "icon-page" %></h3>
+  <h3><%= link_to :"circle.map", circle_maps_path, class: "icon-page" %></h3>
+
+<% end %>
