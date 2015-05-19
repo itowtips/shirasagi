@@ -1,0 +1,53 @@
+<%= coffee do %>
+window.parseSize = (value)->
+  width  = value.split("x")[0]
+  height = value.split("x")[1]
+  return size: { width: width, height: height }
+
+$("#ajax-box .resize").on "change", ()->
+  url = "<%= url_for(action: :edit) %>"
+  v   = $(this).val()
+  url += "?#{$.param(parseSize(v))}" if v
+
+  $.ajax
+    url: url
+    beforeSend: ->
+      $("#ajax-box .image").html SS.loading
+    success: (data)->
+      $("#ajax-box .image").html $(data).find(".image").html()
+    error: (data, status) ->
+      alert("== Error ==")
+
+$("#ajax-box form.edit-image").on "submit", (e)->
+  v = $("#ajax-box .resize").val()
+  if v
+    url = "<%= url_for(action: :update) %>"
+    size = $.param(parseSize(v))
+    $.ajax
+      type: "PUT",
+      url: url,
+      data: size,
+      error: (data, status) ->
+        alert("== Error ==")
+
+  $.colorbox.close()
+  e.preventDefault()
+  return false
+<% end %>
+
+<%= form_for :item, url: { action: :update }, html: { class: "edit-image", multipart: true } do |f| %>
+<%= error_messages_for :item %>
+  <div style="margin-bottom: 20px; padding: 10px; border: 1px solid #ddd;">
+    <%= select_tag :resize, options_for_select(
+      [["#{@image.columns}x#{@image.rows}", ""],
+      ["640x480(VGA)", "640x480"], ["480x640(VGA)", "480x640"],
+      ["800x600(SVGA)", "800x600"], ["600x800(SVGA)", "600x800"],
+      ["1280x720(HD)", "1280x720"], ["1280x720(HD)", "720x1280"]]
+      ), class: :resize
+    %>
+    <%= f.submit "保存する", class: :save, style: "margin-left: 10px;" %>
+  </div>
+<% end %>
+<div class="image">
+  <img src="<%= url_for(action: :show) + @query.to_s %>" alt="<%= @item.basename %>" />
+</div>

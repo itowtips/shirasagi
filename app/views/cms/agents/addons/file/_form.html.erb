@@ -22,13 +22,15 @@ $ ->
     <div id="selected-files">
       <% @item.files.each do |file| %>
       <div class="file-view">
-        <a class="thumb" href="/fs/<%= file.id %>/<%= file.filename %>" target="_blank">
-          <% if file.image? %>
-          <img src="/fs/<%= file.id %>/thumb/<%= file.filename %>" alt="<%= file.basename %>" />
-          <% else %>
-          <span class="ext icon-<%= file.extname %>"><%= file.extname %></span>
+        <% if file.image? %>
+          <%= link_to edit_sns_user_image_file_path(user: @cur_user.id, id: file.id), class: "thumb ajax-box" do %>
+            <img src="/fs/<%= file.id %>/thumb/<%= file.filename %>" alt="<%= file.basename %>" />
           <% end %>
-        </a>
+        <% else %>
+          <a class="thumb" href="/fs/<%= file.id %>/<%= file.filename %>" target="_blank">
+            <span class="ext icon-<%= file.extname %>"><%= file.extname %></span>
+          </a>
+        <% end %>
         <div class="name">
           <label>
             <%= f.check_box "file_ids[]", {}, file.id %>

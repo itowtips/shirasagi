@@ -1,11 +1,15 @@
+<%= jquery do %> SS.render(); <% end %>
+
 <div class="file-view">
-  <a class="thumb" href="<%= view_sns_user_temp_file_path(id: @item) %>" target="_blank">
-    <% if @item.image? %>
-    <img src="<%= thumb_sns_user_temp_file_path(id: @item) %>" alt="<%= @item.basename %>" />
-    <% else %>
-    <span class="ext icon-<%= @item.extname %>"><%= @item.extname %></span>
+  <% if @item.image? %>
+    <%= link_to edit_sns_user_image_file_path(user: @cur_user.id, id: @item.id), class: "thumb ajax-box" do %>
+      <img src="/fs/<%= @item.id %>/thumb/<%= @item.filename %>" alt="<%= @item.basename %>" />
     <% end %>
-  </a>
+  <% else %>
+    <a class="thumb" href="/fs/<%= @item.id %>/<%= @item.filename %>" target="_blank">
+      <span class="ext icon-<%= @item.extname %>"><%= @item.extname %></span>
+    </a>
+  <% end %>
   <div class="name">
     <label>
       <input type="checkbox" name="item[file_ids][]" value="<%= @item.id %>" checked="checked" />
