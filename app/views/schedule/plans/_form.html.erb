@@ -1,0 +1,17 @@
+<%= jquery do %>
+  $(".datetime").
+    datetimepicker({ lang: "ja", roundTime: 'ceil', step: 5 });
+<% end %>
+
+<dl>
+  <dt><%= f.label t('schedule.plan.name') %></dt>
+  <dd><%= f.text_field :name %></dd>
+  <dt><%= f.label t('schedule.plan.text') %></dt>
+  <dd><%= f.text_area :text %></dd>
+  <dt><%= f.label t('schedule.plan.start_at') %></dt>
+  <dd><%= f.text_field :start_at, class: "datetime", value: tryb{@item.start_at.strftime("%Y/%m/%d %H:%M")} %></dd>
+  <dt><%= f.label t('schedule.plan.end_at') %></dt>
+  <dd><%= f.text_field :end_at, class: "datetime", value: tryb{@item.end_at.strftime("%Y/%m/%d %H:%M")} %>
+  <dt><%= f.label t('schedule.plan.allday') %></dt>
+  <dd><%= f.check_box :allday %></dd>
+</dl>

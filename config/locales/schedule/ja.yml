@@ -1,5 +1,11 @@
 ja:
   schedule:
+    plan:
+      name: タイトル
+      text: 内容
+      start_at: 開始日時
+      end_at: 終了日時
+      allday: 終日
     options:
       kind:
         daily: 毎日

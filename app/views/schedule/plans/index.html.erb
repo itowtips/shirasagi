@@ -1,0 +1,31 @@
+<%= render file: "_search" %>
+
+<table class="index">
+  <thead>
+    <tr>
+      <th class="checkbox"><input type="checkbox" /></th>
+      <th><%= @model.t :name %></th>
+      <th class="datetime"><%= t('schedule.plan.start_at') %></th>
+      <th class="datetime"><%= t('schedule.plan.end_at') %></th>
+      <th><%= t('schedule.plan.allday') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @items.each do | item | %>
+    <tr>
+      <td class="checkbox">
+        <input type="checkbox" name="ids[]" value="<%= item.id %>" />
+        <nav class="tap-menu">
+          <%= link_to :show, action: :show, id: item %>
+          <%= link_to :edit, action: :edit, id: item %>
+          <%= link_to :delete, action: :delete, id: item %>
+        </nav>
+      </td>
+      <td><%= item.name %></td>
+      <td><%= item.start_at %></td>
+      <td><%= item.end_at %></td>
+      <td><%= item.allday %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
