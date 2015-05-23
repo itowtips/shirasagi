@@ -1,0 +1,47 @@
+<% unless @items.empty? %>
+
+<div class="index share-files">
+  <table class="share-files-view">
+    <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th><%= @model.t("basename") %></th>
+        <th><%= @model.t("size") %></th>
+        <th><%= @model.t("user_id") %></th>
+        <th><%= @model.t("created") %></th>
+        <th><%= @model.t("updated") %></th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @items.each do |item| %>
+        <tr id="share-file<%= item.id %>">
+          <td>
+            <a class="thumb view" href="<%= url_for action: :view, id: item %>">
+              <% if item.image? %>
+                <img src="<%= url_for(action: :thumb, id: item) %>" alt="<%= item.basename %>" />
+              <% else %>
+                <span class="ext icon-<%= item.extname %>"><%= item.extname %></span>
+              <% end %>
+            </a>
+          </td>
+          <td><a class="detail" href="<%= url_for action: :show, id: item %>"><%= item.basename %></a></td>
+          <td class="filesize"><%= number_to_human_size(item.size) %></td>
+          <td class="owner"><%= item.user.name %></td>
+          <td><%= item.created.strftime("%Y/%m/%d %H:%M") %></td>
+          <td><%= item.updated.strftime("%Y/%m/%d %H:%M") %></td>
+          <td>
+            <%= link_to t("views.button.download"), download_share_file_path(id: item), class: "download" %>
+            <%= link_to t("views.button.delete"), delete_share_file_path(id: item), class: "delete", id: "#share-file#{item.id}" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div style="clear: both;"></div>
+
+<%= paginate @items if @items.try(:current_page) %>
+
+<% end %>

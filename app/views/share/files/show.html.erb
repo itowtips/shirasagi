@@ -1,0 +1,23 @@
+<div class="file-detail">
+  <a class="thumb" href="<%= view_share_file_path(id: @item) %>" target="_blank">
+    <% if @item.image? %>
+    <img src="<%= thumb_share_file_path(id: @item) %>" alt="<%= @item.basename %>" />
+    <% else %>
+    <span class="ext icon-<%= @item.extname %>"><%= @item.extname %></span>
+    <% end %>
+  </a>
+  <div class="name">
+    <input type="hidden" name="item[image_id]" value="<%= @item.id %>" />
+    <%= @item.basename %>
+    <br />
+  </div>
+  <div class="filesize">
+    <%= number_to_human_size(@item.size) %>
+  </div>
+  <div class="owner">
+    <%= @item.user.name %>
+  </div>
+  <div class="action download">
+    <%= link_to t("views.button.download"), download_share_file_path(id: @item), class: "download" %>
+  </div>
+</div>
