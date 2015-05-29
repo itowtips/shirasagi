@@ -12,77 +12,88 @@ CKEDITOR.addTemplates( 'default', {
 	// The templates definitions.
 	templates: [
 		{
-		title: 'Image and Title',
-		image: 'template1.gif',
-		description: 'One main image with a title and text that surround the image.',
-		html: '<h3>' +
-			// Use src=" " so image is not filtered out by the editor as incorrect (src is required).
-			'<img src=" " alt="" style="margin-right: 10px" height="100" width="100" align="left" />' +
-			'Type the title here' +
-			'</h3>' +
-			'<p>' +
-			'Type the text here' +
-			'</p>'
+		title: '画像のみ',
+		html: '<div class="imgW">' +
+			'<img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/720x200.png">' +
+			'</div>'
 	},
 		{
-		title: 'Strange Template',
-		image: 'template2.gif',
-		description: 'A template that defines two colums, each one with a title, and some text.',
-		html: '<table cellspacing="0" cellpadding="0" style="width:100%" border="0">' +
-			'<tr>' +
-				'<td style="width:50%">' +
-					'<h3>Title 1</h3>' +
-				'</td>' +
-				'<td></td>' +
-				'<td style="width:50%">' +
-					'<h3>Title 2</h3>' +
-				'</td>' +
-			'</tr>' +
-			'<tr>' +
-				'<td>' +
-					'Text 1' +
-				'</td>' +
-				'<td></td>' +
-				'<td>' +
-					'Text 2' +
-				'</td>' +
-			'</tr>' +
-			'</table>' +
-			'<p>' +
-			'More text goes here.' +
-			'</p>'
+		title: '画像のみ×2',
+		html: '<div class="imgW2 clearfix">' +
+			'<div class="imgL"><img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/350x200.png"></div>' +
+			'<div class="imgR"><img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/350x200.png"></div>' +
+			'</div>'
 	},
 		{
-		title: 'Text and Table',
-		image: 'template3.gif',
-		description: 'A title with some text and a table.',
-		html: '<div style="width: 80%">' +
-			'<h3>' +
-				'Title goes here' +
-			'</h3>' +
-			'<table style="width:150px;float: right" cellspacing="0" cellpadding="0" border="1">' +
-				'<caption style="border:solid 1px black">' +
-					'<strong>Table title</strong>' +
-				'</caption>' +
-				'<tr>' +
-					'<td>&nbsp;</td>' +
-					'<td>&nbsp;</td>' +
-					'<td>&nbsp;</td>' +
-				'</tr>' +
-				'<tr>' +
-					'<td>&nbsp;</td>' +
-					'<td>&nbsp;</td>' +
-					'<td>&nbsp;</td>' +
-				'</tr>' +
-				'<tr>' +
-					'<td>&nbsp;</td>' +
-					'<td>&nbsp;</td>' +
-					'<td>&nbsp;</td>' +
-				'</tr>' +
-			'</table>' +
-			'<p>' +
-				'Type the text here' +
-			'</p>' +
+		title: '画像のみ×3',
+		html: '<div class="imgW3 clearfix">' +
+			'<div><img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/230x200.png"></div>' +
+			'<div><img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/230x200.png"></div>' +
+			'<div><img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/230x200.png"></div>' +
+			'</div>'
+	},
+		{
+		title: '画像左+テキスト',
+		html: '<div class="imgTxtR clearfix">' +
+			'<div><img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/230x100.png"></div>' +
+			'<p>画像回り込み<br>宮崎市では、納税の本来の姿として自主納税制度を推進しています。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。宮崎市では、納税の本来の姿として自主納税制度を推進しています。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。宮崎市では、納税の本来の姿として自主納税制度を推進しています。</p>' +
+			'</div>'
+	},
+		{
+		title: '画像右+テキスト',
+		html: '<div class="imgTxtL clearfix">' +
+			'<div><img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/230x100.png"></div>' +
+			'<p>画像回り込み<br>宮崎市では、納税の本来の姿として自主納税制度を推進しています。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。宮崎市では、納税の本来の姿として自主納税制度を推進しています。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。宮崎市では、納税の本来の姿として自主納税制度を推進しています。</p>' +
+			'</div>'
+	},
+		{
+		title: '画像×2+下テキスト',
+		html: '<div class="imgW2 clearfix">' +
+			'<div class="imgL">' +
+			'<img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/350x200.png">' +
+			'<p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>' +
+			'</div>' +
+			'<div class="imgR">' +
+			'<img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/350x200.png">' +
+			'<p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>' +
+			'</div>' +
+			'</div>'
+	},
+		{
+		title: '画像×2+上テキスト',
+		html: '<div class="imgW2 clearfix">' +
+			'<div class="imgL">' +
+			'<p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>' +
+			'<img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/350x200.png">' +
+			'</div>' +
+			'<div class="imgR">' +
+			'<p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</p>' +
+			'<img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/350x200.png">' +
+			'</div>' +
+			'</div>'
+	},
+		{
+		title: '画像左+テキスト（回り込みなし）',
+		html: '<div class="imgLTxtR clearfix">' +
+			'<div><img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/350x100.png"></div>' +
+			'<p>画像回り込み<br>宮崎市では、納税の本来の姿として自主納税制度を推進しています。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。宮崎市では、納税の本来の姿として自主納税制度を推進しています。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。宮崎市では、納税の本来の姿として自主納税制度を推進しています。</p>' +
+			'</div>'
+	},
+		{
+		title: '画像右+テキスト（回り込みなし）',
+		html: '<div class="imgRTxtL clearfix">' +
+			'<div><img class="decoded" alt="" src="../../../../../../sites/w/w/w/_/img/ckeditor/350x100.png"></div>' +
+			'<p>画像回り込み<br>宮崎市では、納税の本来の姿として自主納税制度を推進しています。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。宮崎市では、納税の本来の姿として自主納税制度を推進しています。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。<br>自主納税制度とは、納税者の皆さんが定められた納期限までに自主的に納税することです。宮崎市では、納税の本来の姿として自主納税制度を推進しています。</p>' +
+			'</div>'
+	},
+		{
+		title: '関連書類',
+		html: '<div class="documents">' +
+			'<div>関連書類</div>' +
+			'<ul class="arrow">' +
+			'<li><a href="#">書類名(00KB PDF)</a></li>' +
+			'<li><a href="#">書類名(00KB PDF)</li>' +
+			'</ul>' +
 			'</div>'
 	}
 	]
