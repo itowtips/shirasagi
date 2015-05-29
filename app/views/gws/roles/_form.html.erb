@@ -1,0 +1,23 @@
+<dl class="see">
+  <dt><%= @model.t :name %></dt>
+  <dd><%= f.text_field :name %></dd>
+
+  <dt><%= @model.t :permission_level %></dt>
+  <dd><%= f.select :permission_level, @item.permission_level_options %></dd>
+
+  <dt><%= @model.t :permissions %></dt>
+  <dd>
+    <%= hidden_field_tag "item[permissions][]" %>
+
+    <% @model.module_permission_names.each do |mod, names| %>
+      <div class="module-box" style="padding: 10px 0px; border-top: 1px solid #ccc;">
+        <p class="module-name" style="margin: 0px 0px 10px;"><%= t("modules.#{mod}") %></p>
+        <div class="permission-names">
+          <% names.each do |name| %>
+            <label><%= f.check_box("permissions[]", {}, name.to_s) %> <%= t("gws_role.#{name}") %></label>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </dd>
+</dl>
