@@ -1,0 +1,31 @@
+<div id="calendar"></div>
+<script style="text/javascript">
+  $(document).ready(function() {
+    $('#calendar').fullCalendar({
+      editable: true,
+      defaultView: 'month',
+      header: {center: 'month,basicWeek,agendaDay'},
+      eventDrop: function(event, delta, revertFunc) {
+        $.ajax({
+          type: 'PUT',
+          url: '/..g<%= @cur_group.id %>/schedule/plans/' + event.id,
+          data: {item: {start_at: event.start.format(), end_at: event.end.format()}}
+        });
+      },
+      eventResize: function(event, delta, revertFunc) {
+        $.ajax({
+          type: 'PUT',
+          url: '/..g<%= @cur_group.id %>/schedule/plans/' + event.id,
+          data: {item: {start_at: event.start.format(), end_at: event.end.format()}}
+        });
+      },
+      eventSources: [
+        {events: [
+          <% @plans.each do |plan| %>
+          {id: '<%= plan.id %>', title: '<%= plan.name %>', start: '<%= plan.start_at %>', end: '<%= plan.end_at %>', allDay: <%= plan.allday %>},
+          <% end %>
+        ]}
+      ]
+    });
+  });
+</script>
