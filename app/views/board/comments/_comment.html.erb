@@ -1,0 +1,16 @@
+<div class="comments">
+  <aside class="comment">
+    <%= t('board.user') %>: <%= comment.user.name %><br />
+    <%= t('board.comment.created') %>: <%= comment.created.strftime("%Y/%m/%d %H:%M") %><br />
+    <%= t('board.comment.updated') %>: <%= comment.updated.strftime("%Y/%m/%d %H:%M") %><br />
+
+    <div>
+      <%= t('board.comment.text') %>: <%= comment.text %>
+    </div>
+
+    <%= link_to t('board.comment.comment'), new_board_topic_parent_comment_path(topic_id: @item.id, parent_id: comment.id) if recursion %>
+    <%= link_to :edit, board_topic_parent_comment_path(topic_id: @item.id, parent_id: comment.parent_id, id: comment.id) %>
+    <%= link_to :delete, delete_board_topic_parent_comment_path(topic_id: @item.id, parent_id: comment.parent_id, id: comment.id) %>
+  </aside>
+  <%= render partial: 'board/comments/comment', collection: comment.children, locals: {parent: comment, recursion: recursion} if recursion %>
+</div>

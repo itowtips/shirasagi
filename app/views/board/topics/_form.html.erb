@@ -1,0 +1,10 @@
+<dl class="see">
+  <dt><%= t('board.topic.name') %></dt>
+  <dd><%= f.text_field :name %></dd>
+  <dt><%= t('board.topic.text') %></dt>
+  <dd><%= f.text_area :text %></dd>
+  <dt><%= t('board.topic.mode') %></dt>
+  <dd><%= f.select :mode, @item.mode_options %></dd>
+  <dt><%= t('board.topic.permit_comment') %></dt>
+  <dd><%= f.select :permit_comment, @item.permit_comment_options %></dd>
+</dl>
