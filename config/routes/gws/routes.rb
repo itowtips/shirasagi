@@ -9,6 +9,8 @@ SS::Application.routes.draw do
   end
   # TODO integrate / (as portal) and gws/roles
 
+  Schedule::Initializer
+
   gws "schedule" do
     resources :plans do
       get :delete, on: :member
