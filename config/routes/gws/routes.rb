@@ -23,6 +23,8 @@ SS::Application.routes.draw do
   #  resources :plans
   #end
 
+  Board::Initializer
+
   gws "board" do
     resources :topics do
       get :delete, on: :member
