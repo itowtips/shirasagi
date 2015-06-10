@@ -7,8 +7,8 @@ module Gws::Permission
   # @param [Symbol] action :read, :edit or :delete
   # @param [Gws::User] user
   def allowed?(action, user)
-    # TODO Implement
-    true
+    permit = "#{action}_#{self.class.permission_name}"
+    user.gws_role_permission_names.include? permit
   end
 
   module ClassMethods
@@ -17,8 +17,8 @@ module Gws::Permission
     # @param [Symbol] action :read or :edit
     # @param [Gws::User] user
     def allowed?(action, user)
-      # TODO Implement
-      true
+      permit = "#{action}_#{self.permission_name}"
+      user.gws_role_permission_names.include? permit
     end
   end
 end
