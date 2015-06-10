@@ -3,6 +3,7 @@ module Gws::BaseFilter
   include SS::BaseFilter
 
   included do
+    before_action :set_assets
     before_action :set_cur_org
     before_action :set_group
 
@@ -15,6 +16,11 @@ module Gws::BaseFilter
     end
 
     private
+      def set_assets
+        javascript 'gws/script'
+        stylesheet 'gws/style'
+      end
+
       # Set the instance variable of `@cur_org`.
       # When a request path is `/..g123/schedule/plan/new`, `group` becomes
       # `123` and set `SS::Group` instance whose ID is 123 to `@cur_org`.
