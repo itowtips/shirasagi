@@ -1,6 +1,8 @@
 SS::Application.routes.draw do
   get '..g:group/', to: 'gws/portal#index', as: :gws_main
 
+  Gws::Initializer
+
   gws "gws" do
     resources :users, only: [:index, :show, :edit, :update]
     resources :roles do
