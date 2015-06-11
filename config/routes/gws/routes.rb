@@ -38,6 +38,8 @@ SS::Application.routes.draw do
     end
   end
 
+  Share::Initializer
+
   gws "share" do
     resources :files do
       get :view, on: :member
