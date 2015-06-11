@@ -1,0 +1,53 @@
+ja:
+  gws_role:
+    read_gws_roles: GWSロールの閲覧
+    edit_gws_roles: GWSロールの編集
+    delete_gws_roles: GWSロールの削除
+
+    read_gws_users: GWSユーザの閲覧
+    edit_gws_users: GWSユーザの編集
+
+    read_other_board_posts: 掲示板投稿の閲覧（全て）
+    read_private_board_posts: 掲示板投稿の閲覧（自分）
+    edit_other_board_posts: 掲示板投稿の編集（全て）
+    edit_private_board_posts: 掲示板投稿の編集（自分）
+    delete_other_board_posts: 掲示板投稿の削除（全て）
+    delete_private_board_posts: 掲示板投稿の削除（自分）
+
+    read_other_schedule_plans: スケジュールの閲覧（全て）
+    read_private_schedule_plans: スケジュールの閲覧（自分）
+    edit_other_schedule_plans: スケジュールの編集（全て）
+    edit_private_schedule_plans: スケジュールの編集（自分）
+    delete_other_schedule_plans: スケジュールの削除（全て）
+    delete_private_schedule_plans: スケジュールの削除（自分）
+
+    read_other_reservation_plans: 施設予約の閲覧（全て）
+    read_private_reservation_plans: 施設予約の閲覧（自分）
+    edit_other_reservation_plans: 施設予約の編集（全て）
+    edit_private_reservation_plans: 施設予約の編集（自分）
+    delete_other_reservation_plans: 施設予約の削除（全て）
+    delete_private_reservation_plans: 施設予約の削除（自分）
+
+    read_other_share_files: 共有ファイルの閲覧（全て）
+    read_private_share_files: 共有ファイルの閲覧（自分）
+    edit_other_share_files: 共有ファイルの編集（全て）
+    edit_private_share_files: 共有ファイルの編集（自分）
+    delete_other_share_files: 共有ファイルの削除（全て）
+    delete_private_share_files: 共有ファイルの削除（自分）
+
+  modules:
+    gws: 標準機能
+    addons:
+      gws/role: ロール
+      gws/group_permission: 権限
+
+  mongoid:
+    attributes:
+      gws/addon/role:
+        gws_role_ids: ロール
+      gws/addon/permission:
+        group_ids: 管理グループ
+        permission_level: 権限レベル
+      gws/addon/group_permission:
+        group_ids: 管理グループ
+        permission_level: 権限レベル
