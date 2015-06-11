@@ -3,6 +3,8 @@ module Gws::BaseFilter
   include SS::BaseFilter
 
   included do
+    cattr_accessor(:user_class) { Gws::User }
+
     before_action :set_assets
     before_action :set_cur_org
     before_action :set_group
