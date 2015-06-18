@@ -8,6 +8,7 @@ module Gws::BaseFilter
     before_action :set_assets
     before_action :set_cur_org
     before_action :set_group
+    navi_view "gws/main/navi"
 
     def current_group
       @cur_group

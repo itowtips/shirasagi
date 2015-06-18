@@ -1,0 +1,12 @@
+<nav class="main-menu">
+  <header><h1><%= link_to 'Portal', gws_main_path %></h1></header>
+  <div>
+    <%= link_to 'Users', gws_users_path %>
+    <%= link_to 'Roles', gws_roles_path %>
+    <%= link_to 'Board', board_topics_path %>
+    <%= link_to 'Calendar', schedule_calendar_path %>
+    <%= link_to 'Schedule', schedule_plans_path %>
+    <%#= link_to 'reservation/plans', reservation_plans_path %>
+    <%= link_to 'Files', share_files_path %>
+  </div>
+</nav>
