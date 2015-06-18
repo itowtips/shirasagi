@@ -1,1 +1,22 @@
 //= require fullcalendar
+
+#calendar {
+  .fc-head {
+    background-color: #eee;
+  }
+  .fc-view-container {
+    background-color: #fff;
+  }
+}
+
+.topic {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+.comments {
+  margin: 0px 0px 0px 20px;
+  .comment {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+}
