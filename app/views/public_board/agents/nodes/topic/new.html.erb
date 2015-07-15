@@ -1,0 +1,12 @@
+<%= form_for :item, url: "#{@cur_node.url}#{@cur_topic.id}/", html: { method: :post, multipart: true, autocomplete: :off } do |f| %>
+<div class="topic-form">
+  <%= error_messages_for :item, header_message: false %>
+  <%= render partial: "form", locals: { f: f, confirm: false }  %>
+  <%= show_simple_captcha(object: :item, code_type: 'numeric', input_html: { required: nil }) %>
+
+  <footer class="send">
+  <%= f.submit "投稿", name: :confirm %>
+  <%= f.button t("views.button.cancel"), type: :reset, onclick: "location.href='#{@cur_node.url}'; return false;" %>
+  </footer>
+</div>
+<% end %>

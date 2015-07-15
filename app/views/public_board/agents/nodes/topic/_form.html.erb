@@ -1,0 +1,24 @@
+<div class="columns">
+  <dl class="column">
+    <dt>お名前</dt>
+    <dd><%= f.text_field :poster %></dd>
+
+    <dt>Eメール</dt>
+    <dd><%= f.email_field :email %></dd>
+
+    <dt>タイトル</dt>
+    <dd><%= f.text_field :name %></dd>
+
+    <dt>コメント</dt>
+    <dd><%= f.text_area :text %></dd>
+
+    <dt>参照先</dt>
+    <dd>？</dd>
+
+    <dt>クッキー保存</dt>
+    <dd>？</dd>
+
+    <dt>削除キー</dt>
+    <dd><%= f.password_field :delete_key %></dd>
+  </dl>
+</div>

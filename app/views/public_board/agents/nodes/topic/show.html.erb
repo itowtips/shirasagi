@@ -1,0 +1,21 @@
+<nav class="menu">
+  <%= link_to "トピック一覧", "#{@cur_node.url}" %>
+  <%= link_to "新規投稿", "./new" %>
+</nav>
+
+<% @items.each do |item| %>
+<article class="comment">
+  <header>
+    <p class="title"><%= item.name %><p>
+    <p class="poster">投稿者：<%= mail_to item.name, item.email %></p>
+    <p>投稿日時：<%= item.updated.strftime("%Y/%m/%d %H:%M") %><%= link_to "返信", "#" %></p>
+  </header>
+
+  <div class="body">
+    <%=br item.text %>
+  </div>
+</article>
+<% end %>
+
+<hr>
+## paginate?
