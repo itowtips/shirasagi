@@ -18,7 +18,14 @@ class Ezine::Member
   validates :email_type, inclusion: { in: %w(text html) }
   validates :state, inclusion: { in: %w(enabled disabled) }
 
+  validate :validate_email
+
   scope :enabled, ->{ where(state: 'enabled') }
+
+  private
+    def validate_email
+      errors.add :email, :invalid unless email =~ /\A([^"@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+    end
 
   public
     def email_type_options
