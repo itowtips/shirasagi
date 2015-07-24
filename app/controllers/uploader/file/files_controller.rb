@@ -1,4 +1,4 @@
-class Uploader::FilesController < ApplicationController
+class Uploader::File::FilesController < ApplicationController
   include Uploader::FileFilter
 
   model Uploader::File
@@ -8,11 +8,7 @@ class Uploader::FilesController < ApplicationController
   public
     def index
       raise "403" unless @cur_node.allowed?(:read, @cur_user, site: @cur_site)
-      set_items(@cur_node.path)
-    end
-
-    def create
-      @item = @cur_node
-      super
+      raise "404" unless @item && @item.directory?
+      set_items(@item.path)
     end
 end

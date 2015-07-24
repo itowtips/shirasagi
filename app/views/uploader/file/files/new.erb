@@ -1,0 +1,15 @@
+<%= jquery do %> SS.confirmUnloading(); <% end %>
+
+<%= form_for :item, url: { action: :create }, html: { multipart: true } do |f| %>
+<%= error_messages_for :item %>
+<div class="addon-view">
+  <dl class="see">
+    <dt><%=  t('uploader.new_files')  %></dt>
+    <dd><%= f.file_field :files, multiple: :multiple %></dd>
+  </dl>
+</div>
+<footer class="send">
+  <%= f.submit t("views.button.save"), class: :save %>
+  <%= f.button t("views.button.cancel"), type: :reset, onclick: "location.href='#{url_for(action: :index)}'; return false;" %>
+</footer>
+<% end %>

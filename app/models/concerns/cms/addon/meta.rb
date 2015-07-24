@@ -27,6 +27,7 @@ module Cms::Addon
     private
       def set_keywords
         return if keywords.present?
+        return unless respond_to?(:categories)
 
         keywords = []
         keywords << (parent ? parent.name : @cur_site.name)

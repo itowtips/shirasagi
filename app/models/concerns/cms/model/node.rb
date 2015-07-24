@@ -4,10 +4,10 @@ module Cms::Model::Node
   include Cms::Content
   include Cms::Reference::Layout
   include Cms::Reference::PageLayout
-  include Cms::Reference::StCategory
-  include Facility::Reference::Category
-  include Facility::Reference::Service
-  include Facility::Reference::Location
+  #include Cms::Reference::StCategory
+  #include Facility::Reference::Category
+  #include Facility::Reference::Service
+  #include Facility::Reference::Location
 
   included do
     store_in collection: "cms_nodes"

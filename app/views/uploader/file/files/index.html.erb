@@ -1,0 +1,41 @@
+<table class="index">
+  <thead>
+    <tr>
+      <th class="checkbox"><input type="checkbox" /></th>
+      <th><%= @model.t :name %></th>
+      <th><%= @model.t :filename %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td></td>
+      <td>
+        <% if @parent %>
+          <%= link_to :parent_directory, { action: :index, filename: url_encode(@parent.filename) }, class: "icon-node-up" %>
+        <% else %>
+          <%= link_to :parent_directory, uploader_files_path(cid: @cur_node), class: "icon-node-up" %>
+        <% end %>
+      </td>
+      <td></td>
+    </tr>
+    <% @items.each do |item| %>
+    <tr>
+      <td class="checkbox">
+        <input type="checkbox" name="ids[]" value="<%= item.name %>"/>
+        <nav class="tap-menu">
+        <%= link_to :show, uploader_file_path(cid: @cur_node, filename: url_encode(item.filename)) if @cur_node.allowed?(:read, @cur_user, site: @cur_site) %>
+        <%= link_to :edit, edit_uploader_file_path(cid: @cur_node, filename: url_encode(item.filename)) if @cur_node.allowed?(:edit, @cur_user, site: @cur_site) %>
+        <%= link_to :delete, delete_uploader_file_path(cid: @cur_node, filename: url_encode(item.filename)) if @cur_node.allowed?(:edit, @cur_user, site: @cur_site) %>
+        </nav>
+      </td>
+      <% if item.directory? %>
+        <td><%= link_to item.name, uploader_file_files_path(cid: @cur_node, filename: url_encode(item.filename)), class: "icon-node" %></td>
+      <% else %>
+        <td><%= link_to item.name, uploader_file_path(cid: @cur_node, filename: url_encode(item.filename)), class: "icon-page" %></td>
+      <% end %>
+      <td class="filename"><%= item.name %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

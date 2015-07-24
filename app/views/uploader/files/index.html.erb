@@ -8,27 +8,20 @@
   </thead>
 
   <tbody>
-    <% if @cur_node.filename != @item.filename %>
-    <tr>
-      <td></td>
-      <td><%= link_to :parent_directory, { action: :show, filename: @item.dirname }, class: "icon-node" %></td>
-      <td></td>
-    </tr>
-    <% end %>
     <% @items.each do |item| %>
     <tr>
       <td class="checkbox">
         <input type="checkbox" name="ids[]" value="<%= item.name %>"/>
         <nav class="tap-menu">
-        <%= link_to :show, action: :show, filename: item.filename, do: :show if @cur_node.allowed?(:read, @cur_user, site: @cur_site) %>
-        <%= link_to :edit, action: :show, filename: item.filename, do: :edit if @cur_node.allowed?(:edit, @cur_user, site: @cur_site) %>
-        <%= link_to :delete, action: :show, filename: item.filename, do: :delete if @cur_node.allowed?(:edit, @cur_user, site: @cur_site) %>
+          <%= link_to :show, action: :show, filename: url_encode(item.filename) if @cur_node.allowed?(:read, @cur_user, site: @cur_site) %>
+          <%= link_to :edit, action: :edit, filename: url_encode(item.filename) if @cur_node.allowed?(:edit, @cur_user, site: @cur_site) %>
+          <%= link_to :delete, action: :delete, filename: url_encode(item.filename) if @cur_node.allowed?(:edit, @cur_user, site: @cur_site) %>
         </nav>
       </td>
       <% if item.directory? %>
-      <td><%= link_to item.name, { action: :show, filename: item.filename }, class: "icon-node" %></td>
+        <td><%= link_to item.name, uploader_file_files_path(cid: @cur_node, filename: url_encode(item.filename)), class: "icon-node" %></td>
       <% else %>
-      <td><%= link_to item.name, { action: :show, filename: item.filename, do: :show }, class: "icon-page" %></td>
+        <td><%= link_to item.name, { action: :show, filename: url_encode(item.filename) }, class: "icon-page" %></td>
       <% end %>
       <td class="filename"><%= item.name %></td>
     </tr>

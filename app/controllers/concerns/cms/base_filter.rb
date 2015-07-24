@@ -22,7 +22,13 @@ module Cms::BaseFilter
 
     def set_node
       return unless params[:cid]
-      @cur_node = Cms::Node.site(@cur_site).find params[:cid]
+
+      if params[:cid] == "0"
+        @cur_node = Cms::Node::Root.new(@cur_site)
+      else
+        @cur_node = Cms::Node.site(@cur_site).find params[:cid]
+      end
+
       @cur_node.parents.each {|node| @crumbs << [node.name, view_context.contents_path(node)] }
       @crumbs << [@cur_node.name, view_context.contents_path(@cur_node)]
     end

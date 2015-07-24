@@ -31,7 +31,12 @@ module Cms::Content
 
     scope :filename, ->(name) { where filename: name.sub(/^\//, "") }
     scope :node, ->(node) {
-      node ? where(filename: /^#{node.filename}\//, depth: node.depth + 1) : where(depth: 1)
+      #node ? where(filename: /^#{node.filename}\//, depth: node.depth + 1) : where(depth: 1)
+      if node && node.depth > 0
+        where(filename: /^#{node.filename}\//, depth: node.depth + 1)
+      else
+        where(depth: 1)
+      end
     }
   end
 
@@ -163,6 +168,7 @@ module Cms::Content
     def set_filename
       if @cur_node
         self.filename = "#{@cur_node.filename}/#{basename}"
+        self.filename.sub!(/^\//, "")
       elsif @basename
         self.filename = basename
       end

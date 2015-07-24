@@ -1,16 +1,24 @@
 <%
 
 @f = f
+categories = nil
 
-if @cur_node && @cur_node.becomes_with_route.st_categories.present?
-  categories = []
-  parents = @cur_node.becomes_with_route.st_categories.sort_by { |cate| cate.filename.count("/") }
-  while parents.present?
-    parent = parents.shift
-    parents = parents.map { |c| c.filename !~ /^#{parent.filename}\// ? c : nil }.compact
-    categories << parent
+if @cur_node
+  cur_node = @cur_node.becomes_with_route
+  st_categories = cur_node.try(:st_categories)
+
+  if st_categories.present?
+    categories = []
+    parents = @cur_node.becomes_with_route.st_categories.sort_by { |cate| cate.filename.count("/") }
+    while parents.present?
+      parent = parents.shift
+      parents = parents.map { |c| c.filename !~ /^#{parent.filename}\// ? c : nil }.compact
+      categories << parent
+    end
   end
-else
+end
+
+if categories.nil?
   categories = Category::Node::Base.site(@cur_site).where(depth: 1).sort(filename: 1)
 end
 

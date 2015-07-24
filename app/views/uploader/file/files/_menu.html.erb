@@ -2,20 +2,28 @@
   <% if params[:action] =~ /index|files/ %>
     <% if @cur_node.allowed?(:edit, @cur_user, site: @cur_site) %>
 
-      <%= link_to :upload, { action: :new }, class: "icon-node" %>
-      <%= link_to :new_directory, { action: :new_directory }, class: "icon-node" %>
+      <%= link_to :upload, { action: :new, filename: url_encode(@item.filename) }, class: "icon-node" %>
+      <%= link_to :new_directory, { action: :new_directory, filename: url_encode(@item.filename) }, class: "icon-node" %>
 
     <% end %>
   <% elsif params[:action] =~ /new|create|lock/ %>
 
-    <%= link_to :back_to_index, action: :index %>
+    <% if @parent %>
+      <%#= link_to :back_to_index, action: :index, filename: url_encode(@parent.filename) %>
+    <% else %>
+      <%= link_to :back_to_index, action: :index %>
+    <% end %>
 
   <% elsif params[:action] =~ /edit|update|delete|move/ %>
     <% if @cur_node.allowed?(:read, @cur_user, site: @cur_site) %>
       <%= link_to :back_to_show, action: :show, filename: url_encode(@item.filename) %>
     <% end %>
 
-    <%= link_to :back_to_index, action: :index %>
+    <% if @parent %>
+      <%#= link_to :back_to_index, action: :index, filename: url_encode(@parent.filename) %>
+    <% else %>
+      <%= link_to :back_to_index, action: :index %>
+    <% end %>
 
   <% else %>
     <% if @cur_node.allowed?(:edit, @cur_user, site: @cur_site) %>
@@ -25,7 +33,7 @@
       <%= link_to :delete, action: :delete,  filename: url_encode(@item.filename) %>
     <% end %>
 
-    <%= link_to :back_to_index, action: :index %>
+    <%= link_to :back_to_index, action: :files, filename: url_encode(@parent.filename) %>
 
   <% end %>
 </nav>

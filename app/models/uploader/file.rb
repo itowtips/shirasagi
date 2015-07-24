@@ -99,7 +99,7 @@ class Uploader::File
     end
 
     def parent
-      path =~ /\// ? path.sub(name, "") : "/"
+      self.class.file(path.sub(/\/#{name}/, ""))
     end
 
     def dirname
