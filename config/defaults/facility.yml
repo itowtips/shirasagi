@@ -1,0 +1,13 @@
+# facility
+
+production: &production
+  # image page's default thumbnail size
+  thumb_size:
+    - 160
+    - 120
+
+test:
+  <<: *production
+
+development:
+  <<: *production
