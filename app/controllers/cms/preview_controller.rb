@@ -35,12 +35,9 @@ class Cms::PreviewController < ApplicationController
         @item = SS::File.find_by id: id, filename: filename
 
         if @cur_path =~ /\/thumb\//
-          if @item.thumb
-            @item = @item.thumb
-          else
             @thumb_width  = params[:width]
             @thumb_height = params[:height]
-          end
+            @item = @item.thumb if @item.thumb && @thumb_width.nil? && @thumb_height.nil?
         end
 
         if @thumb_width && @thumb_height

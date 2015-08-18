@@ -30,14 +30,14 @@ class Fs::FilesController < ApplicationController
     end
 
     def thumb
-      if @item.thumb
+      width  = params[:width]
+      height = params[:height]
+
+      if @item.thumb && width.nil? && height.nil?
         @item = @item.thumb
         index
       else
         set_last_modified
-
-        width  = params[:width]
-        height = params[:height]
         send_thumb @item.read, type: @item.content_type, filename: @item.filename, disposition: :inline,
           width: width, height: height
       end
