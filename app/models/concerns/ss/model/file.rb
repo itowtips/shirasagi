@@ -84,6 +84,10 @@ module SS::Model::File
       "/fs/" + id.to_s.split(//).join("/") + "/_/#{filename}"
     end
 
+    def old_url
+      "/fs/" + id.to_s + "/#{filename}"
+    end
+
     def thumb_url
       "/fs/" + id.to_s.split(//).join("/") + "/_/thumb/#{filename}"
     end
