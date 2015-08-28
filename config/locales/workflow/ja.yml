@@ -85,6 +85,9 @@ ja:
       route_approver_unable_to_approve: "承認経路「%{route}」に設定されているユーザ「%{user}」は記事承認権がありません。"
       cloned_name: "タイトルに[複製]が含まれています。"
       invalid_approve_name: "複製後のタイトルを変更し承認申請を行ってください。"
+      cloned_filename: "ファイル名に複製後状態（copy-）が含まれています。"
+      invalid_approve_name: "タイトルを変更し承認申請を行ってください。"
+      invalid_approve_filename: "複製後のファイル名（copy-）を変更し承認申請を行ってください。\nファイル名を空にし再度保存を行うことにより自動で連番が設定されます。"
 
   cms_role:
     release_other_article_pages: 記事ページの公開（全て）

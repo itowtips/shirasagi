@@ -5,6 +5,7 @@ class @Cms_Form
     Link_Checker.render()
 
     Form_Alert.addValidation(Form_Alert.clonedName)
+    Form_Alert.addValidation(Form_Alert.validateFilename)
     Form_Alert.addValidation(Form_Alert.presence)
     Form_Alert.addValidation(Syntax_Checker.validateHtml)
 
@@ -664,6 +665,14 @@ class @Form_Alert
       addonName = $(name).closest(".addon-view").find("header").text()
       fieldName = Form_Alert.justText($(name).closest("dd").prev("dt"))
       Form_Alert.add addonName, name, "<%= I18n.t('errors.messages.cloned_name') %>"
+
+  @validateFilename: (form, submit)->
+    filename = $(form).find("#addon-basic .filename")
+    if filename.hasClass("cloned") && /copy\-[a-z0-9]+(\.html)?/.test($(filename).val())
+      addonName = $(filename).closest(".addon-view").find("header").text()
+      fieldName = Form_Alert.justText($(filename).closest("dd").prev("dt"))
+      Form_Alert.add addonName, filename, "<%= I18n.t('errors.messages.cloned_filename') %>"
+
 
   @add: (addon, ele, msg)->
     Form_Alert.alerts[addon] ||= []

@@ -68,7 +68,7 @@ $ ->
 <div class="mod-workflow">
 
   <% if @item.state == "closed" %>
-    <% if @item.allowed?(:approve, @cur_user) && @item.workflow_state == "request" %>
+    <% if @item.allowed?(:approve, @cur_user) && @item.workflow_state == "request" && !(@item.try(:master?) && @item.cloned_basename?) %>
       <% @item.workflow_approvers_at(@item.workflow_current_level).each do |workflow_approver| %>
         <% next if @cur_user._id != workflow_approver[:user_id] || workflow_approver[:state] != "request" %>
         <section class="mod-workflow-approve">
@@ -86,6 +86,9 @@ $ ->
       <% if @item.try(:cloned_name?) %>
         <section class="mod-workflow-request">
           <h1><%= t("errors.messages.invalid_approve_name") %></h1>
+      <% elsif @item.try(:master?) && @item.cloned_basename? %>
+        <section class="mod-workflow-request">
+          <h1><%=br t("errors.messages.invalid_approve_filename") %></h1>
         </section>
       <% else %>
         <section class="mod-workflow-request">

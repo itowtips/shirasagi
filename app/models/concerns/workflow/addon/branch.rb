@@ -14,10 +14,16 @@ module Workflow::Addon
       permit_params :master_id
 
       before_save :seq_filename, if: ->{ new_clone? && basename.blank? }
+      before_save :seq_cloned_filename, if: ->{ !new_clone? && cloned_basename? && @basename.blank? }
       after_save :merge_to_master
     end
 
     public
+      def cloned_basename?
+        basename_was = ::File.basename(filename_was.to_s)
+        basename_was =~ /^copy\-[a-z0-9]+(\.html)?$/
+      end
+
       def new_clone?
         @new_clone == true
       end
@@ -113,6 +119,11 @@ module Workflow::Addon
       def seq_filename
         self.filename ||= ""
         self.filename = dirname ? "#{dirname}#{id}.html" : "#{id}.html"
+      end
+
+      def seq_cloned_filename
+        self.filename ||= ""
+        self.filename = dirname ? "#{dirname}/#{id}.html" : "#{id}.html"
       end
   end
 end

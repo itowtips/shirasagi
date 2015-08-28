@@ -32,4 +32,8 @@ $ ->
       .attr("value", "1")
       .appendTo("#item-form")
 
+  <% if @item.try(:master?) && @item.cloned_basename? %>
+  $("#addon-basic .filename").addClass("cloned")
+  <% end %>
+
 <% end %>
