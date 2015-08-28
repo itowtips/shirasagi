@@ -21,9 +21,15 @@ SS::Application.routes.draw do
     delete :lock, action: :unlock, :on => :member
   end
 
+  concern :download do
+    get :download, :on => :collection
+    get :import, :on => :collection
+    post :import, :on => :collection
+  end
+
   content "faq" do
     get "/" => redirect { |p, req| "#{req.path}/pages" }, as: :main
-    resources :pages, concerns: [:deletion, :copy, :move, :lock]
+    resources :pages, concerns: [:deletion, :copy, :move, :lock, :download]
     resources :searches, concerns: :deletion
   end
 
