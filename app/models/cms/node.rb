@@ -35,6 +35,18 @@ class Cms::Node
     default_scope ->{ where(route: "cms/page") }
   end
 
+  class GroupPage
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Cms::Addon::PageGroupList
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "cms/group_page") }
+  end
+
   class ImportNode
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
