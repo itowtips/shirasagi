@@ -16,6 +16,39 @@ module Cms::Addon::List
       permit_params :conditions, :sort, :limit, :loop_html, :upper_html, :lower_html, :new_days
 
       before_validation :validate_conditions
+
+      template_variable_handler :name, :template_variable_handler_name
+      template_variable_handler :url, :template_variable_handler_name
+      template_variable_handler :summary, :template_variable_handler_name
+      template_variable_handler :class, :template_variable_handler_class
+      template_variable_handler :new, :template_variable_handler_new
+      template_variable_handler :date, :template_variable_handler_date
+      template_variable_handler /^date\.(\w+)$/, :template_variable_handler_date2
+      template_variable_handler :time, :template_variable_handler_time
+      template_variable_handler /^time\.(\w+)$/, :template_variable_handler_time2
+      template_variable_handler :group, :template_variable_handler_group
+      template_variable_handler :groups, :template_variable_handler_groups
+      template_variable_handler "img.src", :template_variable_handler_img_src
+      template_variable_handler :categories, :template_variable_handler_categories
+      template_variable_handler "pages.count", :template_variable_handler_pages_count
+    end
+
+    module ClassMethods
+      def template_variable_handlers
+        instance_variable_get(:@_template_variable_handlers) || []
+      end
+
+      def template_variable_handlers=(value)
+        instance_variable_set(:@_template_variable_handlers, value)
+      end
+
+      def template_variable_handler(name, proc, &block)
+        handlers = template_variable_handlers
+
+        name = name.to_sym if name.respond_to?(:to_sym)
+        handlers << [name, proc || block]
+        self.template_variable_handlers = handlers
+      end
     end
 
     def sort_options
@@ -92,28 +125,21 @@ module Cms::Addon::List
     end
 
     def template_variable_get(item, name)
-      if name =~ /^(name|url|summary)$/
-        ERB::Util.html_escape item.send(name)
-      elsif name == "class"
-        item.basename.sub(/\..*/, "").dasherize
-      elsif name == "new"
-        respond_to?(:in_new_days?) && in_new_days?(item.date) ? "new" : nil
-      elsif name == "date"
-        I18n.l item.date.to_date
-      elsif name =~ /^date\.(\w+)$/
-        I18n.l item.date.to_date, format: $1.to_sym
-      elsif name == "time"
-        I18n.l item.date
-      elsif name =~ /^time\.(\w+)$/
-        I18n.l item.date, format: $1.to_sym
-      elsif name == "group"
-        group = item.groups.first
-        group ? group.name.split(/\//).pop : ""
-      elsif name == "groups"
-        item.groups.map { |g| g.name.split(/\//).pop }.join(", ")
-      else
-        false
+      name_sym = name.to_sym
+      _, proc = self.class.template_variable_handlers.find do |n, _|
+        if n.is_a?(Symbol)
+          n == name_sym
+        elsif n.is_a?(Regexp)
+          n =~ name
+        else
+          false
+        end
       end
+
+      return false if proc.nil?
+
+      proc = method(proc) if proc.is_a?(Symbol)
+      proc.call(item, name)
     end
 
     private
@@ -121,6 +147,77 @@ module Cms::Addon::List
         self.conditions = conditions.map do |m|
           m.strip.sub(/^\w+:\/\/.*?\//, "").sub(/^\//, "").sub(/\/$/, "")
         end.compact.uniq
+      end
+
+      def template_variable_handler_name(item, name)
+        ERB::Util.html_escape item.send(name)
+      end
+
+      def template_variable_handler_class(item, name)
+        item.basename.sub(/\..*/, "").dasherize
+      end
+
+      def template_variable_handler_new(item, name)
+        respond_to?(:in_new_days?) && in_new_days?(item.date) ? "new" : nil
+      end
+
+      def template_variable_handler_date(item, name)
+        I18n.l item.date.to_date
+      end
+
+      def template_variable_handler_date2(item, name)
+        format = name.split('.').last
+        I18n.l item.date.to_date, format: format.to_sym
+      end
+
+      def template_variable_handler_time(item, name)
+        I18n.l item.date
+      end
+
+      def template_variable_handler_time2(item, name)
+        format = name.split('.').last
+        I18n.l item.date, format: format.to_sym
+      end
+
+      def template_variable_handler_group(item, name)
+        group = item.groups.first
+        group ? group.name.split(/\//).pop : ""
+      end
+
+      def template_variable_handler_groups(item, name)
+        item.groups.map { |g| g.name.split(/\//).pop }.join(", ")
+      end
+
+      def template_variable_handler_img_src(item, name)
+        return nil unless item.html =~ /\<\s*?img\s+[^>]*\/?>/i
+
+        img_tag = $&
+        return nil unless img_tag =~ /src\s*=\s*(['"]?[^'"]+['"]?)/
+
+        img_source = $1
+        img_source = img_source[1..-1] if img_source.start_with?("'") || img_source.start_with?('"')
+        img_source = img_source[0..-2] if img_source.end_with?("'") || img_source.end_with?('"')
+        img_source = img_source.strip
+        if img_source.start_with?('.')
+          img_source = File.dirname(item.url) + '/' + img_source
+        end
+        img_source
+      end
+
+      def template_variable_handler_categories(item, name)
+        # 記事ページに設定されているカテゴリのリスト（CSS で調整しやすいようにある程度構造化した形で出す）
+        # <span class="#{filename}"><a href="....">#{name}</a></span>
+        # <span class="#{filename}"><a href="....">#{name}</a></span>
+        return nil unless categories = item.try(:categories)
+
+        ret = categories.map do |category|
+          "<span class=\"#{category.filename.gsub('/', '-')}\"><a href=\"#{category.url}\">#{ERB::Util.html_escape(category.name)}</a></span>"
+        end
+        ret.join("\n").html_safe
+      end
+
+      def template_variable_handler_pages_count(item, name)
+        Cms::Page.site(item.site).public(@cur_date || Time.zone.now).where(filename: /^#{item.filename}\//, depth: item.depth + 1).count.to_s rescue nil
       end
   end
 end

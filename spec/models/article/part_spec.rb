@@ -177,4 +177,146 @@ describe Article::Part::Page, type: :model, dbscope: :example do
       end
     end
   end
+
+  describe '#template_variable_get - img.src' do
+    context 'extract from /img' do
+      let(:html) do
+        <<-HTML
+          <div class="logo">
+            <h1><a id="xss-site-name" href="/"><img src="/img/logo.png" alt="SHIRASAGI市" title="SHIRASAGI市" /></a></h1>
+          </div>
+        HTML
+      end
+      let(:page) { create(:article_page, html: html) }
+
+      it do
+        expect(item.template_variable_get(page, 'img.src')).to eq('/img/logo.png')
+      end
+    end
+
+    context 'extract from /fs' do
+      let(:html) do
+        <<-HTML
+          <div class="banners">
+            <span>
+              <a href="/add/600.html?redirect=http://www.ss-proj.org/" >
+                  <img alt="シラサギ" src="/fs/2/_/dummy_banner_1.gif" />
+              </a>
+            </span>
+            <span>
+              <a href="/add/601.html?redirect=http://www.ss-proj.org/" >
+                  <img alt="シラサギ" src="/fs/4/_/dummy_banner_2.gif" />
+              </a>
+            </span>
+          </div>
+        HTML
+      end
+      let(:page) { create(:article_page, html: html) }
+
+      it do
+        expect(item.template_variable_get(page, 'img.src')).to eq('/fs/2/_/dummy_banner_1.gif')
+      end
+    end
+
+    context 'extract from ../img' do
+      let(:html) do
+        <<-HTML
+          <div class="logo">
+            <h1><a id="xss-site-name" href="/"><img src="../img/logo.png" alt="SHIRASAGI市" title="SHIRASAGI市" /></a></h1>
+          </div>
+        HTML
+      end
+      let(:page) { create(:article_page, html: html) }
+
+      it do
+        expect(item.template_variable_get(page, 'img.src')).to eq("#{File.dirname(page.url)}/../img/logo.png")
+      end
+    end
+
+    context 'extract from external web site 1' do
+      let(:html) do
+        <<-HTML
+          <div class="site hatena">
+            <a href="http://b.hatena.ne.jp/entry/http://tokushima-wifi.jp/use/index.html" class="hatena-bookmark-button"
+              data-hatena-bookmark-layout="standard-balloon"
+              data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+              <img src="//b.st-hatena.com/images/entry-button/button-only@2x.png"
+                alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+            <script type="text/javascript" src="//b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+          </div>
+        HTML
+      end
+      let(:page) { create(:article_page, html: html) }
+
+      it do
+        expect(item.template_variable_get(page, 'img.src')).to \
+          eq('//b.st-hatena.com/images/entry-button/button-only@2x.png')
+      end
+    end
+  end
+
+  context 'extract from external web site 2' do
+    let(:html) do
+      <<-HTML
+          <div class="site hatena">
+            <a href="http://b.hatena.ne.jp/entry/http://tokushima-wifi.jp/use/index.html" class="hatena-bookmark-button"
+              data-hatena-bookmark-layout="standard-balloon"
+              data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+              <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png"
+                alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+            <script type="text/javascript" src="//b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+          </div>
+      HTML
+    end
+    let(:page) { create(:article_page, html: html) }
+
+    it do
+      expect(item.template_variable_get(page, 'img.src')).to \
+        eq('https://b.st-hatena.com/images/entry-button/button-only@2x.png')
+    end
+  end
+
+  describe '#template_variable_get - categories' do
+    context 'empty categories' do
+      let(:page) { create(:article_page) }
+
+      it do
+        expect(item.template_variable_get(page, 'categories')).to eq('')
+      end
+    end
+
+    context '2 categories' do
+      let(:category_root) { create(:category_node_node, name: 'カテゴリ') }
+      let(:category1) { create(:category_node_page, node: category_root, name: 'スポーツ >') }
+      let(:category2) { create(:category_node_page, node: category_root, name: '音楽 &') }
+      let(:page) { create(:article_page, category_ids: [category1.id, category2.id]) }
+
+      it do
+        ret = item.template_variable_get(page, 'categories')
+        expect(ret).to include("<span class=\"#{category1.filename.gsub('/', '-')}\"><a href=\"#{category1.url}\">スポーツ &gt;</a></span>")
+        expect(ret).to include("<span class=\"#{category2.filename.gsub('/', '-')}\"><a href=\"#{category2.url}\">音楽 &amp;</a></span>")
+      end
+    end
+  end
+
+  describe '#template_variable_get - pages.count' do
+    let!(:category_root) { create(:category_node_node, name: 'カテゴリ') }
+    let!(:category) { create(:category_node_page, node: category_root, name: 'スポーツ >') }
+    let!(:page) { create(:article_page, node: category) }
+
+    it 'node contains 1 page' do
+      ret = item.template_variable_get(category, 'pages.count')
+      expect(ret).to eq('1')
+    end
+
+    it 'node contains no pages' do
+      ret = item.template_variable_get(category_root, 'pages.count')
+      expect(ret).to eq('0')
+    end
+
+    it 'pages.count on the page' do
+      ret = item.template_variable_get(page, 'pages.count')
+      expect(ret).to eq '0'
+    end
+  end
 end
