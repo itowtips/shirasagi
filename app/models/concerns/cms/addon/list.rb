@@ -217,7 +217,9 @@ module Cms::Addon::List
       end
 
       def template_variable_handler_pages_count(item, name)
-        Cms::Page.site(item.site).public(@cur_date || Time.zone.now).where(filename: /^#{item.filename}\//, depth: item.depth + 1).count.to_s rescue nil
+        Cms::Page.site(item.site).and_public(@cur_date || Time.zone.now).or({ filename: /^#{item.filename}\//, depth: item.depth + 1 }, { category_ids: item.id }).count.to_s
+      rescue
+        nil
       end
   end
 end

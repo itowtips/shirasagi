@@ -300,23 +300,67 @@ describe Article::Part::Page, type: :model, dbscope: :example do
   end
 
   describe '#template_variable_get - pages.count' do
-    let!(:category_root) { create(:category_node_node, name: 'カテゴリ') }
-    let!(:category) { create(:category_node_page, node: category_root, name: 'スポーツ >') }
-    let!(:page) { create(:article_page, node: category) }
+    context 'page under the category' do
+      let!(:category_root) { create(:category_node_node, name: 'カテゴリ') }
+      let!(:category) { create(:category_node_page, node: category_root, name: 'スポーツ >') }
+      let!(:page) { create(:article_page, node: category) }
 
-    it 'node contains 1 page' do
-      ret = item.template_variable_get(category, 'pages.count')
-      expect(ret).to eq('1')
+      it 'node contains 1 page' do
+        ret = item.template_variable_get(category, 'pages.count')
+        expect(ret).to eq('1')
+      end
+
+      it 'node contains no pages' do
+        ret = item.template_variable_get(category_root, 'pages.count')
+        expect(ret).to eq('0')
+      end
+
+      it 'pages.count on the page' do
+        ret = item.template_variable_get(page, 'pages.count')
+        expect(ret).to eq '0'
+      end
     end
 
-    it 'node contains no pages' do
-      ret = item.template_variable_get(category_root, 'pages.count')
-      expect(ret).to eq('0')
+    context 'page related to category' do
+      let!(:category_root) { create(:category_node_node, name: 'カテゴリ') }
+      let!(:category) { create(:category_node_page, node: category_root, name: 'スポーツ >') }
+      let!(:page) { create(:article_page, category_ids: [category.id]) }
+
+      it 'node contains 1 page' do
+        ret = item.template_variable_get(category, 'pages.count')
+        expect(ret).to eq('1')
+      end
+
+      it 'node contains no pages' do
+        ret = item.template_variable_get(category_root, 'pages.count')
+        expect(ret).to eq('0')
+      end
+
+      it 'pages.count on the page' do
+        ret = item.template_variable_get(page, 'pages.count')
+        expect(ret).to eq '0'
+      end
     end
 
-    it 'pages.count on the page' do
-      ret = item.template_variable_get(page, 'pages.count')
-      expect(ret).to eq '0'
+    context 'page related to category' do
+      let!(:category_root) { create(:category_node_node, name: 'カテゴリ') }
+      let!(:category) { create(:category_node_page, node: category_root, name: 'スポーツ >') }
+      let!(:page) { create(:article_page, node: category, category_ids: [category.id]) }
+
+      it 'node contains 1 page' do
+        ret = item.template_variable_get(category, 'pages.count')
+        expect(ret).to eq('1')
+      end
+
+      it 'node contains no pages' do
+        ret = item.template_variable_get(category_root, 'pages.count')
+        expect(ret).to eq('0')
+      end
+
+      it 'pages.count on the page' do
+        ret = item.template_variable_get(page, 'pages.count')
+        expect(ret).to eq '0'
+      end
     end
   end
 end
