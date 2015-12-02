@@ -48,6 +48,14 @@ class Cms::Node
     default_scope ->{ where(route: "cms/import_node") }
   end
 
+  class GroupPage
+    include Cms::Model::Node
+    include Cms::Addon::PageGroupList
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "cms/group_page") }
+  end
+
   class << self
     @@plugins = []
 
