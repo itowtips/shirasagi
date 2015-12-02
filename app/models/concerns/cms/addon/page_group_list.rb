@@ -11,7 +11,7 @@ module Cms::Addon
 
     public
       def condition_hash
-        { :group_ids.in => condition_groups.map(&:id) }
+        { "$and" => [ { :group_ids.in => condition_groups.map(&:id) }, { :route.in => %w( article/page cms/page event/page faq/page ) } ] }
       end
 
       def sort_options
