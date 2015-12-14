@@ -1,0 +1,8 @@
+<div class="cms-sns_login">
+  <% if @cur_user%>
+    <span class="sns-user"><%= @cur_user.name %>さん<span>
+    <%= link_to "ログアウト", "/login/logout?ref=#{@ref}", class: "logout" %>
+  <% else %>
+    <%= link_to "ログイン", "/login/?ref=#{@ref}", class: "login" %>
+  <% end %>
+</div>

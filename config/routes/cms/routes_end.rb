@@ -130,6 +130,7 @@ SS::Application.routes.draw do
     post "generate_pages" => "generate_pages#run"
     get "import" => "import#index"
     post "import" => "import#import"
+    get "sns_logins" => redirect { |p, req| req.path.sub(/sns_logins$/, "nodes") }
     resource :conf, concerns: [:deletion, :copy, :move]
     resources :nodes, concerns: :deletion
     resources :pages, concerns: [:deletion, :copy, :move, :lock]
@@ -145,6 +146,9 @@ SS::Application.routes.draw do
     get "page/rss.xml"         => "public#rss", cell: "nodes/page", format: "xml"
     get "import_node/(index.:format)" => "public#index", cell: "nodes/import_node"
     get "import_node/rss.xml"         => "public#rss", cell: "nodes/import_node", format: "xml"
+    get "sns_login/(index.:format)" => "public#login", cell: "nodes/sns_login"
+    post "sns_login/(index.:format)" => "public#login", cell: "nodes/sns_login"
+    get "sns_login/logout(index.:format)" => "public#logout", cell: "nodes/sns_login"
   end
 
   part "cms" do
@@ -154,6 +158,7 @@ SS::Application.routes.draw do
     get "tabs"  => "public#index", cell: "parts/tabs"
     get "crumb" => "public#index", cell: "parts/crumb"
     get "sns_share" => "public#index", cell: "parts/sns_share"
+    get "sns_login" => "public#index", cell: "parts/sns_login"
   end
 
   page "cms" do
