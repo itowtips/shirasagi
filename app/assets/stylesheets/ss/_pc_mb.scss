@@ -1420,7 +1420,7 @@ form .CodeMirror {
     margin-bottom: 10px;
   }
 }
-.mod-cms-additional-info {
+.mod-cms-additional-info, .mod-cms-additional-secret-info {
   #item_additional_info__field { width: 160px; }
   dd textarea {
     width: 70%;

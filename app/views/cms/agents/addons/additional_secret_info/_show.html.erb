@@ -1,0 +1,6 @@
+<dl class="see mod-additional-secret-info">
+  <% @item.additional_secret_info.each do |info| %>
+    <dt><%=br info[:field] %></dt>
+    <dd><%=br info[:value] %></dd>
+  <% end %>
+</dl>

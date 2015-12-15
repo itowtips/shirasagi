@@ -27,6 +27,7 @@ module Facility::Node
     include Cms::Addon::Meta
     include Facility::Addon::Body
     include Cms::Addon::AdditionalInfo
+    include Cms::Addon::AdditionalSecretInfo
     include Facility::Addon::Category
     include Facility::Addon::Service
     include Facility::Addon::Location

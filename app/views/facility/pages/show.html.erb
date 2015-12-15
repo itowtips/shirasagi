@@ -28,6 +28,11 @@
       <dd><%=br info[:value] %></dd>
     <% end %>
 
+    <% @item.additional_secret_info.each do |info| %>
+      <dt><%=br info[:field] %></dt>
+      <dd><%=br info[:value] %></dd>
+    <% end %>
+
     <dt><%= t("modules.addons.facility/category") %></dt>
     <dd><%= @item.send(:categories).pluck(:name).join(", ") %></dd>
 

@@ -197,6 +197,7 @@ ja:
       cms/thumb: サムネイル
       cms/parent_crumb: パンくず
       cms/additional_info: 追加情報
+      cms/additional_secret_info: 関係者向け情報
       cms/page_setting: ページ設定
       cms/import/body: 本文
       cms/edit_lock: 排他制御

@@ -1,5 +1,6 @@
 class Facility::Agents::Nodes::PageController < ApplicationController
   include Cms::NodeFilter::View
+  include SS::AuthFilter
 
   public
     def map_pages
@@ -13,6 +14,7 @@ class Facility::Agents::Nodes::PageController < ApplicationController
     end
 
     def index
+      @cur_user = get_user_by_session
       map_pages.each do |map|
 
         points = []
