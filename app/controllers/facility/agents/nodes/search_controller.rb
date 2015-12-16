@@ -31,15 +31,8 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
     end
 
     def set_markers
-      @markers = []
-
-      @items = Facility::Node::Page.site(@cur_site).public.
-        where(@cur_node.condition_hash).
-        search(name: @keyword).
-        in(@q_category).
-        in(@q_service).
-        in(@q_location).
-        order_by(name: 1)
+      limit = @cur_node.map_points_limit.to_i
+      @items = @items.page(params[:page]).per(limit) if limit > 0
       @markers = @items.pluck(:map_points).flatten
     end
 
@@ -62,6 +55,7 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
 
     def map
       set_query
+      set_items
       set_markers
       set_filter_items
       @current = "map"

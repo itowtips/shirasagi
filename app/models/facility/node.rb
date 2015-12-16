@@ -34,7 +34,7 @@ module Facility::Node
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
-    include Map::MapHelper
+    include ::Map::MapHelper
 
     default_scope ->{ where(route: "facility/page") }
 

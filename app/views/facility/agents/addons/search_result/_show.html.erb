@@ -1,6 +1,12 @@
 <%= code_editor ".mod-facility-search-result .html", mode: :html, readonly: true %>
 
 <dl class="see mod-facility-search-result">
+  <dt><%= @model.t :limit %></dt>
+  <dd><%= @item.limit %></dd>
+
+  <dt><%= @model.t :limit %></dt>
+  <dd><%= @item.map_points_limit %></dd>
+
   <dt><%= @model.t :upper_html %></dt>
   <dd>
     <% if @item.upper_html.present? %>

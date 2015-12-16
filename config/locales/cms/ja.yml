@@ -123,6 +123,7 @@ ja:
       cms/node: フォルダーリスト
       cms/page: ページリスト
       cms/import_node: 取り込みページ
+      cms/sns_login: SNSログイン
     parts:
       cms/free: HTML記述
       cms/node: フォルダーリスト
