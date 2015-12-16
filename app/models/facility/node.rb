@@ -34,11 +34,36 @@ module Facility::Node
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
+    include Map::MapHelper
 
     default_scope ->{ where(route: "facility/page") }
 
+    field :map_points, type: Array, default: []
+    field :sidebar_html, type: String, default: ""
+    before_save :set_map_points
+
     def serve_static_file?
       false
+    end
+
+    def set_map_points
+      self.map_points = []
+
+      category_ids = categories.map(&:id)
+      image_id     = categories.map(&:image_id).first
+      marker_info  = render_marker_info(self)
+      self.sidebar_html = render_map_sidebar(self)
+
+      Facility::Map.site(site).public.where(filename: /^#{filename}\//, depth: depth + 1).each do |item|
+        item.map_points.each do |point|
+          point[:category] = category_ids
+          point[:image] = SS::File.find(image_id).url rescue nil
+          point[:html] = marker_info
+          point[:facility_id] = id
+
+          self.map_points << point
+        end
+      end
     end
   end
 
@@ -82,7 +107,12 @@ module Facility::Node
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 
+    #after_save :update_page_node
     default_scope ->{ where(route: "facility/category") }
+
+    #def update_page_node
+    #  Facility::Node::Page.in(category_ids: id).each(&:update)
+    #end
 
     public
       def condition_hash

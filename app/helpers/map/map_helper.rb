@@ -1,13 +1,25 @@
 module Map::MapHelper
   def render_marker_info(item)
-    html = []
+    h = []
 
-    html << %(<div class="maker-info" data-id="#{item.id}">)
-    html << %(<p class="name">#{item.name}</p>)
-    html << %(<p class="address">#{item.address}</p>)
-    html << %(<p class="show">#{link_to :show, item.url}</p>)
-    html << %(</div>)
+    h << %(<div class="maker-info" data-id="#{item.id}">)
+    h << %(<p class="name">#{item.name}</p>)
+    h << %(<p class="address">#{item.address}</p>)
+    h << %(<p class="show"><a href="#{item.url}">#{item.name}</a></p>)
+    h << %(</div>)
 
-    html.join("\n")
+    h.join("\n")
+  end
+
+  def render_map_sidebar(item)
+    h = []
+
+    h << %(<div class="column" data-id="#{item.id}">)
+    h << %(<p><a href="#{item.url}">#{item.name}</a></p>)
+    h << %(<p>#{item.address}</p>)
+    h << %(<p><a href="#" class="click-marker">#{I18n.t("facility.sidebar.click_marker")}</a></p>)
+    h << %(</div>)
+
+    h.join("\n")
   end
 end

@@ -11,6 +11,8 @@ class Facility::Map
 
   before_save :seq_filename, if: ->{ basename.blank? }
 
+  after_save :update_parent_node
+
   private
     def validate_filename
       (@basename && @basename.blank?) ? nil : super
@@ -22,5 +24,9 @@ class Facility::Map
 
     def serve_static_file?
       false
+    end
+
+    def update_parent_node
+      parent.becomes_with_route.update
     end
 end

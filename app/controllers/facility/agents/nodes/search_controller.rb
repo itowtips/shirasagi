@@ -31,40 +31,16 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
     end
 
     def set_markers
-      @items = []
       @markers = []
-      images = SS::File.all.map {|image| [image.id, image.url]}.to_h
 
-      Facility::Map.site(@cur_site).public.each do |map|
-        parent_path = ::File.dirname(map.filename)
-        item = Facility::Node::Page.site(@cur_site).public.
-          where(@cur_node.condition_hash).
-          in_path(parent_path).
-          search(name: @keyword).
-          in(@q_category).
-          in(@q_service).
-          in(@q_location).first
-
-        next unless item
-
-        @items << item
-        categories   = item.categories.entries
-        category_ids = categories.map(&:id)
-        image_id     = categories.map(&:image_id).first
-
-        image_url = images[image_id]
-        marker_info = view_context.render_marker_info(item)
-
-        map.map_points.each do |point|
-          point[:facility_id] = item.id
-          point[:html] = marker_info
-          point[:category] = category_ids
-          point[:image] = image_url if image_url.present?
-          @markers.push point
-        end
-      end
-
-      @items.sort_by!(&:name)
+      @items = Facility::Node::Page.site(@cur_site).public.
+        where(@cur_node.condition_hash).
+        search(name: @keyword).
+        in(@q_category).
+        in(@q_service).
+        in(@q_location).
+        order_by(name: 1)
+      @markers = @items.pluck(:map_points).flatten
     end
 
     def set_filter_items
