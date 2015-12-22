@@ -36,6 +36,8 @@ module Facility::Node
     include History::Addon::Backup
     include ::Map::MapHelper
 
+    set_permission_name "facility_pages"
+
     default_scope ->{ where(route: "facility/page") }
 
     field :map_points, type: Array, default: []

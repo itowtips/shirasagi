@@ -78,6 +78,17 @@ ja:
       facility/location: 施設のある地域
       facility/search: 施設検索
 
+  cms_role:
+    read_other_facility_pages: 施設情報の閲覧（全て）
+    read_private_facility_pages: 施設情報の閲覧（所有）
+    edit_other_facility_pages: 施設情報の編集（全て）
+    edit_private_facility_pages: 施設情報の編集（所有）
+    delete_other_facility_pages: 施設情報の削除（全て）
+    delete_private_facility_pages: 施設情報の削除（所有）
+    move_other_facility_pages: 施設情報の移動（全て）
+    move_private_facility_pages: 施設情報の移動（所有）
+#    unlock_other_facility_pages: 施設情報のロック解除（全て）
+
   mongoid:
     attributes:
       facility/node/page:
