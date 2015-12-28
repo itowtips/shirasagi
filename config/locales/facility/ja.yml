@@ -68,6 +68,7 @@ ja:
       facility/service_setting: 施設の用途
       facility/category: 施設の種類
       facility/category_setting: 施設の種類
+      facility/sync_institution: 電子連絡帳
 
   cms:
     nodes:

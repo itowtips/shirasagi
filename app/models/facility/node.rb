@@ -28,6 +28,7 @@ module Facility::Node
     include Facility::Addon::Body
     include Cms::Addon::AdditionalInfo
     include Cms::Addon::AdditionalSecretInfo
+    include Facility::Addon::SyncInstitution
     include Facility::Addon::Category
     include Facility::Addon::Service
     include Facility::Addon::Location
