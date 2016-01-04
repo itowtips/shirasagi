@@ -67,6 +67,7 @@ class Facility::ImportJob
       item.address         = row[@model.t(:address)].try(:squish)
       item.postcode        = row[@model.t(:postcode)].try(:squish)
       item.tel             = row[@model.t(:tel)].try(:squish)
+      item.email           = row[@model.t(:email)].try(:squish)
       item.fax             = row[@model.t(:fax)].try(:squish)
       item.related_url     = row[@model.t(:related_url)].try(:gsub, /[\r\n]/, " ")
       item.additional_info = row.to_h.select { |k, v| k =~ /^#{@model.t(:additional_info)}[:：]/ && v.present? }.

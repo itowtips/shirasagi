@@ -9,6 +9,7 @@ module Facility::Addon
       field :address, type: String
       field :tel, type: String
       field :fax, type: String
+      field :email, type: String
       field :related_url, type: String
 
       permit_params :kana, :postcode, :address, :tel, :fax, :related_url

@@ -99,6 +99,7 @@ ja:
         postcode: 郵便番号
         address: 住所
         tel: 電話番号
+        email: メール
         fax: FAX
         related_url: URL
         categories: 施設の種類
