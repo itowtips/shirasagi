@@ -19,6 +19,11 @@
     <dd><%= @cur_node.tel %></dd>
   <% end %>
 
+  <% if @cur_node.email.present? %>
+    <dt><%= @cur_node.class.t :email %></dt>
+    <dd><%= mail_to @cur_node.email %></dd>
+  <% end %>
+
   <% if @cur_node.fax.present? %>
     <dt><%= @cur_node.class.t :fax %></dt>
     <dd><%= @cur_node.fax %></dd>

@@ -93,11 +93,11 @@ ja:
   mongoid:
     attributes:
       facility/node/page:
-        name: 施設名
-        kana: 施設名ふりがな
+        name: 事業所名
+        kana: 事業所名ふりがな
         layout: レイアウト
         postcode: 郵便番号
-        address: 住所
+        address: 所在地
         tel: 電話番号
         email: メール
         fax: FAX

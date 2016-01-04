@@ -1,6 +1,6 @@
 <nav class="nav-menu">
   <% if params[:action] =~ /index/ %>
-    <% if @model.allowed?(:edit, @cur_user, site: @cur_site, node: @cur_node) %>
+    <% if Cms::Node.allowed?(:edit, @cur_user, site: @cur_site, node: @cur_node) %>
       <%= link_to :new, action: :new %>
       <%= link_to :download, action: :download %>
       <%= link_to :import, action: :import %>

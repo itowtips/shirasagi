@@ -10,7 +10,7 @@ module Facility::PageFilter
   )
 
   private
-    def attributes_to_row(item, additional_columns)
+    def attributes_to_row(item, additional_columns, secret_columns)
       maps = Facility::Map.site(@cur_site).
         where(filename: /^#{item.filename}\//, depth: item.depth + 1)
       points = maps.map{ |m| m.map_points }.flatten.
@@ -34,6 +34,9 @@ module Facility::PageFilter
       additional_columns.each do |c|
         row << item.additional_info.map { |i| [i[:field], i[:value]] }.to_h[c]
       end
+      secret_columns.each do |c|
+        row << item.additional_secret_info.map { |i| [i[:field], i[:value]] }.to_h[c]
+      end
       row
     end
 
@@ -44,11 +47,14 @@ module Facility::PageFilter
       t_columns = COLUMNS.map { |c| @model.t(c) }
       additional_columns = @items.map { |item| item.additional_info.map { |i| i[:field] } }.
         flatten.compact.uniq
+      secret_columns = @items.map { |item| item.additional_secret_info.map { |i| i[:field] } }.
+        flatten.compact.uniq
 
       csv = CSV.generate do |data|
-        data << t_columns + additional_columns.map { |c| "#{@model.t(:additional_info)}:#{c}" }
+        data << t_columns + additional_columns.map { |c| "#{@model.t(:additional_info)}:#{c}" } + secret_columns.map { |c| "関係者情報:#{c}" }
+
         @items.each do |item|
-          data << attributes_to_row(item, additional_columns)
+          data << attributes_to_row(item, additional_columns, secret_columns)
         end
       end
 

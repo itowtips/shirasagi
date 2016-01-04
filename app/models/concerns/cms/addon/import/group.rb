@@ -44,6 +44,22 @@ module Cms::Addon::Import
         end
       end
 
+      def create_group(item)
+        item.name.split(/\//).reduce do |full_name, name|
+          parent = self.class.new(item.attributes)
+          parent.name = full_name
+          parent.save
+          [full_name, name].join("/")
+        end
+
+        if item.save
+          @imported += 1
+        else
+          set_errors(item, index)
+        end
+        item
+      end
+
       def update_row(row, index)
         id            = row["id"].to_s.strip
         name          = row["name"].to_s.strip
@@ -77,12 +93,7 @@ module Cms::Addon::Import
         item.contact_fax   = contact_fax
         item.contact_email = contact_email
 
-        if item.save
-          @imported += 1
-        else
-          set_errors(item, index)
-        end
-        item
+        create_group(item)
       end
 
       def set_errors(item, index)

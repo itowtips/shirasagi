@@ -13,8 +13,8 @@ class Facility::ImportJob
       @cur_site = Cms::Site.where(host: host).first
       @cur_node = ::Facility::Node::Node.where(filename: filename, site_id: @cur_site.id).first
 
-      put_log("destory all pages /#{@cur_node.filename}/*")
-      ::Facility::Node::Page.where(filename: /^#{@cur_node.filename}\//, site_id: @cur_site.id).destroy_all
+      #put_log("destory all pages /#{@cur_node.filename}/*")
+      #::Facility::Node::Page.where(filename: /^#{@cur_node.filename}\//, site_id: @cur_site.id).destroy_all
 
       put_log("import start " + ::File.basename(@ss_file.name))
       import_csv(@ss_file)
@@ -72,6 +72,8 @@ class Facility::ImportJob
       item.related_url     = row[@model.t(:related_url)].try(:gsub, /[\r\n]/, " ")
       item.additional_info = row.to_h.select { |k, v| k =~ /^#{@model.t(:additional_info)}[:：]/ && v.present? }.
         map { |k, v| {:field => k.sub(/^#{@model.t(:additional_info)}[:：]/, ""), :value => v} }
+      item.additional_secret_info = row.to_h.select { |k, v| k =~ /^関係者情報[:：]/ && v.present? }.
+        map { |k, v| {:field => k.sub(/^関係者情報[:：]/, ""), :value => v} }
 
       set_page_categories(row, item)
       ids = SS::Group.in(name: row[@model.t(:groups)].to_s.split(/\n/)).map(&:id)

@@ -15,6 +15,10 @@ $(window).on("load", function() {
 });
 <% end %>
 
+<% if @cur_node.institution_supported? %>
+  <%= image_tag "/assets/img/ic-denshi.png" %>
+<% end %>
+
 <% if @summary_image.present? %>
   <div class="summary-image image">
     <p>
