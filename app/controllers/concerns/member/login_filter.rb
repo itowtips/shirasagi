@@ -1,5 +1,6 @@
 module Member::LoginFilter
   extend ActiveSupport::Concern
+  include Member::AuthFilter
 
   REDIRECT_OPTION_UNDEFINED = 0
   REDIRECT_OPTION_ENABLED = 1
@@ -16,14 +17,7 @@ module Member::LoginFilter
 
     def logged_in?(opts = {})
       return @cur_member if @cur_member
-
-      if session[:member]
-        u = SS::Crypt.decrypt(session[:member]).to_s.split(",", 3)
-        # return unset_member redirect: true if u[1] != remote_addr
-        # return unset_member redirect: true if u[2] != request.user_agent.to_s
-        @cur_member = Cms::Member.site(@cur_site).find u[0].to_i rescue nil
-      end
-
+      @cur_member = get_member_by_session(@cur_site)
       return @cur_member if @cur_member
 
       clear_member

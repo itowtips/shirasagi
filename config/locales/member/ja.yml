@@ -1,5 +1,7 @@
 ja:
   member:
+    my_blog: ブログ
+    blog_layout: ブログレイアウト
     login_by:
       twitter: Twitter ID でログイン
       facebook: Facebook ID でログイン
@@ -34,10 +36,18 @@ ja:
       member/yahoo_jp_oauth: Yahoo! OAuth 認証
       member/google_oauth: Google OAuth 認証
       member/github_oauth: GitHub OAuth 認証
+      member/file: ファイル
+      member/blog/body: 本文
+      member/blog/genre: ジャンル
+      member/blog/setting: ブログ設定
 
   cms:
     nodes:
       member/login: ログイン
+      member/mypage: マイページ
+      member/my_blog: マイブログ
+      member/blog: ブログ
+      member/blog_category: ブログカテゴリー
 
   mongoid:
     attributes:
@@ -65,6 +75,24 @@ ja:
         github_oauth: OAuth 認証
         github_client_id: Client ID
         github_client_secret: Client Secret
+      member/blog:
+        name: タイトル
+        layout: ブログレイアウト
+        description: 紹介文
+        image_id: ブログサムネイル
+        genres: ジャンル
+      member/blog_page:
+        name: タイトル
+        body: 本文
+        genres: ジャンル
+
+  cms_role:
+    read_other_member_blogs: メンバーブログの閲覧（全て）
+    read_private_member_blogs: メンバーブログの閲覧（所有）
+    edit_other_member_blogs: メンバーブログの編集（全て）
+    edit_private_member_blogs: メンバーブログの編集（所有）
+    delete_other_member_blogs: メンバーブログの削除（全て）
+    delete_private_member_blogs: メンバーブログの削除（所有）
 
   tooltip:
     member/addon/redirection:

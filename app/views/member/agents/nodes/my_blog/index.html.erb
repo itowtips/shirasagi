@@ -1,0 +1,24 @@
+<%= render partial: "menu" %>
+
+<table class="index">
+  <thead>
+    <tr>
+      <th class="name">タイトル</th>
+      <th class="datetime created">作成日時</th>
+      <th class="datetime updated">更新日時</th>
+      <th class="state">公開状態</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @items.each do |item| %>
+    　<tr>
+        <td class="item name"><%= link_to item.name, "#{@cur_node.url}#{item.id}/" %></td>
+        <td class="item datetime created"><%= item.created.strftime('%Y/%m/%d %H:%M') %></td>
+        <td class="item datetime updated"><%= item.updated.strftime('%Y/%m/%d %H:%M') %></td>
+        <td class="item state"><%= item.label :state %></td>
+    　</tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @items if @items.try(:current_page) %>

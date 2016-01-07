@@ -3,6 +3,7 @@ module Cms::PublicFilter::Crud
   include SS::AgentFilter
 
   included do
+    helper SS::EditorHelper
     before_action :set_item, only: [:show, :edit, :update, :delete, :destroy]
   end
 
@@ -47,7 +48,7 @@ module Cms::PublicFilter::Crud
 
     def create
       @item = @model.new get_params
-      render_create @item.save
+      render_create @item.save, location: @cur_node.url
     end
 
     def edit
@@ -57,7 +58,7 @@ module Cms::PublicFilter::Crud
     def update
       @item.attributes = get_params
       @item.in_updated = params[:_updated] if @item.respond_to?(:in_updated)
-      render_update @item.update
+      render_update @item.update, location: @cur_node.url
     end
 
     def delete
@@ -70,7 +71,7 @@ module Cms::PublicFilter::Crud
 
   private
     def render_create(result, opts = {})
-      location = opts[:location].presence || { action: :show, id: @item }
+      location = opts[:location].presence || { action: :index }
       render_opts = opts[:render].presence || { file: :new }
       notice = opts[:notice].presence || t("views.notice.saved")
 

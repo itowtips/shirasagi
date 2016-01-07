@@ -1,0 +1,11 @@
+<div class="member-blog-pages genres">
+  <h2>記事ジャンル</h2>
+  <ul>
+  <% @item.genres.each do |genre| %>
+    <% count = @item.pages.public.in(genres: genre).count %>
+    <% if count > 0 %>
+      <li><%= link_to "#{genre}(#{count})", "#{@item.url(@cur_node)}?g=#{genre}" %></li>
+    <% end %>
+  <% end %>
+  </ul>
+</div>

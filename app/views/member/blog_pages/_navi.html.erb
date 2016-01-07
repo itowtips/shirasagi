@@ -1,0 +1,9 @@
+<%= node_navi :member do %>
+
+<h3><%= link_to :"member.my_blog", member_blogs_path %></h3>
+
+<ul class="narrow-page">
+  <li><%= link_to @blog.name, member_blog_pages_path(blog_id: @blog.id) %></li>
+</ul>
+
+<% end %>

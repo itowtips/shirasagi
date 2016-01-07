@@ -1,0 +1,22 @@
+<div class="member-blog-pages pages">
+  <% @pages.each do |page| %>
+    <article class="blog page">
+      <header>
+        <h2><%= link_to page.name, page.url(@cur_node) %></h2>
+        <time class="released" datetime="<%= I18n.l page.date.to_date, format: :iso %>"><%= I18n.l page.date.to_date, format: :long %></time>
+      </header>
+      <div class="genres">
+        <ul>
+          <% page.genres.each do |genre| %>
+            <li><%= link_to genre, "#{@item.url(@cur_node)}?g=#{genre}" %></li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="body">
+        <%== page.html %>
+      </div>
+    </article>
+  <% end %>
+</div>
+
+<%= paginate @pages if @pages.try(:current_page) %>

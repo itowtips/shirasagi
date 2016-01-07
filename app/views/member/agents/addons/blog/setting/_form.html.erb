@@ -1,0 +1,23 @@
+<% @layouts = Member::BlogLayout.all %>
+
+<dl class="see">
+  <dt><%= @model.t :layout_id %></dt>
+  <dd><%= f.select :layout_id, @layouts.map { |item| [item.name, item.id] } %></dd>
+
+  <dt><%= @model.t :image_id %></dt>
+  <dd><%= f.file_field :in_image %></dd>
+  <% if @item.image %>
+    <dd>
+      <%= image_tag @item.image.thumb_url %>
+      <label>
+        <%= f.check_box :rm_image %><%= t "views.button.delete" %> (<%= @item.image.filename %>)
+      </label>
+    </dd>
+  <% end %>
+
+  <dt><%= @model.t :description %></dt>
+  <dd><%= f.text_area :description %></dd>
+
+  <dt><%= @model.t :genres %></dt>
+  <dd><%= f.text_area :genres %></dd>
+</dl>

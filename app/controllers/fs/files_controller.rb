@@ -1,5 +1,6 @@
 class Fs::FilesController < ApplicationController
   include SS::AuthFilter
+  include Member::AuthFilter
   include Fs::FileFilter
 
   before_action :set_item
@@ -16,8 +17,10 @@ class Fs::FilesController < ApplicationController
 
     def deny
       return if @item.public?
-      return if SS.config.env.remote_preview
-      raise "404" unless get_user_by_session
+      user   = get_user_by_session
+      member = get_member_by_session
+      item   = @item.becomes_with_model
+      raise "404" unless item.previewable?(user: user, member: member)
     end
 
     def set_last_modified

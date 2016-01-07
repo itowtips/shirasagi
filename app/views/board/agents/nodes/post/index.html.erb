@@ -1,9 +1,12 @@
 <%= jquery do %>
 $(".toggle").on("click", function() {
   $(this).closest(".post").find(".children").toggle();
+  $(this).closest(".topic").toggleClass("closed");
+  $(this).closest(".topic").toggleClass("opened");
   return false;
 });
 $(".children").hide();
+$(".children").closest(".topic").addClass("closed");
 <% end %>
 
 <%= @cur_node.upper_html.to_s.html_safe %>
