@@ -37,6 +37,20 @@ module Facility::Node
     include History::Addon::Backup
     include ::Map::MapHelper
 
+    def holiday_info
+      additional_info.select { |i| i[:field] == "休業日" }.first
+    end
+
+    def open_hours_info
+      additional_info.select do |i|
+        i[:field] == "営業時間" || i[:field] == "サービス提供時間" || i[:field] == "診療時間（外来）" || i[:field] == "開局時間"
+      end.first
+    end
+
+    def show_fax?
+      categories.in(name: %w(医療機関 歯科)).count == 0
+    end
+
     set_permission_name "facility_pages"
 
     default_scope ->{ where(route: "facility/page") }

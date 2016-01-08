@@ -27,6 +27,26 @@ $(window).on "load", ->
         </ul>
       </div>
       <p class="address"><%= item.address %></p>
+      <div class="right">
+        <dl class="info">
+          <% holiday_info = item.holiday_info %>
+          <% if holiday_info %>
+            <dt class="holiday"><%= holiday_info[:field] %></dt>
+            <dd class="holiday-value"><%=br holiday_info[:value] %></dd>
+          <% end %>
+
+          <% open_hours_info = item.open_hours_info %>
+          <% if open_hours_info %>
+            <dt class="open-hours"><%= open_hours_info[:field] %></dt>
+            <dd class="open-hours-value"><%=br open_hours_info[:value] %></dd>
+          <% end %>
+        </dl>
+
+        <% loc = item.map_points.first["loc"].join(",") rescue nil %>
+        <% if loc %>
+          <%= link_to "Googleマップで表示", "http://maps.google.com/maps?q=#{loc}", target: "_blank", class: "open-google-map" %>
+        <% end %>
+      </div>
     </article>
   <% end %>
 </div>

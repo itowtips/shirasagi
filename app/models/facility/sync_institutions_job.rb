@@ -11,7 +11,7 @@ class Facility::SyncInstitutionsJob
       begin
         response = RestClient.get url
       rescue => e
-        Rails.logger.info("error response: #{e.response.code}")
+        Rails.logger.info("error response: #{e.to_s}")
         return false
       end
 

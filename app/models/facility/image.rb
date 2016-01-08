@@ -8,6 +8,8 @@ class Facility::Image
   include Cms::Addon::ReleasePlan
   include Cms::Addon::GroupPermission
 
+  set_permission_name "facility_pages"
+
   default_scope ->{ where(route: "facility/image") }
 
   before_save :seq_filename, if: ->{ basename.blank? }

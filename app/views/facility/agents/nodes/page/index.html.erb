@@ -16,7 +16,7 @@ $(window).on("load", function() {
 <% end %>
 
 <% if @cur_node.institution_supported? %>
-  <%= image_tag "/assets/img/ic-denshi.png" %>
+  <span class="ic-denshi">【電子＠連絡帳登録施設】</span>
 <% end %>
 
 <% if @summary_image.present? %>
@@ -36,6 +36,13 @@ $(window).on("load", function() {
     </div>
   </div>
 <% end %>
+
+<p class="legend">
+  <span class="head">凡例</span>
+  <span class="positive">有、可：○ </span>
+  <span class="middle">要相談：△</span>
+  <span class="negative">無、不可、否 ：×</span>
+</p>
 
 <% Facility::Node::Page.addons.each do |addon| %>
   <%= render file: addon.view_file if addon.view_file %>
@@ -64,7 +71,19 @@ $(window).on("load", function() {
   </div>
 <% end %>
 
+<p class="legend">
+  <span class="head">凡例</span>
+  <span class="positive">有、可：○ </span>
+  <span class="middle">要相談：△</span>
+  <span class="negative">無、不可、否 ：×</span>
+</p>
+
 <% if @merged_map.present? %>
   <% @cur_page = @merged_map %>
+
+  <% loc = @cur_page.map_points.first[:loc].join(",") rescue nil %>
+  <% if loc %>
+    <%= link_to "Googleマップで表示", "http://maps.google.com/maps?q=#{loc}", target: "_blank", class: "open-google-map" %>
+  <% end %>
   <%= render file: "map/agents/addons/page/view/index" %>
 <% end %>

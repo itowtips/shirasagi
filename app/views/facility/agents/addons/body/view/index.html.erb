@@ -24,7 +24,7 @@
     <dd><%= mail_to @cur_node.email %></dd>
   <% end %>
 
-  <% if @cur_node.fax.present? %>
+  <% if @cur_node.fax.present? && ( @cur_node.show_fax? || @cur_user ) %>
     <dt><%= @cur_node.class.t :fax %></dt>
     <dd><%= @cur_node.fax %></dd>
   <% end %>

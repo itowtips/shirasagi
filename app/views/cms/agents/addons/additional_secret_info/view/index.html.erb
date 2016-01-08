@@ -2,10 +2,13 @@
 
 <% @item = @cur_page || @cur_node %>
 <% if @item.additional_secret_info.present? %>
-<dl class="see additional-secret-info">
-  <% @item.additional_secret_info.each do |info| %>
-  <dt><%=br info[:field] %></dt>
-  <dd><%=br info[:value] %></dd>
-  <% end %>
-</dl>
+  <table class="see mod-additional-secret-info">
+    <% @item.additional_secret_info.each do |info| %>
+    <tr>
+      <th><%=br info[:field] %></th>
+      <td><%=br info[:value] %></td>
+    </tr>
+    <% end %>
+  </table>
 <% end %>
+
