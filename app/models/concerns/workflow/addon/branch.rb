@@ -79,6 +79,8 @@ module Workflow::Addon
           html = self.html
           html.gsub!("=\"#{f.url}\"", "=\"#{file.url}\"")
           html.gsub!("=\"#{f.thumb_url}\"", "=\"#{file.thumb_url}\"")
+          html.gsub!("=\"#{f.old_url}\"", "=\"#{file.url}\"")
+          html.gsub!("=\"#{f.old_thumb_url}\"", "=\"#{file.thumb_url}\"")
           self.html = html
         end
         self.file_ids = ids

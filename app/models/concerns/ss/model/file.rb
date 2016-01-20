@@ -92,6 +92,14 @@ module SS::Model::File
       "/fs/" + id.to_s.split(//).join("/") + "/_/thumb/#{filename}"
     end
 
+    def old_url
+      "/fs/#{id}/#{filename}"
+    end
+
+    def old_thumb_url
+      "/fs/#{id}/thumb/#{filename}"
+    end
+
     def public?
       state == "public"
     end
