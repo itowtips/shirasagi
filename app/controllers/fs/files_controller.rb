@@ -13,6 +13,7 @@ class Fs::FilesController < ApplicationController
       path << ".#{params[:format]}" if params[:format].present?
 
       @item = SS::File.find_by id: id, filename: path
+      raise "404" if @item.thumb?
     end
 
     def deny
@@ -41,14 +42,16 @@ class Fs::FilesController < ApplicationController
     end
 
     def thumb
-      if @item.thumb
-        @item = @item.thumb
+      size   = params[:size]
+      width  = params[:width]
+      height = params[:height]
+      thumb  = @item.thumb(size)
+
+      if thumb
+        @item = thumb
         index
       else
         set_last_modified
-
-        width  = params[:width]
-        height = params[:height]
         send_thumb @item.read, type: @item.content_type, filename: @item.filename, disposition: :inline,
           width: width, height: height
       end

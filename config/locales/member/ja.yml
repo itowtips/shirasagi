@@ -2,6 +2,7 @@ ja:
   member:
     my_blog: ブログ
     blog_layout: ブログレイアウト
+    photo: フォト
     login_by:
       twitter: Twitter ID でログイン
       facebook: Facebook ID でログイン
@@ -40,6 +41,11 @@ ja:
       member/blog/body: 本文
       member/blog/genre: ジャンル
       member/blog/setting: ブログ設定
+      member/photo/body: フォト
+      member/photo/category: カテゴリー
+      member/photo/location: 地域
+      member/photo/map: 地図
+      member/photo/spot: フォト
 
   cms:
     nodes:
@@ -48,6 +54,12 @@ ja:
       member/my_blog: マイブログ
       member/blog: ブログ
       member/blog_category: ブログカテゴリー
+      member/my_photo: マイフォト
+      member/photo: フォト
+      member/photo_category: フォトカテゴリー
+      member/photo_location: フォトロケーション
+      member/photo_search: フォトサーチ
+      member/photo_spot: フォトスポット
 
   mongoid:
     attributes:
@@ -85,6 +97,14 @@ ja:
         name: タイトル
         body: 本文
         genres: ジャンル
+      member/photo:
+        listable_state: 一覧及び検索結果への表示
+        slideable_state: スライドへの表示
+        image_id: 画像
+        caption: キャプション
+        photo_categories: カテゴリー
+        photo_locations: 地域
+        map_points: 地図
 
   cms_role:
     read_other_member_blogs: メンバーブログの閲覧（全て）
@@ -93,6 +113,16 @@ ja:
     edit_private_member_blogs: メンバーブログの編集（所有）
     delete_other_member_blogs: メンバーブログの削除（全て）
     delete_private_member_blogs: メンバーブログの削除（所有）
+    release_other_member_blogs: メンバーブログの公開（全て）
+    release_private_member_blogs: メンバーブログの公開（所有）
+    read_other_member_photos: メンバーフォトの閲覧（全て）
+    read_private_member_photos: メンバーフォトの閲覧（所有）
+    edit_other_member_photos: メンバーフォトの編集（全て）
+    edit_private_member_photos: メンバーフォトの編集（所有）
+    delete_other_member_photos: メンバーフォトの削除（全て）
+    delete_private_member_photos: メンバーフォトの削除（所有）
+    release_other_member_photos: メンバーフォトの公開（全て）
+    release_private_member_photos: メンバーフォトの公開（所有）
 
   tooltip:
     member/addon/redirection:

@@ -34,6 +34,10 @@ module SS::Relation::Thumb
     end
   end
 
+  def thumb?
+    model == "ss/thumb_file"
+  end
+
   def thumb_url
     thumb ? thumb.url : super
   end

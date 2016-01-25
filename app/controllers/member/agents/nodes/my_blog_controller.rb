@@ -7,7 +7,7 @@ class Member::Agents::Nodes::MyBlogController < ApplicationController
 
   before_action :set_blog
 
-  prepend_view_path "app/views/member/agents/nodes/mypage/blog"
+  #prepend_view_path "app/views/member/agents/nodes/mypage/blog"
 
   helper Cms::ListHelper
 

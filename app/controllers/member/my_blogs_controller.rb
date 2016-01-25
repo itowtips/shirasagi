@@ -14,8 +14,4 @@ class Member::MyBlogsController < ApplicationController
     def pre_params
       { route: "member/my_blog" }
     end
-
-  public
-    def index
-    end
 end

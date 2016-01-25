@@ -1,0 +1,11 @@
+module Member::Part
+  class PhotoSlide
+    include Cms::Model::Part
+    include KeyVisual::Addon::PageList
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "member/photo_slide") }
+  end
+end

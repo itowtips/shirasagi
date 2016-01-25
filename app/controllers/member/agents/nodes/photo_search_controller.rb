@@ -1,0 +1,50 @@
+class Member::Agents::Nodes::PhotoSearchController < ApplicationController
+  include Cms::NodeFilter::View
+
+  model Member::Photo
+
+  helper Cms::ListHelper
+
+  before_action :set_query
+
+  public
+    def index
+      @items = @model.site(@cur_site).public.
+        listable.
+        contents_search(@query).
+        order_by(released: -1).
+        page(params[:page]).per(@cur_node.limit)
+    end
+
+    def map
+      @items = @model.site(@cur_site).public.
+        listable.
+        where(:map_points.exists => true).
+        contents_search(@query).
+        order_by(released: -1).
+        page(params[:page]).per(@cur_node.limit)
+      @markers = @items.map { |item| item.map_points }.flatten
+    end
+
+  private
+    def set_query
+      @locations  = Member::Node::PhotoLocation.site(@cur_site).public
+      @categories = Member::Node::PhotoCategory.site(@cur_site).public
+      @query      = query
+    end
+
+    def query
+      location_ids = params[:location_ids].select(&:present?).map(&:to_i) rescue []
+      category_ids = params[:category_ids].select(&:present?).map(&:to_i) rescue []
+      locations    = @locations.in(id: location_ids)
+      categories   = @categories.in(id: category_ids)
+      {
+        keyword: params[:keyword],
+        registered: params[:registered],
+        location_ids: location_ids,
+        category_ids: category_ids,
+        locations: locations,
+        categories: categories,
+      }
+    end
+end

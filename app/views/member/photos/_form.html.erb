@@ -1,0 +1,11 @@
+<dl class="see">
+  <%= f.hidden_field :basename, value: "" %>
+  <dt><%= @model.t :name %></dt>
+  <dd><%= f.text_field :name %></dd>
+
+  <dt><%= @model.t :listable_state %></dt>
+  <dd><%= f.select :listable_state, @item.listable_state_options %></dd>
+
+  <dt><%= @model.t :slideable_state %></dt>
+  <dd><%= f.select :slideable_state, @item.slideable_state_options %></dd>
+</dl>
