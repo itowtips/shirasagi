@@ -5,7 +5,7 @@ module Map::MapHelper
     h << %(<div class="maker-info" data-id="#{item.id}">)
     h << %(<p class="name">#{item.name}</p>)
     h << %(<p class="address">#{item.address}</p>)
-    h << %(<p class="show"><a href="#{item.url}">#{item.name}</a></p>)
+    h << %(<p class="show"><a href="#{item.url}">#{I18n.t("facility.sidebar.detail")}</a></p>)
     h << %(</div>)
 
     h.join("\n")

@@ -39,9 +39,9 @@ $(window).on("load", function() {
 
 <p class="legend">
   <span class="head">凡例</span>
-  <span class="positive">有、可：○ </span>
-  <span class="middle">要相談：△</span>
-  <span class="negative">無、不可、否 ：×</span>
+  <span class="positive">○：有、可</span>
+  <span class="middle">△：要相談</span>
+  <span class="negative">×：無、不可、否</span>
 </p>
 
 <% Facility::Node::Page.addons.each do |addon| %>
@@ -73,9 +73,9 @@ $(window).on("load", function() {
 
 <p class="legend">
   <span class="head">凡例</span>
-  <span class="positive">有、可：○ </span>
-  <span class="middle">要相談：△</span>
-  <span class="negative">無、不可、否 ：×</span>
+  <span class="positive">○：有、可</span>
+  <span class="middle">△：要相談</span>
+  <span class="negative">×：無、不可、否</span>
 </p>
 
 <% if @merged_map.present? %>
