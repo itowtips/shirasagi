@@ -125,6 +125,22 @@ module Member::Node
     include History::Addon::Backup
 
     default_scope ->{ where(route: "member/photo_category") }
+
+    def condition_hash
+      cond = []
+      cids = []
+
+      cids << id
+      conditions.each do |url|
+        node = Cms::Node.filename(url).first
+        next unless node
+        cond << { filename: /^#{node.filename}\//, depth: node.depth + 1 }
+        cids << node.id
+      end
+      cond << { :photo_category_ids.in => cids } if cids.present?
+
+      { '$or' => cond }
+    end
   end
 
   class PhotoLocation
@@ -137,5 +153,21 @@ module Member::Node
     include History::Addon::Backup
 
     default_scope ->{ where(route: "member/photo_location") }
+
+    def condition_hash
+      cond = []
+      cids = []
+
+      cids << id
+      conditions.each do |url|
+        node = Cms::Node.filename(url).first
+        next unless node
+        cond << { filename: /^#{node.filename}\//, depth: node.depth + 1 }
+        cids << node.id
+      end
+      cond << { :photo_location_ids.in => cids } if cids.present?
+
+      { '$or' => cond }
+    end
   end
 end

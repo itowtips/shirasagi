@@ -17,6 +17,8 @@ class Member::Photo
   field :listable_state, type: String, default: "public"
   field :slideable_state, type: String, default: "closed"
 
+  permit_params :listable_state, :slideable_state
+
   def listable_state_options
     [
       ["表示",   'public'],
@@ -29,6 +31,10 @@ class Member::Photo
       ["表示",   'public'],
       ["非表示", 'closed'],
     ]
+  end
+
+  def contributor
+    member ? member.name : user.name
   end
 
   private
@@ -49,9 +55,9 @@ class Member::Photo
         criteria = criteria.search_text(params[:keyword])
       end
 
-      if params[:registered].present?
+      if params[:contributor].present?
         # mongodb does not support joins
-        member_ids = Cms::Member.search_text(params[:registered]).map(&:id)
+        member_ids = Cms::Member.search_text(params[:contributor]).map(&:id)
         criteria = criteria.in(member_id: member_ids)
       end
 

@@ -1,8 +1,8 @@
-class Member::PhotosLocationsController < ApplicationController
+class Member::PhotoLocationsController < ApplicationController
   include Cms::BaseFilter
-  include Cms::CrudFilter
+  include Cms::NodeFilter
 
-  model Member::Node::PhotosLocation
+  model Member::Node::PhotoLocation
 
   navi_view "cms/node/main/navi"
 

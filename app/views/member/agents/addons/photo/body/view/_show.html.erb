@@ -1,11 +1,7 @@
-<dl class="see member-body">
-  <dt><%= @model.t :image %></dt>
-  <dd>
-    <a href="<%= @item.image.url%>" target="_blank">
-      <%= image_tag @item.image.thumb_url %>
-    </a>
-  </dd>
+<dl class="see photo-body">
+  <dt><%= @model.t :image_id %></dt>
+  <dd><%= image_tag @item.image.thumb_url %></dd>
 
   <dt><%= @model.t :caption %></dt>
-  <dd><%= @cur_page.caption %></dd>
+  <dd><%= @item.caption %></dd>
 </dl>

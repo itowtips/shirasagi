@@ -1,6 +1,6 @@
 class Member::PhotoCategoriesController < ApplicationController
   include Cms::BaseFilter
-  include Cms::CrudFilter
+  include Cms::NodeFilter
 
   model Member::Node::PhotoCategory
 

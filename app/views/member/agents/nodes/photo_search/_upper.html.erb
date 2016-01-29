@@ -11,8 +11,8 @@ $(window).on "load", ->
 <dl class="condition">
   <dt class="keyword"><%= "キーワード" %></dt>
   <dd><%= @query[:keyword] %></dd>
-  <dt class="registered"><%= "登録者" %></dt>
-  <dd><%= @query[:registered] %></dd>
+  <dt class="contributor"><%= "投稿者" %></dt>
+  <dd><%= @query[:contributor] %></dd>
   <dt class="location"><%= "地域" %></dt>
   <dd><%= @query[:locations].pluck(:name).join("、") %></dd>
   <dt class="category"><%= "カテゴリー" %></dt>
@@ -30,7 +30,7 @@ $(window).on "load", ->
 
 <nav class="tabs">
   <ul>
-    <% q = @query.slice(:keyword, :registered, :location_ids, :category_ids).to_query %>
+    <% q = @query.slice(:keyword, :contributor, :location_ids, :category_ids).to_query %>
     <li class="tab map<%= action_name == "map" ? " current" : "" %>">
       <%= link_to "一覧表示", "#{@cur_node.url}?#{q}" %>
     </li>

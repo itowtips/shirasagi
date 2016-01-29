@@ -1,9 +1,10 @@
 class @Member_Photo_Form
-  @maxPointForm  = 10
-  @deleteMessage = "<%= I18n.t('map.confirm.delete_marker') %>"
-  @dataID        = 0
-  @clickIcon     = "//maps.google.com/mapfiles/ms/icons/blue-dot.png"
-  @clickMarker   = null
+  @maxPointForm   = 10
+  @deleteMessage  = "<%= I18n.t('map.confirm.delete_marker') %>"
+  @setExifMessage = "画像に位置情報が含まれています。位置情報を地図に設定しますか？"
+  @dataID         = 0
+  @clickIcon      = "//maps.google.com/mapfiles/ms/icons/blue-dot.png"
+  @clickMarker    = null
 
   @setMapLoc: (ele, lat, lon) ->
     lat = Math.ceil(lat * Math.pow(10,6)) / Math.pow(10,6)
@@ -112,6 +113,26 @@ class @Member_Photo_Form
       Map.map.initialZoom = true
       Map.map.fitBounds(markerBounds)
     return
+
+  @setExifLatLng: (selector)->
+    $(selector).change (e)->
+      EXIF.getData e.target.files[0], ->
+        lat    = EXIF.getTag(this, 'GPSLatitude')
+        lon    = EXIF.getTag(this, 'GPSLongitude')
+        latRef = EXIF.getTag(this, 'GPSLatitudeRef') || "N"
+        lonRef = EXIF.getTag(this, 'GPSLongitudeRef') || "W"
+        return false unless lat && lon
+        return false unless confirm(Member_Photo_Form.setExifMessage)
+
+        console.log(lat, lon)
+        latRef = if latRef == "N" then 1 else -1
+        lonRef = if lonRef == "W" then -1 else 1
+        lat = (lat[0] + (lat[1] / 60) + (lat[2] / 3600)) * latRef
+        lon = (lon[0] + (lon[1] / 60) + (lon[2] / 3600)) * lonRef
+        console.log(lat, lon)
+        $(".mod-map .clicked").val([lat, lon].join())
+        Member_Photo_Form.createMarker($(".mod-map .marker-loc"))
+        Map.map.setCenter(new google.maps.LatLng(lat, lon))
 
   @renderEvents: ()->
     google.maps.event.addListener Map.map, 'click', (event) ->

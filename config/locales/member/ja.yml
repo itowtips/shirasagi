@@ -42,7 +42,7 @@ ja:
       member/blog/genre: ジャンル
       member/blog/setting: ブログ設定
       member/photo/body: フォト
-      member/photo/category: カテゴリー
+      member/photo/category: タグ
       member/photo/location: 地域
       member/photo/map: 地図
       member/photo/spot: フォト
@@ -56,10 +56,14 @@ ja:
       member/blog_category: ブログカテゴリー
       member/my_photo: マイフォト
       member/photo: フォト
-      member/photo_category: フォトカテゴリー
+      member/photo_category: フォトタグ
       member/photo_location: フォトロケーション
       member/photo_search: フォトサーチ
       member/photo_spot: フォトスポット
+
+    parts:
+      member/photo_search: フォトサーチ
+      member/photo_slide: フォトスライド
 
   mongoid:
     attributes:
@@ -102,7 +106,7 @@ ja:
         slideable_state: スライドへの表示
         image_id: 画像
         caption: キャプション
-        photo_categories: カテゴリー
+        photo_categories: タグ
         photo_locations: 地域
         map_points: 地図
 

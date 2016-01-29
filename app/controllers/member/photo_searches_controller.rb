@@ -1,6 +1,6 @@
 class Member::PhotoSearchesController < ApplicationController
   include Cms::BaseFilter
-  include Cms::CrudFilter
+  include Cms::NodeFilter
 
   model Member::Node::PhotoSearch
 
@@ -12,6 +12,6 @@ class Member::PhotoSearchesController < ApplicationController
     end
 
     def pre_params
-      { route: "member/photo_category" }
+      { route: "member/photo_search" }
     end
 end

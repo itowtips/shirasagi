@@ -40,7 +40,7 @@ class Member::Agents::Nodes::PhotoSearchController < ApplicationController
       categories   = @categories.in(id: category_ids)
       {
         keyword: params[:keyword],
-        registered: params[:registered],
+        contributor: params[:contributor],
         location_ids: location_ids,
         category_ids: category_ids,
         locations: locations,

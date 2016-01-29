@@ -17,7 +17,7 @@ target  = @cur_part.link_target.present? ? %(target="#{@cur_part.link_target}") 
     <% file = item.image %>
     <% next unless file %>
       <li>
-        <a href="<%= item.url %>" <%== target %>><%= image_tag file.thumb_url, alt: item.name %></a>
+        <a href="<%= item.url %>" <%== target %>><%= image_tag file.url, alt: item.name %></a>
       </li>
     <% end %>
   </ul>

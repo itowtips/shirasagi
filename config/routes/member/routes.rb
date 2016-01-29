@@ -68,6 +68,7 @@ SS::Application.routes.draw do
 
   part "member" do
     get "photo_slide" => "public#index", cell: "parts/photo_slide"
+    get "photo_search" => "public#index", cell: "parts/photo_search"
   end
 
   namespace "member", path: ".m:member", member: /\d+/ do
