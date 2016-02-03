@@ -62,8 +62,8 @@ class Garbage::PagesController < ApplicationController
         #
       end
 
-      # delete all documents
-      @cur_node.children.where(route: /garbage\/page/).delete_all
+      # destroy all documents
+      @cur_node.children.where(route: /garbage\/page/).destroy_all
 
       # update documents
       table = CSV.read(csv.tempfile.path, headers: true, encoding: 'SJIS:UTF-8')

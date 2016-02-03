@@ -12,7 +12,7 @@
 </div>
 
 <footer class="send">
-  <%= f.submit t(:import), class: :save %>
+  <%= f.submit t(:import), class: :save, onclick: "return confirm('既に登録されているごみ品目をすべて削除しインポートを行います。更新処理を開始してよろしいですか？');" %>
   <%= f.button t("views.button.cancel"), onclick: "location.href='#{url_for(action: :index)}'; return false;" %>
 </footer>
 <% end %>

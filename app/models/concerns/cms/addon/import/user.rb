@@ -59,7 +59,7 @@ module Cms::Addon::Import
           item = self.class.where(id: id).first
           if item.blank?
             e = I18n.t("errors.messages.invalid")
-            self.errors.add :base, "#{index}: #{t(:id)}#{e}"
+            self.errors.add :base, "#{index}: #{t(:id)}(#{id})#{e}"
             return nil
           end
 
@@ -70,12 +70,12 @@ module Cms::Addon::Import
           end
         else
           item = self.class.new
-          item.in_password = password
         end
 
         item.email = email
         item.name = name
         item.uid = uid
+        item.in_password = password if password.present?
         item.ldap_dn = ldap_dn
         item.group_ids = SS::Group.in(name: groups).map(&:id)
         add_cms_roles(item, cms_roles)
