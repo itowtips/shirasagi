@@ -37,6 +37,11 @@ class Member::Photo
     member ? member.name : user.name
   end
 
+  def template_variable_handler_img_src(item, name)
+    return nil unless item.image
+    img_source = %(<img alt="#{item.image.name}" src="#{item.image.thumb_url}" \>)
+  end
+
   private
     def validate_filename
       (@basename && @basename.blank?) ? nil : super

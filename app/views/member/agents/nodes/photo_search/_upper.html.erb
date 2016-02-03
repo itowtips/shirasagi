@@ -31,10 +31,10 @@ $(window).on "load", ->
 <nav class="tabs">
   <ul>
     <% q = @query.slice(:keyword, :contributor, :location_ids, :category_ids).to_query %>
-    <li class="tab map<%= action_name == "map" ? " current" : "" %>">
+    <li class="tab list<%= action_name == "index" ? " current" : "" %>">
       <%= link_to "一覧表示", "#{@cur_node.url}?#{q}" %>
     </li>
-    <li class="tab list<%= action_name == "index" ? " current" : "" %>">
+    <li class="tab map<%= action_name == "map" ? " current" : "" %>">
       <%= link_to "地図表示", "#{@cur_node.url}map.html?#{q}" %>
     </li>
   </ul>
