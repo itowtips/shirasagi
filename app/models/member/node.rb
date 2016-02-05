@@ -74,8 +74,27 @@ module Member::Node
     default_scope ->{ where(route: "member/blog") }
 
     public
-      def page_url(blog, page)
-        "#{url}#{blog.id}/page/#{page.id}/"
+      def layout_options
+        Member::BlogLayout.where(filename: /^#{filename}\//).
+          map { |item| [item.name, item.id] }
+      end
+  end
+
+  class BlogPage
+    include Cms::Model::Node
+    include Cms::Reference::Member
+    include Member::Addon::Blog::Setting
+    include Cms::Addon::GroupPermission
+
+    set_permission_name "member_blogs"
+
+    default_scope ->{ where(route: "member/blog_page") }
+
+    before_validation ->{ self.page_layout = layout }
+
+    public
+      def pages
+        Member::BlogPage.where(filename: /^#{filename}\//, depth: depth + 1).public
       end
   end
 

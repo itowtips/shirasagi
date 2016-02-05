@@ -1,4 +1,12 @@
 <dl class="see">
   <dt><%= @model.t :name %></dt>
   <dd><%= f.text_field :name %></dd>
+
+  <% if @item.new_record? %>
+    <dt><%= @model.t :basename %></dt>
+    <dd><%= f.text_field :basename, class: "filename" %></dd>
+  <% end %>
+
+  <dt><%= @model.t :layout_id %></dt>
+  <dd><%= f.select :layout_id, @blog_node.layout_options %></dd>
 </dl>

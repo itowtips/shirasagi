@@ -2,7 +2,7 @@
   <% @items.each do |item| %>
     <article class="blog thumb">
       <%= image_tag item.thumb_url, class: :thumb %>
-      <header><h2><%= link_to item.name, "#{@cur_node.url}#{item.id}/" %></h2></header>
+      <header><h2><%= link_to item.name, item.url %></h2></header>
       <div class="description">
         <%= item.description %>
       </div>

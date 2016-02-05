@@ -1,11 +1,6 @@
 class Member::BlogPage
-  include SS::Document
-  include SS::Translation
-  include SS::Reference::Site
-  include SS::Reference::User
+  include Cms::Model::Page
   include Cms::Reference::Member
-  #include Cms::Reference::Node
-  include Member::Reference::Blog
   include Member::Addon::Blog::Body
   include Member::Addon::File
   include Member::Addon::Blog::Genre
@@ -13,55 +8,26 @@ class Member::BlogPage
 
   set_permission_name "member_blogs"
 
-  seqid :id
-  store_in collection: "member_blog_pages"
+  before_save :seq_filename, if: ->{ basename.blank? }
 
-  field :name, type: String
-  field :released, type: DateTime
-  field :state, type: String, default: "public"
-
-  permit_params :name, :released, :state
-  permit_params genres: []
-
-  validates :name, presence: true, length: { maximum: 80 }
-  after_validation :set_released, if: -> { public? }
-
-  public
-    def public?
-      state == "public"
-    end
-
-    def date
-      released || updated || created
-    end
-
-    def url(node)
-      "#{node.url}#{blog.id}/page/#{id}/"
-    end
-
-    def full_url(node)
-      ::File.join(site.full_url, url(node))
-    end
-
-    def state_options
-      [
-        [I18n.t('views.options.state.public'), 'public'],
-        [I18n.t('views.options.state.closed'), 'closed'],
-      ]
-    end
+  default_scope ->{ where(route: "member/blog_page") }
 
   private
-    def set_released
-      self.released ||= Time.zone.now
+    def serve_static_file?
+      false
+    end
+
+    def validate_filename
+      (@basename && @basename.blank?) ? nil : super
+    end
+
+    def seq_filename
+      self.filename = dirname ? "#{dirname}#{id}.html" : "#{id}.html"
     end
 
   class << self
-    def public
-      where state: "public"
-    end
-
     def search(params = {})
-      criteria = self.where({})
+      criteria = super(params)
       return criteria if params.blank?
 
       if params[:g].present?

@@ -3,16 +3,17 @@ class Member::Agents::Nodes::MyBlog::SettingController < ApplicationController
   include Member::LoginFilter
   include Cms::PublicFilter::Crud
 
+  model Member::Node::BlogPage
+
   before_action :set_item
   before_action :redirect_to_edit, only: [:new, :create]
 
   prepend_view_path "app/views/member/agents/nodes/my_blog/setting"
 
-  model Member::Blog
-
   private
     def set_item
-      @item = @cur_node.blog(@cur_member)
+      @blog_node = Member::Node::Blog.site(@cur_site).first
+      @item = @model.site(@cur_site).node(@blog_node).member(@cur_member).first
       @cur_node.name += "設定"
     end
 
@@ -21,6 +22,6 @@ class Member::Agents::Nodes::MyBlog::SettingController < ApplicationController
     end
 
     def fix_params
-      { cur_site: @cur_site, cur_member: @cur_member }
+      { cur_site: @cur_site, cur_node: @blog_node, cur_member: @cur_member }
     end
 end

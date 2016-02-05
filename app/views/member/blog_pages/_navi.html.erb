@@ -1,9 +1,9 @@
 <%= node_navi :member do %>
 
-<h3><%= link_to :"member.my_blog", member_blogs_path %></h3>
+<h3><%= link_to :"member.my_blog", member_blogs_path(cid: @cur_node.parent.id) %></h3>
 
 <ul class="narrow-page">
-  <li><%= link_to @blog.name, member_blog_pages_path(blog_id: @blog.id) %></li>
+  <li><%= link_to @cur_node.name, member_blog_pages_path(cid: @cur_node.id) %></li>
 </ul>
 
 <% end %>

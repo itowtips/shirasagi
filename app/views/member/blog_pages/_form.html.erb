@@ -1,5 +1,6 @@
 <dl class="see">
-  <dt><%= @model.t :name %></dt>
+  <%= f.hidden_field "basename", value: "" %>
+  <dt><%= @model.t :name %><%= @model.tt :title %></dt>
   <dd><%= f.text_field :name %></dd>
 
   <dt><%= @model.t :state %><%= @model.tt :state %></dt>

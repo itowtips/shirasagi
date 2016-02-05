@@ -11,12 +11,14 @@ SS::Application.routes.draw do
     get "/" => redirect { |p, req| "#{req.path}/logins" }, as: :main
     resources :logins, only: [:index]
     resources :mypages, concerns: :deletion
+
     resources :my_blogs, concerns: :deletion
     resources :my_photos, concerns: :deletion
     resources :blog_layouts, concerns: :deletion
-    resources :blogs, concerns: :deletion do
-      resources :pages, controller: :blog_pages, concerns: :deletion
-    end
+    resources :blogs, concerns: :deletion
+    resources :blog_pages, concerns: :deletion
+
+    resources :my_photos, concerns: :deletion
     resources :photos, concerns: :deletion do
       get :index_listable, on: :collection
       get :index_slideable, on: :collection
@@ -40,9 +42,10 @@ SS::Application.routes.draw do
 
     ## public contents
     get "blog/(index.:format)" => "public#index", cell: "nodes/blog"
-    get "blog/:id/(index.:format)" => "public#show", cell: "nodes/blog", id: /\d+/
-    get "blog/:id/rss.xml" => "public#rss", cell: "nodes/blog", format: "xml"
-    get "blog/:id/page/:page_id/(index.:format)" => "public#show_page", cell: "nodes/blog", id: /\d+/, page_id: /\d+/
+    get "blog/rss.xml" => "public#rss", cell: "nodes/blog", format: "xml"
+    get "blog_page/(index.:format)" => "public#index", cell: "nodes/blog_page"
+    get "blog_page/rss.xml" => "public#rss", cell: "nodes/blog_page", format: "xml"
+
     get "photo/(index.:format)" => "public#index", cell: "nodes/photo"
     get "photo_search/(index.:format)" => "public#index", cell: "nodes/photo_search"
     get "photo_search/map.html" => "public#map", cell: "nodes/photo_search"
@@ -62,6 +65,8 @@ SS::Application.routes.draw do
   end
 
   page "member" do
+    get "blog_page/:filename.:format" => "public#index", cell: "pages/blog_page"
+
     get "photo/:filename.:format" => "public#index", cell: "pages/photo"
     get "photo_spot/:filename.:format" => "public#index", cell: "pages/photo_spot"
   end

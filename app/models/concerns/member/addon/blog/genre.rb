@@ -6,6 +6,7 @@ module Member::Addon::Blog
     included do
       field :genres, type: SS::Extensions::Lines
       validate :validate_genres
+      permit_params genres: []
     end
 
     private

@@ -5,9 +5,9 @@ class Member::Agents::Nodes::MyBlogController < ApplicationController
 
   model Member::BlogPage
 
-  before_action :set_blog
+  before_action :set_blog_node
 
-  #prepend_view_path "app/views/member/agents/nodes/mypage/blog"
+  prepend_view_path "app/views/member/agents/nodes/my_blog"
 
   helper Cms::ListHelper
 
@@ -20,16 +20,13 @@ class Member::Agents::Nodes::MyBlogController < ApplicationController
 
   private
     def fix_params
-      { cur_site: @cur_site, cur_member: @cur_member, blog: @blog }
+      { cur_site: @cur_site, cur_member: @cur_member, cur_node: @blog_page_node }
     end
 
-    def set_item
-      super
-      @cur_node.name = @item.name
-    end
-
-    def set_blog
-      @blog = @cur_node.blog(@cur_member)
-      redirect_to "#{@cur_node.setting_url}new" unless @blog
+    def set_blog_node
+      @blog_node      = Member::Node::Blog.site(@cur_site).first
+      @blog_page_node = Member::Node::BlogPage.site(@cur_site).node(@blog_node).member(@cur_member).first
+      #@cur_node.name = @item.name
+      redirect_to "#{@cur_node.setting_url}new" unless @blog_page_node
     end
 end

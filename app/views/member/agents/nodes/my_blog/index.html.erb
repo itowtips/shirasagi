@@ -3,19 +3,25 @@
 <table class="index">
   <thead>
     <tr>
-      <th class="name">タイトル</th>
-      <th class="datetime created">作成日時</th>
-      <th class="datetime updated">更新日時</th>
-      <th class="state">公開状態</th>
+      <th class="name"><%= @model.t :name %></th>
+      <th class="datetime updated"><%= @model.t :updated %></th>
+      <th class="datetime released"><%= @model.t :released %></th>
+      <th class="state"><%= @model.t :state %></th>
     </tr>
   </thead>
   <tbody>
     <% @items.each do |item| %>
     　<tr>
         <td class="item name"><%= link_to item.name, "#{@cur_node.url}#{item.id}/" %></td>
-        <td class="item datetime created"><%= item.created.strftime('%Y/%m/%d %H:%M') %></td>
-        <td class="item datetime updated"><%= item.updated.strftime('%Y/%m/%d %H:%M') %></td>
-        <td class="item state"><%= item.label :state %></td>
+        <td class="item datetime updated"><%=tryb { item.updated.strftime('%Y/%m/%d %H:%M') } %></td>
+        <td class="item datetime released"><%=tryb { item.released.strftime('%Y/%m/%d %H:%M') } %></td>
+        <td class="item state">
+          <% if item.parent.public? && item.public? %>
+            <%= link_to item.label(:state), item.url %>
+          <% else %>
+            <%= item.label :state %>
+          <% end %>
+        </td>
     　</tr>
     <% end %>
   </tbody>

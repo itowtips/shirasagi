@@ -92,7 +92,7 @@ ja:
         github_oauth: OAuth 認証
         github_client_id: Client ID
         github_client_secret: Client Secret
-      member/blog:
+      member/node/blog_page:
         name: タイトル
         layout: ブログレイアウト
         description: 紹介文
