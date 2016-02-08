@@ -16,6 +16,7 @@ module Member
     Cms::Node.plugin "member/photo_location"
     Cms::Node.plugin "member/photo_spot"
 
+    Cms::Part.plugin "member/blog_page"
     Cms::Part.plugin "member/photo_search"
     Cms::Part.plugin "member/photo_slide"
 

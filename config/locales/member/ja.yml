@@ -63,6 +63,7 @@ ja:
       member/photo_spot: フォトスポット
 
     parts:
+      member/blog_page: ブログページ一覧
       member/photo_search: フォトサーチ
       member/photo_slide: フォトスライド
 
@@ -93,11 +94,12 @@ ja:
         github_client_id: Client ID
         github_client_secret: Client Secret
       member/node/blog_page:
-        name: タイトル
-        layout: ブログレイアウト
+        title: ブログタイトル
+        basename: ブログURL
+        layout: レイアウト
         description: 紹介文
-        image_id: ブログサムネイル
-        genres: ジャンル
+        image_id: サムネイル
+        genres: ジャンル設定
       member/blog_page:
         name: タイトル
         body: 本文

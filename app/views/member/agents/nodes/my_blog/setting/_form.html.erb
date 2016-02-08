@@ -1,10 +1,15 @@
 <dl class="see">
-  <dt><%= @model.t :name %></dt>
+  <dt><%= @model.t :title %></dt>
   <dd><%= f.text_field :name %></dd>
 
   <% if @item.new_record? %>
     <dt><%= @model.t :basename %></dt>
-    <dd><%= f.text_field :basename, class: "filename" %></dd>
+    <dd>
+      <span class="blog-url"><%= @blog_node.full_url%></span>
+      <span class="blog-node">
+        <%= f.text_field :basename, class: "filename", pattern: "[\w\-]+" %>
+      </span>
+    </dd>
   <% end %>
 
   <dt><%= @model.t :layout_id %></dt>
