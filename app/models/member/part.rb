@@ -12,6 +12,7 @@ module Member::Part
   class PhotoSlide
     include Cms::Model::Part
     include KeyVisual::Addon::PageList
+    include Member::Addon::Photo::Slide
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
