@@ -66,6 +66,7 @@ ja:
       member/blog_page: ブログページ一覧
       member/photo_search: フォトサーチ
       member/photo_slide: フォトスライド
+      member/login: ログイン
 
   mongoid:
     attributes:

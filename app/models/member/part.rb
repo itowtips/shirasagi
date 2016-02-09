@@ -1,4 +1,13 @@
 module Member::Part
+  class Login
+    include Cms::Model::Part
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "member/login") }
+  end
+
   class BlogPage
     include Cms::Model::Part
     include Cms::Addon::PageList
