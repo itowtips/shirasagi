@@ -91,7 +91,7 @@ module SS::Model::File
   end
 
   def becomes_with_model(name = nil)
-    name ||= model.sub(/\/.+?$/, "/file")
+    name ||= model.sub(/\/.+?$/, "/file").sub(/^ss\//, "SS/")
     klass = name.camelize.constantize rescue nil
     return self unless klass
 
