@@ -1,0 +1,15 @@
+<%= render partial: "menu" %>
+
+<div class="cms-member-leave">
+  <p>退会します。</p>
+  <%= form_for :item, url: "#{@cur_node.url}confirm_leave.html", html: { method: "POST" } do |f| %>
+    <div class="member-leave-form columns">
+      <%= error_messages_for :item, header_message: false %>
+      <%= render partial: "form_password", locales: { f: f, confirm: false } %>
+      <footer class="send">
+        <%= f.submit I18n.t("member.button.leave"), name: :submit %>
+        <%= f.submit I18n.t("member.button.back"), name: :back %>
+      </footer>
+    </div>
+  <% end %>
+</div>

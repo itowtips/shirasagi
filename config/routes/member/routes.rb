@@ -56,6 +56,12 @@ SS::Application.routes.draw do
     ## mypage contents
     get "my_profile(index.:format)" => "public#index", cell: "nodes/my_profile"
     resource :my_profile, controller: "public", cell: "nodes/my_profile", only: [:edit, :update]
+    get "my_profile/leave(.:format)" => "public#leave", cell: "nodes/my_profile"
+    post "my_profile/confirm_leave(.:format)" => "public#confirm_leave", cell: "nodes/my_profile"
+    post "my_profile/complete_leave(.:format)" => "public#complete_leave", cell: "nodes/my_profile"
+    get "my_profile/change_password(.:format)" => "public#change_password", cell: "nodes/my_profile"
+    post "my_profile/confirm_password(.:format)" => "public#confirm_password", cell: "nodes/my_profile"
+    get "my_profile/complete_password(.:format)" => "public#complete_password", cell: "nodes/my_profile"
 
     scope "my_blog" do
       resource :setting, controller: "public", cell: "nodes/my_blog/setting", except: [:index, :show, :destroy]

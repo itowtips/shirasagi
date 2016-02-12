@@ -1,0 +1,12 @@
+<div class="cms-member-leave">
+  <p><%= I18n.t("member.button.leave") %>ボタンをクリックすると退会します。よろしいですか。</p>
+  <%= form_for :item, url: "#{@cur_node.url}complete_leave.html", html: { method: "POST" } do |f| %>
+    <div class="member-leave-form columns">
+      <footer class="send">
+        <%= f.submit I18n.t("member.button.leave"), name: :submit %>
+        <%= f.submit I18n.t("member.button.back"), name: :back %>
+      </footer>
+    </div>
+  <% end %>
+</div>
+

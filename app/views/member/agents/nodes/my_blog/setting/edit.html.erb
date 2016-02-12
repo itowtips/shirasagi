@@ -1,6 +1,6 @@
 <%= form_for :item, url: @cur_node.setting_url, html: { method: :put, multipart: true, autocomplete: :off } do |f| %>
 
-<%== render_mypage_navi %>
+<%== render_mypage_navi current_node: @cur_node %>
 
 <div class="member-page-form member-blog-form">
   <%= error_messages_for :item, header_message: false %>
