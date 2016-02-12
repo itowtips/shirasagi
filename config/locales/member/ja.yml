@@ -26,6 +26,16 @@ ja:
     view:
       email: メールアドレス
       password: パスワード
+      new_password: 新しいパスワード
+      new_password_again: 新しいパスワード（入力確認）
+    button:
+      register: 登録
+      back: 戻る
+      confirm: 確認画面へ
+      leave: 退会する
+      change_password: パスワードを変更
+    links:
+      blog_setting: ブログ設定
 
   modules:
     member: メンバー

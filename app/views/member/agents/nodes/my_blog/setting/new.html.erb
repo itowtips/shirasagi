@@ -1,4 +1,4 @@
-<%== render_mypage_navi current_node: @cur_node %>
+<%= render partial: "menu" %>
 
 <%= form_for :item, url: @cur_node.setting_url, html: { method: :post, multipart: true, autocomplete: :off, class: "mypage-new member-blog" } do |f| %>
 

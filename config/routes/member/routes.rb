@@ -67,7 +67,7 @@ SS::Application.routes.draw do
       resource :setting, controller: "public", cell: "nodes/my_blog/setting", except: [:index, :show, :destroy]
     end
     get "my_blog(index.:format)" => "public#index", cell: "nodes/my_blog"
-    resources :my_blog, controller: "public", cell: "nodes/my_blog", except: :index
+    resources :my_blog, concerns: :deletion, controller: "public", cell: "nodes/my_blog", except: :index
 
     get "my_photo(index.:format)" => "public#index", cell: "nodes/my_photo"
     resources :my_photo, controller: "public", cell: "nodes/my_photo", except: :index
