@@ -52,6 +52,7 @@ ja:
     nodes:
       member/login: ログイン
       member/mypage: マイページ
+      member/my_profile: プロフィール
       member/my_blog: マイブログ
       member/blog: ブログ
       member/blog_category: ブログカテゴリー

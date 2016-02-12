@@ -4,6 +4,7 @@ class Member::Agents::Nodes::MyBlog::SettingController < ApplicationController
   include Cms::PublicFilter::Crud
 
   model Member::Node::BlogPage
+  helper Member::MypageHelper
 
   before_action :set_item
   before_action :redirect_to_edit, only: [:new, :create]

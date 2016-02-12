@@ -2,7 +2,7 @@ class Member::MyBlogsController < ApplicationController
   include Cms::BaseFilter
   include Cms::NodeFilter
 
-  model Member::Node::MyBlog
+  model Member::Node::Base
 
   navi_view "cms/node/main/navi"
 
@@ -11,7 +11,7 @@ class Member::MyBlogsController < ApplicationController
       { cur_user: @cur_user, cur_site: @cur_site, cur_node: @cur_node }
     end
 
-    def pre_params
-      { route: "member/my_blog" }
+    def redirect_url
+      { action: :index }
     end
 end

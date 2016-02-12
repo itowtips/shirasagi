@@ -11,7 +11,7 @@ SS::Application.routes.draw do
     get "/" => redirect { |p, req| "#{req.path}/logins" }, as: :main
     resources :logins, only: [:index]
     resources :mypages, concerns: :deletion
-
+    resources :my_profiles, concerns: :deletion
     resources :my_blogs, concerns: :deletion
     resources :my_photos, concerns: :deletion
     resources :blog_layouts, concerns: :deletion
@@ -54,6 +54,9 @@ SS::Application.routes.draw do
     get "photo_spot/(index.:format)" => "public#index", cell: "nodes/photo_spot"
 
     ## mypage contents
+    get "my_profile(index.:format)" => "public#index", cell: "nodes/my_profile"
+    resource :my_profile, controller: "public", cell: "nodes/my_profile", only: [:edit, :update]
+
     scope "my_blog" do
       resource :setting, controller: "public", cell: "nodes/my_blog/setting", except: [:index, :show, :destroy]
     end

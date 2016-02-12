@@ -1,0 +1,9 @@
+<%== render_mypage_navi %>
+
+<nav class="nav-menu">
+  <% if params[:action] =~ /index/ %>
+    <%= link_to :edit, "#{@cur_node.url}edit" %>
+  <% else %>
+    <%= link_to :back_to_index, @cur_node.url %>
+  <% end %>
+</nav>

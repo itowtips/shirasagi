@@ -4,6 +4,7 @@ class Member::Agents::Nodes::MyPhotoController < ApplicationController
   include Cms::PublicFilter::Crud
 
   model Member::Photo
+  helper Member::MypageHelper
 
   before_action :set_photo_node
 

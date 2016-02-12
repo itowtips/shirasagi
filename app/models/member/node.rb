@@ -1,4 +1,10 @@
 module Member::Node
+  class Base
+    include Cms::Model::Node
+
+    default_scope ->{ where(route: /^member\//) }
+  end
+
   class Login
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
@@ -26,7 +32,25 @@ module Member::Node
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 
-    default_scope ->{ where(route: "member/login") }
+    default_scope ->{ where(route: "member/mypage") }
+
+    public
+      def children
+        Member::Node::Base.public.
+          where(filename: /^#{filename}\//, depth: depth + 1).
+          order_by(order: 1)
+      end
+  end
+
+  class MyProfile
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "member/my_profile") }
   end
 
   class MyBlog

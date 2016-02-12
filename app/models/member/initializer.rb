@@ -5,6 +5,7 @@ module Member
 
     # mypage nodes
     Cms::Node.plugin "member/mypage"
+    Cms::Node.plugin "member/my_profile"
     Cms::Node.plugin "member/my_blog"
     Cms::Node.plugin "member/my_photo"
 

@@ -1,4 +1,4 @@
-class Member::MyPhotosController < ApplicationController
+class Member::MyProfilesController < ApplicationController
   include Cms::BaseFilter
   include Cms::NodeFilter
 

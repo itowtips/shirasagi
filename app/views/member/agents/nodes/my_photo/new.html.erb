@@ -2,7 +2,11 @@
 
 <%= form_for :item, url: @cur_node.url, html: { method: :post, multipart: true, autocomplete: :off } do |f| %>
 
+<<<<<<< HEAD
 <div class="member-myblog-pages-form">
+=======
+<div class="member-page-form member-pages-form">
+>>>>>>> e738986... [add] member myprofile
   <%= error_messages_for :item, header_message: false %>
   <%= render partial: "form", locals: { f: f }  %>
   <% @model.addons.each do |addon| %>

@@ -4,6 +4,7 @@ class Member::Agents::Nodes::MyBlogController < ApplicationController
   include Cms::PublicFilter::Crud
 
   model Member::BlogPage
+  helper Member::MypageHelper
 
   before_action :set_blog_node
 
