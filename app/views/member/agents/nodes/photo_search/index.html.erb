@@ -4,7 +4,7 @@
   <% @items.each do |item| %>
     <div class="photo">
       <%= link_to item.url do %>
-        <%= image_tag item.image.thumb_url, class: :thumb %>
+        <%= image_tag item.image.thumb_url, alt: item.name, class: :thumb %>
         <span class="title"><%= item.name %></span>
       <% end %>
     </div>

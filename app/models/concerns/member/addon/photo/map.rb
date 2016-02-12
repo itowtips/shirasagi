@@ -14,7 +14,7 @@ module Member::Addon::Photo
       return unless map_points.present?
       h = []
       h << %(<a href="#{url}">)
-      h << %(<img class="thumb" src="#{image.thumb_url}" alt="#{image.name}">)
+      h << %(<img class="thumb" src="#{image.thumb_url}" alt="#{name}">)
       h << %(</a>)
       self.map_points = map_points.map do |point|
         point[:name] = name
