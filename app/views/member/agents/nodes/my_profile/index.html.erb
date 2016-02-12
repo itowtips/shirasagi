@@ -11,35 +11,4 @@
       <dt><%= @model.t :email %></dt>
       <dd><%= @item.email %></dd>
     </dl>
-
-    <dl class="column">
-      <dt><%= @model.t :kana %></dt>
-      <dd><%= @item.kana %></dd>
-    </dl>
-
-    <dl class="column">
-      <dt><%= @model.t :age %></dt>
-      <dd><%= @item.age %></dd>
-    </dl>
-
-    <dl class="column">
-      <dt><%= @model.t :address %></dt>
-      <dd><%= @item.address %></dd>
-    </dl>
-
-    <dl class="column">
-      <dt><%= @model.t :tel %></dt>
-      <dd><%= @item.tel %></dd>
-    </dl>
-
-    <dl class="column">
-      <dt><%= @model.t :interest_municipalities %></dt>
-      <dd><%=br @item.interest_municipalities.map(&:name).join("\n") %></dt>
-    </dl>
-
-    <dl class="column">
-      <dt><%= @model.t :thought %></dt>
-      <dd><%= @item.thought %></dd>
-    </dl>
-  </div>
 </div>
