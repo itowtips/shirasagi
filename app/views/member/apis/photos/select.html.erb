@@ -1,7 +1,7 @@
 <article class="file-view">
   <%= hidden_field_tag "item[photo_ids][]", @item.id, class: "photo-id" %>
   <div class="thumb">
-    <%= image_tag @item.image.thumb_url, width: 120, eight: 90 %>
+    <%= image_tag @item.image.thumb_url %>
   </div>
   <div class="name">
     <%= @item.name %>
