@@ -1,18 +1,19 @@
 <%= render partial: "menu" %>
 
-<div class="member-myblog-pages-form">
-  <dl class="see">
-    <dt><%= @model.t :name %></dt>
-    <dd><%= @item.name %></dd>
-  </dl>
+<div class="mypage-show member-photo-page">
+  <div class="columns">
+    <dl class="column">
+      <dt><%= @model.t :name %></dt>
+      <dd><%= @item.name %></dd>
+    </dl>
+    <% @model.addons.each do |addon| %>
+      <% file = "#{Rails.root}/app/views/#{addon.path}/view/_show.html.erb" %>
+      <%= render file: file if File.exists?(file) %>
+    <% end %>
 
-  <% @model.addons.each do |addon| %>
-    <% file = "#{Rails.root}/app/views/#{addon.path}/view/_show.html.erb" %>
-    <%= render file: file if File.exists?(file) %>
-  <% end %>
-
-  <dl class="see">
-    <dt><%= @model.t :state %></dt>
-    <dd><%= @item.label :state %></dd>
-  </dl>
+    <dl class="column">
+      <dt><%= @model.t :state %></dt>
+      <dd><%= @item.label :state %></dd>
+    </dl>
+  </div>
 </div>

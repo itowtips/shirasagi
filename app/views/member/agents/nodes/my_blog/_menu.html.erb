@@ -1,6 +1,6 @@
 <%== render_mypage_navi current_node: @cur_node %>
 
-<nav class="nav-menu">
+<nav class="mypage-nav nav-menu">
   <% if params[:action] =~ /index/ %>
     <%= link_to "新規投稿", "#{@cur_node.url}new" %>
     <%= link_to "ブログ設定", "#{@cur_node.setting_url}edit" %>

@@ -1,4 +1,4 @@
-<dl class="see">
+<dl class="column">
   <dt><%= @model.t :image_id %></dt>
   <dd><%= f.file_field :in_image %></dd>
   <% if @item.image %>
@@ -9,10 +9,14 @@
       </label>
     </dd>
   <% end %>
+</dl>
 
+<dl class="column">
   <dt><%= @model.t :description %></dt>
   <dd><%= f.text_area :description %></dd>
+</dl>
 
+<dl class="column">
   <dt><%= @model.t :genres %></dt>
   <dd><%= f.text_area :genres %></dd>
 </dl>

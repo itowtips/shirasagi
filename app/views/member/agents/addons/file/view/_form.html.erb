@@ -16,7 +16,7 @@ $ ->
       $(this).remove() if id == $(this).find(".file-id").attr("value")
 <% end %>
 
-<dl class="see">
+<dl class="column">
   <dd class="wide">
     <%= f.hidden_field "file_ids[]", value: "" %>
     <%= link_to :upload, member_apis_temp_files_path(member: @cur_member.id), class: "ajax-box btn" %>

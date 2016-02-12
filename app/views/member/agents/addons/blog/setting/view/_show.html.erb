@@ -1,10 +1,14 @@
-<dl class="see">
+<dl class="column">
   <dt><%= @model.t :image_id %></dt>
   <dd><%= image_tag @item.thumb_url %></dd>
+</dl>
 
+<dl class="column">
   <dt><%= @model.t :description %></dt>
   <dd><%= @item.description %></dd>
+</dl>
 
+<dl class="column">
   <dt><%= @model.t :genres %></dt>
   <dd><%=br @item.genres.join("\n") %></dd>
 </dl>

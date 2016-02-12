@@ -1,34 +1,34 @@
-<dl class="see">
+<dl class="column">
   <dt><%= @model.t :name %></dt>
   <dd><%= f.text_field :name %></dd>
 </dl>
 
-<dl class="see">
+<dl class="column">
   <dt><%= @model.t :email %></dt>
   <dd><%= f.text_field :email %></dd>
 </dl>
 
-<dl class="see">
+<dl class="column">
   <dt><%= @model.t :kana %><span class="required"><%= t('views.required_field') %></span></dt>
   <dd><%= f.text_field :kana %></dd>
 </dl>
 
-<dl class="see">
+<dl class="column">
   <dt><%= @model.t :age %><span class="required"><%= t('views.required_field') %></span></dt>
   <dd><%= f.number_field :age %></dd>
 </dl>
 
-<dl class="see">
+<dl class="column">
   <dt><%= @model.t :address %><span class="required"><%= t('views.required_field') %></span></dt>
   <dd><%= f.text_field :address %></dd>
 </dl>
 
-<dl class="see">
+<dl class="column">
   <dt><%= @model.t :tel %></dt>
   <dd><%= f.text_field :tel %></dd>
 </dl>
 
-<dl class="see">
+<dl class="column">
   <dt><%= @model.t :interest_municipalities %></dt>
   <dd>
     <% Member::Node::CategoryArea.site(@cur_site).public.order_by(filename: 1).each do |c| %>
@@ -40,7 +40,7 @@
   </dd>
 </dl>
 
-<dl class="see">
+<dl class="column">
   <dt><%= @model.t :thought %></dt>
   <dd><%= f.text_area :thought %></dd>
 </dl>
