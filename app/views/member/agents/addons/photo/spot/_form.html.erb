@@ -11,10 +11,10 @@ $ ->
     <%= f.hidden_field "photo_ids[]", value: "" %>
     <%= link_to "ページを選択", member_apis_photos_path(@cur_site), class: "ajax-box btn" %>
 
-    <div id="selected-files">
-      <% @item.photos.each do |item| %>
-        <article class="file-view">
-          <%= hidden_field_tag "item[photo_ids][]", item.id, class: "photo-id" %>
+   <div id="selected-member-photos">
+      <% @item.member_photos.each do |item| %>
+        <article class="file-view member-photo">
+          <%= hidden_field_tag "item[member_photo_ids][]", item.id, class: "photo-id" %>
           <div class="thumb">
             <%= image_tag item.image.thumb_url %>
           </div>

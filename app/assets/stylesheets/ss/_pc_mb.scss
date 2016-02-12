@@ -896,6 +896,19 @@ footer.send {
     }
   }
 }
+#addon-member-agents-addons-photo-photo .see, #addon-member-agents-addons-photo-spot .see {
+  #selected-member-photos {
+    margin-top: 30px;
+    @include clear;
+    @include mb {
+      margin-top: 10px;
+    }
+  }
+}
+.file-view.member-photo .thumb img {
+  max-width: 120px;
+  max-height: 90px;
+}
 
 // -------------------------------------------------------------------------------------------------
 // category
