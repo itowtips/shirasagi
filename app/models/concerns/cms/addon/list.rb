@@ -189,10 +189,13 @@ module Cms::Addon::List
       end
 
       def template_variable_handler_img_src(item, name)
-        return nil unless item.html =~ /\<\s*?img\s+[^>]*\/?>/i
+        dummy_source = ERB::Util.html_escape("/assets/img/dummy.gif")
+
+        return dummy_source unless item.respond_to?(:html)
+        return dummy_source unless item.html =~ /\<\s*?img\s+[^>]*\/?>/i
 
         img_tag = $&
-        return nil unless img_tag =~ /src\s*=\s*(['"]?[^'"]+['"]?)/
+        return dummy_source unless img_tag =~ /src\s*=\s*(['"]?[^'"]+['"]?)/
 
         img_source = $1
         img_source = img_source[1..-1] if img_source.start_with?("'") || img_source.start_with?('"')

@@ -19,7 +19,7 @@ module Member::Addon::Blog
 
     public
       def thumb_url
-        image ? image.thumb_url : "/assets/img/member/no_image.png"
+        image ? image.thumb_url : "/assets/img/member/blog/dummy.png"
       end
 
     private
