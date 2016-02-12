@@ -13,7 +13,16 @@ describe Rss::ImportJob, dbscope: :example, http_server: true do
 
     it do
       expect { described_class.new.call(site.host, node.id, user.id) }.to change { Rss::Page.count }.from(0).to(5)
-      expect(Rss::Page.where(rss_link: "http://example.jp/rdf/1.html").first).not_to be_nil
+      item = Rss::Page.where(rss_link: "http://example.jp/rdf/1.html").first
+      expect(item).not_to be_nil
+      expect(item.name).to eq '記事1'
+      expect(item.rss_link).to eq "http://example.jp/rdf/1.html"
+      expect(item.html).to eq '本文1'
+      expect(item.released).to eq Time.zone.parse('2015-06-12T19:00:00+09:00')
+      expect(item.authors.count).to eq 1
+      expect(item.authors.first.name).to eq '鶴田 結衣'
+      expect(item.authors.first.email).to be_nil
+      expect(item.authors.first.uri).to be_nil
     end
   end
 
@@ -26,7 +35,16 @@ describe Rss::ImportJob, dbscope: :example, http_server: true do
 
     it do
       expect { described_class.new.call(site.host, node.id, user.id) }.to change { Rss::Page.count }.from(0).to(5)
-      expect(Rss::Page.where(rss_link: "http://example.jp/rss/1.html").first).not_to be_nil
+      item = Rss::Page.where(rss_link: "http://example.jp/rss/1.html").first
+      expect(item).not_to be_nil
+      expect(item.name).to eq '記事1'
+      expect(item.rss_link).to eq "http://example.jp/rss/1.html"
+      expect(item.html).to eq '本文1'
+      expect(item.released).to eq Time.zone.parse('2015-06-12T19:00:00+09:00')
+      expect(item.authors.count).to eq 1
+      expect(item.authors.first.name).to be_nil
+      expect(item.authors.first.email).to eq "momose_tomoka@example.com (百瀬 友香)"
+      expect(item.authors.first.uri).to be_nil
     end
   end
 
@@ -39,7 +57,16 @@ describe Rss::ImportJob, dbscope: :example, http_server: true do
 
     it do
       expect { described_class.new.call(site.host, node.id, user.id) }.to change { Rss::Page.count }.from(0).to(5)
-      expect(Rss::Page.where(rss_link: "http://example.jp/atom/1.html").first).not_to be_nil
+      item = Rss::Page.where(rss_link: "http://example.jp/atom/1.html").first
+      expect(item).not_to be_nil
+      expect(item.name).to eq '記事1'
+      expect(item.rss_link).to eq "http://example.jp/atom/1.html"
+      expect(item.html).to eq '本文1'
+      expect(item.released).to eq Time.zone.parse('2015-06-12T19:00:00+09:00')
+      expect(item.authors.count).to eq 1
+      expect(item.authors.first.name).to eq '臼井 杏'
+      expect(item.authors.first.email).to eq "usui_ann@example.com"
+      expect(item.authors.first.uri).to eq 'http://example.com/usui_ann'
     end
   end
 

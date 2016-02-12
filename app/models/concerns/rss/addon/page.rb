@@ -7,6 +7,7 @@ module Rss::Addon
       included do
         field :rss_link, type: String
         field :html, type: String
+        embeds_many :authors, class_name: "Rss::Author", as: :rss_author
         permit_params :rss_link, :html
       end
     end

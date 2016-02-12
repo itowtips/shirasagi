@@ -1,6 +1,12 @@
 <dl class="see mod-ezine-page-body">
   <dt><%= @model.t :rss_link %></dt>
   <dd><%= @item.rss_link %></dd>
+  <dt><%= @model.t :authors %></dt>
+  <dd>
+    <% if @item.authors.present? %>
+      <%= br(@item.authors.map { |author| [ author.name, author.email, author.uri ].compact.join(',') }.join("\n")) %>
+    <% end %>
+  </dd>
   <dt><%= @model.t :html %></dt>
   <dd><%= text_area_tag "mod-rss-page-body", @item.html, class: "monospace", style: "height: 400px;" %></dd>
 </dl>
