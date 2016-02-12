@@ -37,9 +37,9 @@ class Member::Photo
     member ? member.name : user.name
   end
 
-  def template_variable_handler_img_src(item, name)
-    return nil unless item.image
-    img_source = %(<img alt="#{item.image.name}" src="#{item.image.thumb_url}" \>)
+  def html
+    ## for loop html img summary
+    %(<img alt="#{name}" src="#{image.thumb_url}">) rescue ""
   end
 
   private
