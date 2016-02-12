@@ -11,7 +11,7 @@
   </thead>
   <tbody>
     <% @items.each do |item| %>
-    　<tr>
+      <tr>
         <td class="item name"><%= link_to item.name, "#{@cur_node.url}#{item.id}/" %></td>
         <td class="item datetime updated"><%=tryb { item.updated.strftime('%Y/%m/%d %H:%M') } %></td>
         <td class="item datetime released"><%=tryb { item.released.strftime('%Y/%m/%d %H:%M') } %></td>
@@ -22,7 +22,7 @@
             <%= item.label :state %>
           <% end %>
         </td>
-    　</tr>
+      </tr>
     <% end %>
   </tbody>
 </table>

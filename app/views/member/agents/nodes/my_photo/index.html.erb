@@ -11,12 +11,18 @@
   </thead>
   <tbody>
     <% @items.each do |item| %>
-    　<tr>
+      <tr>
         <td class="item name"><%= link_to item.name, "#{@cur_node.url}#{item.id}/" %></td>
-        <td class="item datetime created"><%= item.created.strftime('%Y/%m/%d %H:%M') %></td>
-        <td class="item datetime updated"><%= item.updated.strftime('%Y/%m/%d %H:%M') %></td>
-        <td class="item state"><%= item.label :state %></td>
-    　</tr>
+        <td class="item datetime updated"><%=tryb { item.updated.strftime('%Y/%m/%d %H:%M') } %></td>
+        <td class="item datetime released"><%=tryb { item.released.strftime('%Y/%m/%d %H:%M') } %></td>
+        <td class="item state">
+          <% if item.public? %>
+            <%= link_to item.label(:state), item.url %>
+          <% else %>
+            <%= item.label :state %>
+          <% end %>
+        </td>
+      </tr>
     <% end %>
   </tbody>
 </table>

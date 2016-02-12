@@ -1,3 +1,5 @@
+<%= render partial: "menu" %>
+
 <%= form_for :item, url: "#{@cur_node.url}/#{@item.id}", html: { method: :delete, multipart: true, class: "mypage-delete member-photo-page" } do |f| %>
   <%= error_messages_for :item %>
 
