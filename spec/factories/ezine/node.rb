@@ -1,9 +1,9 @@
 FactoryGirl.define do
-  factory :ezine_node, class: Cms::Node do
-    site_id { cms_site.id }
-    user_id { cms_user.id }
-    name 'title'
-    filename 'magazine'
-    route 'magazine'
+  factory :ezine_node, class: Ezine::Node::Page do
+    cur_site { cms_site }
+    cur_user { cms_user }
+    name { unique_id }
+    filename { unique_id }
+    route 'ezine/page'
   end
 end
