@@ -22,7 +22,17 @@ SS::Application.routes.draw do
     resources :test_members, concerns: :deletion
     resources :entries, concerns: :deletion
     resources :columns, concerns: :deletion
-    resources :backnumbers, concerns: :deletion
+    resources :backnumbers, only: [:index]
+
+    resources :member_pages, module: :member_page, controller: :main, concerns: :deletion do
+      get :delivery_confirmation, on: :member
+      get :delivery_test_confirmation, on: :member
+      get :sent_logs, on: :member
+      post :delivery, on: :member
+      post :delivery_test, on: :member
+      get :members, module: :member_page, controller: :members, action: :index, on: :collection
+    end
+    resources :category_nodes, concerns: :deletion
   end
 
   node "ezine" do
@@ -33,6 +43,11 @@ SS::Application.routes.draw do
     post "page/confirm.:format" => "public#confirm", cell: "nodes/form"
     get "page/verify(.:format)" => "public#verify", cell: "nodes/form"
     get "backnumber/(index.:format)" => "public#index", cell: "nodes/backnumber"
+
+    get "member_page/(index.:format)" => "public#index", cell: "nodes/member_page"
+
+    get "category_node/(index.:format)" => "public#index", cell: "nodes/category_node"
+    # get "category_node/rss.xml" => "public#rss", cell: "nodes/category_node", format: "xml"
   end
 
   page "ezine" do

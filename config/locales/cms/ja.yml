@@ -108,6 +108,12 @@ ja:
       state:
         enabled: 使用する
         disabled: 使用しない
+      member_state:
+        enabled: 有効
+        disabled: 無効
+      email_type:
+        text: テキスト
+        html: HTML
 
     sns_share:
       fb_like: Facebook いいね！
@@ -285,6 +291,7 @@ ja:
         name: 氏名
         email: メールアドレス
         email_again: メールアドレス（確認用）
+        email_type: メール形式
         in_password: パスワード
         in_password_again: パスワード（入力確認）
         oauth_type: OAuth Type

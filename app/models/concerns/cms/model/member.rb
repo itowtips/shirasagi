@@ -24,7 +24,9 @@ module Cms::Model::Member
     seqid :id
     field :name, type: String
     field :email, type: String
+    field :email_type, type: String
     field :password, type: String
+    field :state, type: String
     field :oauth_type, type: String
     field :oauth_id, type: String
     field :oauth_token, type: String
@@ -32,11 +34,13 @@ module Cms::Model::Member
     field :last_loggedin, type: DateTime
     field :verification_token, type: String
 
-    permit_params :name, :email, :email_again, :password, :in_password
+    permit_params :name, :email, :email_again, :email_type, :password, :in_password, :state
     permit_params interest_municipality_ids: []
 
     validates :email, email: true, length: { maximum: 80 }
     validates :email, uniqueness: { scope: :site_id }, presence: true, if: ->{ oauth_type.blank? }
+    validates :email_type, inclusion: { in: %w(text html) }
+    validates :password, presence: true, if: ->{ oauth_type.blank? && enabled? }
     validates :verification_token, uniqueness: { scope: :site_id }, allow_nil: true
     validate :validate_password, if: ->{ in_password.present? }
 
@@ -45,15 +49,29 @@ module Cms::Model::Member
 
     before_create :set_verification_token, if: ->{ oauth_type.blank? }
     after_create :send_verification_mail, if: ->{ oauth_type.blank? }
+
+    scope :and_enabled, -> { self.or({ state: 'enabled' }, { state: nil }) }
   end
 
   def encrypt_password
     self.password = SS::Crypt.crypt(in_password)
   end
 
+  def enabled?
+    state.nil? || state == 'enabled'
+  end
+
   # 本登録済みかどうか
   def authorized?
     self.verification_token.nil?
+  end
+
+  def email_type_options
+    %w(text html).map { |m| [ I18n.t("cms.options.email_type.#{m}"), m ] }.to_a
+  end
+
+  def state_options
+    %w(disabled enabled).map { |m| [ I18n.t("cms.options.member_state.#{m}"), m ] }.to_a
   end
 
   # 関連するデータの削除

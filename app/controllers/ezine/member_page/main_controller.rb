@@ -1,4 +1,4 @@
-class Ezine::PagesController < ApplicationController
+class Ezine::MemberPage::MainController < ApplicationController
   include Cms::BaseFilter
   include Cms::PageFilter
 
@@ -26,9 +26,13 @@ class Ezine::PagesController < ApplicationController
         page(params[:page]).per(50)
     end
 
-    def load_members(model)
-      @members = @cur_node.becomes_with_route.members_to_deliver(model).order_by(updated: -1)
+    def load_members(method = :members_to_deliver)
+      @members = @cur_node.becomes_with_route.send(method).order_by(updated: -1)
       @members_email = @members.reduce("") {|a, e| a += e.email + "\n"}
+    end
+
+    def load_test_members
+      load_members(:test_members_to_deliver)
     end
 
   public
@@ -40,7 +44,7 @@ class Ezine::PagesController < ApplicationController
       @crumbs << [:"ezine.deliver", action: :delivery_confirmation]
 
       set_item
-      load_members Ezine::Member
+      load_members
     end
 
     def delivery
@@ -48,14 +52,14 @@ class Ezine::PagesController < ApplicationController
 
       page = Ezine::Page.find(params[:id])
       SS::RakeRunner.run_async "ezine:deliver", "page_id=#{page.id}"
-      redirect_to({ action: :delivery_confirmation }, { notice: t("ezine.notice.delivered") })
+      redirect_to({ action: :show }, { notice: t("ezine.notice.delivered") })
     end
 
     def delivery_test_confirmation
       @crumbs << [:"ezine.deliver_test", action: :delivery_test_confirmation]
 
       set_item
-      load_members Ezine::TestMember
+      load_test_members
     end
 
     def delivery_test
@@ -63,7 +67,7 @@ class Ezine::PagesController < ApplicationController
 
       page = Ezine::Page.find(params[:id])
       page.deliver_to_test_members
-      redirect_to({ action: :delivery_test_confirmation }, { notice: t("ezine.notice.delivered_test") })
+      redirect_to({ action: :show }, { notice: t("ezine.notice.delivered_test") })
     end
 
     def sent_logs
@@ -73,7 +77,7 @@ class Ezine::PagesController < ApplicationController
 
       set_item
       @items = Ezine::SentLog.where(node_id: params[:cid], page_id: params[:id]).
-        order_by(created: -1).
-        page(params[:page]).per(50)
+          order_by(created: -1).
+          page(params[:page]).per(50)
     end
 end

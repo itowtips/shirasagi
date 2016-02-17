@@ -9,6 +9,9 @@ ja:
     sent_log: 配信ログ
     column: 登録項目
     required_field: 必須項目
+    member_page: 会員向けメルマガ
+    category_node: カテゴリ
+    member_page_member: 購読会員
 
     button:
       convert_html_to_text: HTML版を変換する
@@ -48,11 +51,14 @@ ja:
       ezine/data: 登録情報
       ezine/column_setting: 入力設定
       ezine/deliver_plan: 配信予約
+      ezine/subscription: 購読
 
   cms:
     nodes:
       ezine/page: 配信記事一覧
       ezine/backnumber: バックナンバー
+      ezine/member_page: 会員向けメール配信
+      ezine/category_node: カテゴリ
 
   mongoid:
     attributes:
@@ -101,6 +107,8 @@ ja:
         required: 必須入力
         additional_attr: 追加属性
         input_confirm: 入力確認
+      ezine/addon/subscription:
+        subscription_ids: 購読メルマガ
 
   tooltip:
     ezine/addon/signature:
