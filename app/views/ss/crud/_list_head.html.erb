@@ -1,9 +1,11 @@
+<% removable = true if removable.nil? %>
 <div class="list-head">
+  <% if removable %>
   <label class="check"><input type="checkbox" /></label>
-
   <div class="list-head-action">
     <button class="destroy-all btn"><%= t :"views.links.delete" %></button>
   </div>
+  <% end %>
 
   <% @s = OpenStruct.new params[:s] %>
   <div class="list-head-search">
