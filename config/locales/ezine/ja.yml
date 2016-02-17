@@ -37,6 +37,9 @@ ja:
       email_type:
         text: テキスト版
         html: HTML版
+      subscription_constraint:
+        non_required: ""
+        required: 必須購読
     state:
       enabled: 配信する
       disabled: 配信しない
@@ -52,6 +55,7 @@ ja:
       ezine/column_setting: 入力設定
       ezine/deliver_plan: 配信予約
       ezine/subscription: 購読
+      ezine/subscription_constraint: 購読制約
 
   cms:
     nodes:
@@ -109,6 +113,8 @@ ja:
         input_confirm: 入力確認
       ezine/addon/subscription:
         subscription_ids: 購読メルマガ
+      ezine/addon/subscription_constraint:
+        subscription_constraint: 制約
 
   tooltip:
     ezine/addon/signature:

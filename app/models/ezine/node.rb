@@ -35,6 +35,7 @@ module Ezine::Node
     include Cms::Addon::Meta
     include Ezine::Addon::Signature
     include Ezine::Addon::SenderAddress
+    include Ezine::Addon::SubscriptionConstraint
     include Cms::Addon::PageList
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
