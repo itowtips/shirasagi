@@ -19,4 +19,18 @@ module Board::Node
 
     default_scope ->{ where(route: "board/post") }
   end
+
+  class AnpiPost
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    # include Board::Addon::List
+    include Cms::Addon::Captcha
+    include Board::Addon::AnpiPostSetting
+    # include Board::Addon::FileSetting
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "board/anpi_post") }
+  end
 end

@@ -18,6 +18,7 @@ SS::Application.routes.draw do
   content "board" do
     get "/" => redirect { |p, req| "#{req.path}/posts" }, as: :main
     resources :posts, concerns: [:deletion, :download, :reply]
+    resources :anpi_posts, concerns: [:deletion, :download]
   end
 
   node "board" do
@@ -32,8 +33,11 @@ SS::Application.routes.draw do
 
     get "post/search" => "public#search", cell: "nodes/post"
 
-    #get "post/:parent_id(index.:format)" => "public#show", cell: "nodes/post"             #post show
-    #get "post/:parent_id/:comment_id(index.:format)" => "public#show", cell: "nodes/post" #comment show
+    get "anpi_post/(index.:format)" => "public#index", cell: "nodes/anpi_post"
+    get "anpi_post/new" => "public#new", cell: "nodes/anpi_post"
+    post "anpi_post/create" => "public#create", cell: "nodes/anpi_post"
+    get "anpi_post/search" => "public#search", cell: "nodes/anpi_post"
+    post "anpi_post/search" => "public#search", cell: "nodes/anpi_post"
   end
 
 end
