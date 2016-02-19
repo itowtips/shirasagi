@@ -17,6 +17,8 @@ module Member::Part
 
     default_scope ->{ where(route: "member/blog_page") }
 
+    template_variable_handler :contributor, :template_variable_handler_contributor
+
     public
       def condition_hash(opts = {})
         cond = []
@@ -27,6 +29,11 @@ module Member::Part
         #cids << id
         #cond_url = conditions
         { '$or' => cond }
+      end
+
+    private
+      def template_variable_handler_contributor(item, name)
+        item.contributor
       end
   end
 
