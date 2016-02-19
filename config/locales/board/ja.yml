@@ -12,6 +12,8 @@ ja:
       new: 新規投稿
       search: 検索
       unlimited: 制限なし
+      gps_position: 現在位置を取得する
+      marker_clear: マーカーをクリアする
 
     errors:
       not_same_delete_key: 削除キーが違います。
@@ -70,6 +72,7 @@ ja:
       board/post_setting: 投稿設定
       board/file_setting: 添付ファイル設定
       board/anpi_post_setting: 安否投稿設定
+      board/map_point: 地図
 
   cms:
     nodes:
@@ -135,6 +138,8 @@ ja:
         email: メールアドレス
         text: メッセージ
         delete_key: 削除キー
+      board/addon/map_point:
+        point: 位置
 
   tooltip:
     board/addon/list:

@@ -44,17 +44,17 @@ class Board::AnpiPostsController < ApplicationController
       render_create @item.save, location: { action: :index }
     end
 
-    def new_reply
-      @item = @model.new
-      raise "403" unless @item.allowed?(:edit, @cur_user, site: @cur_site, node: @cur_node)
-      @item.name = "Re:#{@topic.name}"
-    end
-
-    def reply
-      @item = @model.new get_params
-      raise "403" unless @item.allowed?(:edit, @cur_user, site: @cur_site, node: @cur_node)
-      render_create @item.save, location: { action: :index }, render: { file: :new_reply }
-    end
+    # def new_reply
+    #   @item = @model.new
+    #   raise "403" unless @item.allowed?(:edit, @cur_user, site: @cur_site, node: @cur_node)
+    #   @item.name = "Re:#{@topic.name}"
+    # end
+    #
+    # def reply
+    #   @item = @model.new get_params
+    #   raise "403" unless @item.allowed?(:edit, @cur_user, site: @cur_site, node: @cur_node)
+    #   render_create @item.save, location: { action: :index }, render: { file: :new_reply }
+    # end
 
     def download
       raise "403" unless @model.allowed?(:read, @cur_user, site: @cur_site, node: @cur_node)

@@ -1,5 +1,6 @@
 class Board::AnpiPost
   include Board::Model::AnpiPost
+  include Board::Addon::MapPoint
   include SS::Reference::Site
   include Cms::Reference::Node
   include SS::Reference::User

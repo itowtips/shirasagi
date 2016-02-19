@@ -8,27 +8,24 @@ module Board::Model::AnpiPost
     store_in collection: "board_anpi_posts"
 
     seqid :id
-    # –¼
+    # æ°å
     field :name, type: String
-    # –¼i‚©‚Èj
+    # æ°åï¼ˆã‹ãªï¼‰
     field :kana, type: String
-    # “d˜b”Ô†
+    # é›»è©±ç•ªå·
     field :tel, type: String
-    # ZŠ
+    # ä½æ‰€
     field :addr, type: String
-    # «•Ê
+    # æ€§åˆ¥
     field :sex, type: String
-    # ”N—î
+    # å¹´é½¢
     field :age, type: Integer
-    # ƒ[ƒ‹ƒAƒhƒŒƒX
+    # ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
     field :email, type: String
-    # ƒƒbƒZ[ƒW
+    # ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
     field :text, type: String
-    # ’n}ã‚Ìƒ|ƒCƒ“ƒg
-    field :point, type: Map::Extensions::Point
 
     permit_params :name, :kana, :tel, :addr, :sex, :age, :email, :text
-    permit_params :point
   end
 
   public
