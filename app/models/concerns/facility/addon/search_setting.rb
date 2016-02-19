@@ -5,7 +5,7 @@ module Facility::Addon
     include Cms::Addon::List::Model
 
     included do
-      field :limit, type: Integer, default: 100
+      field :limit, type: Integer, default: 100, overwrite: true
       field :map_points_limit, type: Integer, default: 0
       field :search_html, type: String
 

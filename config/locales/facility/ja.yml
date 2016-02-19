@@ -129,6 +129,7 @@ ja:
   job:
     models:
       facility/import_job: 施設情報インポート
+      facility/sync_institutions_job: 電子連絡帳連携
 
   tooltip:
     facility/addon/body:
