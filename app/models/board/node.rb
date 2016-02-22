@@ -13,6 +13,7 @@ module Board::Node
     include Cms::Addon::Captcha
     include Board::Addon::PostSetting
     include Board::Addon::FileSetting
+    include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 
