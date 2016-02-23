@@ -90,17 +90,34 @@ module Member::Node
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
-    include Cms::Addon::PageList
+    include Cms::Addon::NodeList
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 
+    template_variable_handler "description", :template_variable_handler_description
+    template_variable_handler "contributor", :template_variable_handler_contributor
+
     default_scope ->{ where(route: "member/blog") }
 
     public
+      def sort_hash
+        return { created: -1 } if sort.blank?
+        super
+      end
+
       def layout_options
         Member::BlogLayout.where(filename: /^#{filename}\//).
           map { |item| [item.name, item.id] }
+      end
+
+    private
+      def template_variable_handler_description(item, name)
+        item.description
+      end
+
+      def template_variable_handler_contributor(item, name)
+        item.contributor
       end
   end
 
@@ -117,6 +134,11 @@ module Member::Node
     before_validation ->{ self.page_layout = layout }
 
     public
+      def html
+        ## for loop html img summary
+        %(<img alt="#{name}" src="#{thumb_url}">) rescue ""
+      end
+
       def pages
         Member::BlogPage.where(filename: /^#{filename}\//, depth: depth + 1).public
       end

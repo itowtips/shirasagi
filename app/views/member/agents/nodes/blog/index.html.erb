@@ -1,13 +1,5 @@
 <div class="member-blogs blogs">
-  <% @items.each do |item| %>
-    <article class="blog thumb">
-      <%= image_tag item.thumb_url, class: :thumb %>
-      <header><h2><%= link_to item.name, item.url %></h2></header>
-      <div class="description">
-        <%= item.description %>
-      </div>
-    </article>
-  <% end %>
+<%= render_blog_list %>
 </div>
 
 <%= paginate @items if @items.try(:current_page) %>

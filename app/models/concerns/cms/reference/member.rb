@@ -12,6 +12,13 @@ module Cms::Reference
       scope :member, ->(member) { where(member_id: member.id) }
     end
 
+    public
+      def contributor
+        member ? member.name : user.name
+      rescue
+        nil
+      end
+
     private
       def set_member_id
         self.member_id ||= @cur_member.id

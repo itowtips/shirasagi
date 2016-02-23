@@ -33,10 +33,6 @@ class Member::Photo
     ]
   end
 
-  def contributor
-    member ? member.name : user.name
-  end
-
   def html
     ## for loop html img summary
     %(<img alt="#{name}" src="#{image.thumb_url}">) rescue ""
