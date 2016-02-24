@@ -4,6 +4,11 @@ class Member::Agents::Nodes::MypageController < ApplicationController
 
   public
     def index
+      if @cur_node.html.present?
+        render
+        return
+      end
+
       child = @cur_node.children.first
 
       raise "404" unless child

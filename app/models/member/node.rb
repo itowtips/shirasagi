@@ -27,7 +27,7 @@ module Member::Node
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
-    include Cms::Addon::PageList
+    include Cms::Addon::Html
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
