@@ -3,6 +3,8 @@
 
 <%= coffee do %>
 $ ->
+  SS_AddonTabs.hide(".mod-member-photo")
+
   @insertContent = (cont) ->
     if (typeof tinymce) != "undefined"
       tinymce.get("item_html").execCommand("mceInsertContent", false, cont)
