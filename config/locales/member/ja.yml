@@ -26,7 +26,6 @@ ja:
     view:
       email: メールアドレス
       password: パスワード
-      in_password_again: パスワード（入力確認）
       new_password: 新しいパスワード
       new_password_again: 新しいパスワード（入力確認）
     button:
@@ -34,7 +33,9 @@ ja:
       back: 戻る
       confirm: 確認画面へ
       leave: 退会する
+      send: 送信する
       change_password: パスワードを変更
+      resend_confirmation_mail: 確認メールを再送
     links:
       blog_setting: ブログ設定
 
@@ -57,7 +58,6 @@ ja:
       member/photo/location: 地域
       member/photo/map: 地図
       member/photo/spot: フォト
-      member/photo/slide: フォトスライド
       member/photo/photo: フォトライブラリ
       member/registration/sender_address: 送信者設定
       member/registration/reply: 登録確認メール
@@ -125,11 +125,14 @@ ja:
       member/photo:
         listable_state: 一覧及び検索結果への表示
         slideable_state: スライドへの表示
+        image: 画像
         image_id: 画像
         caption: キャプション
         photo_categories: タグ
         photo_locations: 地域
         map_points: 地図
+        contributor: 投稿者
+        keyword: キーワード
       member/addon/registration/sender_address:
         sender_name: 送信者名
         sender_email: 送信メールアドレス
@@ -161,7 +164,8 @@ ja:
     delete_private_member_photos: メンバーフォトの削除（所有）
     release_other_member_photos: メンバーフォトの公開（全て）
     release_private_member_photos: メンバーフォトの公開（所有）
-
+    approve_other_member_photos: メンバーフォトの承認（全て）
+    approve_private_member_photos: メンバーフォトの承認（所有）
 
   views:
     registration:

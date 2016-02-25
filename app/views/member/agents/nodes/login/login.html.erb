@@ -29,6 +29,13 @@
         <dd><%= password_field :item, :password %></dd>
       </dl>
 
+      <% registration_node = Member::Node::Registration.first %>
+      <% if registration_node %>
+        <div class="reset_password">
+          <%= simple_format I18n.t("views.reset_password.link_text_html", reset_password_url: "#{registration_node.url}reset_password/") %>
+        </div>
+      <% end %>
+
       <div class="send">
         <%= submit_tag t("views.login"), name: :login %>
       </div>
