@@ -6,17 +6,22 @@ class Member::Agents::Nodes::BlogController < ApplicationController
   helper Cms::ListHelper
   helper Member::BlogPageHelper
 
+  private
+    def pages
+      @model.site(@cur_site).node(@cur_node).public.
+        where(@cur_node.condition_hash)
+    end
+
   public
     def index
-      @items = @model.site(@cur_site).node(@cur_node).public.
-        where(@cur_node.condition_hash).
+      @items = pages.
         order_by(@cur_node.sort_hash).
         page(params[:page]).
         per(@cur_node.limit)
     end
 
     def rss
-      @pages = @item.pages.public.
+      @pages = pages.
         order_by(@cur_node.sort_hash).
         limit(@cur_node.limit)
 

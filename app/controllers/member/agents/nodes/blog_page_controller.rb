@@ -6,20 +6,9 @@ class Member::Agents::Nodes::BlogPageController < ApplicationController
   helper Member::BlogPageHelper
   after_action :render_blog_layout
 
-  public
-    def index
-      @items = @model.site(@cur_site).node(@cur_node).public.
-        search(params).
-        order_by(released: -1).
-        page(params[:page]).per(50)
-    end
-
-    def rss
-      @pages = @item.pages.public.
-        order_by(released: -1).
-        limit(@cur_node.limit)
-
-      render_rss @cur_node, @pages
+  private
+    def pages
+      @model.site(@cur_site).node(@cur_node).public
     end
 
     def render_blog_layout
@@ -32,5 +21,21 @@ class Member::Agents::Nodes::BlogPageController < ApplicationController
         view_context.render_blog_template(name, node: node) || m
       end
       @cur_node.layout = layout
+    end
+
+  public
+    def index
+      @items = pages.
+        search(params).
+        order_by(released: -1).
+        page(params[:page]).per(3)
+    end
+
+    def rss
+      @pages = pages.
+        order_by(released: -1).
+        limit(50)
+
+      render_rss @cur_node, @pages
     end
 end
