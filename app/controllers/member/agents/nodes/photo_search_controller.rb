@@ -12,8 +12,9 @@ class Member::Agents::Nodes::PhotoSearchController < ApplicationController
       @items = @model.site(@cur_site).public.
         listable.
         contents_search(@query).
-        order_by(released: -1).
-        page(params[:page]).per(@cur_node.limit)
+        order_by(@cur_node.sort_hash).
+        page(params[:page]).
+        per(@cur_node.limit)
     end
 
     def map
@@ -21,8 +22,9 @@ class Member::Agents::Nodes::PhotoSearchController < ApplicationController
         listable.
         where(:map_points.exists => true).
         contents_search(@query).
-        order_by(released: -1).
-        page(params[:page]).per(@cur_node.limit)
+        order_by(@cur_node.sort_hash).
+        page(params[:page]).
+        per(@cur_node.limit)
       @markers = @items.map { |item| item.map_points }.flatten
     end
 

@@ -34,7 +34,7 @@ class Member::Agents::Nodes::BlogPageController < ApplicationController
     def rss
       @pages = pages.
         order_by(released: -1).
-        limit(50)
+        limit(100)
 
       render_rss @cur_node, @pages
     end

@@ -47,11 +47,13 @@ SS::Application.routes.draw do
     get "blog_page/rss.xml" => "public#rss", cell: "nodes/blog_page", format: "xml"
 
     get "photo/(index.:format)" => "public#index", cell: "nodes/photo"
+    get "photo/rss.xml" => "public#rss", cell: "nodes/photo", format: "xml"
     get "photo_search/(index.:format)" => "public#index", cell: "nodes/photo_search"
     get "photo_search/map.html" => "public#map", cell: "nodes/photo_search"
     get "photo_category/(index.:format)" => "public#index", cell: "nodes/photo_category"
     get "photo_location/(index.:format)" => "public#index", cell: "nodes/photo_location"
     get "photo_spot/(index.:format)" => "public#index", cell: "nodes/photo_spot"
+    get "photo_spot/rss.xml" => "public#rss", cell: "nodes/photo_spot", format: "xml"
 
     ## mypage contents
     get "my_profile(index.:format)" => "public#index", cell: "nodes/my_profile"

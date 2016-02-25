@@ -5,17 +5,23 @@ class Member::Agents::Nodes::PhotoSpotController < ApplicationController
 
   helper Cms::ListHelper
 
+  private
+    def pages
+      @model.site(@cur_site).public.
+        where(@cur_node.condition_hash)
+    end
+
   public
     def index
-      @items = @model.site(@cur_site).public.
-        order_by(released: -1).
-        page(params[:page]).per(50)
+      @items = pages.
+        page(params[:page]).
+        per(@cur_node.limit)
     end
 
     def rss
-      @pages = @item.pages.public.
-        order_by(released: -1).
-        limit(@cur_node.limit)
+      @pages = pages.
+        page(params[:page]).
+        per(@cur_node.limit)
 
       render_rss @cur_node, @pages
     end
