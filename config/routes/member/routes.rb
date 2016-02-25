@@ -27,6 +27,7 @@ SS::Application.routes.draw do
     resources :photo_categories, concerns: :deletion
     resources :photo_locations, concerns: :deletion
     resources :photo_spots, concerns: :deletion
+    resources :registrations, concerns: :deletion
   end
 
   node "member" do
