@@ -8,8 +8,8 @@
   </div>
   <div class="action paste">
     <%
-      content = link_to(@item.image.url, class: "ajax-box member-photo", onclick: "return false;") do
-        image_tag(@item.image.thumb_url.sub(/\/thumb\//, "/thumb/detail/"), onerror: '$(this).parent("a").hide();')
+      content = link_to(@item.image.url, alt: @item.name, class: "ajax-box member-photo", onclick: "return false;") do
+        image_tag(@item.image.thumb_url.sub(/\/thumb\//, "/thumb/detail/"), alt: @item.name, onerror: '$(this).parent("a").hide();')
       end
     %>
     <%= link_to :"sns.image_paste", "#", :onclick => "insertContent('#{escape_javascript(content)}'); return false;" %>
