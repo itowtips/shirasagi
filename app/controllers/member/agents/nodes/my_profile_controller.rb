@@ -47,8 +47,7 @@ class Member::Agents::Nodes::MyProfileController < ApplicationController
         return
       end
 
-      # TODO: 会員に紐付いている他のデータを削除する
-
+      @item.delete_leave_member_data(@cur_site)
       clear_member
       @item.destroy
     end
