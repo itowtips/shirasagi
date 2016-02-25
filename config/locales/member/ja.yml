@@ -26,6 +26,7 @@ ja:
     view:
       email: メールアドレス
       password: パスワード
+      in_password_again: パスワード（入力確認）
       new_password: 新しいパスワード
       new_password_again: 新しいパスワード（入力確認）
     button:
@@ -58,10 +59,14 @@ ja:
       member/photo/spot: フォト
       member/photo/slide: フォトスライド
       member/photo/photo: フォトライブラリ
+      member/registration/sender_address: 送信者設定
+      member/registration/reply: 登録確認メール
+      member/registration/reset_password_mail: パスワード再設定メール
 
   cms:
     nodes:
       member/login: ログイン
+      member/registration: 会員登録
       member/mypage: マイページ
       member/my_profile: プロフィール
       member/my_blog: マイブログ
@@ -125,6 +130,19 @@ ja:
         photo_categories: タグ
         photo_locations: 地域
         map_points: 地図
+      member/addon/registration/sender_address:
+        sender_name: 送信者名
+        sender_email: 送信メールアドレス
+      member/addon/registration/reply:
+        subject: 件名
+        reply_upper_text: 上部確認テキスト
+        reply_lower_text: 下部確認テキスト
+        reply_signature: 署名
+      member/addon/registration/reset_password_mail:
+        reset_password_subject: 件名
+        reset_password_upper_text: 上部確認テキスト
+        reset_password_lower_text: 下部確認テキスト
+        reset_password_signature: 署名
 
   cms_role:
     read_other_member_blogs: メンバーブログの閲覧（全て）
@@ -143,6 +161,40 @@ ja:
     delete_private_member_photos: メンバーフォトの削除（所有）
     release_other_member_photos: メンバーフォトの公開（全て）
     release_private_member_photos: メンバーフォトの公開（所有）
+
+
+  views:
+    registration:
+      confirm_email_address: |-
+        %{sender_email} からメールが届きます。
+        迷惑メールの防止のためメールの受信設定を行っている方は、「 %{sender_domain} 」からのメールが受信できるように、ドメイン指定受信の設定を行ってください。
+      verify_email_address_html: |-
+        %{sender_email} から登録案内メールに %{email} に送りました。
+        メールに記載の案内を読み、登録を完了してください。
+        しばらく待ってもメールが届かない場合は、%{sender_email} からのメールが着信拒否されていないか確認の上、<a href="%{resend_url}" target="_blank">こちら</a>から登録案内メールを再送信してください。
+    reset_password:
+      link_text_html: |-
+        パスワードをお忘れの場合は、<a href="%{reset_password_url}" target="_blank">こちら</a>のリンクからパスワードを再設定してください。
+      description: |-
+        ご登録されている以下のメールアドレスにパスワードの再設定用のURLをお送りします。
+  notice:
+    password_changed: パスワードを変更しました。
+    resend_confirmation_mail: 確認メールを再送しました。
+    send_reset_password_mail: パスワードの再設定メールを送信しました。
+
+  errors:
+    messages:
+      not_input: を入力してください。
+      input_again: をもう一度入力してください。
+      mismatch: が一致しません。
+      not_registerd: は登録されていません。
+      already_registerd: は、確認済みです。
+      password_short: は6文字以上にしてください。
+      password_alphabet_only: に英字のみの文字は使用できません。
+      password_numeric_only: に数字のみの文字は使用できません。
+      password_include_email: にメールアドレスが含まれています。
+      password_include_name: に氏名が含まれています。
+      password_include_kana: によみがなが含まれています。
 
   tooltip:
     member/addon/redirection:

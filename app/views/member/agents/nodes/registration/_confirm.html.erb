@@ -1,0 +1,18 @@
+<div class="columns">
+  <dl class="colum">
+    <dt><%= @item.class.t :name %></dt>
+    <dd>
+      <%= @item.name %>
+      <%= f.hidden_field :name, value: @item.name %>
+    </dd>
+
+    <dt><%= @item.class.t :email %></dt>
+    <dd>
+      <%= @item.email %>
+      <%= f.hidden_field :email, value: @item.email %>
+    </dd>
+  </dl>
+  <div class="confirm_email_address">
+    <%= simple_format(h I18n.t("views.registration.confirm_email_address", sender_email: @cur_node.sender_email, sender_domain: @cur_node.sender_email.match(/@(.+)$/))) %>
+  </div>
+</div>

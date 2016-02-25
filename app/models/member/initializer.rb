@@ -3,6 +3,9 @@ module Member
     # login node
     Cms::Node.plugin "member/login"
 
+    # registration node
+    Cms::Node.plugin "member/registration"
+
     # mypage nodes
     Cms::Node.plugin "member/mypage"
     Cms::Node.plugin "member/my_profile"

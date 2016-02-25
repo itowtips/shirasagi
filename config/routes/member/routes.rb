@@ -73,6 +73,20 @@ SS::Application.routes.draw do
 
     get "my_photo(index.:format)" => "public#index", cell: "nodes/my_photo"
     resources :my_photo, controller: "public", cell: "nodes/my_photo", except: :index
+
+    ## registration
+    get "registration/(index.html)" => "public#new", cell: "nodes/registration"
+    match "registration/new.html" => "public#new", cell: "nodes/registration", via: [:get, :post]
+    post "registration/confirm.html" => "public#confirm", cell: "nodes/registration"
+    post "registration/interim.:format" => "public#interim", cell: "nodes/registration"
+    get "registration/verify(.:format)" => "public#verify", cell: "nodes/registration"
+    post "registration/registration.:format" => "public#registration", cell: "nodes/registration"
+    get "registration/send_again(.:format)" => "public#send_again", cell: "nodes/registration"
+    post "registration/resend_confirmation_mail(.:format)" => "public#resend_confirmation_mail", cell: "nodes/registration"
+    get "registration/reset_password(.:format)" => "public#reset_password", cell: "nodes/registration"
+    post "registration/confirm_reset_password(.:format)" => "public#confirm_reset_password", cell: "nodes/registration"
+    get "registration/change_password(.:format)" => "public#change_password", cell: "nodes/registration"
+    post "registration/confirm_password(.:format)" => "public#confirm_password", cell: "nodes/registration"
   end
 
   page "member" do

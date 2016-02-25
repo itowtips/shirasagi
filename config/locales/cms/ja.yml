@@ -284,7 +284,9 @@ ja:
       cms/model/member:
         name: 氏名
         email: メールアドレス
+        email_again: メールアドレス（確認用）
         in_password: パスワード
+        in_password_again: パスワード（入力確認）
         oauth_type: OAuth Type
         oauth_id: OAuth ID
         oauth_token: OAuth トークン
