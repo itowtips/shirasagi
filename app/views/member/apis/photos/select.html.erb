@@ -6,6 +6,14 @@
   <div class="name">
     <%= @item.name %>
   </div>
+  <div class="action paste">
+    <%
+      content = link_to(@item.image.url, class: "ajax-box member-photo", onclick: "return false;") do
+        image_tag(@item.image.thumb_url.sub(/\/thumb\//, "/thumb/detail/"), onerror: '$(this).parent("a").hide();')
+      end
+    %>
+    <%= link_to :"sns.image_paste", "#", :onclick => "insertContent('#{escape_javascript(content)}'); return false;" %>
+  </div>
   <div class="action delete">
     <%= link_to t("views.button.delete"), "#", :onclick => "deleteContent('#{@item.id}'); return false;" %>
   </div>

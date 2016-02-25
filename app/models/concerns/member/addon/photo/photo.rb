@@ -1,5 +1,5 @@
 module Member::Addon::Photo
-  module Spot
+  module Photo
     extend ActiveSupport::Concern
     extend SS::Addon
 

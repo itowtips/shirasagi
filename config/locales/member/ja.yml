@@ -57,6 +57,7 @@ ja:
       member/photo/map: 地図
       member/photo/spot: フォト
       member/photo/slide: フォトスライド
+      member/photo/photo: フォトライブラリ
 
   cms:
     nodes:
