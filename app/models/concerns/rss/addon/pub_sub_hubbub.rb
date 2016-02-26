@@ -9,7 +9,13 @@ module Rss::Addon
       field :lease_seconds, type: Integer
       field :secret, type: String
       field :rss_max_docs, type: Integer
-      permit_params :hub_url, :topic_urls, :lease_seconds, :secret, :rss_max_docs
+      field :page_state, type: String
+      permit_params :hub_url, :topic_urls, :lease_seconds, :secret, :rss_max_docs, :page_state
+      validates :page_state, inclusion: { in: %w(public closed) }, if: ->{ page_state.present? }
+    end
+
+    def page_state_options
+      %w(public closed).map { |value| [I18n.t("views.options.state.#{value}"), value] }
     end
 
     def callback_url

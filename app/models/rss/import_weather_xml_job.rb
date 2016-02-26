@@ -1,6 +1,11 @@
 require 'rss'
 
-class Rss::ImportFromFileJob < Rss::ImportBase
+class Rss::ImportWeatherXmlJob < Rss::ImportBase
+  def initialize(*args)
+    super
+    set_model Rss::WeatherXmlPage
+  end
+
   private
     def before_import(host, node, user, file)
       super
@@ -26,5 +31,29 @@ class Rss::ImportFromFileJob < Rss::ImportBase
     def gc_rss_tempfile
       return if rand(100) >= 20
       Rss::TempFile.lt(updated: 2.weeks.ago).destroy_all
+    end
+
+    def import_rss_item(*args)
+      page = super
+      return page if page.nil? || page.invalid?
+
+      content = download(page.rss_link)
+      return page if content.nil?
+
+      page.xml = content
+      page.save!
+      page
+    end
+
+    def download(url)
+      uri = URI.parse(url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true if uri.scheme == 'https'
+      req = Net::HTTP::Get.new(uri.path)
+      res = http.request(req)
+      return nil if res.code != '200'
+      res.body
+    rescue
+      nil
     end
 end

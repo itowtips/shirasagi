@@ -9,4 +9,6 @@
   <dd><%= f.text_field :secret %></dd>
   <dt><%= @model.t :rss_max_docs %><%= @model.tt :rss_max_docs %></dt>
   <dd><%= f.number_field :rss_max_docs %></dd>
+  <dt><%= @model.t :page_state %><%= @model.tt :page_state %></dt>
+  <dd><%= f.select :page_state, @item.page_state_options, include_blank: true %></dd>
 </dl>

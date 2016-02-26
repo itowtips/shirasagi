@@ -3,10 +3,22 @@
 
   <section class="main-box">
     <header><h2><%= t("rss.views.confirm.unsubscribe") %></h2></header>
+    <dl class="see">
+      <dt><%= @model.t :callback_url %></dt>
+      <dd><%= @cur_node.callback_url %></dd>
+      <dt><%= @model.t :hub_url %></dt>
+      <dd><%= @cur_node.hub_url %></dd>
+      <dt><%= @model.t :topic_urls %></dt>
+      <dd><%= br(@cur_node.topic_urls.join("\n")) %></dd>
+      <dt><%= @model.t :lease_seconds %></dt>
+      <dd><%= @cur_node.lease_seconds %></dd>
+      <dt><%= @model.t :rss_max_docs %></dt>
+      <dd><%= @cur_node.rss_max_docs %></dd>
+    </dl>
   </section>
 
   <footer class="send">
     <%= f.submit t("rss.views.button.unsubscribe"), class: :save %>
-    <%= f.button t("views.button.cancel"), type: :reset, onclick: "location.href='#{url_for(action: :index)}'; return false;" %>
+    <%= f.button t("views.button.cancel"), type: :reset, onclick: "location.href='#{node_conf_path}'; return false;" %>
   </footer>
 <% end %>

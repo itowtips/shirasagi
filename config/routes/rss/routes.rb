@@ -18,6 +18,7 @@ SS::Application.routes.draw do
       match :subscribe, via: [:get, :post], on: :collection
       match :unsubscribe, via: [:get, :delete], on: :collection
     end
+    resources :weather_xmls, concerns: [:deletion]
   end
 
   node "rss" do
@@ -26,6 +27,10 @@ SS::Application.routes.draw do
     get "pub_sub_hubbub/(index.:format)" => "public#index", cell: "nodes/pub_sub_hubbub"
     get "pub_sub_hubbub/subscriber(.:format)" => "public#confirmation", cell: "nodes/pub_sub_hubbub"
     post "pub_sub_hubbub/subscriber(.:format)" => "public#subscription", cell: "nodes/pub_sub_hubbub"
+
+    get "weather_xml/(index.:format)" => "public#index", cell: "nodes/weather_xml"
+    get "weather_xml/subscriber(.:format)" => "public#confirmation", cell: "nodes/weather_xml"
+    post "weather_xml/subscriber(.:format)" => "public#subscription", cell: "nodes/weather_xml"
   end
 
   page "rss" do

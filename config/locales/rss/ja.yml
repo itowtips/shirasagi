@@ -4,12 +4,12 @@ ja:
 
     views:
       links:
-        subscribe: 購読
-        unsubscribe: 購読解除
+        subscribe: 購読する
+        unsubscribe: 購読解除する
       confirm:
         import: 取り込みますが、よろしいですか？
-        subscribe: 購読しますが、よろしいですか？
-        unsubscribe: 購読解除しますが、よろしいですか？
+        subscribe: 購読リクエストを送りますが、よろしいですか？
+        unsubscribe: 購読リクエストを送りますが、よろしいですか？
       button:
         import: 取込
         subscribe: 購読
@@ -53,6 +53,7 @@ ja:
         lease_seconds: Lease秒
         secret: HMAC Key
         rss_max_docs: 最大保存件数
+        page_state: ページステータス
 
   job:
     models:

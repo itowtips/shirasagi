@@ -23,6 +23,7 @@ describe Rss::ImportJob, dbscope: :example, http_server: true do
       expect(item.authors.first.name).to eq '鶴田 結衣'
       expect(item.authors.first.email).to be_nil
       expect(item.authors.first.uri).to be_nil
+      expect(item.state).to eq 'public'
     end
   end
 
@@ -45,6 +46,7 @@ describe Rss::ImportJob, dbscope: :example, http_server: true do
       expect(item.authors.first.name).to be_nil
       expect(item.authors.first.email).to eq "momose_tomoka@example.com (百瀬 友香)"
       expect(item.authors.first.uri).to be_nil
+      expect(item.state).to eq 'public'
     end
   end
 
@@ -67,6 +69,7 @@ describe Rss::ImportJob, dbscope: :example, http_server: true do
       expect(item.authors.first.name).to eq '臼井 杏'
       expect(item.authors.first.email).to eq "usui_ann@example.com"
       expect(item.authors.first.uri).to eq 'http://example.com/usui_ann'
+      expect(item.state).to eq 'public'
     end
   end
 

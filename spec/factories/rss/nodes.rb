@@ -19,5 +19,17 @@ FactoryGirl.define do
     cur_site { site ? site : cms_site }
     route "rss/pub_sub_hubbub"
     rss_max_docs 20
+    page_state 'public'
+  end
+
+  factory :rss_node_weather_xml, class: Rss::Node::WeatherXml, traits: [:cms_node] do
+    transient do
+      site nil
+    end
+
+    cur_site { site ? site : cms_site }
+    route "rss/weather_xml"
+    rss_max_docs 20
+    page_state 'closed'
   end
 end

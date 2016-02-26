@@ -2,8 +2,6 @@
   <% if params[:action] =~ /index/ %>
     <% if @model.allowed?(:edit, @cur_user, site: @cur_site, node: @cur_node) %>
       <%= link_to :new, { action: :new }, class: :new %>
-      <%= link_to :'rss.views.links.subscribe', { action: :subscribe }, class: :subscribe %>
-      <%= link_to :'rss.views.links.unsubscribe', { action: :unsubscribe }, class: :unsubscribe %>
     <% end %>
   <% elsif params[:action] =~ /subscribe|unsubscribe/ %>
     <%= link_to :back_to_index, { action: :index }, class: "back-to-index" %>

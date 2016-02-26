@@ -21,6 +21,14 @@ class Rss::ImportBase
   end
 
   private
+    def model
+      @model ||= Rss::Page
+    end
+
+    def set_model(model)
+      @model = model
+    end
+
     def before_import(*args)
       @rss_links = []
       @min_released = nil
@@ -33,7 +41,7 @@ class Rss::ImportBase
       remove_unimported_pages
 
       # remove old pages
-      Rss::Page.limit_docs(@cur_site, @cur_node, @cur_node.rss_max_docs) do |item|
+      model.limit_docs(@cur_site, @cur_node, @cur_node.rss_max_docs) do |item|
         put_history_log(item, :destroy)
       end
     end
@@ -43,9 +51,9 @@ class Rss::ImportBase
 
       update_stats rss_item
 
-      page = Rss::Page.site(@cur_site).node(@cur_node).where(rss_link: rss_item.link).first
+      page = model.site(@cur_site).node(@cur_node).where(rss_link: rss_item.link).first
       return if newer_than?(page, rss_item)
-      page ||= Rss::Page.new
+      page ||= model.new
       page.cur_site = @cur_site
       page.cur_node = @cur_node
       page.cur_user = @cur_user if @cur_user.present?
@@ -61,10 +69,14 @@ class Rss::ImportBase
           page.authors.new(author)
         end
       end
+      if @cur_node.respond_to?(:page_state)
+        page.state = @cur_node.page_state.presence || 'public'
+      end
       unless save_or_update page
         Rails.logger.error(page.errors.full_messages.to_s)
         @errors.concat(page.errors.full_messages)
       end
+      page
     end
 
     def update_stats(rss_item)
@@ -105,7 +117,7 @@ class Rss::ImportBase
     def remove_unimported_pages
       return if @rss_links.blank? || @min_released.blank? || @max_released.blank?
 
-      criteria = Rss::Page.site(@cur_site).node(@cur_node)
+      criteria = model.site(@cur_site).node(@cur_node)
       criteria = criteria.between(released: @min_released..@max_released)
       criteria = criteria.nin(rss_link: @rss_links)
       criteria.each do |item|
