@@ -62,6 +62,9 @@ ja:
       sex:
         male: 男性
         female: 女性
+      gpf_state:
+        enabled: 有効
+        disabled: 無効
 
   modules:
     board: 掲示板
@@ -73,6 +76,8 @@ ja:
       board/file_setting: 添付ファイル設定
       board/anpi_post_setting: 安否投稿設定
       board/map_point: 地図
+      board/google_person_finder: Google Person Finder
+      board/google_person_finder_setting: Google Person Finder 設定
 
   cms:
     nodes:
@@ -140,6 +145,12 @@ ja:
         delete_key: 削除キー
       board/addon/map_point:
         point: 位置
+      board/addon/google_person_finder:
+      board/addon/google_person_finder_setting:
+        gpf_state: 状態
+        gpf_repository: リポジトリ
+        gpf_domain_name: ドメイン名
+        gpf_api_key: APIキー
 
   tooltip:
     board/addon/list:
@@ -180,3 +191,13 @@ ja:
         - 指定がない場合は制限無く添付可能となります。
       file_scan:
         - 添付ファイルのウイルススキャンを有効にできます。
+    board/addon/google_person_finder_setting:
+      repository:
+        - "リポジトリを指定します。"
+        - "テストの場合は 'test' を指定します。"
+      domain_name:
+        - ドメイン名を指定します。
+        - "テストの場合は 'testkey.personfinder.google.org' を指定します。"
+      api_key:
+        - APIキーを指定します。
+        - "テストの場合は '43HxMWGBijFaYEr5' を指定します。"

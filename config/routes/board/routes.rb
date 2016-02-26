@@ -15,10 +15,16 @@ SS::Application.routes.draw do
     post :reply, on: :member
   end
 
+  # Google Person Finder
+  concern :gpf do
+    get :gpf, action: :edit_gpf, on: :member
+    post :gpf, action: :update_gpf, on: :member
+  end
+
   content "board" do
     get "/" => redirect { |p, req| "#{req.path}/posts" }, as: :main
     resources :posts, concerns: [:deletion, :download, :reply]
-    resources :anpi_posts, concerns: [:deletion, :download]
+    resources :anpi_posts, concerns: [:deletion, :download, :gpf]
   end
 
   node "board" do

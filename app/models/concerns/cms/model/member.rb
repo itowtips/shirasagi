@@ -33,6 +33,7 @@ module Cms::Model::Member
     field :site_email, type: String
     field :last_loggedin, type: DateTime
     field :verification_token, type: String
+    field :uuid, type: String, default: ->{ SecureRandom.uuid }
 
     permit_params :name, :email, :email_again, :email_type, :password, :in_password, :state
     permit_params interest_municipality_ids: []

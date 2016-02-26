@@ -1,25 +1,20 @@
 class Board::AnpiPost
   include Board::Model::AnpiPost
   include Board::Addon::MapPoint
+  include Board::Addon::GooglePersonFinder
   include SS::Reference::Site
   include Cms::Reference::Node
   include SS::Reference::User
   include Cms::Reference::Member
-  # include Board::Addon::File
   include Board::Addon::AnpiPostPermission
   include SimpleCaptcha::ModelHelpers
 
-  # field :poster, type: String
-  # field :email, type: String
-  # field :poster_url, type: String
   field :delete_key, type: String
-  # permit_params :poster, :email, :poster_url, :delete_key
   permit_params :delete_key
 
   apply_simple_captcha
   permit_params :captcha, :captcha_key
 
-  # validates :poster, presence: true
   validates :node_id, presence: true
 
   validate :validate_text, if: -> { node && node.text_size_limit != 0 }
