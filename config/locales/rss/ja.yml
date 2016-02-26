@@ -26,6 +26,7 @@ ja:
     rss: RSS取込
     addons:
       rss/page/body: RSS情報
+      rss/page/weather_xml: 気象庁防災情報XML
       rss/import: RSS取込
       rss/pub_sub_hubbub: PubSubHubbub
 
@@ -33,6 +34,7 @@ ja:
     nodes:
       rss/page: RSS取込
       rss/pub_sub_hubbub: PubSubHubbub
+      rss/weather_xml: 気象庁防災情報XML
 
   mongoid:
     attributes:
@@ -46,6 +48,8 @@ ja:
         rss_link: ソースURL
         html: 本文
         authors: 作成者
+      rss/addon/page/weather_xml:
+        xml: XML
       rss/addon/pub_sub_hubbub:
         hub_url: Hub URL
         callback_url: Callback URL
