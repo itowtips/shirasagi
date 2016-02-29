@@ -1,11 +1,28 @@
 <dl class="column">
   <dt><%= @model.t :name %></dt>
-  <dd><%= f.text_field :name %></dd>
+  <dd>
+    <%= remarks :name %>
+    <%= f.text_field :name %>
+    <%= example :name %>
+  </dd>
 </dl>
 
 <dl class="column">
   <dt><%= @model.t :email %></dt>
-  <dd><%= f.text_field :email %></dd>
+  <dd>
+    <%= remarks :email %>
+    <%= f.text_field :email %>
+    <%= example :email %>
+  </dd>
 </dl>
 
+<dl class="column">
+  <dt><%= @model.t :email_type %></dt>
+  <dd>
+    <%= remarks :email_type %>
+    <%= f.select :email_type, @item.email_type_options %>
+    <%= example :email_type %>
+  </dd>
+</dl>
 
+<%= render file: '_mail_category_form', locals: { f: f } %>
