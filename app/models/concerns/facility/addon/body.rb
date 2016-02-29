@@ -12,7 +12,7 @@ module Facility::Addon
       field :email, type: String
       field :related_url, type: String
 
-      permit_params :kana, :postcode, :address, :tel, :fax, :related_url
+      permit_params :kana, :postcode, :address, :tel, :fax, :email, :related_url
     end
   end
 end
