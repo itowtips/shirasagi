@@ -5,7 +5,8 @@ module Ezine::Addon
 
     included do
       field :subscription_constraint, type: String
-      validates :subscription_constraint, inclusion: { in: %w(required non_required) }, if: ->{ subscription_constraint.present? }
+      validates :subscription_constraint, inclusion: { in: %w(required non_required) },
+                if: ->{ subscription_constraint.present? }
       permit_params :subscription_constraint
       after_save :update_members_subscription
       scope :and_subscription_required, ->{ where(subscription_constraint: 'required') }

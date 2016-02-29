@@ -19,7 +19,7 @@ class Member::PhotosController < ApplicationController
 
   private
     def fix_params
-      { cur_user: @cur_user, cur_site: @cur_site, cur_node: @cur_node, layout: @layout  }
+      { cur_user: @cur_user, cur_site: @cur_site, cur_node: @cur_node, layout: @layout }
     end
 
     def set_item

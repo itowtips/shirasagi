@@ -40,7 +40,7 @@ module Member::MypageHelper
     msg = [msg] if msg.class.to_s == "String"
     list = msg.map {|d| "<li>" + d.to_s.gsub(/\r\n|\n/, "<br />") + "<br /></li>"}
 
-    h  = []
+    h = []
     h << %(<div class="remarks">)
     h << %(<ul>)
     h << list

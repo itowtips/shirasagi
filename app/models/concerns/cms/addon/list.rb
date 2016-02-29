@@ -17,20 +17,20 @@ module Cms::Addon::List
 
       before_validation :validate_conditions
 
-      template_variable_handler :name, :template_variable_handler_name
-      template_variable_handler :url, :template_variable_handler_name
-      template_variable_handler :summary, :template_variable_handler_name
-      template_variable_handler :class, :template_variable_handler_class
-      template_variable_handler :new, :template_variable_handler_new
-      template_variable_handler :date, :template_variable_handler_date
-      template_variable_handler /^date\.(\w+)$/, :template_variable_handler_date2
-      template_variable_handler :time, :template_variable_handler_time
-      template_variable_handler /^time\.(\w+)$/, :template_variable_handler_time2
-      template_variable_handler :group, :template_variable_handler_group
-      template_variable_handler :groups, :template_variable_handler_groups
-      template_variable_handler "img.src", :template_variable_handler_img_src
-      template_variable_handler :categories, :template_variable_handler_categories
-      template_variable_handler "pages.count", :template_variable_handler_pages_count
+      template_variable_handler(:name, :template_variable_handler_name)
+      template_variable_handler(:url, :template_variable_handler_name)
+      template_variable_handler(:summary, :template_variable_handler_name)
+      template_variable_handler(:class, :template_variable_handler_class)
+      template_variable_handler(:new, :template_variable_handler_new)
+      template_variable_handler(:date, :template_variable_handler_date)
+      template_variable_handler(/^date\.(\w+)$/, :template_variable_handler_date2)
+      template_variable_handler(:time, :template_variable_handler_time)
+      template_variable_handler(/^time\.(\w+)$/, :template_variable_handler_time2)
+      template_variable_handler(:group, :template_variable_handler_group)
+      template_variable_handler(:groups, :template_variable_handler_groups)
+      template_variable_handler("img.src", :template_variable_handler_img_src)
+      template_variable_handler(:categories, :template_variable_handler_categories)
+      template_variable_handler("pages.count", :template_variable_handler_pages_count)
     end
 
     module ClassMethods
@@ -214,15 +214,18 @@ module Cms::Addon::List
         return nil unless categories = item.try(:categories)
 
         ret = categories.map do |category|
-          "<span class=\"#{category.filename.gsub('/', '-')}\"><a href=\"#{category.url}\">#{ERB::Util.html_escape(category.name)}</a></span>"
+          "<span class=\"#{category.filename.tr('/', '-')}\"><a href=\"#{category.url}\">#{ERB::Util.html_escape(category.name)}</a></span>"
         end
         ret.join("\n").html_safe
       end
 
       def template_variable_handler_pages_count(item, name)
-        Cms::Page.site(item.site).and_public(@cur_date || Time.zone.now).or({ filename: /^#{item.filename}\//, depth: item.depth + 1 }, { category_ids: item.id }).count.to_s
-      rescue
-        nil
+        criteria = Cms::Page.site(item.site).
+          and_public(@cur_date || Time.zone.now).
+          or({ filename: /^#{item.filename}\//, depth: item.depth + 1 }, { category_ids: item.id })
+        criteria.count.to_s
+        rescue
+          nil
       end
   end
 end

@@ -62,7 +62,6 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
 
       unless @item.present?
         raise "404"
-        return
       end
     end
 
@@ -165,7 +164,6 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
 
       unless @item.present?
         raise "404"
-        return
       end
     end
 
@@ -174,7 +172,6 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
         @item = Cms::Member.site(@cur_site).and_enabled.find_by_secure_id(params[:token])
       rescue Mongoid::Errors::DocumentNotFound =>e
         raise "404"
-        return
       end
 
       if params[:item][:new_password].blank?
