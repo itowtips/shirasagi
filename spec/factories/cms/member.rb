@@ -3,6 +3,7 @@ FactoryGirl.define do
     site_id { cms_site.id }
     name { unique_id.to_s }
     email { "#{name}@example.jp" }
-    in_password "pass"
+    in_password "abc123"
+    state "enabled"
   end
 end

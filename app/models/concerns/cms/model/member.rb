@@ -42,7 +42,7 @@ module Cms::Model::Member
     validates :email_type, inclusion: { in: %w(text html) }, if: ->{ email_type.present? }
     validates :password, presence: true, if: ->{ oauth_type.blank? && enabled? }
     validates :verification_token, uniqueness: { scope: :site_id }, allow_nil: true
-    validate :validate_password, if: ->{ in_password.present? }
+    validate :validate_password, if: ->{ in_password.present? && oauth_type.blank? && enabled? }
 
     before_validation :encrypt_password, if: ->{ in_password.present? }
     before_save :set_site_email, if: ->{ email.present? }

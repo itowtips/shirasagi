@@ -5,6 +5,7 @@ class Member::Mailer < ActionMailer::Base
   def verification_mail(member)
     @member = member
     @node = Member::Node::Registration.first
+    return if @node.blank?
     sender = "#{@node.sender_name} <#{@node.sender_email}>"
 
     mail from: sender, to: member.email
@@ -16,6 +17,7 @@ class Member::Mailer < ActionMailer::Base
   def reset_password_mail(member)
     @member = member
     @node = Member::Node::Registration.first
+    return if @node.blank?
     sender = "#{@node.sender_name} <#{@node.sender_email}>"
 
     mail from: sender, to: member.email
