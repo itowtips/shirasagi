@@ -3,6 +3,8 @@ ja:
     my_blog: ブログ
     blog_layout: ブログレイアウト
     photo: フォト
+    group: グループ
+    group_member: グループメンバー
     login_by:
       twitter: Twitter ID でログイン
       facebook: Facebook ID でログイン
@@ -23,6 +25,11 @@ ja:
         <<: *disabled_enabled
       github_oauth:
         <<: *disabled_enabled
+      group_member_state:
+        admin: 管理者
+        user: ユーザー
+        inviting: 招待中
+        disabled: 無効
     view:
       email: メールアドレス
       password: パスワード
@@ -60,6 +67,7 @@ ja:
       member/photo/map: 地図
       member/photo/spot: フォト
       member/photo/photo: フォトライブラリ
+      member/photo/slide: フォトスライド
       member/registration/sender_address: 送信者設定
       member/registration/reply: 登録確認メール
       member/registration/reset_password_mail: パスワード再設定メール
@@ -87,6 +95,9 @@ ja:
       member/login: ログイン
 
   mongoid:
+    models:
+      member/group: グループ
+      member/group_member: グループメンバー
     attributes:
       member/addon/redirection:
         redirect_url: リダイレクトURL
@@ -147,6 +158,12 @@ ja:
         reset_password_upper_text: 上部確認テキスト
         reset_password_lower_text: 下部確認テキスト
         reset_password_signature: 署名
+      member/group:
+        name: 名前
+        members: メンバー
+      member/group_member:
+        state: 状態
+        member_id: メンバー
 
   cms_role:
     read_other_member_blogs: メンバーブログの閲覧（全て）

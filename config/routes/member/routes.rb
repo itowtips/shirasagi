@@ -28,6 +28,10 @@ SS::Application.routes.draw do
     resources :photo_locations, concerns: :deletion
     resources :photo_spots, concerns: :deletion
     resources :registrations, concerns: :deletion
+
+    resources :groups, concerns: :deletion do
+      resources :members, controller: :group_members, concerns: :deletion
+    end
   end
 
   node "member" do
