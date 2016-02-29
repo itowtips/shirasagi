@@ -31,9 +31,9 @@ module Member::BlogPageHelper
   def render_blog_template(name, opts = {})
     case name.to_sym
     when :genres
-      render_genres(opts[:node])# rescue nil
+      render_genres(opts[:node]) rescue nil
     when :thumb
-      render_thumb(opts[:node])# rescue nil
+      render_thumb(opts[:node]) rescue nil
     else
       nil
     end
@@ -62,6 +62,7 @@ module Member::BlogPageHelper
     h << %(<article class="member-blog-pages thumb">)
     h << %(<img src="#{node.thumb_url}" class="thumb" />)
     h << %(<header><h2><a href="#{node.url}">#{node.name}</a></h2></header>)
+    h << %(<div class="contributor">#{node.contributor}</div>)
     h << %(<div class="description">#{node.description}</div>)
     h << %(</article>)
     h.join
