@@ -11,14 +11,16 @@ class SS::Sequence
       doc ? doc.value : 0
     end
 
-    def next_sequence(coll, name)
+    def next_sequence(coll, name, options = {})
+      inc = options[:inc] || 1
+      init = options[:init] || 1
       sid = "#{coll}_#{name}"
-      doc = where(_id: sid).find_one_and_update({"$inc" => { value: 1 }}, return_document: :after, upsert: false)
+      doc = where(_id: sid).find_one_and_update({"$inc" => { value: inc }}, return_document: :after, upsert: false)
       return doc.value if doc
 
       key = (name == :id) ? :_id : name
       doc = collection.database[coll].find.sort(key => -1).first
-      val = doc ? doc[key].to_i + 1 : 1
+      val = doc ? doc[key].to_i + inc : init
       self.new(_id: sid, value: val).save ? val : nil
     end
 

@@ -16,7 +16,7 @@ namespace :ss do
     models.each do |model|
       puts "collection: #{model.collection_name}"
       sequenced_fields = model.try(:sequenced_fields) || []
-      sequenced_fields.each do |key|
+      sequenced_fields.each do |key, options|
         field = (key == :id) ? :_id : key
         sid = "#{model.collection_name}_#{key}"
         doc = SS::Sequence.collection.database[model.collection_name].find.sort(field => -1).first
