@@ -111,6 +111,7 @@ ja:
       member_state:
         enabled: 有効
         disabled: 無効
+        temporary: 仮登録
       email_type:
         text: テキスト
         html: HTML

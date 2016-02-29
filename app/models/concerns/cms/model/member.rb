@@ -46,6 +46,7 @@ module Cms::Model::Member
 
     before_validation :encrypt_password, if: ->{ in_password.present? }
     before_save :set_site_email, if: ->{ email.present? }
+    before_save :clear_verification_token, if: ->{ verification_token.present? && enabled? }
 
     before_create :set_verification_token, if: ->{ oauth_type.blank? }
     after_create :send_verification_mail, if: ->{ oauth_type.blank? }
@@ -110,5 +111,9 @@ module Cms::Model::Member
       errors.add :in_password, :password_numeric_only if self.in_password =~ /[0-9]/ && self.in_password !~ /[^0-9]/
       errors.add :in_password, :password_include_email if self.in_password =~ /#{Regexp.escape(self.email)}/
       errors.add :in_password, :password_include_name if self.in_password =~ /#{Regexp.escape(self.name)}/
+    end
+
+    def clear_verification_token
+      self.verification_token = nil
     end
 end

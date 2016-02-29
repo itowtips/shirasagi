@@ -1,13 +1,9 @@
 class Member::Agents::Nodes::RegistrationController < ApplicationController
   include Cms::NodeFilter::View
 
-  before_action :set_model
+  model Cms::Member
 
   private
-    def set_model
-      @model = Cms::Member
-    end
-
     def fix_params
       { cur_site: @cur_site }
     end
@@ -29,6 +25,7 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
     # 入力確認
     def confirm
       @item = @model.new get_params
+      @item.state = 'temporary'
 
       if @item.email_again.blank?
         @item.errors.add :email_again, I18n.t("errors.messages.not_input")
@@ -48,6 +45,7 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
     # 仮登録完了
     def interim
       @item = @model.new get_params
+      @item.state = 'temporary'
 
       # 戻るボタンのクリック
       unless params[:submit]
@@ -60,17 +58,17 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
 
     # 確認メールのURLをクリック
     def verify
-      @item = Cms::Member.where(verification_token: params[:token]).first
+      @item = Cms::Member.site(@cur_site).where(verification_token: params[:token]).first
 
       unless @item.present?
-        raise "403"
+        raise "404"
         return
       end
     end
 
     # 本登録
     def registration
-      @item = Cms::Member.where(verification_token: params[:token]).first
+      @item = Cms::Member.site(@cur_site).where(verification_token: params[:token]).first
 
       if params[:item][:in_password].blank?
         @item.errors.add :in_password, I18n.t("errors.messages.not_input")
@@ -92,6 +90,7 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
 
       @item.in_password = params[:item][:in_password]
       @item.encrypt_password
+      @item.state = 'enabled'
       @item.verification_token = nil
 
       unless @item.update
@@ -113,7 +112,7 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
         return
       end
 
-      member = Cms::Member.where(email: @item.email).first
+      member = Cms::Member.site(@cur_site).where(email: @item.email).first
       if member.nil?
         @item.errors.add :email, I18n.t("errors.messages.not_registerd")
         render action: :send_again
@@ -145,7 +144,7 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
         return
       end
 
-      member = Cms::Member.where(email: @item.email).first
+      member = Cms::Member.site(@cur_site).and_enabled.where(email: @item.email).first
       if member.nil?
         @item.errors.add :email, I18n.t("errors.messages.not_registerd")
         render action: :reset_password
@@ -159,22 +158,22 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
 
     def change_password
       begin
-        @item = Cms::Member.find_by_secure_id(params[:token])
+        @item = Cms::Member.site(@cur_site).and_enabled.find_by_secure_id(params[:token])
       rescue Mongoid::Errors::DocumentNotFound =>e
         @item = nil
       end
 
       unless @item.present?
-        raise "403"
+        raise "404"
         return
       end
     end
 
     def confirm_password
       begin
-        @item = Cms::Member.find_by_secure_id(params[:token])
+        @item = Cms::Member.site(@cur_site).and_enabled.find_by_secure_id(params[:token])
       rescue Mongoid::Errors::DocumentNotFound =>e
-        raise "403"
+        raise "404"
         return
       end
 
