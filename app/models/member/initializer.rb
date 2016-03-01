@@ -11,6 +11,8 @@ module Member
     Cms::Node.plugin "member/my_profile"
     Cms::Node.plugin "member/my_blog"
     Cms::Node.plugin "member/my_photo"
+    Cms::Node.plugin "member/my_anpi_post"
+    Cms::Node.plugin "member/my_group"
 
     # public nodes
     Cms::Node.plugin "member/blog"
@@ -24,6 +26,7 @@ module Member
     Cms::Part.plugin "member/blog_page"
     Cms::Part.plugin "member/photo_search"
     Cms::Part.plugin "member/photo_slide"
+    Cms::Part.plugin "member/invited_group"
 
     Cms::Role.permission :read_other_member_blogs
     Cms::Role.permission :read_private_member_blogs

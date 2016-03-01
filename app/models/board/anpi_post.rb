@@ -52,6 +52,10 @@ class Board::AnpiPost
         end
         criteria
       end
+
+      def and_member_group(group)
+        self.where({})
+      end
   end
 
   public

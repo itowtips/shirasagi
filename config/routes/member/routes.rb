@@ -14,11 +14,12 @@ SS::Application.routes.draw do
     resources :my_profiles, concerns: :deletion
     resources :my_blogs, concerns: :deletion
     resources :my_photos, concerns: :deletion
+    resources :my_anpi_posts, concerns: :deletion
+    resources :my_groups, concerns: :deletion
     resources :blog_layouts, concerns: :deletion
     resources :blogs, concerns: :deletion
     resources :blog_pages, concerns: :deletion
 
-    resources :my_photos, concerns: :deletion
     resources :photos, concerns: :deletion do
       get :index_listable, on: :collection
       get :index_slideable, on: :collection
@@ -79,6 +80,12 @@ SS::Application.routes.draw do
     get "my_photo(index.:format)" => "public#index", cell: "nodes/my_photo"
     resources :my_photo, controller: "public", cell: "nodes/my_photo", except: :index
 
+    get "my_anpi_post(index.:format)" => "public#index", cell: "nodes/my_anpi_post"
+    resources :my_anpi_post, controller: "public", cell: "nodes/my_anpi_post", except: :index
+
+    get "my_group(index.:format)" => "public#index", cell: "nodes/my_group"
+    resources :my_group, controller: "public", cell: "nodes/my_group", except: :index
+
     ## registration
     get "registration/(index.html)" => "public#new", cell: "nodes/registration"
     match "registration/new.html" => "public#new", cell: "nodes/registration", via: [:get, :post]
@@ -106,6 +113,7 @@ SS::Application.routes.draw do
     get "blog_page" => "public#index", cell: "parts/blog_page"
     get "photo_slide" => "public#index", cell: "parts/photo_slide"
     get "photo_search" => "public#index", cell: "parts/photo_search"
+    get "invited_group" => "public#index", cell: "parts/invited_group"
   end
 
   namespace "member", path: ".m:member", member: /\d+/ do

@@ -57,4 +57,13 @@ module Member::Part
 
     default_scope ->{ where(route: "member/photo_slide") }
   end
+
+  class InvitedGroup
+    include Cms::Model::Part
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "member/invited_group") }
+  end
 end

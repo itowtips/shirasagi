@@ -25,5 +25,13 @@ class Member::Group
       end
       criteria
     end
+
+    def and_member(member)
+      self.where('members.member_id' => member.id, 'members.state' => { '$in' => ['admin', 'user'] })
+    end
+
+    def and_invited(member)
+      self.where('members.member_id' => member.id, 'members.state' => 'inviting')
+    end
   end
 end

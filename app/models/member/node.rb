@@ -84,6 +84,28 @@ module Member::Node
     default_scope ->{ where(route: "member/my_photo") }
   end
 
+  class MyAnpiPost
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "member/my_anpi_post") }
+  end
+
+  class MyGroup
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "member/my_group") }
+  end
+
   class Blog
     include Cms::Model::Node
     include Cms::Addon::NodeSetting

@@ -1,0 +1,32 @@
+<%= render partial: "menu" %>
+
+<%
+  members = @item.members.page(params[:page]).per(20)
+%>
+<div class="mypage-show member-photo-page">
+  <div class="columns">
+    <dl class="column">
+      <dt><%= @model.t :name %></dt>
+      <dd><%= @item.name %></dd>
+    </dl>
+  </div>
+
+  <table class="index mypage-index member-group-page">
+    <thead>
+    <tr>
+      <th class="name">名前</th>
+      <th class="state">状態</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% members.each do |member| %>
+      <tr>
+        <td class="item name"><%= member.member.name %></td>
+        <td class="item state"><%= member.label :state %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <%= paginate members if members.try(:current_page) %>
+</div>
