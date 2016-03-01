@@ -34,4 +34,8 @@ class Member::Group
       self.where(members: { '$elemMatch' => { member_id: member.id, state: 'inviting' } })
     end
   end
+
+  def enabled_members
+    members.where(state: { '$in' => ['admin', 'user'] }).map(&:member)
+  end
 end

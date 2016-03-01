@@ -3,11 +3,12 @@ class Board::AnpiPost
   include Board::Addon::MapPoint
   include Board::Addon::GooglePersonFinder
   include SS::Reference::Site
-  include Cms::Reference::Node
   include SS::Reference::User
   include Cms::Reference::Member
   include Board::Addon::AnpiPostPermission
   include SimpleCaptcha::ModelHelpers
+
+  attr_accessor :cur_node
 
   field :delete_key, type: String
   permit_params :delete_key
@@ -15,12 +16,11 @@ class Board::AnpiPost
   apply_simple_captcha
   permit_params :captcha, :captcha_key
 
-  validates :node_id, presence: true
-
-  validate :validate_text, if: -> { node && node.text_size_limit != 0 }
-  validate :validate_delete_key, if: ->{ user.nil? && node && node.deletable_post? }
-  validate :validate_banned_words, if: -> { node && node.banned_words.present? }
-  validate :validate_deny_url, if: -> { node && node.deny_url? }
+  before_validation :copy_basic_attributes
+  validate :validate_text, if: -> { @cur_node && @cur_node.text_size_limit != 0 }
+  validate :validate_delete_key, if: ->{ user.nil? && @cur_node && @cur_node.deletable_post? }
+  validate :validate_banned_words, if: -> { @cur_node && @cur_node.banned_words.present? }
+  validate :validate_deny_url, if: -> { @cur_node && @cur_node.deny_url? }
 
   class << self
     public
@@ -54,9 +54,22 @@ class Board::AnpiPost
       end
 
       def and_member_group(group)
-        self.where({})
+        self.in(member_id: group.enabled_members.map(&:id))
       end
   end
+
+  private
+    def copy_basic_attributes
+      return if @cur_member.blank?
+
+      self.name ||= @cur_member.name
+      self.email ||= @cur_member.email
+      self.kana ||= @cur_member.kana if @cur_member.respond_to?(:kana) && @cur_member.kana.present?
+      self.tel ||= @cur_member.tel if @cur_member.respond_to?(:tel) && @cur_member.tel.present?
+      self.addr ||= @cur_member.addr if @cur_member.respond_to?(:addr) && @cur_member.addr.present?
+      self.sex ||= @cur_member.sex if @cur_member.respond_to?(:sex) && @cur_member.sex.present?
+      self.age ||= @cur_member.addr if @cur_member.respond_to?(:age) && @cur_member.age.present?
+    end
 
   public
     def valid_with_captcha?(node)
@@ -64,8 +77,8 @@ class Board::AnpiPost
     end
 
     def validate_text
-      return if text.blank?
-      errors.add :text, :too_long, count: node.text_size_limit if text.size > node.text_size_limit
+      return if text.blank? || @cur_node.blank?
+      errors.add :text, :too_long, count: @cur_node.text_size_limit if text.size > @cur_node.text_size_limit
     end
 
     def validate_delete_key

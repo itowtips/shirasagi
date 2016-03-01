@@ -1,4 +1,31 @@
+<%= render partial: "menu" %>
+
 <%= form_tag '', class: "search", method: :get, enforce_utf8: false do %>
-  <%= select_tag :g, options_for_select(@cur_groups.map { |g| [g.name, g.id] }, params[:g]), include_blank: true %>
+  <%= select_tag :g, options_for_select(@cur_groups.map { |g| [g.name, g.id] }, @cur_group.id), include_blank: true %>
   <input type="submit" value="<%= t('views.button.search') %>" class="btn" />
 <% end %>
+
+<table class="index mypage-index member-blog-page">
+  <thead>
+  <tr>
+    <th class="name"><%= @model.t :name %></th>
+    <th class="text"><%= @model.t :text %></th>
+    <th class="register">登録者</th>
+    <th class="datetime updated"><%= @model.t :updated %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @items.each do |item| %>
+    <tr>
+      <td class="item name"><%= link_to item.name, "#{@cur_node.url}#{item.id}/" %></td>
+      <td class="item text">
+        <%= truncate(item.text.squish, length: 100, separator: /\w/, omission: "&hellip;") %>
+      </td>
+      <td class="item register"><%= item.member.name %></td>
+      <td class="item datetime updated"><%=tryb { item.updated.strftime('%Y/%m/%d %H:%M') } %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @items if @items.try(:current_page) %>

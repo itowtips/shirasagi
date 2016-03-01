@@ -24,6 +24,10 @@ module Board::Addon
       %w(disabled enabled).map { |m| [ I18n.t("board.options.gpf_state.#{m}"), m ] }.to_a
     end
 
+    def gpf_enabled?
+      gpf_state == 'enabled'
+    end
+
     private
       def set_gpf_api_key
         self.gpf_api_key = SS::Crypt.encrypt(in_gpf_api_key) if in_gpf_api_key.present?

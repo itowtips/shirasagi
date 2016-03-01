@@ -1,3 +1,5 @@
+<% return unless @cur_node.map_enabled? %>
+
 <%= stylesheet_link_tag 'board/map', media: 'all' %>
 <%= javascript_include_tag "board/script" %>
 

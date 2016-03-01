@@ -4,31 +4,32 @@ module Board::Addon
     extend SS::Addon
 
     included do
-      field :uuid, type: String, default: ->{ SecureRandom.uuid }
+      attr_accessor :cur_node
+      attr_accessor :in_post_gpf_after_save
+      field :gpf_id, type: String, default: ->{ SecureRandom.uuid }
+      permit_params :in_post_gpf_after_save
+
+      after_save :post_gpf_after_save
     end
 
     def upload_to_gpf
-      accessor = (node || @cur_node).accessor
+      accessor = @cur_node.accessor
       accessor.upload(self.to_pfif)
     end
 
     def find_gpf
-      accessor = (node || @cur_node).accessor
-      accessor.get(person_record_id: self.person_record_id)
+      accessor = @cur_node.accessor
+      accessor.get(person_record_id: gpf_id)
     end
 
     def gpf_url
-      accessor = (node || @cur_node).accessor
-      accessor.view_uri(person_record_id: self.person_record_id)
-    end
-
-    def person_record_id
-      self.member.present? ? self.member.uuid : self.uuid
+      accessor = @cur_node.accessor
+      accessor.view_uri(person_record_id: gpf_id)
     end
 
     def to_pfif
       pfif = {}
-      pfif[:person_record_id] = person_record_id
+      pfif[:person_record_id] = self.gpf_id
       pfif[:author_name] = self.member.name if self.member.present?
       pfif[:author_email] = self.member.email if self.member.present?
       pfif[:full_name] = self.name
@@ -37,7 +38,7 @@ module Board::Addon
       pfif[:sex] = self.sex
       pfif[:age] = self.age
       pfif[:note] = {}
-      pfif[:note][:note_record_id] = self.uuid
+      # pfif[:note][:note_record_id] = self.uuid
       pfif[:note][:author_name] = self.member.name if self.member.present?
       pfif[:note][:author_email] = self.member.email if self.member.present?
       pfif[:note][:email_of_found_person] = self.email
@@ -51,5 +52,11 @@ module Board::Addon
 
       pfif
     end
+
+    private
+      def post_gpf_after_save
+        return unless in_post_gpf_after_save == 'enable'
+        upload_to_gpf
+      end
   end
 end

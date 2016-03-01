@@ -1,0 +1,12 @@
+<% return unless @cur_node.gpf_enabled? %>
+
+<dl class="column">
+  <dt><%= I18n.t('board.views.gpf') %></dt>
+  <dd>
+    <%= f.label(:in_post_gpf_after_save, title: I18n.t('board.views.post_gpf')) do %>
+      <%= f.check_box(:in_post_gpf_after_save, { checked: true }, 'enable', 'disable') %>
+      <%= I18n.t('board.views.post_gpf') %>
+    <% end %>
+    <%= remarks :in_post_gpf_after_save %>
+  </dd>
+</dl>

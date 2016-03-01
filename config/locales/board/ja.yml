@@ -14,6 +14,8 @@ ja:
       unlimited: 制限なし
       gps_position: 現在位置を取得する
       marker_clear: マーカーをクリアする
+      gpf: Google Person Finder
+      post_gpf: Google Person Finderに登録する
 
     errors:
       not_same_delete_key: 削除キーが違います。
@@ -209,3 +211,9 @@ ja:
       gpf_api_key:
         - APIキーを指定します。
         - "テストの場合は '43HxMWGBijFaYEr5' を指定します。"
+
+  remarks:
+    board/addon/google_person_finder:
+      in_post_gpf_after_save:
+        - Google Person Finderについては<a href="https://google.org/personfinder/global/home.html?lang=ja" target="_blank">Google パーソンファインダーについて</a>をご確認ください。
+        - Google Person Finderに登録された安否情報を削除するには、<a href="http://www.google.org/personfinder/japan">Google Person Finderのサイト</a>で実施してください。

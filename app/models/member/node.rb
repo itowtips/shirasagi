@@ -88,6 +88,7 @@ module Member::Node
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
+    include Board::Addon::AnpiPostSetting
     include Board::Addon::GooglePersonFinderSetting
     include Board::Addon::MapSetting
     include Cms::Addon::Release

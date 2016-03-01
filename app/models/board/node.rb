@@ -27,6 +27,7 @@ module Board::Node
     include Cms::Addon::Captcha
     include Board::Addon::AnpiPostSetting
     include Board::Addon::GooglePersonFinderSetting
+    include Board::Addon::MapSetting
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 

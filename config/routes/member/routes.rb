@@ -81,10 +81,10 @@ SS::Application.routes.draw do
     resources :my_photo, controller: "public", cell: "nodes/my_photo", except: :index
 
     get "my_anpi_post(index.:format)" => "public#index", cell: "nodes/my_anpi_post"
-    resources :my_anpi_post, controller: "public", cell: "nodes/my_anpi_post", except: :index
+    resources :my_anpi_post, concerns: :deletion, controller: "public", cell: "nodes/my_anpi_post", except: :index
 
     get "my_group(index.:format)" => "public#index", cell: "nodes/my_group"
-    resources :my_group, controller: "public", cell: "nodes/my_group", except: :index
+    resources :my_group, concerns: :deletion, controller: "public", cell: "nodes/my_group", except: :index
 
     ## registration
     get "registration/(index.html)" => "public#new", cell: "nodes/registration"

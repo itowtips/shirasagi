@@ -1,7 +1,9 @@
+<% return unless @cur_node.map_enabled? %>
+
 <%= stylesheet_link_tag 'board/map', media: 'all' %>
 <%= javascript_include_tag "board/script" %>
 
-<dl class="see mod-board-map-point">
+<dl class="column">
   <dt><%= @model.t :point %></dt>
   <dd>
     <a id="search-loc" href="#"><%= t("board.views.gps_position") %></a>

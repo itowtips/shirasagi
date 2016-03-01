@@ -8,12 +8,13 @@ class Board::AnpiPostsController < ApplicationController
 
   private
     def fix_params
+      @cur_node = @cur_node.becomes_with_route
       { cur_site: @cur_site, cur_node: @cur_node, cur_user: @cur_user }
     end
 
   public
     def index
-      @items = @model.site(@cur_site).node(@cur_node).search(params[:s]).
+      @items = @model.site(@cur_site).search(params[:s]).
         allow(:read, @cur_user, site: @cur_site).
         order(descendants_updated: -1).
         page(params[:page]).per(50)
