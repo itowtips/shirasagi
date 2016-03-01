@@ -65,6 +65,9 @@ ja:
       gpf_state:
         enabled: 有効
         disabled: 無効
+      map_state:
+        enabled: 有効
+        disabled: 無効
 
   modules:
     board: 掲示板
@@ -78,6 +81,7 @@ ja:
       board/map_point: 地図
       board/google_person_finder: Google Person Finder
       board/google_person_finder_setting: Google Person Finder 設定
+      board/map_setting: 地図設定
 
   cms:
     nodes:
@@ -151,6 +155,10 @@ ja:
         gpf_repository: リポジトリ
         gpf_domain_name: ドメイン名
         gpf_api_key: APIキー
+      board/addon/map_setting:
+        map_state: 状態
+        map_zoom_level: 縮尺レベル
+        map_center: 中心座標
 
   tooltip:
     board/addon/list:
@@ -192,12 +200,12 @@ ja:
       file_scan:
         - 添付ファイルのウイルススキャンを有効にできます。
     board/addon/google_person_finder_setting:
-      repository:
+      gpf_repository:
         - "リポジトリを指定します。"
         - "テストの場合は 'test' を指定します。"
-      domain_name:
+      gpf_domain_name:
         - ドメイン名を指定します。
         - "テストの場合は 'testkey.personfinder.google.org' を指定します。"
-      api_key:
+      gpf_api_key:
         - APIキーを指定します。
         - "テストの場合は '43HxMWGBijFaYEr5' を指定します。"

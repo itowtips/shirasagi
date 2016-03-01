@@ -27,11 +27,11 @@ class Member::Group
     end
 
     def and_member(member)
-      self.where('members.member_id' => member.id, 'members.state' => { '$in' => ['admin', 'user'] })
+      self.where(members: { '$elemMatch' => { member_id: member.id, state: { '$in' => ['admin', 'user'] } } })
     end
 
     def and_invited(member)
-      self.where('members.member_id' => member.id, 'members.state' => 'inviting')
+      self.where(members: { '$elemMatch' => { member_id: member.id, state: 'inviting' } })
     end
   end
 end
