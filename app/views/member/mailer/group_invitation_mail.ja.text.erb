@@ -1,0 +1,10 @@
+<% message.subject = @node.group_invitation_subject %>
+<%= @node.group_invitation_upper_text %>
+
+<%= @message %>
+
+<%= "#{@node.full_url}change_password?token=#{@member.secure_id}" %>
+
+<%= @node.group_invitation_lower_text %>
+
+<%= @node.group_invitation_signature %>

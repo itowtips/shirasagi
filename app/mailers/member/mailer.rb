@@ -22,4 +22,28 @@ class Member::Mailer < ActionMailer::Base
 
     mail from: sender, to: member.email
   end
+
+  # グループ招待メールを配信する。
+  #
+  # @param [Cms::Member] member
+  def group_invitation_mail(message, member, node)
+    @message = message
+    @member = member
+    @node = node
+    sender = "#{@node.sender_name} <#{@node.sender_email}>"
+
+    mail from: sender, to: member.email
+  end
+
+  # 会員招待メールを配信する。
+  #
+  # @param [Cms::Member] member
+  def member_invitation_mail(message, member, node)
+    @message = message
+    @member = member
+    @node = node
+    sender = "#{@node.sender_name} <#{@node.sender_email}>"
+
+    mail from: sender, to: member.email
+  end
 end

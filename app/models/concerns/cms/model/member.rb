@@ -38,6 +38,7 @@ module Cms::Model::Member
     permit_params :name, :email, :email_again, :email_type, :password, :in_password, :state
     permit_params interest_municipality_ids: []
 
+    validates :name, presence: true, length: { maximum: 40 }, if: ->{ enabled? }
     validates :email, email: true, length: { maximum: 80 }
     validates :email, uniqueness: { scope: :site_id }, presence: true, if: ->{ oauth_type.blank? }
     validates :email_type, inclusion: { in: %w(text html) }, if: ->{ email_type.present? }

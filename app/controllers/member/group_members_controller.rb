@@ -81,6 +81,11 @@ class Member::GroupMembersController < ApplicationController
 
     def destroy
       raise "403" unless @cur_member_group.allowed?(:delete, @cur_user, site: @cur_site, node: @cur_node)
-      render_destroy @item.destroy
+      @cur_member_group.in_remove_member_ids = [@item.member_id]
+      success = @cur_member_group.save
+      @cur_member_group.errors.full_messages.each do |msg|
+        @item.errors.add :base, msg
+      end
+      render_destroy success
     end
 end

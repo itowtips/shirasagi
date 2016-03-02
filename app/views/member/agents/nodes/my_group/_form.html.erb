@@ -1,0 +1,37 @@
+<dl class="column">
+  <dt><%= @model.t :name %></dt>
+  <dd>
+    <% if params[:action] == 'invite' %>
+      <%= @item.name %>
+    <% else %>
+      <%= remarks :name %>
+      <%= f.text_field :name %>
+      <%= example :name %>
+    <% end %>
+  </dd>
+</dl>
+
+<% if params[:action] != 'invite' %>
+<dl class="column">
+  <dt>管理者</dt>
+  <dd><%= @cur_member.name %></dd>
+</dl>
+<% end %>
+
+<dl class="column">
+  <dt><%= @model.t :invitation_message %></dt>
+  <dd>
+    <%= remarks :invitation_message %>
+    <%= f.text_area :invitation_message %>
+    <%= example :invitation_message %>
+  </dd>
+</dl>
+
+<dl class="column">
+  <dt>メンバー</dt>
+  <dd>
+    <%= remarks :in_invitees %>
+    <%= f.text_area :in_invitees %>
+    <%= example :in_invitees %>
+  </dd>
+</dl>

@@ -30,12 +30,14 @@ ja:
         user: ユーザー
         inviting: 招待中
         disabled: 無効
+        rejected: 辞退
     view:
       email: メールアドレス
       password: パスワード
       new_password: 新しいパスワード
       new_password_again: 新しいパスワード（入力確認）
       mail_subscription: メルマガ購読
+      retired_member: 退会済み
     button:
       register: 登録
       back: 戻る
@@ -44,8 +46,14 @@ ja:
       send: 送信する
       change_password: パスワードを変更
       resend_confirmation_mail: 確認メールを再送
+      accept: 参加する
+      reject: 辞退する
     links:
       blog_setting: ブログ設定
+      invite: 招待する
+    notice:
+      accepted: 参加しました。
+      rejected: 辞退しました。
 
   modules:
     member: メンバー
@@ -71,6 +79,8 @@ ja:
       member/registration/sender_address: 送信者設定
       member/registration/reply: 登録確認メール
       member/registration/reset_password_mail: パスワード再設定メール
+      member/group_invitation_setting: グループ招待メール設定
+      member/member_invitation_setting: 会員招待メール
 
   cms:
     nodes:
@@ -162,10 +172,21 @@ ja:
         reset_password_signature: 署名
       member/group:
         name: 名前
+        invitation_message: 招待メッセージ
         members: メンバー
       member/group_member:
         state: 状態
         member_id: メンバー
+      member/addon/group_invitation_setting:
+        group_invitation_subject: 件名
+        group_invitation_upper_text: 上部確認テキスト
+        group_invitation_lower_text: 下部確認テキスト
+        group_invitation_signature: 署名
+      member/addon/member_invitation_setting:
+        member_invitation_subject: 件名
+        member_invitation_upper_text: 上部確認テキスト
+        member_invitation_lower_text: 下部確認テキスト
+        member_invitation_signature: 署名
 
   cms_role:
     read_other_member_blogs: メンバーブログの閲覧（全て）
@@ -291,6 +312,14 @@ ja:
         - ログインに利用したり、大切な情報を配信する際に利用させていただきます。
       email_type:
         - 受信可能なメールの形式を選択してください。
+    member/group:
+      name:
+        - グループ名を入力してください。
+      invitation_message:
+         - グループへの招待メッセージを入力してください。
+      in_invitees:
+        - グループに招待するメンバーのメールアドレスを入力してください。
+        - メールアドレスは改行で区切って複数入力することができます。
 
   examples:
     cms/model/member:

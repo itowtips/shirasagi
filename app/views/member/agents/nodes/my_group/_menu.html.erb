@@ -4,7 +4,11 @@
   <% if params[:action] =~ /index/ %>
     <%= link_to "新規作成", "#{@cur_node.url}new" %>
   <% elsif params[:action] =~ /show/ %>
-    <%= link_to :edit, "#{@cur_node.url}#{@item.id}/edit" %>
+    <% if @item.admin_member?(@cur_member) %>
+      <%= link_to :edit, "#{@cur_node.url}#{@item.id}/edit" %>
+      <%= link_to t('member.links.invite'), "#{@cur_node.url}#{@item.id}/invite" %>
+      <%= link_to :delete, "#{@cur_node.url}#{@item.id}/delete" %>
+    <% end %>
     <%= link_to :back_to_index, @cur_node.url %>
   <% else %>
     <%= link_to :back_to_index, @cur_node.url %>

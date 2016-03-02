@@ -34,7 +34,7 @@ class Member::Agents::Nodes::MyAnpiPostController < ApplicationController
       if @cur_node.deny_ips.present?
         remote_ip = request.env["HTTP_X_REAL_IP"] || request.remote_ip
         @cur_node.deny_ips.each do |deny_ip|
-          raise "403" if remote_ip =~ /^#{deny_ip}/
+          raise "404" if remote_ip =~ /^#{deny_ip}/
         end
       end
     end

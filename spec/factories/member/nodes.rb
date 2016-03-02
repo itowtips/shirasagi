@@ -14,4 +14,10 @@ FactoryGirl.define do
     facebook_client_id unique_id.to_s
     facebook_client_secret unique_id.to_s
   end
+
+  factory :member_node_my_group, class: Member::Node::MyGroup, traits: [:cms_node] do
+    route "member/my_group"
+    sender_name { unique_id }
+    sender_email { "#{sender_name}@example.jp" }
+  end
 end

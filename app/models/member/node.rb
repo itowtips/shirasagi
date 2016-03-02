@@ -102,6 +102,9 @@ module Member::Node
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
+    include Member::Addon::Registration::SenderAddress
+    include Member::Addon::GroupInvitationSetting
+    include Member::Addon::MemberInvitationSetting
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
