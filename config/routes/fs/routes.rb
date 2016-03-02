@@ -11,4 +11,9 @@ SS::Application.routes.draw do
     # @deprecated
     get ":id/thumb/:filename" => "files#thumb", filename: %r{[^\/]+}, as: :thumb_old
   end
+
+  namespace "saml" do
+    get 'auth' => 'saml_idp#new'
+    post 'auth' => 'saml_idp#create'
+  end
 end

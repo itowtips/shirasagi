@@ -63,6 +63,9 @@ gem 'omniauth-github'
 
 #gem "rails-dev-boost", git: "git://github.com/thedarkone/rails-dev-boost.git", group: :development
 
+# Saml
+gem 'ruby-saml-idp'
+
 group :development, :test do
   gem 'spring', '~> 1.1.3'
   gem 'rspec'
