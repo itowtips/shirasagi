@@ -80,8 +80,11 @@ SS::Application.routes.draw do
     get "my_photo(index.:format)" => "public#index", cell: "nodes/my_photo"
     resources :my_photo, controller: "public", cell: "nodes/my_photo", except: :index
 
-    get "my_anpi_post(index.:format)" => "public#index", cell: "nodes/my_anpi_post"
-    resources :my_anpi_post, concerns: :deletion, controller: "public", cell: "nodes/my_anpi_post", except: :index
+    # get "my_anpi_post(index.:format)" => "public#index", cell: "nodes/my_anpi_post"
+    resources :my_anpi_post, concerns: :deletion, controller: "public", cell: "nodes/my_anpi_post" do
+      get "others/new(.:format)", action: :others_new, on: :collection, as: :new_others
+      post "others(.:format)", action: :others_create, on: :collection
+    end
 
     get "my_group(index.:format)" => "public#index", cell: "nodes/my_group"
     resources :my_group, concerns: :deletion, controller: "public", cell: "nodes/my_group", except: :index

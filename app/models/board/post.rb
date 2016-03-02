@@ -55,7 +55,7 @@ class Board::Post
   end
 
   def modified_text
-    text = self.text
+    text = self.text.dup
     text.gsub!(%r{https?://[\w/:%#\$&\?\(\)~\.=\+\-]+}) do |href|
       "<a href=\"#{href}\">#{href}</a>"
     end

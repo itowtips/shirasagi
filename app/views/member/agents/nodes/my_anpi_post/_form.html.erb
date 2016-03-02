@@ -1,8 +1,62 @@
 <dl class="column">
+  <dt><%= @model.t :name %></dt>
+  <dd>
+    <%= remarks :name %>
+    <%= f.text_field :name %>
+    <%= example :name %>
+  </dd>
+</dl>
+
+<dl class="column">
   <dt><%= @model.t :text %></dt>
   <dd>
     <%= remarks :text %>
     <%= f.text_area :text %>
     <%= example :text %>
+  </dd>
+</dl>
+
+<dl class="column">
+  <dt><%= @model.t :kana %></dt>
+  <dd>
+    <%= remarks :kana %>
+    <%= f.text_field :kana %>
+    <%= example :kana %>
+  </dd>
+</dl>
+
+<dl class="column">
+  <dt><%= @model.t :tel %></dt>
+  <dd>
+    <%= remarks :tel %>
+    <%= f.text_field :tel %>
+    <%= example :tel %>
+  </dd>
+</dl>
+
+<dl class="column">
+  <dt><%= @model.t :addr %></dt>
+  <dd>
+    <%= remarks :addr %>
+    <%= f.text_field :addr %>
+    <%= example :addr %>
+  </dd>
+</dl>
+
+<dl class="column">
+  <dt><%= @model.t :sex %></dt>
+  <dd>
+    <%= remarks :sex %>
+    <%= f.select :sex, @item.sex_options, include_blank: true %>
+    <%= example :sex %>
+  </dd>
+</dl>
+
+<dl class="column">
+  <dt><%= @model.t :age %></dt>
+  <dd>
+    <%= remarks :age %>
+    <%= f.text_field :age %>
+    <%= example :age %>
   </dd>
 </dl>

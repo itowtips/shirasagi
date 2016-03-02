@@ -70,6 +70,10 @@ ja:
       map_state:
         enabled: 有効
         disabled: 無効
+      public_scope:
+        private: 非公開
+        group: グループ内
+        public: 全体に公開
 
   modules:
     board: 掲示板
@@ -84,6 +88,7 @@ ja:
       board/google_person_finder: Google Person Finder
       board/google_person_finder_setting: Google Person Finder 設定
       board/map_setting: 地図設定
+      board/public_scope: 公開範囲
 
   cms:
     nodes:
@@ -135,9 +140,6 @@ ja:
         file_scan: ウイルスチェック
       board/addon/anpi_post_setting:
         text_size_limit: 本文の最大文字数
-        deletable_post: パスワードによる削除
-        deny_url: URl投稿拒否
-        banned_words: 禁止語句設定
         deny_ips: 拒否IPアドレス
       board/anpi_post:
         name: 名前
@@ -148,7 +150,7 @@ ja:
         age: 年齢
         email: メールアドレス
         text: メッセージ
-        delete_key: 削除キー
+        member_id: 登録者
       board/addon/map_point:
         point: 位置
       board/addon/google_person_finder:
@@ -161,6 +163,8 @@ ja:
         map_state: 状態
         map_zoom_level: 縮尺レベル
         map_center: 中心座標
+      board/addon/public_scope:
+        public_scope: 公開範囲
 
   tooltip:
     board/addon/list:
@@ -187,6 +191,13 @@ ja:
         - 禁止用語を設定します。
         - 該当する禁止用語がタイトルまたは本文に含まれる場合、投稿できません。
         - 複数の語句を設定する場合は改行区切りで記述します。
+      deny_ips:
+        - 投稿、返信等を拒否するIPアドレスを設定します。
+        - 帯域での設定が可能です。
+        - 複数のIPアドレスを設定する場合は改行区切りで記述します。
+    board/addon/anpi_post_setting:
+      text_size_limit:
+        - 投稿可能な最大文字数を指定します。
       deny_ips:
         - 投稿、返信等を拒否するIPアドレスを設定します。
         - 帯域での設定が可能です。

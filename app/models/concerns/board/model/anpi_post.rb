@@ -26,6 +26,9 @@ module Board::Model::AnpiPost
     field :text, type: String
 
     permit_params :name, :kana, :tel, :addr, :sex, :age, :email, :text
+
+    validates :name, presence: true, length: { maximum: 80 }
+    validates :text, presence: true
   end
 
   public
