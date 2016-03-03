@@ -32,8 +32,6 @@ module Cms::Model::Member
     field :oauth_token, type: String
     field :site_email, type: String
     field :last_loggedin, type: DateTime
-    field :verification_token, type: String
-    field :uuid, type: String, default: ->{ SecureRandom.uuid }
 
     permit_params :name, :email, :email_again, :email_type, :password, :in_password, :state
     permit_params interest_municipality_ids: []
@@ -43,21 +41,24 @@ module Cms::Model::Member
     validates :email, uniqueness: { scope: :site_id }, presence: true, if: ->{ oauth_type.blank? }
     validates :email_type, inclusion: { in: %w(text html) }, if: ->{ email_type.present? }
     validates :password, presence: true, if: ->{ oauth_type.blank? && enabled? }
-    validates :verification_token, uniqueness: { scope: :site_id }, allow_nil: true
     validate :validate_password, if: ->{ in_password.present? && oauth_type.blank? && enabled? }
 
     before_validation :encrypt_password, if: ->{ in_password.present? }
     before_save :set_site_email, if: ->{ email.present? }
-    before_save :clear_verification_token, if: ->{ verification_token.present? && enabled? }
 
-    before_create :set_verification_token, if: ->{ oauth_type.blank? }
     after_create :send_verification_mail, if: ->{ oauth_type.blank? }
 
     scope :and_enabled, -> { self.or({ state: 'enabled' }, { state: nil }) }
+    scope :and_temporary, -> { where(state: 'temporary') }
+    scope :and_verification_token, ->(token) { where(email: SS::Crypt.decrypt(token)) }
   end
 
   def encrypt_password
     self.password = SS::Crypt.crypt(in_password)
+  end
+
+  def verification_token
+    SS::Crypt.encrypt(email)
   end
 
   def enabled?
@@ -66,15 +67,16 @@ module Cms::Model::Member
 
   # 本登録済みかどうか
   def authorized?
-    self.verification_token.nil?
+    enabled?
   end
+  deprecate :authorized?
 
   def email_type_options
     %w(text html).map { |m| [ I18n.t("cms.options.email_type.#{m}"), m ] }.to_a
   end
 
   def state_options
-    %w(disabled enabled).map { |m| [ I18n.t("cms.options.member_state.#{m}"), m ] }.to_a
+    %w(disabled enabled temporary).map { |m| [ I18n.t("cms.options.member_state.#{m}"), m ] }.to_a
   end
 
   # 関連するデータの削除
@@ -92,30 +94,15 @@ module Cms::Model::Member
       self.site_email = "#{site_id}_#{email}"
     end
 
-    def unique_token
-      loop do
-        t = Digest::SHA1.hexdigest SecureRandom.uuid
-        return t if Cms::Member.where(verification_token: t).first.nil?
-      end
-    end
-
-    def set_verification_token
-      self.verification_token = unique_token if self.skip_verification_mail.nil?
-    end
-
     def send_verification_mail
-      Member::Mailer.verification_mail(self).deliver_now if self.skip_verification_mail.nil?
+      Member::Mailer.verification_mail(self).deliver_now if self.skip_verification_mail.nil? && enabled?
     end
 
     def validate_password
       errors.add :in_password, :password_short if self.in_password.length < 6
       errors.add :in_password, :password_alphabet_only if self.in_password =~ /[A-Z]/i && self.in_password !~ /[^A-Z]/i
       errors.add :in_password, :password_numeric_only if self.in_password =~ /[0-9]/ && self.in_password !~ /[^0-9]/
-      errors.add :in_password, :password_include_email if self.in_password =~ /#{Regexp.escape(self.email)}/
-      errors.add :in_password, :password_include_name if self.in_password =~ /#{Regexp.escape(self.name)}/
-    end
-
-    def clear_verification_token
-      self.verification_token = nil
+      errors.add :in_password, :password_include_email if self.email.present? && self.in_password =~ /#{Regexp.escape(self.email)}/
+      errors.add :in_password, :password_include_name if self.name.present? && self.in_password =~ /#{Regexp.escape(self.name)}/
     end
 end

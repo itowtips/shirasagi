@@ -12,6 +12,7 @@ class Member::Group
   embeds_many :members, class_name: "Member::GroupMember", cascade_callbacks: true
 
   attr_accessor :cur_node
+  attr_accessor :cur_member
   attr_accessor :in_admin
   attr_accessor :in_invitees
   attr_accessor :in_remove_member_ids
@@ -161,9 +162,9 @@ class Member::Group
 
       @to_be_sent_invitations.each do |member|
         if member.state == 'temporary'
-          Member::Mailer.member_invitation_mail(invitation_message, member, @cur_node).deliver_now
+          Member::Mailer.member_invitation_mail(@cur_node, self, @cur_member, member).deliver_now
         else
-          Member::Mailer.group_invitation_mail(invitation_message, member, @cur_node).deliver_now
+          Member::Mailer.group_invitation_mail(@cur_node, self, @cur_member, member).deliver_now
         end
       end
       @to_be_sent_invitations = nil

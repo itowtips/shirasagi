@@ -179,13 +179,11 @@ ja:
         member_id: メンバー
       member/addon/group_invitation_setting:
         group_invitation_subject: 件名
-        group_invitation_upper_text: 上部確認テキスト
-        group_invitation_lower_text: 下部確認テキスト
+        group_invitation_template: メールテンプレート
         group_invitation_signature: 署名
       member/addon/member_invitation_setting:
         member_invitation_subject: 件名
-        member_invitation_upper_text: 上部確認テキスト
-        member_invitation_lower_text: 下部確認テキスト
+        member_invitation_template: メールテンプレート
         member_invitation_signature: 署名
 
   cms_role:

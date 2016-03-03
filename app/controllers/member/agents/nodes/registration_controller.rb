@@ -58,18 +58,17 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
 
     # 確認メールのURLをクリック
     def verify
-      @item = Cms::Member.site(@cur_site).where(verification_token: params[:token]).first
-
-      unless @item.present?
-        raise "404"
-      end
+      @item = Cms::Member.site(@cur_site).and_verification_token(params[:token]).and_temporary.first
+      raise "404" if @item.blank?
     end
 
     # 本登録
     def registration
-      @item = Cms::Member.site(@cur_site).where(verification_token: params[:token]).first
+      @item = Cms::Member.site(@cur_site).and_verification_token(params[:token]).and_temporary.first
+      raise "404" if @item.blank?
 
-      if params[:item][:in_password].blank?
+      safe_params = get_params
+      if safe_params[:in_password].blank?
         @item.errors.add :in_password, I18n.t("errors.messages.not_input")
         render action: :verify
         return
@@ -81,16 +80,16 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
         return
       end
 
-      if params[:item][:in_password] != params[:item][:in_password_again]
+      if safe_params[:in_password] != params[:item][:in_password_again]
         @item.errors.add :in_password, I18n.t("errors.messages.mismatch")
         render action: :verify
         return
       end
 
-      @item.in_password = params[:item][:in_password]
+      # @item.in_password = params[:item][:in_password]
+      @item.attributes = safe_params
       @item.encrypt_password
       @item.state = 'enabled'
-      @item.verification_token = nil
 
       unless @item.update
         render action: :verify

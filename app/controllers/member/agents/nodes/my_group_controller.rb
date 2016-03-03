@@ -12,7 +12,7 @@ class Member::Agents::Nodes::MyGroupController < ApplicationController
 
   private
     def fix_params
-      { cur_site: @cur_site, cur_node: @cur_node }
+      { cur_site: @cur_site, cur_node: @cur_node, cur_member: @cur_member }
     end
 
     def get_params

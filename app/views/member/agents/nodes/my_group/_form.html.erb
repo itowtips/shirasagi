@@ -19,19 +19,19 @@
 <% end %>
 
 <dl class="column">
-  <dt><%= @model.t :invitation_message %></dt>
-  <dd>
-    <%= remarks :invitation_message %>
-    <%= f.text_area :invitation_message %>
-    <%= example :invitation_message %>
-  </dd>
-</dl>
-
-<dl class="column">
   <dt>メンバー</dt>
   <dd>
     <%= remarks :in_invitees %>
     <%= f.text_area :in_invitees %>
     <%= example :in_invitees %>
+  </dd>
+</dl>
+
+<dl class="column">
+  <dt><%= @model.t :invitation_message %></dt>
+  <dd>
+    <%= remarks :invitation_message %>
+    <%= f.text_area :invitation_message %>
+    <%= example :invitation_message %>
   </dd>
 </dl>

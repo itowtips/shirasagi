@@ -26,24 +26,34 @@ class Member::Mailer < ActionMailer::Base
   # グループ招待メールを配信する。
   #
   # @param [Cms::Member] member
-  def group_invitation_mail(message, member, node)
-    @message = message
-    @member = member
-    @node = node
-    sender = "#{@node.sender_name} <#{@node.sender_email}>"
+  def group_invitation_mail(node, group, sender, recipent)
+    from = "#{node.sender_name} <#{node.sender_email}>"
+    to = recipent.email
+    subject = node.group_invitation_subject
+    body = Member::Renderer::GroupInvitation.render(node: node, group: group, sender: sender, recipent: recipent, template: node.group_invitation_template)
+    if node.group_invitation_signature.present?
+      body << "\n"
+      body << node.group_invitation_signature
+    end
+    body << "\n"
 
-    mail from: sender, to: member.email
+    mail from: from, to: to, subject: subject, body: body
   end
 
   # 会員招待メールを配信する。
   #
   # @param [Cms::Member] member
-  def member_invitation_mail(message, member, node)
-    @message = message
-    @member = member
-    @node = node
-    sender = "#{@node.sender_name} <#{@node.sender_email}>"
+  def member_invitation_mail(node, group, sender, recipent)
+    from = "#{node.sender_name} <#{node.sender_email}>"
+    to = recipent.email
+    subject = node.member_invitation_subject
+    body = Member::Renderer::MemberInvitation.render(group: group, sender: sender, recipent: recipent, template: node.member_invitation_template)
+    if node.member_invitation_signature.present?
+      body << "\n"
+      body << node.member_invitation_signature
+    end
+    body << "\n"
 
-    mail from: sender, to: member.email
+    mail from: from, to: to, subject: subject, body: body
   end
 end

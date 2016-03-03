@@ -1,4 +1,21 @@
 <%= f.hidden_field_tag "token", params[:token] %>
+<% if @item.name.blank? %>
+<dl class="cms-member-registration-verify colum">
+  <dt><%= @item.class.t :name %><span class="required"><%= t('views.required_field') %></span></dt>
+  <dd><%= f.text_field :name %></dd>
+</dl>
+<% else %>
+<dl class="cms-member-registration-verify colum">
+  <dt><%= @item.class.t :name %></dt>
+  <dd><%= @item.name %></dd>
+</dl>
+<% end %>
+
+<dl class="cms-member-registration-verify colum">
+  <dt><%= @item.class.t :email %></dt>
+  <dd><%= @item.email %></dd>
+</dl>
+
 <dl class="cms-member-registration-verify colum">
   <dt><%= @item.t :in_password %></dt>
   <dd><%= f.password_field :in_password %></dd>
