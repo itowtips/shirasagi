@@ -41,10 +41,7 @@ SS::Application.routes.draw do
     get "post/search" => "public#search", cell: "nodes/post"
 
     get "anpi_post/(index.:format)" => "public#index", cell: "nodes/anpi_post"
-    get "anpi_post/new" => "public#new", cell: "nodes/anpi_post"
-    post "anpi_post/create" => "public#create", cell: "nodes/anpi_post"
-    get "anpi_post/search" => "public#search", cell: "nodes/anpi_post"
-    post "anpi_post/search" => "public#search", cell: "nodes/anpi_post"
+    post "anpi_post/(index.:format)" => "public#index", cell: "nodes/anpi_post"
   end
 
 end

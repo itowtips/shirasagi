@@ -140,6 +140,7 @@ ja:
         file_scan: ウイルスチェック
       board/addon/anpi_post_setting:
         text_size_limit: 本文の最大文字数
+        show_email: メールアドレスの公開
         deny_ips: 拒否IPアドレス
       board/anpi_post:
         name: 名前
@@ -198,6 +199,8 @@ ja:
     board/addon/anpi_post_setting:
       text_size_limit:
         - 投稿可能な最大文字数を指定します。
+      show_email:
+        - メールアドレスを公開するかどうかを指定します。
       deny_ips:
         - 投稿、返信等を拒否するIPアドレスを設定します。
         - 帯域での設定が可能です。
@@ -250,6 +253,8 @@ ja:
     board/addon/map_setting:
       map_state:
         - 地図入力を有効にするかどうかを指定します。
+      map_zoom_level:
+        - 地図の縮尺を 0 ～ 18 の数値で指定します。
       map_center:
         - 中心座標を指定します。
         - 地図の中心座標を指定する際、自動的に縮尺レベルも設定されます。

@@ -22,6 +22,10 @@ module Board::Addon
 
         self.or(public_criteria_part, private_criteria_part, group_criteria_part)
       end
+
+      def and_public
+        where(public_scope: 'public')
+      end
     end
 
     def public_scope_options

@@ -6,9 +6,9 @@
   <dd><%= f.select :map_state, @item.map_state_options %></dd>
 
   <dt><%= @model.t :map_zoom_level %><%= @model.tt :map_zoom_level %></dt>
-  <dd><%= f.number_field :map_zoom_level, readonly: true, disabled: true %></dd>
+  <dd><%= f.number_field :map_zoom_level %></dd>
 
-  <dt><%= @model.t :map_center %></dt>
+  <dt><%= @model.t :map_center %><%= @model.tt :map_center %></dt>
   <dd>
     <a id="search-loc" href="#"><%= t("board.views.gps_position") %></a>
     |

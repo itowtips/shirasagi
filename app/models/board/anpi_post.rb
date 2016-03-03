@@ -80,4 +80,12 @@ class Board::AnpiPost
     def owned?(member)
       self.member_id == member.id
     end
+
+    def modified_text
+      text = self.text.dup
+      text.gsub!(%r{https?://[\w/:%#\$&\?\(\)~\.=\+\-]+}) do |href|
+        "<a href=\"#{href}\">#{href}</a>"
+      end
+      text.gsub(/(\r\n?)|(\n)/, "<br />").html_safe
+    end
 end
