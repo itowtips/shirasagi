@@ -2,7 +2,7 @@
 <%= javascript_include_tag "board/script" %>
 
 <dl class="see mod-board-map-point">
-  <dt><%= @model.t :point %></dt>
+  <dt><%= @model.t :point %><%= @model.tt :point %></dt>
   <dd>
     <a id="search-loc" href="#"><%= t("board.views.gps_position") %></a>
     |

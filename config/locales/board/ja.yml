@@ -202,6 +202,26 @@ ja:
         - 投稿、返信等を拒否するIPアドレスを設定します。
         - 帯域での設定が可能です。
         - 複数のIPアドレスを設定する場合は改行区切りで記述します。
+    board/model/anpi_post:
+      name:
+        - 名前を設定します。
+      kana:
+        - 名前（かな）を設定します。
+      tel:
+        - 電話番号を設定します。
+      addr:
+        - 住所を設定します。
+      sex:
+        - 性別を指定します。
+      age:
+        - 年齢を設定します。
+      email:
+        - メールアドレスを設定します。
+      text:
+        - メッセージを設定します。
+    board/anpi_post:
+      member_id:
+        - 登録者を指定します。
     board/addon/file_setting:
       file_limit:
         - 投稿に添付できるファイル数を指定します。
@@ -212,7 +232,12 @@ ja:
         - 指定がない場合は制限無く添付可能となります。
       file_scan:
         - 添付ファイルのウイルススキャンを有効にできます。
+    board/addon/map_point:
+      point:
+        - 位置を設定します。
     board/addon/google_person_finder_setting:
+      gpf_state:
+        - Google Person Finder との連携を有効にするかどうかを指定します。
       gpf_repository:
         - "リポジトリを指定します。"
         - "テストの場合は 'test' を指定します。"
@@ -222,6 +247,18 @@ ja:
       gpf_api_key:
         - APIキーを指定します。
         - "テストの場合は '43HxMWGBijFaYEr5' を指定します。"
+    board/addon/map_setting:
+      map_state:
+        - 地図入力を有効にするかどうかを指定します。
+      map_center:
+        - 中心座標を指定します。
+        - 地図の中心座標を指定する際、自動的に縮尺レベルも設定されます。
+    board/addon/public_scope:
+      public_scope:
+        - 安否の公開範囲を指定します。
+        - 「全体に公開」を指定すると、誰でも安否を見ることができるようになります。
+        - 「グループに公開」を指定すると、グループ内の会員のみが安否を見ることができます。
+        - 「非公開」を指定すると、自分以外は安否を見ることができなくなります。
 
   remarks:
     board/addon/google_person_finder:
