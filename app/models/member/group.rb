@@ -13,11 +13,12 @@ class Member::Group
 
   attr_accessor :cur_node
   attr_accessor :cur_member
-  attr_accessor :in_admin
+  attr_accessor :in_admin_member_ids
   attr_accessor :in_invitees
   attr_accessor :in_remove_member_ids
 
-  permit_params :name, :invitation_message, :in_admin, :in_invitees
+  permit_params :name, :invitation_message, :in_invitees
+  permit_params in_admin_member_ids: []
   permit_params in_remove_member_ids: []
 
   before_validation :set_admin_member
@@ -76,16 +77,31 @@ class Member::Group
 
   private
     def set_admin_member
-      if in_admin.is_a?(String) || in_admin.is_a?(Fixnum)
-        self.in_admin = Cms::Member.site(site || @cur_site).where(id: in_admin).first
-      end
-      return if in_admin.blank?
+      return if in_admin_member_ids.blank?
 
-      group_member = self.members.where(member_id: in_admin.id).first
-      if group_member.present?
-        group_member.state = 'admin'
-      else
-        self.members.new(member_id: in_admin.id, state: 'admin')
+      in_admins = in_admin_member_ids.map do |member_id|
+        Cms::Member.site(site || @cur_site).and_enabled.where(id: member_id).first
+      end
+      in_admins = in_admins.compact.uniq
+      not_in_admins = self.members.map(&:member).compact - in_admins
+
+      in_admins.each do |in_admin|
+        group_member = self.members.where(member_id: in_admin.id).first
+        if group_member.present?
+          if group_member.state == 'user'
+            # only user can elevate level
+            group_member.state = 'admin'
+          end
+        else
+          self.members.new(member_id: in_admin.id, state: 'admin')
+        end
+      end
+
+      not_in_admins.each do |not_in_admin|
+        group_member = self.members.where(member_id: not_in_admin.id).first
+        next if group_member.blank?
+        next if group_member.state != 'admin'
+        group_member.state = 'user'
       end
     end
 
@@ -171,7 +187,7 @@ class Member::Group
     end
 
     def clear_context
-      self.in_admin = nil
+      self.in_admin_member_ids = nil
       self.in_invitees = nil
       self.in_remove_member_ids = nil
       @to_be_sent_invitations = nil

@@ -30,6 +30,7 @@ module Member
     end
 
     def render(*args)
+      return if template.blank?
       template.gsub(/\#\{(.*?)\}/) do |m|
         str = template_variable_get($1, *args)
         str == false ? m : str

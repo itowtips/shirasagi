@@ -15,7 +15,7 @@ describe Member::Group, dbscope: :example do
           cur_node: node,
           name: name,
           invitation_message: invitation_message,
-          in_admin: admin_member)
+          in_admin_member_ids: [ admin_member.id ])
       end
 
       its(:valid?) { is_expected.to be_truthy }
@@ -50,7 +50,7 @@ describe Member::Group, dbscope: :example do
           cur_node: node,
           name: name,
           invitation_message: invitation_message,
-          in_admin: admin_member)
+          in_admin_member_ids: [ admin_member.id ])
       end
 
       before do
@@ -74,7 +74,7 @@ describe Member::Group, dbscope: :example do
         described_class.create(
           cur_site: site, cur_node: node,
           name: name, invitation_message: invitation_message,
-          in_admin: admin_member)
+          in_admin_member_ids: [ admin_member.id ])
       end
 
       before do
@@ -102,7 +102,8 @@ describe Member::Group, dbscope: :example do
           cur_node: node,
           name: name,
           invitation_message: invitation_message,
-          in_admin: admin_member, in_invitees: member1.email)
+          in_admin_member_ids: [ admin_member.id ],
+          in_invitees: member1.email)
       end
 
       before do
@@ -129,7 +130,8 @@ describe Member::Group, dbscope: :example do
           cur_node: node,
           name: name,
           invitation_message: invitation_message,
-          in_admin: admin_member, in_invitees: member1.email)
+          in_admin_member_ids: [ admin_member.id ],
+          in_invitees: member1.email)
       end
 
       before do

@@ -174,6 +174,7 @@ ja:
         name: 名前
         invitation_message: 招待メッセージ
         members: メンバー
+        in_admin_member_ids: 管理者
       member/group_member:
         state: 状態
         member_id: メンバー
@@ -357,6 +358,16 @@ ja:
           このメールに覚えのない方は、お手数ですが本メールを削除してください。
       member_invitation_signature:
         - メールの末尾につける署名を設定します。
+    member/group:
+      name:
+        - グループ名を入力してください。
+      invitation_message:
+         - グループへの招待メッセージを入力してください。
+      in_invitees:
+        - グループに招待するメンバーのメールアドレスを入力してください。
+        - メールアドレスは改行で区切って複数入力することができます。
+      in_admin_member_ids:
+        - グループの管理者を指定します。
 
   remarks:
     cms/model/member:

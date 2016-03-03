@@ -13,7 +13,7 @@ describe Member::Renderer::GroupInvitation, dbscope: :example do
       cur_node: node,
       name: group_name,
       invitation_message: invitation_message,
-      in_admin: admin_member)
+      in_admin_member_ids: [ admin_member.id ])
   end
   let(:member1) { create(:cms_member) }
 

@@ -17,7 +17,7 @@ class Member::Agents::Nodes::MyGroupController < ApplicationController
 
     def get_params
       if params[:action] == 'create'
-        { in_admin: @cur_member }.merge(super)
+        { in_admin_member_ids: [ @cur_member.id ] }.merge(super)
       else
         super
       end

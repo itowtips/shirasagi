@@ -18,6 +18,7 @@
       <tr>
         <th class="name">名前</th>
         <th class="state">状態</th>
+        <th class="operation">管理者</th>
         <th class="operation">削除</th>
       </tr>
       </thead>
@@ -27,6 +28,11 @@
         <tr>
           <td class="item name"><%= member.member ? member.member.name || member.member.email : t('member.view.retired_member') %></td>
           <td class="item state"><%= member.label :state %></td>
+          <td class="item operation">
+            <% if %w(admin user).include?(member.state) %>
+            <%= check_box_tag('item[in_admin_member_ids][]', member.member_id, member.state == 'admin', id: "item_in_admin_member_ids_#{member.member_id}") %>
+            <% end %>
+          </td>
           <td class="item operation">
             <%= check_box_tag('item[in_remove_member_ids][]', member.member_id, false, id: "item_in_remove_member_ids_#{member.member_id}") %>
           </td>
