@@ -1,31 +1,5 @@
 <%= render partial: "menu" %>
 
-<% if @invited_items.present? %>
-  <div class="invited-groups">
-    <h3>招待されたグループがあります。</h3>
-    <table class="index mypage-index member-group-page">
-      <thead>
-      <tr>
-        <th class="name">名前</th>
-        <th class="operation"></th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @invited_items.each do |item| %>
-        <tr>
-          <td class="item name"><%= link_to item.name, "#{@cur_node.url}#{item.id}/" %></td>
-          <td class="item operation">
-            <%= link_to t("member.button.accept"), "#{@cur_node.url}#{item.id}/accept" %>
-            |
-            <%= link_to t("member.button.reject"), "#{@cur_node.url}#{item.id}/reject" %>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-  </div>
-<% end %>
-
 <% if @items.present? %>
   <div class="joined-groups">
     <table class="index mypage-index member-group-page">

@@ -29,8 +29,6 @@ class Member::Agents::Nodes::MyGroupController < ApplicationController
 
   public
     def index
-      @invited_items = @model.site(@cur_site).and_invited(@cur_member).limit(20).order_by(released: -1)
-
       @items = @model.site(@cur_site).and_member(@cur_member).
         order_by(released: -1).
         page(params[:page]).per(20)

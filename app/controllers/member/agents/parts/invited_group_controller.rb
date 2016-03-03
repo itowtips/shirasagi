@@ -6,6 +6,7 @@ class Member::Agents::Parts::InvitedGroupController < ApplicationController
   skip_filter :logged_in?
   before_action :becomes_with_route
   before_action :set_member
+  before_action :set_my_group_node
 
   private
     def becomes_with_route
@@ -14,11 +15,20 @@ class Member::Agents::Parts::InvitedGroupController < ApplicationController
 
     def set_member
       logged_in? redirect: false
+      if @cur_member.blank?
+        render text: ''
+      end
+    end
+
+    def set_my_group_node
+      @my_group_node = Member::Node::MyGroup.site(@cur_site).public.first
+      if @my_group_node.blank?
+        render text: ''
+      end
     end
 
   public
     def index
-      return if @cur_member.blank?
-      @items = Member::Group.site(@cur_site).and_invited(@cur_member)
+      @items = Member::Group.site(@cur_site).and_invited(@cur_member).limit(20).order_by(created: 1)
     end
 end
