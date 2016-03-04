@@ -8,7 +8,8 @@ class Member::Agents::Nodes::MyGroupController < ApplicationController
 
   prepend_view_path "app/views/member/agents/nodes/my_group"
 
-  before_action :check_rights, only: [:edit, :update, :delete, :destroy, :destroy_all]
+  before_action :check_admin_member, only: [:edit, :update, :delete, :destroy, :destroy_all, :invite]
+  before_action :check_inviting_member, only: [:accept, :reject]
 
   private
     def fix_params
@@ -23,8 +24,14 @@ class Member::Agents::Nodes::MyGroupController < ApplicationController
       end
     end
 
-    def check_rights
+    def check_admin_member
+      set_item
       raise "403" unless @item.admin_member?(@cur_member)
+    end
+
+    def check_inviting_member
+      set_item
+      raise "404" unless @item.inviting_member?(@cur_member)
     end
 
   public

@@ -59,6 +59,10 @@ class Member::Group
     members.where(member_id: member.id, state: 'admin').present?
   end
 
+  def inviting_member?(member)
+    members.where(member_id: member.id, state: 'inviting').present?
+  end
+
   def accept(member)
     member = members.where(member_id: member.id, state: 'inviting').first
     return true if member.blank?
