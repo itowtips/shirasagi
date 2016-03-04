@@ -64,6 +64,11 @@ module Cms::Content
       end
       criteria
     end
+
+    def public(*args)
+      and_public(*args)
+    end
+    deprecate public: :and_public, deprecator: SS::Deprecator.new('1.0.3')
   end
 
   def basename
