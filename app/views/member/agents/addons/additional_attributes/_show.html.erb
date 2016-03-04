@@ -1,0 +1,12 @@
+<dl class="see mod-member-additional-attributes">
+  <dt><%= @model.t :kana %></dt>
+  <dd><%= @item.kana %></dd>
+  <dt><%= @model.t :tel %></dt>
+  <dd><%= @item.tel %></dd>
+  <dt><%= @model.t :addr %></dt>
+  <dd><%= @item.addr %></dd>
+  <dt><%= @model.t :sex %></dt>
+  <dd><%= @item.label :sex %></dd>
+  <dt><%= @model.t :birthday %></dt>
+  <dd><%= tryb { @item.birthday.strftime('%Y/%m/%d') } %></dd>
+</dl>

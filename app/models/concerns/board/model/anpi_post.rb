@@ -19,7 +19,7 @@ module Board::Model::AnpiPost
     # 性別
     field :sex, type: String
     # 年齢
-    field :age, type: Integer
+    field :age, type: String
     # メールアドレス
     field :email, type: String
     # メッセージ

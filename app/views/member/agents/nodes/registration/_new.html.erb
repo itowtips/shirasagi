@@ -1,12 +1,48 @@
+<%= stylesheet_link_tag 'member/public', media: 'all' %>
+<%= javascript_include_tag 'member/public' %>
+
 <div class="columns">
   <dl class="colum">
     <dt><%= @item.class.t :name %><span class="required"><%= t('views.required_field') %></span></dt>
     <dd><%= f.text_field :name %></dd>
+  </dl>
 
+  <dl class="colum">
     <dt><%= @item.class.t :email %><span class="required"><%= t('views.required_field') %></span></dt>
     <dd><%= f.text_field :email %></dd>
 
     <dt><%= @item.class.t :email_again %><span class="required"><%= t('views.required_field') %></span></dt>
     <dd><%= f.text_field :email_again %></dd>
   </dl>
+
+  <dl class="colum">
+    <dt><%= @item.class.t :kana %></dt>
+    <dd><%= f.text_field :kana %></dd>
+  </dl>
+
+  <dl class="colum">
+    <dt><%= @item.class.t :tel %></dt>
+    <dd><%= f.text_field :tel %></dd>
+  </dl>
+
+  <dl class="colum">
+    <dt><%= @item.class.t :addr %></dt>
+    <dd><%= f.text_field :addr %></dd>
+  </dl>
+
+  <dl class="colum">
+    <dt><%= @item.class.t :sex %></dt>
+    <dd><%= f.select :sex, @item.sex_options, include_blank: true %></dd>
+  </dl>
+
+  <dl class="colum">
+    <dt><%= @item.class.t :birthday %></dt>
+    <dd><%= f.text_field :birthday %></dd>
+  </dl>
 </div>
+
+<%= jquery do %>
+  if ($.support.opacity) {
+    $("#item_birthday").datetimepicker({ lang: "ja", timepicker: false, format: "Y/m/d" });
+  }
+<% end %>
