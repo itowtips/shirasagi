@@ -105,6 +105,7 @@ ja:
       member/photo_search: フォトサーチ
       member/photo_slide: フォトスライド
       member/login: ログイン
+      member/invited_group: 招待されたグループ
 
   mongoid:
     models:
