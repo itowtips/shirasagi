@@ -16,6 +16,10 @@ ja:
       marker_clear: マーカーをクリアする
       gpf: Google Person Finder
       post_gpf: Google Person Finderに登録する
+      search_person: 人を探す
+
+    button:
+      search_person: 人を探す
 
     errors:
       not_same_delete_key: 削除キーが違います。
@@ -81,6 +85,7 @@ ja:
     addons:
       board/file: ファイル
       board/list: リスト表示
+      board/anpi_list: リスト表示
       board/post_setting: 投稿設定
       board/file_setting: 添付ファイル設定
       board/anpi_post_setting: 安否投稿設定
@@ -125,6 +130,8 @@ ja:
         in_files: ファイル
       board/addon/list:
         mode: 表示形式
+      board/addon/anpi_list:
+        show_email: メールアドレスの表示
       board/addon/post_setting:
         show_email: メールアドレスの表示
         show_url: URLの表示
@@ -270,3 +277,6 @@ ja:
       in_post_gpf_after_save:
         - Google Person Finderについては<a href="https://google.org/personfinder/global/home.html?lang=ja" target="_blank">Google パーソンファインダーについて</a>をご確認ください。
         - Google Person Finderに登録された安否情報を削除するには、<a href="http://www.google.org/personfinder/japan">Google Person Finderのサイト</a>で実施してください。
+    board/anpi_post:
+      search_person:
+        - その人の名前、名前の一部、電話番号、住所、住所の一部を入力してください。

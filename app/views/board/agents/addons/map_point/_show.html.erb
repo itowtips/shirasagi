@@ -12,11 +12,14 @@
   canvas = $("div#map-canvas")[0];
 
   var opts = { readonly: true };
-  opts['center'] = [<%= @cur_node.map_center.lng %>,<%= @cur_node.map_center.lat %>];
 
   <% if @item.point.present? %>
-    opts['center'] = opts['marker'] = [<%= @item.point.loc.lng %>, <%= @item.point.loc.lat %>];
-    opts['zoom'] = <%= @item.point.zoom_level %>;
+  opts['center'] = opts['marker'] = [<%= @item.point.loc.lng %>, <%= @item.point.loc.lat %>];
+  opts['zoom'] = <%= @item.point.zoom_level %>;
+  <% elsif @cur_node.respond_to?(:map_center) %>
+  opts['center'] = [<%= @cur_node.map_center.lng %>,<%= @cur_node.map_center.lat %>];
+  <% else %>
+  opts['center'] = [<%= SS.config.cms.map_center[1] %>,<%= SS.config.cms.map_center[0] %>];
   <% end %>
 
   var map = new Board_Map(canvas, opts);

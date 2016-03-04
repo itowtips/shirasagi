@@ -24,10 +24,7 @@ module Board::Node
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
-    include Cms::Addon::List::Model
-    include Board::Addon::AnpiPostSetting
-    include Board::Addon::GooglePersonFinderSetting
-    include Board::Addon::MapSetting
+    include Board::Addon::AnpiList
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 

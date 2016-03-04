@@ -1,6 +1,7 @@
 class Board::Agents::Nodes::AnpiPostController < ApplicationController
   include Cms::NodeFilter::View
   include Cms::PublicFilter::Crud
+  helper Member::MypageHelper
 
   model Board::AnpiPost
 
@@ -16,6 +17,7 @@ class Board::Agents::Nodes::AnpiPostController < ApplicationController
       @items = @model.site(@cur_site).
         search(safe_params).
         and_public.
+        order_by(updated: -1).
         page(params[:page]).
         per(@cur_node.limit)
 
