@@ -50,7 +50,10 @@ module Cms::Model::Member
 
     scope :and_enabled, -> { self.or({ state: 'enabled' }, { state: nil }) }
     scope :and_temporary, -> { where(state: 'temporary') }
-    scope :and_verification_token, ->(token) { where(email: SS::Crypt.decrypt(token)) }
+    scope :and_verification_token, ->(token) do
+      email = SS::Crypt.decrypt(token) rescue nil
+      where(email: email)
+    end
   end
 
   def encrypt_password

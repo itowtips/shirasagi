@@ -31,6 +31,9 @@ ja:
         inviting: 招待中
         disabled: 無効
         rejected: 辞退
+      member_joins_to_invited_group:
+        manual: 手動
+        auto: 自動
     view:
       email: メールアドレス
       password: パスワード
@@ -187,6 +190,7 @@ ja:
         member_invitation_subject: 件名
         member_invitation_template: メールテンプレート
         member_invitation_signature: 署名
+        member_joins_to_invited_group: 招待グループへの参加
 
   cms_role:
     read_other_member_blogs: メンバーブログの閲覧（全て）
@@ -359,6 +363,9 @@ ja:
           このメールに覚えのない方は、お手数ですが本メールを削除してください。
       member_invitation_signature:
         - メールの末尾につける署名を設定します。
+      member_joins_to_invited_group:
+        - 会員登録完了時に招待されたグループへ自動的に参加するかどうかを指定します。
+        - 「自動」を指定すると、会員登録完了後、自動的にグループへも参加します。
     member/group:
       name:
         - グループ名を入力してください。

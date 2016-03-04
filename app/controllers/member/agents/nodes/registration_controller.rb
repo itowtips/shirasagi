@@ -3,6 +3,8 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
 
   model Cms::Member
 
+  after_action :try_to_join_group, only: :registration
+
   private
     def fix_params
       { cur_site: @cur_site }
@@ -14,6 +16,21 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
 
     def get_params
       params.require(:item).permit(permit_fields).merge(fix_params)
+    end
+
+    def try_to_join_group
+      group_id = params[:group].presence
+      return if group_id.blank?
+
+      group_id = SS::Crypt.decrypt(group_id) rescue nil
+      return if group_id.blank?
+
+      group = Member::Group.site(@cur_site).where(id: group_id).first
+      return if group.blank?
+
+      return if @item.errors.present?
+
+      group.accept(@item)
     end
 
   public

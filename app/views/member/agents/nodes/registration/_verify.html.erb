@@ -1,4 +1,6 @@
-<%= f.hidden_field_tag "token", params[:token] %>
+<%= f.hidden_field_tag("token", params[:token]) %>
+<%= f.hidden_field_tag("group", params[:group]) if params[:group].present? %>
+
 <% if @item.name.blank? %>
 <dl class="cms-member-registration-verify colum">
   <dt><%= @item.class.t :name %><span class="required"><%= t('views.required_field') %></span></dt>

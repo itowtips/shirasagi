@@ -28,12 +28,16 @@ class Member::Renderer::MemberInvitation
     end
 
     def template_variable_handler_registration_url(*_)
-      node = Member::Node::Registration.site(group.site).public.first
-      return if node.blank?
+      registration_node = Member::Node::Registration.site(group.site).public.first
+      return if registration_node.blank?
+      my_group_node = Member::Node::MyGroup.site(group.site).public.first
 
       params = {
         token: recipent.verification_token,
       }
-      "#{node.full_url}verify?#{params.to_query}"
+      if my_group_node && my_group_node.member_joins_to_invited_group == 'auto'
+        params[:group] = SS::Crypt.encrypt(group.id.to_s)
+      end
+      "#{registration_node.full_url}verify?#{params.to_query}"
     end
 end
