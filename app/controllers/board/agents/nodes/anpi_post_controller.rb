@@ -13,7 +13,7 @@ class Board::Agents::Nodes::AnpiPostController < ApplicationController
   public
     def index
       safe_params = params.permit(:keyword)
-      return if safe_params.blank?
+      return if safe_params.blank? || safe_params[:keyword].blank?
       @items = @model.site(@cur_site).
         search(safe_params).
         and_public.
