@@ -2,7 +2,7 @@
 
 <% if @cur_groups.present? %>
 <%= form_tag '', class: "search", method: :get, enforce_utf8: false do %>
-  <%= select_tag :g, options_for_select(@cur_groups.map { |g| [g.name, g.id] }, @cur_group.try(:id)), include_blank: true %>
+  <%= select_tag :g, options_from_collection_for_select(@cur_groups, :id, :name, selected: @cur_group.try(:id)), include_blank: true %>
   <input type="submit" value="<%= t('views.button.search') %>" class="btn" />
 <% end %>
 <% end %>

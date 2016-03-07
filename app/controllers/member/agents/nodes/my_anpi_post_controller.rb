@@ -40,7 +40,7 @@ class Member::Agents::Nodes::MyAnpiPostController < ApplicationController
     end
 
     def set_groups
-      @cur_groups ||= Member::Group.site(@cur_site).and_member(@cur_member).order_by(released: -1).to_a
+      @cur_groups ||= Member::Group.site(@cur_site).and_member(@cur_member).order_by(id: 1)
     end
 
     def set_cur_group
@@ -49,7 +49,8 @@ class Member::Agents::Nodes::MyAnpiPostController < ApplicationController
 
       group_id = params[:g].presence
       group_id = Integer(group_id) rescue nil if group_id.present?
-      @cur_group ||= @cur_groups.find { |item| item.id = group_id }
+      @cur_group ||= @cur_groups.where(id: group_id).first if group_id.present?
+      @cur_group ||= @cur_groups.first
     end
 
     def check_owner
