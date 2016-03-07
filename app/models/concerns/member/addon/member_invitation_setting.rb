@@ -12,7 +12,7 @@ module Member::Addon
       permit_params :member_invitation_template
       permit_params :member_invitation_signature
       permit_params :member_joins_to_invited_group
-      validates :member_joins_to_invited_group, inclusion: { in: %w(manual auto), allow_nil: true }
+      validates :member_joins_to_invited_group, inclusion: { in: %w(manual auto), allow_blank: true }
     end
 
     def member_joins_to_invited_group_options

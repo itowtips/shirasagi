@@ -12,7 +12,7 @@ module Board::Addon
       permit_params map_center: [ :lat, :lng ]
 
       validates :map_state, inclusion: { in: %w(enabled disabled) }, if: ->{ gpf_state.present? }
-      validates :map_zoom_level, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 18, allow_nil: true }
+      validates :map_zoom_level, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 18, allow_blank: true }
     end
 
     def map_state_options
