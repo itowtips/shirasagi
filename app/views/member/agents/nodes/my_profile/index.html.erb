@@ -17,6 +17,31 @@
       <dd><%= @item.label :email_type %></dd>
     </dl>
 
+    <dl class="column">
+      <dt><%= @model.t :kana %></dt>
+      <dd><%= @item.kana %></dd>
+    </dl>
+
+    <dl class="column">
+      <dt><%= @model.t :tel %></dt>
+      <dd><%= @item.tel %></dd>
+    </dl>
+
+    <dl class="column">
+      <dt><%= @model.t :addr %></dt>
+      <dd><%= @item.addr %></dd>
+    </dl>
+
+    <dl class="column">
+      <dt><%= @model.t :sex %></dt>
+      <dd><%= @item.label :sex %></dd>
+    </dl>
+
+    <dl class="column">
+      <dt><%= @model.t :birthday %></dt>
+      <dd><%= @item.birthday %></dd>
+    </dl>
+
     <%= render file: '_mail_category_show' %>
   </div>
 </div>
