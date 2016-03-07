@@ -49,7 +49,6 @@ class Member::Agents::Nodes::MyAnpiPostController < ApplicationController
 
       group_id = params[:g].presence
       group_id = Integer(group_id) rescue nil if group_id.present?
-      @cur_group ||= @cur_groups.first if group_id.blank? && @cur_groups.count == 1
       @cur_group ||= @cur_groups.find { |item| item.id = group_id }
     end
 
@@ -65,12 +64,13 @@ class Member::Agents::Nodes::MyAnpiPostController < ApplicationController
           and_public_for(@cur_member).
           order_by(released: -1).
           page(params[:page]).per(20)
+      else
+        @items = Board::AnpiPost.site(@cur_site).
+          and_owned_by(@cur_member).
+          order_by(released: -1).
+          page(params[:page]).per(20)
       end
     end
-
-    # def others_show
-    #   render
-    # end
 
     def others_new
       @item = @model.new pre_params.merge(fix_params)
@@ -80,22 +80,4 @@ class Member::Agents::Nodes::MyAnpiPostController < ApplicationController
       @item = @model.new get_params
       render_create @item.save, location: @cur_node.url
     end
-
-    # def others_edit
-    #   render
-    # end
-
-    # def others_update
-    #   @item.attributes = get_params
-    #   @item.in_updated = params[:_updated] if @item.respond_to?(:in_updated)
-    #   render_update @item.update, location: @cur_node.url
-    # end
-
-    # def others_delete
-    #   render
-    # end
-
-    # def others_destroy
-    #   render_destroy @item.destroy
-    # end
 end

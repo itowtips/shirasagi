@@ -47,6 +47,10 @@ class Board::AnpiPost
       def and_member_group(group)
         self.in(member_id: group.enabled_members.map(&:id))
       end
+
+      def and_owned_by(member)
+        self.in(member_id: member.id)
+      end
   end
 
   private
