@@ -10,7 +10,7 @@ module Member::Addon
       field :sex, type: String
       field :birthday, type: Date
       permit_params :kana, :tel, :addr, :sex, :birthday
-      validates :sex, inclusion: { in: %w(male female), allow_nil: true }
+      validates :sex, inclusion: { in: %w(male female), allow_blank: true }
     end
 
     def sex_options
