@@ -19,17 +19,16 @@ module Member::Part
 
     template_variable_handler :contributor, :template_variable_handler_contributor
 
-    public
-      def condition_hash(opts = {})
-        cond = []
-        cids = []
-        cond_url = []
+    def condition_hash(opts = {})
+      cond = []
+      cids = []
+      cond_url = []
 
-        cond << { filename: /^#{parent.filename}\// }
-        #cids << id
-        #cond_url = conditions
-        { '$or' => cond }
-      end
+      cond << { filename: /^#{parent.filename}\// }
+      #cids << id
+      #cond_url = conditions
+      { '$or' => cond }
+    end
 
     private
       def template_variable_handler_contributor(item, name)

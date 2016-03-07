@@ -34,12 +34,11 @@ module Member::Node
 
     default_scope ->{ where(route: "member/mypage") }
 
-    public
-      def children
-        Member::Node::Base.public.
-          where(filename: /^#{filename}\//, depth: depth + 1).
-          order_by(order: 1)
-      end
+    def children
+      Member::Node::Base.and_public.
+        where(filename: /^#{filename}\//, depth: depth + 1).
+        order_by(order: 1)
+    end
   end
 
   class MyProfile
@@ -63,14 +62,13 @@ module Member::Node
 
     default_scope ->{ where(route: "member/my_blog") }
 
-    public
-      def setting_url
-        "#{url}setting/"
-      end
+    def setting_url
+      "#{url}setting/"
+    end
 
-      def blog(member)
-        Member::Blog.where(site_id: site.id, member_id: member.id).first
-      end
+    def blog(member)
+      Member::Blog.where(site_id: site.id, member_id: member.id).first
+    end
   end
 
   class MyPhoto
@@ -126,16 +124,15 @@ module Member::Node
 
     default_scope ->{ where(route: "member/blog") }
 
-    public
-      def sort_hash
-        return { created: -1 } if sort.blank?
-        super
-      end
+    def sort_hash
+      return { created: -1 } if sort.blank?
+      super
+    end
 
-      def layout_options
-        Member::BlogLayout.where(filename: /^#{filename}\//).
-          map { |item| [item.name, item.id] }
-      end
+    def layout_options
+      Member::BlogLayout.where(filename: /^#{filename}\//).
+        map { |item| [item.name, item.id] }
+    end
 
     private
       def template_variable_handler_description(item, name)
@@ -159,14 +156,13 @@ module Member::Node
 
     before_validation ->{ self.page_layout = layout }
 
-    public
       def html
         ## for loop html img summary
         %(<img alt="#{name}" src="#{thumb_url}">) rescue ""
       end
 
       def pages
-        Member::BlogPage.where(filename: /^#{filename}\//, depth: depth + 1).public
+        Member::BlogPage.where(filename: /^#{filename}\//, depth: depth + 1).and_public
       end
   end
 
