@@ -16,7 +16,7 @@ class Ezine::BacknumbersController < ApplicationController
     def index
       raise "403" unless @cur_node.allowed?(:read, @cur_user, site: @cur_site)
 
-      @items = Ezine::Page.site(@cur_site).node(@cur_node.parent).public(@cur_date).
+      @items = Ezine::Page.site(@cur_site).node(@cur_node.parent).and_public(@cur_date).
         allow(:read, @cur_user).
         search(params[:s]).
         order_by(updated: -1).

@@ -7,7 +7,7 @@ class Member::Agents::Nodes::PhotoController < ApplicationController
 
   private
     def pages
-      @model.site(@cur_site).public.listable
+      @model.site(@cur_site).and_public.listable
     end
 
   public

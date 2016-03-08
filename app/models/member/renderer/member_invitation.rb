@@ -28,9 +28,9 @@ class Member::Renderer::MemberInvitation
     end
 
     def template_variable_handler_registration_url(*_)
-      registration_node = Member::Node::Registration.site(group.site).public.first
+      registration_node = Member::Node::Registration.site(group.site).and_public.first
       return if registration_node.blank?
-      my_group_node = Member::Node::MyGroup.site(group.site).public.first
+      my_group_node = Member::Node::MyGroup.site(group.site).and_public.first
 
       params = {
         token: recipent.verification_token,

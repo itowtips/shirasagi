@@ -7,7 +7,7 @@ class Member::Agents::Nodes::PhotoSpotController < ApplicationController
 
   private
     def pages
-      @model.site(@cur_site).public.
+      @model.site(@cur_site).and_public.
         where(@cur_node.condition_hash)
     end
 

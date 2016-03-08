@@ -16,7 +16,7 @@ class Member::Agents::Parts::PhotoSlideController < ApplicationController
 
           @items = Member::Photo.site(site).
             node(node).
-            public(@cur_date).
+            and_public(@cur_date).
             slideable.
             order_by(order: 1)
 
@@ -31,7 +31,7 @@ class Member::Agents::Parts::PhotoSlideController < ApplicationController
 
       @items = Member::Photo.site(@cur_site).
         node(@node).
-        public(@cur_date).
+        and_public(@cur_date).
         slideable.
         order_by(order: 1)
     end

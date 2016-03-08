@@ -1,4 +1,4 @@
-<% map_points = @cur_page.member_photos.public.map(&:map_points).select(&:present?).flatten %>
+<% map_points = @cur_page.member_photos.and_public.map(&:map_points).select(&:present?).flatten %>
 <% return if map_points.blank? %>
 
 <%= javascript_include_tag "//maps.googleapis.com/maps/api/js?v=3&sensor=false" %>

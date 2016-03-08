@@ -1,4 +1,4 @@
-<% member_photos = Member::Photo.public %>
+<% member_photos = Member::Photo.and_public %>
 <% return "" unless member_photos.present? %>
 
 <%= coffee do %>

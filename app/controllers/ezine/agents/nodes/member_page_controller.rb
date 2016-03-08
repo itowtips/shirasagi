@@ -4,7 +4,7 @@ class Ezine::Agents::Nodes::MemberPageController < ApplicationController
 
   private
     def pages
-      Ezine::Page.site(@cur_site).public(@cur_date).where(@cur_node.condition_hash)
+      Ezine::Page.site(@cur_site).and_public(@cur_date).where(@cur_node.condition_hash)
     end
 
   public

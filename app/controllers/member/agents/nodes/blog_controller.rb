@@ -8,7 +8,7 @@ class Member::Agents::Nodes::BlogController < ApplicationController
 
   private
     def pages
-      @model.site(@cur_site).node(@cur_node).public.
+      @model.site(@cur_site).node(@cur_node).and_public.
         where(@cur_node.condition_hash)
     end
 

@@ -45,7 +45,7 @@ module Member::BlogPageHelper
     h << %(<h2>記事ジャンル</h2>)
     h << %(<ul>)
 
-    pages = node.pages.public
+    pages = node.pages.and_public
     node.genres.each do |genre|
       count = pages.in(genres: genre).count
       next unless count > 0

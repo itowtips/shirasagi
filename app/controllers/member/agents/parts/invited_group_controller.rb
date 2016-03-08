@@ -21,7 +21,7 @@ class Member::Agents::Parts::InvitedGroupController < ApplicationController
     end
 
     def set_my_group_node
-      @my_group_node = Member::Node::MyGroup.site(@cur_site).public.first
+      @my_group_node = Member::Node::MyGroup.site(@cur_site).and_public.first
       if @my_group_node.blank?
         render text: ''
       end

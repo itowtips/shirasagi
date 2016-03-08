@@ -24,8 +24,8 @@ class Member::PhotosController < ApplicationController
 
     def set_item
       super
-      @categories = Member::Node::PhotoCategory.site(@cur_site).public
-      @locations  = Member::Node::PhotoLocation.site(@cur_site).public
+      @categories = Member::Node::PhotoCategory.site(@cur_site).and_public
+      @locations  = Member::Node::PhotoLocation.site(@cur_site).and_public
       @layout     = @cur_node.page_layout rescue nil
     end
 end

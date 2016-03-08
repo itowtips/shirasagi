@@ -9,7 +9,7 @@ class Member::Agents::Nodes::PhotoSearchController < ApplicationController
 
   public
     def index
-      @items = @model.site(@cur_site).public.
+      @items = @model.site(@cur_site).and_public.
         listable.
         contents_search(@query).
         order_by(@cur_node.sort_hash).
@@ -18,7 +18,7 @@ class Member::Agents::Nodes::PhotoSearchController < ApplicationController
     end
 
     def map
-      @items = @model.site(@cur_site).public.
+      @items = @model.site(@cur_site).and_public.
         listable.
         where(:map_points.exists => true).
         contents_search(@query).
@@ -30,8 +30,8 @@ class Member::Agents::Nodes::PhotoSearchController < ApplicationController
 
   private
     def set_query
-      @locations  = Member::Node::PhotoLocation.site(@cur_site).public
-      @categories = Member::Node::PhotoCategory.site(@cur_site).public
+      @locations  = Member::Node::PhotoLocation.site(@cur_site).and_public
+      @categories = Member::Node::PhotoCategory.site(@cur_site).and_public
       @query      = query
     end
 

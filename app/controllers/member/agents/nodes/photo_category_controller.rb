@@ -6,7 +6,7 @@ class Member::Agents::Nodes::PhotoCategoryController < ApplicationController
 
   public
     def pages
-      Member::Photo.site(@cur_site).public(@cur_date).
+      Member::Photo.site(@cur_site).and_public(@cur_date).
         where(@cur_node.condition_hash)
     end
 
