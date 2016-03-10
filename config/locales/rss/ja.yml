@@ -1,6 +1,7 @@
 ja:
   rss:
     page: フィード
+    weather_xml_page: 気象庁防災情報XML
 
     views:
       links:
