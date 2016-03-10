@@ -19,6 +19,7 @@ SS::Application.routes.draw do
       match :unsubscribe, via: [:get, :delete], on: :collection
     end
     resources :weather_xmls, concerns: [:deletion]
+    resources :weather_xml_regions, concerns: [:deletion]
   end
 
   node "rss" do
