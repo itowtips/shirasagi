@@ -4,6 +4,12 @@ describe Voice::SynthesisJob, http_server: true do
   http.default port: 33_190
   http.default doc_root: Rails.root.join("spec", "fixtures", "voice")
 
+  def execute_job_in_place
+    config = { name: "default", model: "job:service", num_workers: 0, poll: %w(default voice_synthesis) }
+    config.stringify_keys!
+    Job::Service.run config
+  end
+
   describe '#call_async', open_jtalk: true do
     context 'when synthesize from file "fixtures/voice/test-001.html"' do
       before :all do
@@ -51,7 +57,6 @@ describe Voice::SynthesisJob, http_server: true do
 
         @item = Voice::File.find_or_create_by(site_id: cms_site.id, url: @url)
         @job = Voice::SynthesisJob.call_async @item.id.to_s
-        @cmd = "bundle exec rake job:worker RAILS_ENV=#{Rails.env} > /dev/null 2>&1"
       end
 
       before do
@@ -64,7 +69,7 @@ describe Voice::SynthesisJob, http_server: true do
       end
 
       it { expect(@job).not_to be_nil }
-      it { expect(system(@cmd)).to be_truthy }
+      it { expect(execute_job_in_place).to be_nil }
 
       describe "job" do
         subject { Job::Task.find_by(name: 'job:voice_synthesis') rescue nil }
@@ -88,7 +93,6 @@ describe Voice::SynthesisJob, http_server: true do
 
         @item = Voice::File.find_or_create_by(site_id: cms_site.id, url: @url)
         @job = Voice::SynthesisJob.call_async @item.id.to_s
-        @cmd = "bundle exec rake job:worker RAILS_ENV=#{Rails.env} > /dev/null 2>&1"
       end
 
       before do
@@ -101,7 +105,7 @@ describe Voice::SynthesisJob, http_server: true do
       end
 
       it { expect(@job).not_to be_nil }
-      it { expect(system(@cmd)).to be_truthy }
+      it { expect(execute_job_in_place).to be_nil }
 
       describe "job" do
         subject { Job::Task.find_by(name: 'job:voice_synthesis') rescue nil }
@@ -121,7 +125,6 @@ describe Voice::SynthesisJob, http_server: true do
 
         @item = Voice::File.find_or_create_by(site_id: cms_site.id, url: @url)
         @job = Voice::SynthesisJob.call_async @item.id.to_s
-        @cmd = "bundle exec rake job:worker RAILS_ENV=#{Rails.env} > /dev/null 2>&1"
       end
 
       before do
@@ -134,7 +137,7 @@ describe Voice::SynthesisJob, http_server: true do
       end
 
       it { expect(@job).not_to be_nil }
-      it { expect(system(@cmd)).to be_truthy }
+      it { expect(execute_job_in_place).to be_nil }
 
       describe "job" do
         subject { Job::Task.find_by(name: 'job:voice_synthesis') rescue nil }
@@ -154,7 +157,6 @@ describe Voice::SynthesisJob, http_server: true do
 
         @item = Voice::File.find_or_create_by(site_id: cms_site.id, url: @url)
         @job = Voice::SynthesisJob.call_async @item.id.to_s
-        @cmd = "bundle exec rake job:worker RAILS_ENV=#{Rails.env} > /dev/null 2>&1"
       end
 
       before do
@@ -167,7 +169,7 @@ describe Voice::SynthesisJob, http_server: true do
       end
 
       it { expect(@job).not_to be_nil }
-      it { expect(system(@cmd)).to be_truthy }
+      it { expect(execute_job_in_place).to be_nil }
 
       describe "job" do
         subject { Job::Task.find_by(name: 'job:voice_synthesis') rescue nil }
@@ -188,7 +190,6 @@ describe Voice::SynthesisJob, http_server: true do
 
         @item = Voice::File.find_or_create_by(site_id: cms_site.id, url: @url)
         @job = Voice::SynthesisJob.call_async @item.id.to_s
-        @cmd = "bundle exec rake job:worker RAILS_ENV=#{Rails.env} > /dev/null 2>&1"
       end
 
       before do
@@ -201,7 +202,7 @@ describe Voice::SynthesisJob, http_server: true do
       end
 
       it { expect(@job).not_to be_nil }
-      it { expect(system(@cmd)).to be_truthy }
+      it { expect(execute_job_in_place).to be_nil }
 
       describe "job" do
         subject { Job::Task.find_by(name: 'job:voice_synthesis') rescue nil }
@@ -221,7 +222,6 @@ describe Voice::SynthesisJob, http_server: true do
 
         @item = Voice::File.find_or_create_by(site_id: cms_site.id, url: @url)
         @job = Voice::SynthesisJob.call_async @item.id.to_s
-        @cmd = "bundle exec rake job:worker RAILS_ENV=#{Rails.env} > /dev/null 2>&1"
       end
 
       before do
@@ -234,7 +234,7 @@ describe Voice::SynthesisJob, http_server: true do
       end
 
       it { expect(@job).not_to be_nil }
-      it { expect(system(@cmd)).to be_truthy }
+      it { expect(execute_job_in_place).to be_nil }
 
       describe "job" do
         subject { Job::Task.find_by(name: 'job:voice_synthesis') rescue nil }
