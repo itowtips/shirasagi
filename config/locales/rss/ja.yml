@@ -2,6 +2,7 @@ ja:
   rss:
     page: フィード
     weather_xml_page: 気象庁防災情報XML
+    weather_xml_region: 気象庁地域
 
     views:
       links:
@@ -22,6 +23,11 @@ ja:
       rss_refresh_method:
         manual: 手動
         auto: 自動
+    apis:
+      weather_xml_regions:
+        index: 地域を選択する
+        search: 地域を検索
+        select: 地域を設定する
 
   modules:
     rss: RSS取込
@@ -38,6 +44,8 @@ ja:
       rss/weather_xml: 気象庁防災情報XML
 
   mongoid:
+    models:
+      rss/weather_xml_region: 気象庁地域
     attributes:
       rss/node/page:
       rss/page:
@@ -59,6 +67,10 @@ ja:
         secret: HMAC Key
         rss_max_docs: 最大保存件数
         page_state: ページステータス
+      rss/weather_xml_region:
+        name: 名称
+        code: コード
+        order: 並び順
 
   job:
     models:
@@ -111,3 +123,12 @@ ja:
         - RSS を取り込んだ際に記事数が「最大保存件数」を超えた場合、公開日時の古い順に記事を削除し、記事数が「最大保存件数」以下になるように調整します。
         -
         - 「最大保存件数」に 0 を指定すると、無制限に記事を保存します。
+
+    rss/weather_xml_region:
+      name:
+        - 地域の名称を指定します。
+      code:
+        - 地域コードを指定します。
+      order:
+        - 並び順を指定します。
+        - 数字が小さいほど一覧ページの上位に表示されます。
