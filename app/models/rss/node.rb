@@ -50,6 +50,7 @@ module Rss::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
     include Rss::Addon::PubSubHubbub
+    include Rss::Addon::AnpiMailSetting
     include Cms::Addon::PageList
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission

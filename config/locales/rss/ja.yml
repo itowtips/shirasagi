@@ -23,6 +23,17 @@ ja:
       rss_refresh_method:
         manual: 手動
         auto: 自動
+      earthquake_intensity:
+        '0': 0以上
+        '1': 1以上
+        '2': 2以上
+        '3': 3以上
+        '4': 4以上
+        5-: 5弱以上
+        5+: 5強以上
+        6-: 6弱以上
+        6+: 6強以上
+        '7': 7以上
     apis:
       weather_xml_regions:
         index: 地域を選択する
@@ -36,6 +47,7 @@ ja:
       rss/page/weather_xml: 気象庁防災情報XML
       rss/import: RSS取込
       rss/pub_sub_hubbub: PubSubHubbub
+      rss/anpi_mail_setting: 安否確認メール設定
 
   cms:
     nodes:
@@ -71,6 +83,13 @@ ja:
         name: 名称
         code: コード
         order: 並び順
+      rss/addon/anpi_mail_setting:
+        earthquake_intensity: 震度
+        target_regions: 対象地域
+        my_anpi_post: 安否投稿
+        upper_mail_text: 上部メール
+        loop_mail_text: ループメール
+        lower_mail_text: 下部メール
 
   job:
     models:
@@ -132,3 +151,19 @@ ja:
       order:
         - 並び順を指定します。
         - 数字が小さいほど一覧ページの上位に表示されます。
+
+    rss/addon/anpi_mail_setting:
+      earthquake_intensity:
+        - 安否メールを送信する震度を指定します。
+        - 指定された以上の震度が対象地域内で観測された場合、安否メールを送信します。
+      target_regions:
+        - 指定された以上の震度が対象地域内で観測された場合、安否メールを送信します。
+      my_anpi_post:
+        - 安否投稿フォルダーを指定します。
+        - 安否確認メールに指定したフォルダーの URL を記載します。
+      upper_mail_text:
+        - 安否確認メールの上部メールを指定します。
+      loop_mail_text:
+        - 安否確認メールのループメールを指定します。
+      lower_mail_text:
+        - 安否確認メールの下部メールを指定します。
