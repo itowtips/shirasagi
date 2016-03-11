@@ -140,18 +140,18 @@ describe Rss::Wrappers, dbscope: :example do
 
     it do
       expect(subject[0][:name]).to eq '気象警報・注意報'
-      expect(subject[0][:link]).to eq 'http://*/*/8e55b8d8-518b-3dc9-9156-7e87c001d7b5.xml'
-      expect(subject[0][:html]).to eq '【富山県気象警報・注意報】富山県では、強風、高波に注意してください。'
-      expect(subject[0][:released]).to eq Time.zone.parse('2012-08-15T07:00:00+09:00')
-      expect(subject[0][:authors]).to include(name: '富山地方気象台')
+      expect(subject[0][:link]).to eq 'http://xml.kishou.go.jp/data/afeedc52-107a-3d1d-9196-b108234d6e0f.xml'
+      expect(subject[0][:html]).to eq '【福島県気象警報・注意報】注意報を解除します。'
+      expect(subject[0][:released]).to eq Time.zone.parse('2016-03-10T09:22:41Z')
+      expect(subject[0][:authors]).to include(name: '福島地方気象台')
     end
 
     it do
-      expect(subject[1][:name]).to eq '気象警報・注意報'
-      expect(subject[1][:link]).to eq 'http://*/*/b60694a6-d389-3194-a051-092ee9b2c474.xml'
-      expect(subject[1][:html]).to eq '【京都府気象警報・注意報】京都府では、１５日昼過ぎから高波に注意して下さい'
-      expect(subject[1][:released]).to eq Time.zone.parse('2012-08-15T07:00:00+09:00')
-      expect(subject[1][:authors]).to include(name: '京都地方気象台')
+      expect(subject[1][:name]).to eq '気象特別警報・警報・注意報'
+      expect(subject[1][:link]).to eq 'http://xml.kishou.go.jp/data/2b441518-4e79-342c-a271-7c25597f3a69.xml'
+      expect(subject[1][:html]).to eq '【福島県気象警報・注意報】注意報を解除します。'
+      expect(subject[1][:released]).to eq Time.zone.parse('2016-03-10T09:22:41Z')
+      expect(subject[1][:authors]).to include(name: '福島地方気象台')
     end
   end
 end
