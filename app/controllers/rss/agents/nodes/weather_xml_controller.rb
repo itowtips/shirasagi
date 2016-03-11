@@ -5,4 +5,9 @@ class Rss::Agents::Nodes::WeatherXmlController < ApplicationController
 
   model Rss::WeatherXmlPage
   set_job_model Rss::ImportWeatherXmlJob
+
+  private
+    def protect_csrf?
+      false
+    end
 end
