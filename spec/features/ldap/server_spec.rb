@@ -80,7 +80,7 @@ describe "ldap_server", ldap: true do
       it "#index" do
         login_cms_user
         visit index_path
-        expect(status_code).to eq 400
+        expect(status_code).to eq 200
         expect(current_path).to eq index_path
         expect(page).to have_selector("div#errorExplanation h2")
         expect(page).to have_selector("div#errorExplanation ul")
