@@ -178,7 +178,7 @@ ja:
         license_name: ライセンス
       member/addon/photo/license_setting:
         license_free: 誰でも利用可
-        license_not_free: 利用不可
+        license_not_free: 許可が必要
       member/addon/registration/sender_address:
         sender_name: 送信者名
         sender_email: 送信メールアドレス
