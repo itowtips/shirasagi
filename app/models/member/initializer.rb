@@ -16,6 +16,7 @@ module Member
 
     # public nodes
     Cms::Node.plugin "member/blog"
+    Cms::Node.plugin "member/blog_page_location"
     Cms::Node.plugin "member/photo"
     Cms::Node.plugin "member/photo_search"
     Cms::Node.plugin "member/photo_category"

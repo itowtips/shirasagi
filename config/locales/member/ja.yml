@@ -77,6 +77,7 @@ ja:
       member/file: ファイル
       member/blog/body: 本文
       member/blog/genre: ジャンル
+      member/blog/location: 地域
       member/blog/setting: ブログ設定
       member/photo/body: フォト
       member/photo/category: タグ
@@ -102,7 +103,7 @@ ja:
       member/my_profile: プロフィール
       member/my_blog: マイブログ
       member/blog: ブログ
-      member/blog_category: ブログカテゴリー
+      member/blog_page_location: ブログの地域
       member/my_photo: マイフォト
       member/my_group: グループ
       member/my_anpi_post: 安否
@@ -151,14 +152,17 @@ ja:
       member/node/blog_page:
         title: ブログタイトル
         basename: ブログURL
+        filename: ブログURL
         layout: レイアウト
         description: 紹介文
         image_id: サムネイル
         genres: ジャンル設定
+        blog_page_locations: 地域設定
       member/blog_page:
         name: タイトル
         body: 本文
         genres: ジャンル
+        blog_page_locations: 地域
       member/photo:
         listable_state: 一覧及び検索結果への表示
         slideable_state: スライドへの表示

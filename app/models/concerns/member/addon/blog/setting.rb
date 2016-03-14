@@ -11,10 +11,13 @@ module Member::Addon::Blog
       field :genres, type: SS::Extensions::Lines
       belongs_to_file :image
 
+      embeds_ids :blog_page_locations, class_name: "Member::Node::BlogPageLocation"
+
       validate :validate_genres
       validates :description, length: { maximum: 400 }
 
       permit_params :image_id, :description, :genres
+      permit_params blog_page_location_ids: []
     end
 
     def thumb_url

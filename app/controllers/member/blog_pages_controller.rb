@@ -4,14 +4,21 @@ class Member::BlogPagesController < ApplicationController
 
   model Member::BlogPage
 
-  before_action :change_node_class
+  before_action :set_blog_page_nodes
+
+  public
+    def new
+      super
+      @item.blog_page_location_ids = @cur_node.blog_page_location_ids
+    end
 
   private
     def fix_params
       { cur_user: @cur_user, cur_site: @cur_site, cur_node: @cur_node }
     end
 
-    def change_node_class
-      @cur_node = @cur_node.becomes_with_route
+    def set_blog_page_nodes
+      @cur_node  = @cur_node.becomes_with_route
+      @locations = Member::Node::BlogPageLocation.site(@cur_site)
     end
 end
