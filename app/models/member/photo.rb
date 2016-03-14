@@ -5,6 +5,7 @@ class Member::Photo
   include Member::Addon::Photo::Category
   include Member::Addon::Photo::Location
   include Member::Addon::Photo::Map
+  include Member::Addon::Photo::License
   include Cms::Addon::GroupPermission
   include History::Addon::Backup
 

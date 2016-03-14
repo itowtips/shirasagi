@@ -1,0 +1,9 @@
+<%#= code_editor ".mod-member-photo-license .html", mode: :html, readonly: true %>
+
+<dl class="see mod-member-photo-license-setting">
+  <dt><%= @model.t :license_free %><%= @model.tt :license_free %></dt>
+  <dd><%=br @item.license_free %></dd>
+
+  <dt><%= @model.t :license_not_free %><%= @model.tt :license_not_free %></dt>
+  <dd><%=br @item.license_not_free %></dd>
+</dl>

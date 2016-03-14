@@ -171,6 +171,7 @@ module Member::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
     include Cms::Addon::PageList
+    include Member::Addon::Photo::LicenseSetting
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
