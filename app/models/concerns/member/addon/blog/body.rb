@@ -9,11 +9,10 @@ module Member::Addon::Blog
       validates :html, presence: true
     end
 
-    public
-      def summary
-        #return summary_html if summary_html.present?
-        return "" unless html.present?
-        ApplicationController.helpers.sanitize(html, tags: []).squish.truncate(120)
-      end
+    def summary
+      #return summary_html if summary_html.present?
+      return "" unless html.present?
+      ApplicationController.helpers.sanitize(html, tags: []).squish.truncate(120)
+    end
   end
 end

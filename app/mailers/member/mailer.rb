@@ -30,7 +30,12 @@ class Member::Mailer < ActionMailer::Base
     from = "#{node.sender_name} <#{node.sender_email}>"
     to = recipent.email
     subject = node.group_invitation_subject
-    body = Member::Renderer::GroupInvitation.render(node: node, group: group, sender: sender, recipent: recipent, template: node.group_invitation_template)
+    body = Member::Renderer::GroupInvitation.render(
+      node: node,
+      group: group,
+      sender: sender,
+      recipent: recipent,
+      template: node.group_invitation_template)
     return if body.blank?
     if node.group_invitation_signature.present?
       body << "\n"
@@ -48,7 +53,11 @@ class Member::Mailer < ActionMailer::Base
     from = "#{node.sender_name} <#{node.sender_email}>"
     to = recipent.email
     subject = node.member_invitation_subject
-    body = Member::Renderer::MemberInvitation.render(group: group, sender: sender, recipent: recipent, template: node.member_invitation_template)
+    body = Member::Renderer::MemberInvitation.render(
+      group: group,
+      sender: sender,
+      recipent: recipent,
+      template: node.member_invitation_template)
     return if body.blank?
     if node.member_invitation_signature.present?
       body << "\n"

@@ -293,8 +293,8 @@ describe Article::Part::Page, type: :model, dbscope: :example do
 
       it do
         ret = item.template_variable_get(page, 'categories')
-        expect(ret).to include("<span class=\"#{category1.filename.gsub('/', '-')}\"><a href=\"#{category1.url}\">スポーツ &gt;</a></span>")
-        expect(ret).to include("<span class=\"#{category2.filename.gsub('/', '-')}\"><a href=\"#{category2.url}\">音楽 &amp;</a></span>")
+        expect(ret).to include("<span class=\"#{category1.filename.tr('/', '-')}\"><a href=\"#{category1.url}\">スポーツ &gt;</a></span>")
+        expect(ret).to include("<span class=\"#{category2.filename.tr('/', '-')}\"><a href=\"#{category2.url}\">音楽 &amp;</a></span>")
       end
     end
   end

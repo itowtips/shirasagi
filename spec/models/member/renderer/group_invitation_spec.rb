@@ -40,7 +40,12 @@ describe Member::Renderer::GroupInvitation, dbscope: :example do
 
   describe 'render #{invitation_message}' do
     subject do
-      described_class.render(node: node, group: group, sender: admin_member, recipent: member1, template: '#{invitation_message}')
+      described_class.render(
+        node: node,
+        group: group,
+        sender: admin_member,
+        recipent: member1,
+        template: '#{invitation_message}')
     end
     it { is_expected.to eq group.invitation_message }
   end

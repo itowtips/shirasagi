@@ -31,8 +31,7 @@ module Board::Model::AnpiPost
     validates :text, presence: true
   end
 
-  public
-    def sex_options
-      %w(male female).map { |m| [ I18n.t("board.options.sex.#{m}"), m ] }.to_a
-    end
+  def sex_options
+    %w(male female).map { |m| [ I18n.t("board.options.sex.#{m}"), m ] }.to_a
+  end
 end

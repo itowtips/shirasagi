@@ -17,10 +17,9 @@ module Member::Addon::Blog
       permit_params :image_id, :description, :genres
     end
 
-    public
-      def thumb_url
-        image ? image.thumb_url : "/assets/img/member/blog/dummy.png"
-      end
+    def thumb_url
+      image ? image.thumb_url : "/assets/img/member/blog/dummy.png"
+    end
 
     private
       def validate_genres

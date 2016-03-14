@@ -7,16 +7,6 @@ class Member::PhotosController < ApplicationController
 
   navi_view "cms/node/main/navi"
 
-  public
-    def index
-      raise "403" unless @model.allowed?(:read, @cur_user, site: @cur_site, node: @cur_node)
-
-      @items = @model.site(@cur_site).
-        allow(:read, @cur_user, site: @cur_site).
-        order_by(released: -1).
-        page(params[:page]).per(50)
-    end
-
   private
     def fix_params
       { cur_user: @cur_user, cur_site: @cur_site, cur_node: @cur_node, layout: @layout }
@@ -27,5 +17,15 @@ class Member::PhotosController < ApplicationController
       @categories = Member::Node::PhotoCategory.site(@cur_site).and_public
       @locations  = Member::Node::PhotoLocation.site(@cur_site).and_public
       @layout     = @cur_node.page_layout rescue nil
+    end
+
+  public
+    def index
+      raise "403" unless @model.allowed?(:read, @cur_user, site: @cur_site, node: @cur_node)
+
+      @items = @model.site(@cur_site).
+        allow(:read, @cur_user, site: @cur_site).
+        order_by(released: -1).
+        page(params[:page]).per(50)
     end
 end

@@ -10,13 +10,6 @@ class Member::Agents::Nodes::MyPhotoController < ApplicationController
 
   prepend_view_path "app/views/member/agents/nodes/my_photo"
 
-  public
-    def index
-      @items = @model.site(@cur_site).member(@cur_member).
-        order_by(released: -1).
-        page(params[:page]).per(50)
-    end
-
   private
     def set_photo_node
       @photo_node = Member::Node::Photo.first
@@ -27,5 +20,12 @@ class Member::Agents::Nodes::MyPhotoController < ApplicationController
 
     def fix_params
       { cur_site: @cur_site, cur_member: @cur_member, cur_node: @photo_node, layout: @layout }
+    end
+
+  public
+    def index
+      @items = @model.site(@cur_site).member(@cur_member).
+        order_by(released: -1).
+        page(params[:page]).per(50)
     end
 end

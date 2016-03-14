@@ -107,7 +107,7 @@ describe Map::Extensions::Loc, dbscope: :example do
     end
 
     it do
-      loc = described_class.mongoize([ 'xyz', 'abc' ])
+      loc = described_class.mongoize(%w(xyz abc))
       expect(loc).to be_a(Array)
       expect(loc).to eq []
     end

@@ -14,17 +14,16 @@ module Board::Addon
       permit_params :text_size_limit, :show_email, :deny_ips
     end
 
-    public
-      def show_email?
-        show_email == 'enabled'
-      end
+    def show_email?
+      show_email == 'enabled'
+    end
 
-      def text_size_limit_options
-        [400, 200, 100, 0].map { |m| [ I18n.t("board.options.text_size_limit.l#{m}"), m ] }.to_a
-      end
+    def text_size_limit_options
+      [400, 200, 100, 0].map { |m| [ I18n.t("board.options.text_size_limit.l#{m}"), m ] }.to_a
+    end
 
-      def show_email_options
-        %w(enabled disabled).map { |m| [ I18n.t("board.options.show_email.#{m}"), m ] }.to_a
-      end
+    def show_email_options
+      %w(enabled disabled).map { |m| [ I18n.t("board.options.show_email.#{m}"), m ] }.to_a
+    end
   end
 end

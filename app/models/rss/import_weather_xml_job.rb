@@ -108,7 +108,7 @@ class Rss::ImportWeatherXmlJob < Rss::ImportBase
       end
 
       diff = Time.zone.now - @report_datetime
-      return if diff.abs > 1.hours
+      return if diff.abs > 1.hour
 
       REXML::XPath.match(xmldoc, '/Report/Body/Intensity/Observation/Pref').each do |pref|
         pref_name = pref.elements['Name'].text
@@ -134,20 +134,23 @@ class Rss::ImportWeatherXmlJob < Rss::ImportBase
       end
     end
 
+    # send anpi mail
     def send_earthquake_info_mail(page)
-      render = Rss::Renderer::AnpiMail.new(
+      renderer = Rss::Renderer::AnpiMail.new(
         cur_site: @cur_site,
         cur_node: @cur_node,
         cur_page: page,
         cur_infos: { infos: @region_eq_infos, target_time: @target_datetime })
 
-      # send anpi mail
+      name = renderer.render_template(@cur_node.title_mail_text)
+      text = renderer.render
+
       ezine_page = Ezine::Page.new(
         cur_site: @cur_site,
         cur_node: @cur_node.anpi_mail,
         cur_user: @cur_user,
-        name: render.render_template(@cur_node.title_mail_text),
-        text: render.render,
+        name: name,
+        text: text
       )
 
       unless ezine_page.save
