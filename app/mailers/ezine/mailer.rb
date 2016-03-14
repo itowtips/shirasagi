@@ -33,8 +33,8 @@ class Ezine::Mailer < ActionMailer::Base
         # send multipart mail.
         # format order is important. text is first, then html is last
         # see: http://monmon.hatenablog.com/entry/2015/02/02/141722
-        format.text
-        format.html
+        format.text if @page.text.present?
+        format.html if @page.html.present?
       else
         # default
         format.text

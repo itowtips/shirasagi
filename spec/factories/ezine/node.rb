@@ -6,4 +6,10 @@ FactoryGirl.define do
     filename { unique_id }
     route 'ezine/page'
   end
+
+  factory :ezine_node_member_page, class: Ezine::Node::MemberPage do
+    name { unique_id }
+    filename { unique_id }
+    route 'ezine/member_page'
+  end
 end
