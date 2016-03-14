@@ -1,8 +1,8 @@
 class Member::Renderer::MemberInvitation
   include ActiveModel::Model
-  include Member::TemplateVariableRenderer
+  include SS::TemplateVariable
 
-  attr_accessor :group, :sender, :recipent, :template
+  attr_accessor :group, :sender, :recipent
 
   template_variable_handler(:sender_name, :template_variable_handler_sender_name)
   template_variable_handler(:sender_email, :template_variable_handler_sender_email)

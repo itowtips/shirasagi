@@ -1,6 +1,6 @@
 class Rss::Renderer::AnpiMail
   include ActiveModel::Model
-  include Member::TemplateVariableRenderer
+  include SS::TemplateVariable
 
   attr_accessor :cur_site, :cur_node, :cur_page, :cur_infos
 
