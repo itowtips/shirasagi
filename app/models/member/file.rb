@@ -6,13 +6,12 @@ class Member::File
 
   default_scope ->{ where(model: /^member\//) }
 
-  public
-    def previewable?(opts = {})
-      cur_user   = opts[:user]
-      cur_member = opts[:member]
+  def previewable?(opts = {})
+    cur_user   = opts[:user]
+    cur_member = opts[:member]
 
-      return true if cur_user
-      return false unless cur_member
-      return cur_member.id == member.id
-    end
+    return true if cur_user
+    return false unless cur_member
+    return cur_member.id == member.id
+  end
 end

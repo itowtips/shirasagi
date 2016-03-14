@@ -45,7 +45,7 @@ class Member::Group
     end
 
     def and_member(member)
-      self.where(members: { '$elemMatch' => { member_id: member.id, state: { '$in' => ['admin', 'user'] } } })
+      self.where(members: { '$elemMatch' => { member_id: member.id, state: { '$in' => %w(admin user) } } })
     end
 
     def and_invited(member)
@@ -54,7 +54,7 @@ class Member::Group
   end
 
   def enabled_members
-    members.where(state: { '$in' => ['admin', 'user'] }).map(&:member)
+    members.where(state: { '$in' => %w(admin user) }).map(&:member)
   end
 
   def admin_member?(member)

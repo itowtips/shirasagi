@@ -7,27 +7,6 @@ class Member::Agents::Nodes::PhotoSearchController < ApplicationController
 
   before_action :set_query
 
-  public
-    def index
-      @items = @model.site(@cur_site).and_public.
-        listable.
-        contents_search(@query).
-        order_by(@cur_node.sort_hash).
-        page(params[:page]).
-        per(@cur_node.limit)
-    end
-
-    def map
-      @items = @model.site(@cur_site).and_public.
-        listable.
-        where(:map_points.exists => true).
-        contents_search(@query).
-        order_by(@cur_node.sort_hash).
-        page(params[:page]).
-        per(@cur_node.limit)
-      @markers = @items.map { |item| item.map_points }.flatten
-    end
-
   private
     def set_query
       @locations  = Member::Node::PhotoLocation.site(@cur_site).and_public
@@ -48,5 +27,26 @@ class Member::Agents::Nodes::PhotoSearchController < ApplicationController
         locations: locations,
         categories: categories,
       }
+    end
+
+  public
+    def index
+      @items = @model.site(@cur_site).and_public.
+        listable.
+        contents_search(@query).
+        order_by(@cur_node.sort_hash).
+        page(params[:page]).
+        per(@cur_node.limit)
+    end
+
+    def map
+      @items = @model.site(@cur_site).and_public.
+        listable.
+        where(:map_points.exists => true).
+        contents_search(@query).
+        order_by(@cur_node.sort_hash).
+        page(params[:page]).
+        per(@cur_node.limit)
+      @markers = @items.map { |item| item.map_points }.flatten
     end
 end

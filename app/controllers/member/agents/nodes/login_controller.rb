@@ -47,7 +47,7 @@ class Member::Agents::Nodes::LoginController < ApplicationController
       if params[:ref].present?
         redirect_to params[:ref]
       else
-        redirect_to "#{member_login_path}"
+        redirect_to member_login_path
       end
     end
 

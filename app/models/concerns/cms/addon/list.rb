@@ -2,6 +2,7 @@ module Cms::Addon::List
   module Model
     extend ActiveSupport::Concern
     extend SS::Translation
+    include SS::TemplateVariable
 
     attr_accessor :cur_date
 
@@ -23,32 +24,20 @@ module Cms::Addon::List
       template_variable_handler(:class, :template_variable_handler_class)
       template_variable_handler(:new, :template_variable_handler_new)
       template_variable_handler(:date, :template_variable_handler_date)
-      template_variable_handler(/^date\.(\w+)$/, :template_variable_handler_date2)
+      template_variable_handler('date.default') { |name, item| template_variable_handler_date(name, item, :default) }
+      template_variable_handler('date.iso') { |name, item| template_variable_handler_date(name, item, :iso) }
+      template_variable_handler('date.long') { |name, item| template_variable_handler_date(name, item, :long) }
+      template_variable_handler('date.short') { |name, item| template_variable_handler_date(name, item, :short) }
       template_variable_handler(:time, :template_variable_handler_time)
-      template_variable_handler(/^time\.(\w+)$/, :template_variable_handler_time2)
+      template_variable_handler('time.default') { |name, item| template_variable_handler_time(name, item, :default) }
+      template_variable_handler('time.iso') { |name, item| template_variable_handler_time(name, item, :iso) }
+      template_variable_handler('time.long') { |name, item| template_variable_handler_time(name, item, :long) }
+      template_variable_handler('time.short') { |name, item| template_variable_handler_time(name, item, :short) }
       template_variable_handler(:group, :template_variable_handler_group)
       template_variable_handler(:groups, :template_variable_handler_groups)
-      template_variable_handler("img.src", :template_variable_handler_img_src)
+      template_variable_handler('img.src', :template_variable_handler_img_src)
       template_variable_handler(:categories, :template_variable_handler_categories)
-      template_variable_handler("pages.count", :template_variable_handler_pages_count)
-    end
-
-    module ClassMethods
-      def template_variable_handlers
-        instance_variable_get(:@_template_variable_handlers) || []
-      end
-
-      def template_variable_handlers=(value)
-        instance_variable_set(:@_template_variable_handlers, value)
-      end
-
-      def template_variable_handler(name, proc, &block)
-        handlers = template_variable_handlers
-
-        name = name.to_sym if name.respond_to?(:to_sym)
-        handlers << [name, proc || block]
-        self.template_variable_handlers = handlers
-      end
+      template_variable_handler('pages.count', :template_variable_handler_pages_count)
     end
 
     def sort_options
@@ -118,28 +107,7 @@ module Cms::Addon::List
 
     def render_loop_html(item, opts = {})
       item = item.becomes_with_route rescue item
-      (opts[:html] || loop_html).gsub(/\#\{(.*?)\}/) do |m|
-        str = template_variable_get(item, $1) rescue false
-        str == false ? m : str
-      end
-    end
-
-    def template_variable_get(item, name)
-      name_sym = name.to_sym
-      _, proc = self.class.template_variable_handlers.find do |n, _|
-        if n.is_a?(Symbol)
-          n == name_sym
-        elsif n.is_a?(Regexp)
-          n =~ name
-        else
-          false
-        end
-      end
-
-      return false if proc.nil?
-
-      proc = method(proc) if proc.is_a?(Symbol)
-      proc.call(item, name)
+      render_template(opts[:html] || loop_html, item)
     end
 
     private
@@ -149,46 +117,44 @@ module Cms::Addon::List
         end.compact.uniq
       end
 
-      def template_variable_handler_name(item, name)
+      def template_variable_handler_name(name, item)
         ERB::Util.html_escape item.send(name)
       end
 
-      def template_variable_handler_class(item, name)
+      def template_variable_handler_class(name, item)
         item.basename.sub(/\..*/, "").dasherize
       end
 
-      def template_variable_handler_new(item, name)
+      def template_variable_handler_new(name, item)
         respond_to?(:in_new_days?) && in_new_days?(item.date) ? "new" : nil
       end
 
-      def template_variable_handler_date(item, name)
-        I18n.l item.date.to_date
+      def template_variable_handler_date(name, item, format = nil)
+        if format.nil?
+          I18n.l item.date.to_date
+        else
+          I18n.l item.date.to_date, format: format.to_sym
+        end
       end
 
-      def template_variable_handler_date2(item, name)
-        format = name.split('.').last
-        I18n.l item.date.to_date, format: format.to_sym
+      def template_variable_handler_time(name, item, format = nil)
+        if format.nil?
+          I18n.l item.date
+        else
+          I18n.l item.date, format: format.to_sym
+        end
       end
 
-      def template_variable_handler_time(item, name)
-        I18n.l item.date
-      end
-
-      def template_variable_handler_time2(item, name)
-        format = name.split('.').last
-        I18n.l item.date, format: format.to_sym
-      end
-
-      def template_variable_handler_group(item, name)
+      def template_variable_handler_group(name, item)
         group = item.groups.first
         group ? group.name.split(/\//).pop : ""
       end
 
-      def template_variable_handler_groups(item, name)
+      def template_variable_handler_groups(name, item)
         item.groups.map { |g| g.name.split(/\//).pop }.join(", ")
       end
 
-      def template_variable_handler_img_src(item, name)
+      def template_variable_handler_img_src(name, item)
         dummy_source = ERB::Util.html_escape("/assets/img/dummy.gif")
 
         return dummy_source unless item.respond_to?(:html)
@@ -198,8 +164,8 @@ module Cms::Addon::List
         return dummy_source unless img_tag =~ /src\s*=\s*(['"]?[^'"]+['"]?)/
 
         img_source = $1
-        img_source = img_source[1..-1] if img_source.start_with?("'") || img_source.start_with?('"')
-        img_source = img_source[0..-2] if img_source.end_with?("'") || img_source.end_with?('"')
+        img_source = img_source[1..-1] if img_source.start_with?("'", '"')
+        img_source = img_source[0..-2] if img_source.end_with?("'", '"')
         img_source = img_source.strip
         if img_source.start_with?('.')
           img_source = File.dirname(item.url) + '/' + img_source
@@ -207,25 +173,28 @@ module Cms::Addon::List
         img_source
       end
 
-      def template_variable_handler_categories(item, name)
+      def template_variable_handler_categories(name, item)
         # 記事ページに設定されているカテゴリのリスト（CSS で調整しやすいようにある程度構造化した形で出す）
         # <span class="#{filename}"><a href="....">#{name}</a></span>
         # <span class="#{filename}"><a href="....">#{name}</a></span>
         return nil unless categories = item.try(:categories)
 
         ret = categories.map do |category|
-          "<span class=\"#{category.filename.tr('/', '-')}\"><a href=\"#{category.url}\">#{ERB::Util.html_escape(category.name)}</a></span>"
+          html = "<span class=\"#{category.filename.tr('/', '-')}\">"
+          html << "<a href=\"#{category.url}\">#{ERB::Util.html_escape(category.name)}</a>"
+          html << "</span>"
+          html
         end
         ret.join("\n").html_safe
       end
 
-      def template_variable_handler_pages_count(item, name)
+      def template_variable_handler_pages_count(name, item)
         criteria = Cms::Page.site(item.site).
           and_public(@cur_date || Time.zone.now).
           or({ filename: /^#{item.filename}\//, depth: item.depth + 1 }, { category_ids: item.id })
         criteria.count.to_s
-        rescue
-          nil
+      rescue
+        nil
       end
   end
 end

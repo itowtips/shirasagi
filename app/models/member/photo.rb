@@ -21,15 +21,15 @@ class Member::Photo
 
   def listable_state_options
     [
-      ["表示", 'public'],
-      ["非表示", 'closed'],
+      %w(表示 public),
+      %w(非表示 closed),
     ]
   end
 
   def slideable_state_options
     [
-      ["表示", 'public'],
-      ["非表示", 'closed'],
+      %w(表示 public),
+      %w(非表示 closed),
     ]
   end
 

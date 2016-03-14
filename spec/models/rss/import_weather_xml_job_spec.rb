@@ -58,17 +58,16 @@ describe Rss::ImportWeatherXmlJob, dbscope: :example do
         title_mail_text: "\#{target_time} ころ地震がありました",
         upper_mail_text: "\#{target_time} ころ地震がありました。\n\n各地の震度は下記の通りです。\n",
         lower_mail_text: "下記のアドレスにアクセスし、安否情報を入力してください。\n\#{anpi_post_url}\n",
-        loop_mail_text: "\#{area_name}：\#{intensity_label}\n",
-      )
+        loop_mail_text: "\#{area_name}：\#{intensity_label}\n")
     end
     let(:node_ezine_member_page) do
       create(
-          :ezine_node_member_page,
-          cur_site: site,
-          sender_name: 'test',
-          sender_email: 'test@example.jp',
-          signature_html: '<br>--------<br>test@example.jp<br>',
-          signature_text: "\n--------\ntest@example.jp\n")
+        :ezine_node_member_page,
+        cur_site: site,
+        sender_name: 'test',
+        sender_email: 'test@example.jp',
+        signature_html: '<br>--------<br>test@example.jp<br>',
+        signature_text: "\n--------\ntest@example.jp\n")
     end
     let(:node_my_anpi_post) { create(:member_node_my_anpi_post, cur_site: site) }
     let(:file) { Rss::TempFile.create_from_post(site, File.read(filepath), 'application/xml+rss') }
@@ -144,8 +143,7 @@ describe Rss::ImportWeatherXmlJob, dbscope: :example do
         title_mail_text: "\#{target_time} ころ地震がありました",
         upper_mail_text: "\#{target_time} ころ地震がありました。\n\n各地の震度は下記の通りです。\n",
         lower_mail_text: "下記のアドレスにアクセスし、安否情報を入力してください。\n\#{anpi_post_url}\n",
-        loop_mail_text: "\#{area_name}：\#{intensity_label}\n",
-      )
+        loop_mail_text: "\#{area_name}：\#{intensity_label}\n")
     end
     let(:node_ezine_member_page) do
       create(

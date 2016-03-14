@@ -75,13 +75,13 @@ class Google::PersonFinder
 
   PFIF_NS = 'http://zesty.ca/pfif/1.4'.freeze
   PFIF_BASIC_ATTRIBUTS = [:person_record_id, :entry_date, :author_name, :author_email, :author_phone,
-    :source_name, :source_date, :source_url].freeze
+                          :source_name, :source_date, :source_url].freeze
   PFIF_SERACH_ATTRIBUTS = [:full_name, :given_name, :family_name, :alternate_names, :description, :sex,
-    :date_of_birth, :age, :home_street, :home_neighborhood, :home_city, :home_state, :home_postal_code,
-    :home_country, :photo_url, :profile_urls].freeze
+                           :date_of_birth, :age, :home_street, :home_neighborhood, :home_city, :home_state,
+                           :home_postal_code, :home_country, :photo_url, :profile_urls].freeze
   PFIF_NOTE_ATTRIBUTS = [:note_record_id, :person_record_id, :linked_person_record_id, :entry_date, :author_name,
-    :author_email, :author_phone, :source_date, :author_made_contact, :status, :email_of_found_person,
-    :phone_of_found_person, :last_known_location, :text, :photo_url].freeze
+                         :author_email, :author_phone, :source_date, :author_made_contact, :status,
+                         :email_of_found_person, :phone_of_found_person, :last_known_location, :text, :photo_url].freeze
 
   def upload(params = {})
     raise 'some required attributes are missing' if [:person_record_id, :full_name].find { |key| params[key].present? }.blank?
@@ -90,9 +90,45 @@ class Google::PersonFinder
     params = { entry_date: now }.merge(params)
     params[:person_record_id] = "#{domain_name}/#{params[:person_record_id]}"
 
-    xml = ''
-    builder = ::Builder::XmlMarkup.new(target: xml)
-    builder.tag!('pfif', {'xmlns' => PFIF_NS, 'xmlns:pfif' => PFIF_NS}) do
+    xml = build_pfif(params)
+
+    uri = upload_uri
+    c = connection(uri)
+    res = c.post("#{uri.path}?#{uri.query}") do |req|
+      req.options.timeout = timeout if timeout.present?
+      req.options.open_timeout = open_timeout if open_timeout.present?
+      req.headers['Content-Type'] = 'application/pfif+xml'
+      req.body = xml
+    end
+
+    return nil if res.status != 200
+    true
+  end
+
+  private
+    def connection(uri)
+      c = Faraday.new(:url => uri.to_s) do |builder|
+        builder.request :url_encoded
+        builder.response :logger, Rails.logger
+        builder.adapter Faraday.default_adapter
+      end
+      c.headers[:user_agent] += " (Shirasagi/#{SS.version}; PID/#{Process.pid})"
+      c
+    end
+
+    def build_pfif(params)
+      xml = ''
+      builder = ::Builder::XmlMarkup.new(target: xml)
+
+      builder.tag!('pfif', {'xmlns' => PFIF_NS}) do
+        build_pfif_person(params, builder)
+        build_pfif_note(params, builder)
+      end
+
+      xml
+    end
+
+    def build_pfif_person(params, builder)
       builder.person do
         # basic attributes
         PFIF_BASIC_ATTRIBUTS.each do |key|
@@ -110,52 +146,28 @@ class Google::PersonFinder
           end
         end
       end
-      if note_params = params[:note]
-        note_params = note_params.dup
-        note_params[:person_record_id] ||= params[:person_record_id]
-        note_params[:entry_date] ||= now
-        note_params[:source_date] ||= now
-        if note_params[:note_record_id]
-          note_params[:note_record_id] = "#{domain_name}/#{note_params[:note_record_id]}"
-        else
-          note_params[:note_record_id] = "#{domain_name}/#{note_params[:person_record_id]}.#{now.to_i}"
-        end
+    end
 
-        builder.note do
-          PFIF_NOTE_ATTRIBUTS.each do |key|
-            if v = note_params[key]
-              v = v.utc.iso8601 if v.respond_to?(:utc)
-              builder.tag!(key, v)
-            end
+    def build_pfif_note(params, builder)
+      return unless note_params = params[:note]
+
+      note_params = note_params.dup
+      note_params[:person_record_id] ||= params[:person_record_id]
+      note_params[:entry_date] ||= now
+      note_params[:source_date] ||= now
+      if note_params[:note_record_id]
+        note_params[:note_record_id] = "#{domain_name}/#{note_params[:note_record_id]}"
+      else
+        note_params[:note_record_id] = "#{domain_name}/#{note_params[:person_record_id]}.#{now.to_i}"
+      end
+
+      builder.note do
+        PFIF_NOTE_ATTRIBUTS.each do |key|
+          if v = note_params[key]
+            v = v.utc.iso8601 if v.respond_to?(:utc)
+            builder.tag!(key, v)
           end
         end
       end
-    end
-
-    Rails.logger.debug("xml=#{xml}")
-
-    uri = upload_uri
-    c = connection(uri)
-    res = c.post("#{uri.path}?#{uri.query}") do |req|
-      req.options.timeout = timeout if timeout.present?
-      req.options.open_timeout = open_timeout if open_timeout.present?
-      req.headers['Content-Type'] = 'application/pfif+xml'
-      req.body = xml
-    end
-
-    return nil if res.status != 200
-    Rails.logger.debug("res.body=#{res.body}")
-    true
-  end
-
-  private
-    def connection(uri)
-      c = Faraday.new(:url => uri.to_s) do |builder|
-        builder.request :url_encoded
-        builder.response :logger, Rails.logger
-        builder.adapter Faraday.default_adapter
-      end
-      c.headers[:user_agent] += " (Shirasagi/#{SS.version}; PID/#{Process.pid})"
-      c
     end
 end

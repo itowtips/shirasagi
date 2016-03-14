@@ -17,44 +17,49 @@ describe Member::Renderer::GroupInvitation, dbscope: :example do
   end
   let(:member1) { create(:cms_member) }
 
-  describe 'render #{sender_name}' do
+  describe 'render_template #{sender_name}' do
     subject do
-      described_class.render(node: node, group: group, sender: admin_member, recipent: member1, template: '#{sender_name}')
+      described_class.render_template('#{sender_name}', node: node, group: group, sender: admin_member, recipent: member1)
     end
     it { is_expected.to eq admin_member.name }
   end
 
-  describe 'render #{sender_email}' do
+  describe 'render_template #{sender_email}' do
     subject do
-      described_class.render(node: node, group: group, sender: admin_member, recipent: member1, template: '#{sender_email}')
+      described_class.render_template('#{sender_email}', node: node, group: group, sender: admin_member, recipent: member1)
     end
     it { is_expected.to eq admin_member.email }
   end
 
-  describe 'render #{group_name}' do
+  describe 'render_template #{group_name}' do
     subject do
-      described_class.render(node: node, group: group, sender: admin_member, recipent: member1, template: '#{group_name}')
+      described_class.render_template('#{group_name}', node: node, group: group, sender: admin_member, recipent: member1)
     end
     it { is_expected.to eq group.name }
   end
 
-  describe 'render #{invitation_message}' do
+  describe 'render_template #{invitation_message}' do
     subject do
-      described_class.render(node: node, group: group, sender: admin_member, recipent: member1, template: '#{invitation_message}')
+      described_class.render_template(
+        '#{invitation_message}',
+        node: node,
+        group: group,
+        sender: admin_member,
+        recipent: member1)
     end
     it { is_expected.to eq group.invitation_message }
   end
 
-  describe 'render #{accept_url}' do
+  describe 'render_template #{accept_url}' do
     subject do
-      described_class.render(node: node, group: group, sender: admin_member, recipent: member1, template: '#{accept_url}')
+      described_class.render_template('#{accept_url}', node: node, group: group, sender: admin_member, recipent: member1)
     end
     it { is_expected.to eq "#{node.full_url}#{group.id}/accept" }
   end
 
-  describe 'render #{reject_url}' do
+  describe 'render_template #{reject_url}' do
     subject do
-      described_class.render(node: node, group: group, sender: admin_member, recipent: member1, template: '#{reject_url}')
+      described_class.render_template('#{reject_url}', node: node, group: group, sender: admin_member, recipent: member1)
     end
     it { is_expected.to eq "#{node.full_url}#{group.id}/reject" }
   end
