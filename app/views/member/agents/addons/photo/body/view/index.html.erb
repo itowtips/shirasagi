@@ -19,6 +19,6 @@ $(window).on("load", function(){ $(".photo-body .ajax-box").colorbox(); });
     license = @cur_page.parent.becomes_with_route.send("license_#{@cur_page.license_name}") rescue nil
   %>
   <% if license.present? %>
-    <div class="license"><%=br license %></div>
+    <div class="license"><%== license %></div>
   <% end %>
 </article>
