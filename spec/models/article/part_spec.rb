@@ -58,9 +58,10 @@ describe Article::Part::Page, type: :model, dbscope: :example do
       HTML
     end
     let(:page) { create(:article_page, html: html) }
+    let(:expected_summary) { '自治体サンプル 本文へ 文字サイズ小さく標準大きく 読み上げる ふりがなをつける ご利用案内' }
 
     it do
-      expect(item.render_loop_html(page, html: '#{summary}')).to eq('自治体サンプル 本文へ 文字サイズ小さく標準大きく 読み上げる ふりがなをつける ご利用案内')
+      expect(item.render_loop_html(page, html: '#{summary}')).to eq(expected_summary)
     end
   end
 
@@ -290,11 +291,17 @@ describe Article::Part::Page, type: :model, dbscope: :example do
       let(:category1) { create(:category_node_page, node: category_root, name: 'スポーツ >') }
       let(:category2) { create(:category_node_page, node: category_root, name: '音楽 &') }
       let(:page) { create(:article_page, category_ids: [category1.id, category2.id]) }
+      let(:expected1) do
+        "<span class=\"#{category1.filename.tr('/', '-')}\"><a href=\"#{category1.url}\">スポーツ &gt;</a></span>"
+      end
+      let(:expected2) do
+        "<span class=\"#{category2.filename.tr('/', '-')}\"><a href=\"#{category2.url}\">音楽 &amp;</a></span>"
+      end
 
       it do
         ret = item.render_loop_html(page, html: '#{categories}')
-        expect(ret).to include("<span class=\"#{category1.filename.tr('/', '-')}\"><a href=\"#{category1.url}\">スポーツ &gt;</a></span>")
-        expect(ret).to include("<span class=\"#{category2.filename.tr('/', '-')}\"><a href=\"#{category2.url}\">音楽 &amp;</a></span>")
+        expect(ret).to include(expected1)
+        expect(ret).to include(expected2)
       end
     end
   end
