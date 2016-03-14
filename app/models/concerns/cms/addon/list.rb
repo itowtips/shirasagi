@@ -2,6 +2,7 @@ module Cms::Addon::List
   module Model
     extend ActiveSupport::Concern
     extend SS::Translation
+    include SS::TemplateVariable
 
     attr_accessor :cur_date
 
@@ -31,24 +32,6 @@ module Cms::Addon::List
       template_variable_handler("img.src", :template_variable_handler_img_src)
       template_variable_handler(:categories, :template_variable_handler_categories)
       template_variable_handler("pages.count", :template_variable_handler_pages_count)
-    end
-
-    module ClassMethods
-      def template_variable_handlers
-        instance_variable_get(:@_template_variable_handlers) || []
-      end
-
-      def template_variable_handlers=(value)
-        instance_variable_set(:@_template_variable_handlers, value)
-      end
-
-      def template_variable_handler(name, proc, &block)
-        handlers = template_variable_handlers
-
-        name = name.to_sym if name.respond_to?(:to_sym)
-        handlers << [name, proc || block]
-        self.template_variable_handlers = handlers
-      end
     end
 
     def sort_options
@@ -124,24 +107,6 @@ module Cms::Addon::List
       end
     end
 
-    def template_variable_get(item, name)
-      name_sym = name.to_sym
-      _, proc = self.class.template_variable_handlers.find do |n, _|
-        if n.is_a?(Symbol)
-          n == name_sym
-        elsif n.is_a?(Regexp)
-          n =~ name
-        else
-          false
-        end
-      end
-
-      return false if proc.nil?
-
-      proc = method(proc) if proc.is_a?(Symbol)
-      proc.call(item, name)
-    end
-
     private
       def validate_conditions
         self.conditions = conditions.map do |m|
@@ -214,7 +179,10 @@ module Cms::Addon::List
         return nil unless categories = item.try(:categories)
 
         ret = categories.map do |category|
-          "<span class=\"#{category.filename.tr('/', '-')}\"><a href=\"#{category.url}\">#{ERB::Util.html_escape(category.name)}</a></span>"
+          html = "<span class=\"#{category.filename.tr('/', '-')}\">"
+          html << "<a href=\"#{category.url}\">#{ERB::Util.html_escape(category.name)}</a>"
+          html << "</span>"
+          html
         end
         ret.join("\n").html_safe
       end
