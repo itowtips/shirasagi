@@ -32,7 +32,7 @@ class Member::Agents::Nodes::MyBlogController < ApplicationController
     def set_blog_node
       @blog_node      = Member::Node::Blog.site(@cur_site).first
       @blog_page_node = Member::Node::BlogPage.site(@cur_site).node(@blog_node).member(@cur_member).first
-      @locations      = Member::Node::BlogPageLocation.site(@cur_site)
+      @locations      = Member::Node::BlogPageLocation.site(@cur_site).order_by(order: 1)
       #@cur_node.name = @item.name
       redirect_to "#{@cur_node.setting_url}new" unless @blog_page_node
     end
