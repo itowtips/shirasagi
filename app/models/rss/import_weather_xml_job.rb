@@ -107,6 +107,9 @@ class Rss::ImportWeatherXmlJob < Rss::ImportBase
         @target_datetime = Time.zone.parse(@target_datetime.to_s) rescue nil
       end
 
+      diff = Time.zone.now - @report_datetime
+      return if diff.abs > 1.hours
+
       REXML::XPath.match(xmldoc, '/Report/Body/Intensity/Observation/Pref').each do |pref|
         pref_name = pref.elements['Name'].text
         pref_code = pref.elements['Code'].text

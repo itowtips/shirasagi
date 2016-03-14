@@ -6,6 +6,7 @@ class Rss::Renderer::AnpiMail
 
   template_variable_handler(:target_time, :template_variable_handler_target_time)
   template_variable_handler(:anpi_post_url, :template_variable_handler_anpi_post_url)
+  template_variable_handler(:pref_name, :template_variable_handler_pref_name)
   template_variable_handler(:area_name, :template_variable_handler_area_name)
   template_variable_handler(:intensity_label, :template_variable_handler_intensity_label)
 
@@ -36,6 +37,10 @@ class Rss::Renderer::AnpiMail
 
     def template_variable_handler_anpi_post_url(*_)
       @cur_node.my_anpi_post.full_url
+    end
+
+    def template_variable_handler_pref_name(*_)
+      @cur_info[:pref_name]
     end
 
     def template_variable_handler_area_name(*_)
