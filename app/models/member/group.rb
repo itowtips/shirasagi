@@ -23,6 +23,8 @@ class Member::Group
 
   before_validation :set_admin_member
   before_validation :set_invitees
+  validates :name, presence: true, length: { maximum: 80 }
+  validates :invitation_message, presence: true, length: { maximum: 400 }
   validate :remove_members
   validate :validate_admin
   after_save :send_invitations
