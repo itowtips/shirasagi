@@ -12,6 +12,7 @@ class Member::File
 
     return true if cur_user
     return false unless cur_member
+    return false unless member
     return cur_member.id == member.id
   end
 end
