@@ -1,4 +1,7 @@
 <dl class="see mod-rss-anpi-mail-setting">
+  <dt><%= @model.t :title_mail_text %></dt>
+  <dd><%= @item.title_mail_text %></dd>
+
   <dt><%= @model.t :upper_mail_text %></dt>
   <dd><%= text_area_tag :upper_mail_text, @item.upper_mail_text || '', style: "height: 150px;" %></dd>
 
@@ -16,4 +19,7 @@
 
   <dt><%= @model.t :my_anpi_post %></dt>
   <dd><%= tryb { link_to @item.my_anpi_post.name, @item.my_anpi_post.full_url, target: :_blank } %></dd>
+
+  <dt><%= @model.t :anpi_mail %></dt>
+  <dd><%= tryb { link_to @item.anpi_mail.name, @item.anpi_mail.full_url, target: :_blank } %></dd>
 </dl>

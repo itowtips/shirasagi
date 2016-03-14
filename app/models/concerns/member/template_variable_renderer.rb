@@ -20,17 +20,17 @@ module Member
       end
 
       def render(*args)
-        options = {}
-        if args.last.is_a?(Hash)
-          *args, options = args
-        end
-
+        options = args.extract_options!
         new(options).render(*args)
       end
     end
 
     def render(*args)
-      return if template.blank?
+      render_template(template, *args)
+    end
+
+    def render_template(template, *args)
+      return '' if template.blank?
       template.gsub(/\#\{(.*?)\}/) do |m|
         str = template_variable_get($1, *args)
         str == false ? m : str
