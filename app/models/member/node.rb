@@ -179,32 +179,30 @@ module Member::Node
 
     template_variable_handler "contributor", :template_variable_handler_contributor
 
-    public
-      def sort_hash
-        return { created: -1 } if sort.blank?
-        super
+    def sort_hash
+      return { created: -1 } if sort.blank?
+      super
+    end
+
+    def condition_hash
+      cond = []
+      cids = []
+
+      cids << id
+      conditions.each do |url|
+        node = Cms::Node.filename(url).first
+        next unless node
+        cond << { filename: /^#{node.filename}\//, depth: node.depth + 1 }
+        cids << node.id
       end
+      cond << { :blog_page_location_ids.in => cids } if cids.present?
 
-      def condition_hash
-        cond = []
-        cids = []
+      { '$or' => cond }
+    end
 
-        cids << id
-        conditions.each do |url|
-          node = Cms::Node.filename(url).first
-          next unless node
-          cond << { filename: /^#{node.filename}\//, depth: node.depth + 1 }
-          cids << node.id
-        end
-        cond << { :blog_page_location_ids.in => cids } if cids.present?
-
-        { '$or' => cond }
-      end
-
-    private
-      def template_variable_handler_contributor(item, name)
-        item.contributor
-      end
+    def template_variable_handler_contributor(item, name)
+      item.contributor
+    end
   end
 
   class Photo

@@ -9,7 +9,7 @@ class Member::Agents::Nodes::BlogPageLocationController < ApplicationController
 
   public
     def pages
-      @model.site(@cur_site).public(@cur_date).
+      @model.site(@cur_site).and_public(@cur_date).
         where(@cur_node.condition_hash)
     end
 

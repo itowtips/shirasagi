@@ -20,6 +20,18 @@ module Member::Addon::Photo
       errors.add :image, :empty if !image && !in_image
     end
 
+    def validate_in_image
+      return unless in_image
+      begin
+        ext = ::File.extname(in_image.original_filename)
+        raise ext if ext !~ /\.(bmp|gif|jpe?g|png)$/i
+        Magick::Image.from_blob(in_image.read).shift
+        in_image.rewind
+      rescue
+        errors.add :image_id, :invalid
+      end
+    end
+
     def update_relation_image_member
       return unless member
       image.update_attributes(member_id: member.id)
