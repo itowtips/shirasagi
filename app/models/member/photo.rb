@@ -1,10 +1,12 @@
 class Member::Photo
   include Cms::Model::Page
   include Cms::Reference::Member
+  include Workflow::Addon::Approver
   include Member::Addon::Photo::Body
   include Member::Addon::Photo::Category
   include Member::Addon::Photo::Location
   include Member::Addon::Photo::Map
+  include Member::Addon::Photo::License
   include Cms::Addon::GroupPermission
   include History::Addon::Backup
 

@@ -40,6 +40,8 @@ module Member::BlogPageHelper
   end
 
   def render_genres(node)
+    return "" unless node.genres.present?
+
     h = []
     h << %(<div class="member-blog-pages genres">)
     h << %(<h2>記事ジャンル</h2>)

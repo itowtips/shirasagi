@@ -19,6 +19,7 @@ SS::Application.routes.draw do
     resources :blog_layouts, concerns: :deletion
     resources :blogs, concerns: :deletion
     resources :blog_pages, concerns: :deletion
+    resources :blog_page_locations, concerns: :deletion
 
     resources :photos, concerns: :deletion do
       get :index_listable, on: :collection
@@ -51,6 +52,8 @@ SS::Application.routes.draw do
     get "blog/rss.xml" => "public#rss", cell: "nodes/blog", format: "xml"
     get "blog_page/(index.:format)" => "public#index", cell: "nodes/blog_page"
     get "blog_page/rss.xml" => "public#rss", cell: "nodes/blog_page", format: "xml"
+    get "blog_page_location/(index.:format)" => "public#index", cell: "nodes/blog_page_location"
+    get "blog_page/rss.xml" => "public#rss", cell: "nodes/blog_page_location", format: "xml"
 
     get "photo/(index.:format)" => "public#index", cell: "nodes/photo"
     get "photo/rss.xml" => "public#rss", cell: "nodes/photo", format: "xml"

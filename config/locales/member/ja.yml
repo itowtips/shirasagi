@@ -37,6 +37,9 @@ ja:
       sex:
         male: 男性
         female: 女性
+      license_name:
+        free: 誰でも利用可
+        not_free: 許可が必要
     view:
       email: メールアドレス
       password: パスワード
@@ -74,6 +77,7 @@ ja:
       member/file: ファイル
       member/blog/body: 本文
       member/blog/genre: ジャンル
+      member/blog/location: 地域
       member/blog/setting: ブログ設定
       member/photo/body: フォト
       member/photo/category: タグ
@@ -82,6 +86,8 @@ ja:
       member/photo/spot: フォト
       member/photo/photo: フォトライブラリ
       member/photo/slide: フォトスライド
+      member/photo/license: ライセンス
+      member/photo/license_setting: ライセンス
       member/registration/sender_address: 送信者設定
       member/registration/reply: 登録確認メール
       member/registration/reset_password_mail: パスワード再設定メール
@@ -97,7 +103,7 @@ ja:
       member/my_profile: プロフィール
       member/my_blog: マイブログ
       member/blog: ブログ
-      member/blog_category: ブログカテゴリー
+      member/blog_page_location: ブログの地域
       member/my_photo: マイフォト
       member/my_group: グループ
       member/my_anpi_post: 安否
@@ -146,14 +152,18 @@ ja:
       member/node/blog_page:
         title: ブログタイトル
         basename: ブログURL
+        filename: ブログURL
+        foldername: フォルダー名
         layout: レイアウト
         description: 紹介文
         image_id: サムネイル
         genres: ジャンル設定
+        blog_page_locations: 地域設定
       member/blog_page:
         name: タイトル
         body: 本文
         genres: ジャンル
+        blog_page_locations: 地域
       member/photo:
         listable_state: 一覧及び検索結果への表示
         slideable_state: スライドへの表示
@@ -165,6 +175,11 @@ ja:
         map_points: 地図
         contributor: 投稿者
         keyword: キーワード
+      member/addon/photo/license:
+        license_name: ライセンス
+      member/addon/photo/license_setting:
+        license_free: 誰でも利用可
+        license_not_free: 許可が必要
       member/addon/registration/sender_address:
         sender_name: 送信者名
         sender_email: 送信メールアドレス
@@ -211,6 +226,8 @@ ja:
     delete_private_member_blogs: メンバーブログの削除（所有）
     release_other_member_blogs: メンバーブログの公開（全て）
     release_private_member_blogs: メンバーブログの公開（所有）
+    approve_other_member_blogs: メンバーブログの承認（全て）
+    approve_private_member_blogs: メンバーブログの承認（所有）
     read_other_member_photos: メンバーフォトの閲覧（全て）
     read_private_member_photos: メンバーフォトの閲覧（所有）
     edit_other_member_photos: メンバーフォトの編集（全て）
@@ -386,6 +403,38 @@ ja:
         - メールアドレスは改行で区切って複数入力することができます。
       in_admin_member_ids:
         - グループの管理者を指定します。
+    member/photo:
+      listable_state:
+        - 一覧及びフォトサーチの検索結果に表示するかを設定します。
+      slideable_state:
+        - フォトスライドパーツに表示するかを設定します。
+      image_id:
+        - 画像を設定します。
+      caption:
+        - 画像のキャプションを設定します。
+      photo_categories:
+        - 画像のタグを設定します。
+      photo_locations:
+        - 画像の地域を設定します。
+      license_name:
+        - ライセンスを設定します。
+        - フォルダーに設定したテキストが表示されます。
+    member/addon/blog/setting:
+      description:
+        - ブログの紹介文を設定します。
+      genres:
+        - ブログのジャンルを改行区切りで設定します。
+        - 設定したジャンルはページ作成時に選択できます。
+      blog_page_locations:
+        - ブログの地域を設定します。
+      image_id:
+        - ブログのサムネイルを設定します。
+    member/addon/blog/genre:
+      genres:
+        - ジャンルを設定します。
+    member/addon/blog/location:
+      blog_page_locations:
+        - 地域を設定します。
 
   remarks:
     cms/model/member:

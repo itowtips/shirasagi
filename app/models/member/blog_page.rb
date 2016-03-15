@@ -1,9 +1,11 @@
 class Member::BlogPage
   include Cms::Model::Page
   include Cms::Reference::Member
+  include Workflow::Addon::Approver
   include Member::Addon::Blog::Body
   include Member::Addon::File
   include Member::Addon::Blog::Genre
+  include Member::Addon::Blog::Location
   include Cms::Addon::GroupPermission
 
   set_permission_name "member_blogs"

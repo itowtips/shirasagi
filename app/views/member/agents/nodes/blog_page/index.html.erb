@@ -12,6 +12,13 @@
           <% end %>
         </ul>
       </div>
+      <div class="locations">
+        <ul>
+          <% item.blog_page_locations.order_by(order: 1).each do |loc| %>
+            <li><%= link_to loc.name, loc.url %></li>
+          <% end %>
+        </ul>
+      </div>
       <div class="body">
         <%== item.html %>
       </div>

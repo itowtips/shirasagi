@@ -13,5 +13,12 @@ $(window).on("load", function(){ $(".photo-body .ajax-box").colorbox(); });
     <%= I18n.l @cur_page.date.to_date, format: :long %>
   </time>
   <p class="contributor"><%= @cur_page.contributor %></p>
-  <div class="caption"><%= @cur_page.caption %></div>
+  <div class="caption"><%=br @cur_page.caption %></div>
+
+  <%
+    license = @cur_page.parent.becomes_with_route.send("license_#{@cur_page.license_name}") rescue nil
+  %>
+  <% if license.present? %>
+    <div class="license"><%== license %></div>
+  <% end %>
 </article>

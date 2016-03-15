@@ -166,11 +166,51 @@ module Member::Node
       end
   end
 
+  class BlogPageLocation
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Cms::Addon::PageList
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "member/blog_page_location") }
+
+    template_variable_handler "contributor", :template_variable_handler_contributor
+
+    def sort_hash
+      return { created: -1 } if sort.blank?
+      super
+    end
+
+    def condition_hash
+      cond = []
+      cids = []
+
+      cids << id
+      conditions.each do |url|
+        node = Cms::Node.filename(url).first
+        next unless node
+        cond << { filename: /^#{node.filename}\//, depth: node.depth + 1 }
+        cids << node.id
+      end
+      cond << { :blog_page_location_ids.in => cids } if cids.present?
+
+      { '$or' => cond }
+    end
+
+    def template_variable_handler_contributor(item, name)
+      item.contributor
+    end
+  end
+
   class Photo
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
     include Cms::Addon::PageList
+    include Member::Addon::Photo::LicenseSetting
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup

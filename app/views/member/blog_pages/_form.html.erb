@@ -2,7 +2,4 @@
   <%= f.hidden_field "basename", value: "" %>
   <dt><%= @model.t :name %><%= @model.tt :title %></dt>
   <dd><%= f.text_field :name %></dd>
-
-  <dt><%= @model.t :state %><%= @model.tt :state %></dt>
-  <dd><%= f.select :state, @item.state_options %></dd>
 </dl>

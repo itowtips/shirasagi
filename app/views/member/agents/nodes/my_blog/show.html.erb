@@ -7,7 +7,18 @@
       <time class="released" datetime="<%= I18n.l @item.date.to_date, format: :iso %>"><%= I18n.l @item.date.to_date, format: :long %></time>
     </header>
     <div class="genres">
-      <%= @item.genres.join(" ") %>
+      <ul>
+        <% @item.genres.each do |genre| %>
+          <li><%= genre %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="locations">
+      <ul>
+        <% @item.blog_page_locations.order_by(order: 1).each do |loc| %>
+          <li><%= loc.name %></li>
+        <% end %>
+      </ul>
     </div>
     <div class="body">
       <%== @item.html %>

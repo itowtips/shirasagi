@@ -15,7 +15,7 @@ class Member::Agents::Nodes::MyPhotoController < ApplicationController
       @photo_node = Member::Node::Photo.first
       @categories = Member::Node::PhotoCategory.site(@cur_site).and_public.order_by(order: 1)
       @locations  = Member::Node::PhotoLocation.site(@cur_site).and_public.order_by(order: 1)
-      @layout     = @photo_node.page_layout rescue nil
+      @layout     = @photo_node.page_layout || @photo_node.layout
     end
 
     def fix_params

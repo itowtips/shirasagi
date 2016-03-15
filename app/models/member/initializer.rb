@@ -16,6 +16,7 @@ module Member
 
     # public nodes
     Cms::Node.plugin "member/blog"
+    Cms::Node.plugin "member/blog_page_location"
     Cms::Node.plugin "member/photo"
     Cms::Node.plugin "member/photo_search"
     Cms::Node.plugin "member/photo_category"
@@ -36,6 +37,8 @@ module Member
     Cms::Role.permission :delete_private_member_blogs
     Cms::Role.permission :release_other_member_blogs
     Cms::Role.permission :release_private_member_blogs
+    Cms::Role.permission :approve_other_member_blogs
+    Cms::Role.permission :approve_private_member_blogs
 
     Cms::Role.permission :read_other_member_photos
     Cms::Role.permission :read_private_member_photos
