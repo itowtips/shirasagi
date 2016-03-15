@@ -7,17 +7,7 @@ class Member::PhotosController < ApplicationController
 
   navi_view "cms/node/main/navi"
 
-  private
-    def fix_params
-      { cur_user: @cur_user, cur_site: @cur_site, cur_node: @cur_node, layout: @layout }
-    end
-
-    def set_item
-      super
-      @categories = Member::Node::PhotoCategory.site(@cur_site).and_public
-      @locations  = Member::Node::PhotoLocation.site(@cur_site).and_public
-      @layout     = @cur_node.page_layout rescue nil
-    end
+  before_action :set_category
 
   public
     def index
@@ -27,5 +17,16 @@ class Member::PhotosController < ApplicationController
         allow(:read, @cur_user, site: @cur_site).
         order_by(released: -1).
         page(params[:page]).per(50)
+    end
+
+  private
+    def fix_params
+      { cur_user: @cur_user, cur_site: @cur_site, cur_node: @cur_node, layout: @layout  }
+    end
+
+    def set_category
+      @categories = Member::Node::PhotoCategory.site(@cur_site).public
+      @locations  = Member::Node::PhotoLocation.site(@cur_site).public
+      @layout     = @cur_node.page_layout rescue nil
     end
 end
