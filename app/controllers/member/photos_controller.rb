@@ -1,6 +1,6 @@
 class Member::PhotosController < ApplicationController
   include Cms::BaseFilter
-  include Cms::CrudFilter
+  include Cms::PageFilter
   include Member::Photo::PageFilter
 
   model Member::Photo
@@ -21,12 +21,11 @@ class Member::PhotosController < ApplicationController
 
   private
     def fix_params
-      { cur_user: @cur_user, cur_site: @cur_site, cur_node: @cur_node, layout: @layout  }
+      { cur_user: @cur_user, cur_site: @cur_site, cur_node: @cur_node  }
     end
 
     def set_category
       @categories = Member::Node::PhotoCategory.site(@cur_site).public
       @locations  = Member::Node::PhotoLocation.site(@cur_site).public
-      @layout     = @cur_node.page_layout rescue nil
     end
 end

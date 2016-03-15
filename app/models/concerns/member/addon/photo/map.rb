@@ -21,7 +21,6 @@ module Member::Addon::Photo
         point[:html] = h.join
         point
       end
-      dump self.map_points
     end
   end
 end

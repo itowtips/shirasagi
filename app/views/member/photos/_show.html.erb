@@ -13,6 +13,11 @@
     )
   </dd>
 
+  <% if @item.send(:layout_id).present? %>
+  <dt><%= @model.t :layout_id %></dt>
+  <dd><%= tryb{@item.layout.name} %></dd>
+  <% end %>
+
   <dt><%= @model.t :state %></dt>
   <dd><%= @item.label :state %></dd>
 
