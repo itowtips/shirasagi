@@ -1,9 +1,8 @@
 FactoryGirl.define do
-  factory :ezine_page, class: Ezine::Page do
-    site_id { cms_site.id }
-    user_id { cms_user.id }
-    name 'title'
-    filename 'magazine/page'
+  factory :ezine_page, class: Ezine::Page, traits: [:cms_page] do
+    route "ezine/page"
+    name { unique_id }
+    filename { "#{name}.html" }
     test_delivered nil
     completed false
   end
