@@ -153,6 +153,7 @@ ja:
         title: ブログタイトル
         basename: ブログURL
         filename: ブログURL
+        foldername: フォルダー名
         layout: レイアウト
         description: 紹介文
         image_id: サムネイル
@@ -418,6 +419,22 @@ ja:
       license_name:
         - ライセンスを設定します。
         - フォルダーに設定したテキストが表示されます。
+    member/addon/blog/setting:
+      description:
+        - ブログの紹介文を設定します。
+      genres:
+        - ブログのジャンルを改行区切りで設定します。
+        - 設定したジャンルはページ作成時に選択できます。
+      blog_page_locations:
+        - ブログの地域を設定します。
+      image_id:
+        - ブログのサムネイルを設定します。
+    member/addon/blog/genre:
+      genres:
+        - ジャンルを設定します。
+    member/addon/blog/location:
+      blog_page_locations:
+        - 地域を設定します。
 
   remarks:
     cms/model/member:

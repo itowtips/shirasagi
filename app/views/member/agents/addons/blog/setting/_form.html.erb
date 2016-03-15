@@ -3,7 +3,7 @@
 %>
 
 <dl class="see">
-  <dt><%= @model.t :image_id %></dt>
+  <dt><%= @model.t :image_id %><%= @model.tt :image_id %></dt>
   <dd><%= f.file_field :in_image %></dd>
   <% if @item.image %>
     <dd>
@@ -14,22 +14,20 @@
     </dd>
   <% end %>
 
-  <dt><%= @model.t :description %></dt>
+  <dt><%= @model.t :description %><%= @model.tt :description %></dt>
   <dd><%= f.text_area :description %></dd>
 
-  <dt><%= @model.t :genres %></dt>
+  <dt><%= @model.t :genres %><%= @model.tt :genres %></dt>
   <dd><%= f.text_area :genres %></dd>
 
-  <dt><%= @model.t :blog_page_locations %></dt>
+  <dt><%= @model.t :blog_page_locations %><%= @model.tt :blog_page_locations %></dt>
   <dd class="wide" style="line-height: 2.5">
     <%= f.hidden_field "blog_page_location_ids[]", value: "" %>
-    <% if @locations.present? %>
-      <% @locations.each do |loc| %>
-        <label>
-          <%= f.check_box("blog_page_location_ids[]", {}, loc.id) %>
-          <%= loc.name %>
-        </label>
-      <% end %>
+    <% @locations.each do |loc| %>
+      <label>
+        <%= f.check_box("blog_page_location_ids[]", {}, loc.id) %>
+        <%= loc.name %>
+      </label>
     <% end %>
   </dd>
 </dl>
