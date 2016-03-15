@@ -74,7 +74,7 @@ class Google::PersonFinder
   end
 
   PFIF_NS = 'http://zesty.ca/pfif/1.4'.freeze
-  PFIF_BASIC_ATTRIBUTS = [:person_record_id, :entry_date, :author_name, :author_email, :author_phone,
+  PFIF_BASIC_ATTRIBUTS = [:person_record_id, :entry_date, :expiry_date, :author_name, :author_email, :author_phone,
                           :source_name, :source_date, :source_url].freeze
   PFIF_SERACH_ATTRIBUTS = [:full_name, :given_name, :family_name, :alternate_names, :description, :sex,
                            :date_of_birth, :age, :home_street, :home_neighborhood, :home_city, :home_state,
@@ -83,12 +83,12 @@ class Google::PersonFinder
                          :author_email, :author_phone, :source_date, :author_made_contact, :status,
                          :email_of_found_person, :phone_of_found_person, :last_known_location, :text, :photo_url].freeze
 
+  def now
+    @now ||= Time.zone.now
+  end
+
   def upload(params = {})
     raise 'some required attributes are missing' if [:person_record_id, :full_name].find { |key| params[key].present? }.blank?
-
-    now = Time.zone.now
-    params = { entry_date: now }.merge(params)
-    params[:person_record_id] = "#{domain_name}/#{params[:person_record_id]}"
 
     xml = build_pfif(params)
 
@@ -117,6 +117,11 @@ class Google::PersonFinder
     end
 
     def build_pfif(params)
+      params = { entry_date: now }.merge(params)
+      unless params[:person_record_id].start_with?("#{domain_name}/")
+        params[:person_record_id] = "#{domain_name}/#{params[:person_record_id]}"
+      end
+
       xml = ''
       builder = ::Builder::XmlMarkup.new(target: xml)
 
@@ -155,10 +160,14 @@ class Google::PersonFinder
       note_params[:person_record_id] ||= params[:person_record_id]
       note_params[:entry_date] ||= now
       note_params[:source_date] ||= now
-      if note_params[:note_record_id]
+      unless note_params[:note_record_id]
+        note_params[:note_record_id] = "#{note_params[:person_record_id]}.#{now.to_i}"
+      end
+      unless note_params[:note_record_id].start_with?("#{domain_name}/")
         note_params[:note_record_id] = "#{domain_name}/#{note_params[:note_record_id]}"
-      else
-        note_params[:note_record_id] = "#{domain_name}/#{note_params[:person_record_id]}.#{now.to_i}"
+      end
+      unless note_params[:linked_person_record_id].start_with?("#{domain_name}/")
+        note_params[:linked_person_record_id] = "#{domain_name}/#{note_params[:linked_person_record_id]}"
       end
 
       builder.note do
