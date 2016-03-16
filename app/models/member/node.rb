@@ -135,11 +135,11 @@ module Member::Node
     end
 
     private
-      def template_variable_handler_description(item, name)
+      def template_variable_handler_description(name, item)
         item.description
       end
 
-      def template_variable_handler_contributor(item, name)
+      def template_variable_handler_contributor(name, item)
         item.contributor
       end
   end
