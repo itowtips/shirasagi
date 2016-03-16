@@ -7,23 +7,33 @@ module Board::Addon
       attr_accessor :cur_node
       attr_accessor :in_post_gpf_after_save
       field :gpf_id, type: String, default: ->{ SecureRandom.uuid }
+      field :gpf_repository, type: String
+      field :gpf_domain_name, type: String
+      field :gpf_api_key, type: String
       permit_params :in_post_gpf_after_save
 
-      after_save :post_gpf_after_save
+      before_save :post_gpf_after_save
     end
 
-    def upload_to_gpf
-      accessor = @cur_node.accessor
+    def accessor
+      Google::PersonFinder.new(
+        repository: gpf_repository,
+        domain_name: gpf_domain_name,
+        api_key: SS::Crypt.decrypt(gpf_api_key))
+    end
+
+    def upload_to_gpf(accessor = @cur_node.accessor)
       accessor.upload(self.to_pfif)
+      self.gpf_repository = accessor.repository
+      self.gpf_domain_name = accessor.domain_name
+      self.gpf_api_key = SS::Crypt.encrypt(accessor.api_key)
     end
 
-    def find_gpf
-      accessor = @cur_node.accessor
+    def find_gpf(accessor = self.accessor)
       accessor.get(person_record_id: gpf_id)
     end
 
-    def gpf_url
-      accessor = @cur_node.accessor
+    def gpf_url(accessor = self.accessor)
       accessor.view_uri(person_record_id: gpf_id)
     end
 
@@ -57,6 +67,10 @@ module Board::Addon
       def post_gpf_after_save
         return unless in_post_gpf_after_save == 'enable'
         upload_to_gpf
+        true
+      rescue => e
+        Rails.logger.error("#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}")
+        true
       end
   end
 end

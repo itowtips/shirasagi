@@ -20,7 +20,7 @@
 </nav>
 <% if params[:action] =~ /show/ %>
 <nav class="nav-menu">
-  <%= link_to('Google Person Finder に登録する', gpf_member_my_anpi_post_path) %>
-  <%= link_to('Google Person Finder を表示する', @item.gpf_url.to_s, target: :_blank) %>
+  <%= link_to(I18n.t('board.views.post_gpf'), gpf_member_my_anpi_post_path) %>
+  <%= link_to(I18n.t('board.views.show_gpf'), @item.gpf_url.to_s, target: :_blank) %>
 </nav>
 <% end %>

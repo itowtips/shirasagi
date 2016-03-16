@@ -1,62 +1,61 @@
 <dl class="column">
-  <dt><%= @model.t :name %></dt>
+  <dt>
+    <%= @model.t :name %>
+    <%= required_label %>
+  </dt>
   <dd>
-    <%= remarks :name %>
     <%= f.text_field :name %>
-    <%= example :name %>
+    <%= remarks :name %>
   </dd>
 </dl>
 
 <dl class="column">
-  <dt><%= @model.t :text %></dt>
+  <dt>
+    <%= @model.t :text %>
+    <%= required_label %>
+  </dt>
   <dd>
-    <%= remarks :text %>
     <%= f.text_area :text %>
-    <%= example :text %>
+    <%= remarks :text %>
   </dd>
 </dl>
 
 <dl class="column">
   <dt><%= @model.t :kana %></dt>
   <dd>
-    <%= remarks :kana %>
     <%= f.text_field :kana %>
-    <%= example :kana %>
+    <%= remarks :kana %>
   </dd>
 </dl>
 
 <dl class="column">
   <dt><%= @model.t :tel %></dt>
   <dd>
-    <%= remarks :tel %>
     <%= f.text_field :tel %>
-    <%= example :tel %>
+    <%= remarks :tel %>
   </dd>
 </dl>
 
 <dl class="column">
   <dt><%= @model.t :addr %></dt>
   <dd>
-    <%= remarks :addr %>
     <%= f.text_field :addr %>
-    <%= example :addr %>
+    <%= remarks :addr %>
   </dd>
 </dl>
 
 <dl class="column">
   <dt><%= @model.t :sex %></dt>
   <dd>
-    <%= remarks :sex %>
     <%= f.select :sex, @item.sex_options, include_blank: true %>
-    <%= example :sex %>
+    <%= remarks :sex %>
   </dd>
 </dl>
 
 <dl class="column">
   <dt><%= @model.t :age %></dt>
   <dd>
-    <%= remarks :age %>
     <%= f.text_field :age %>
-    <%= example :age %>
+    <%= remarks :age %>
   </dd>
 </dl>

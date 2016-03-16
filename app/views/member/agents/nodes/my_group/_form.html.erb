@@ -1,12 +1,16 @@
 <dl class="column">
-  <dt><%= @model.t :name %></dt>
+  <dt>
+    <%= @model.t :name %>
+    <% if params[:action] != 'invite' %>
+    <%= required_label %>
+    <% end %>
+  </dt>
   <dd>
     <% if params[:action] == 'invite' %>
       <%= @item.name %>
     <% else %>
-      <%= remarks :name %>
       <%= f.text_field :name %>
-      <%= example :name %>
+      <%= remarks :name %>
     <% end %>
   </dd>
 </dl>
@@ -21,17 +25,18 @@
 <dl class="column">
   <dt>メンバー</dt>
   <dd>
-    <%= remarks :in_invitees %>
     <%= f.text_area :in_invitees %>
-    <%= example :in_invitees %>
+    <%= remarks :in_invitees %>
   </dd>
 </dl>
 
 <dl class="column">
-  <dt><%= @model.t :invitation_message %></dt>
+  <dt>
+    <%= @model.t :invitation_message %>
+    <%= required_label %>
+  </dt>
   <dd>
-    <%= remarks :invitation_message %>
     <%= f.text_area :invitation_message %>
-    <%= example :invitation_message %>
+    <%= remarks :invitation_message %>
   </dd>
 </dl>

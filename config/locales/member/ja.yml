@@ -63,6 +63,10 @@ ja:
     notice:
       accepted: 参加しました。
       rejected: 辞退しました。
+    confirm:
+      group:
+        accept: グループに参加しますか？
+        reject: グループへの参加を辞退しますか？
 
   modules:
     member: メンバー
@@ -194,7 +198,7 @@ ja:
         reset_password_lower_text: 下部確認テキスト
         reset_password_signature: 署名
       member/group:
-        name: 名前
+        name: グループ名
         invitation_message: 招待メッセージ
         members: メンバー
         in_admin_member_ids: 管理者
@@ -443,18 +447,14 @@ ja:
       email:
         - 半角英数字記号で入力してください。
         - ログインに利用したり、大切な情報を配信する際に利用させていただきます。
+        - （例）user@example.jp
       email_type:
         - 受信可能なメールの形式を選択してください。
     member/group:
       name:
         - グループ名を入力してください。
       invitation_message:
-         - グループへの招待メッセージを入力してください。
+        - グループへの招待メッセージを入力してください。
       in_invitees:
         - グループに招待するメンバーのメールアドレスを入力してください。
         - メールアドレスは改行で区切って複数入力することができます。
-
-  examples:
-    cms/model/member:
-      email:
-        - （例）user@example.jp

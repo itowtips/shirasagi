@@ -15,7 +15,8 @@ ja:
       gps_position: 現在位置を取得する
       marker_clear: マーカーをクリアする
       gpf: Google Person Finder
-      post_gpf: Google Person Finderに登録する
+      show_gpf: Google Person Finderを表示する
+      post_gpf: Google Person Finderに安否情報を提供する
       search_person: 人を探す
 
     button:
@@ -157,7 +158,7 @@ ja:
         sex: 性別
         age: 年齢
         email: メールアドレス
-        text: メッセージ
+        text: 安否情報
         member_id: 登録者
       board/addon/map_point:
         point: 位置
@@ -275,9 +276,13 @@ ja:
   remarks:
     board/addon/google_person_finder:
       in_post_gpf_after_save:
-        - Google Person Finderについては<a href="https://google.org/personfinder/global/home.html?lang=ja" target="_blank">Google パーソンファインダーについて</a>をご確認ください。
-        - Google Person Finderに登録された安否情報を削除するには、<a href="http://www.google.org/personfinder/japan">Google Person Finderのサイト</a>で実施してください。
+        - Google Person Finderに提供した安否情報は、<a href="http://www.google.com/intl/ja/policies/terms/">Google 利用規約</a>および<a href="http://www.google.com/intl/ja/policies/privacy/">Google のプライバシー ポリシー</a>が適用され、全世界の人々が検索することができます。
+        - 詳しくは<a href="https://google.org/personfinder/global/home.html?lang=ja" target="_blank">Google パーソンファインダーについて</a>をご確認ください。
+        - Google Person Finderに提供した安否情報を削除するには、<a href="http://www.google.org/personfinder/japan">Google Person Finderのサイト</a>で実施してください。
     board/anpi_post:
+      age:
+        - 年齢を入力します。（例）53
+        - 50 代前半の方であれば、50-55 と入力します。
       search_person:
         - その人の名前、名前の一部、電話番号、住所、住所の一部を入力してください。
     board/addon/public_scope:

@@ -160,14 +160,16 @@ class Google::PersonFinder
       note_params[:person_record_id] ||= params[:person_record_id]
       note_params[:entry_date] ||= now
       note_params[:source_date] ||= now
-      unless note_params[:note_record_id]
-        note_params[:note_record_id] = "#{note_params[:person_record_id]}.#{now.to_i}"
+      if note_params[:note_record_id].blank?
+        note_params[:note_record_id] = "#{params[:person_record_id]}.#{now.to_i}"
       end
       unless note_params[:note_record_id].start_with?("#{domain_name}/")
         note_params[:note_record_id] = "#{domain_name}/#{note_params[:note_record_id]}"
       end
-      unless note_params[:linked_person_record_id].start_with?("#{domain_name}/")
-        note_params[:linked_person_record_id] = "#{domain_name}/#{note_params[:linked_person_record_id]}"
+      if note_params[:linked_person_record_id].present?
+        unless note_params[:linked_person_record_id].start_with?("#{domain_name}/")
+          note_params[:linked_person_record_id] = "#{domain_name}/#{note_params[:linked_person_record_id]}"
+        end
       end
 
       builder.note do
