@@ -75,19 +75,24 @@ class Member::Agents::Nodes::MyAnpiPostController < ApplicationController
     end
 
     def set_map_center
-      @map_center = Map::Extensions::Loc[*SS.config.cms.map_center]
+      @map_center = @cur_node.map_center || Map::Extensions::Loc[*SS.config.cms.map_center]
       return if @items.blank?
 
-      min = [10000, 10000]
-      max = [-10000, -10000]
+      min = [10_000, 10_000]
+      max = [-10_000, -10_000]
       @items.each do |item|
         next if item.point.blank? || item.point.loc.blank?
+
+        distance_from_center = (item.point.loc[0] - @map_center[0]) ** 2 + (item.point.loc[1] - @map_center[1]) ** 2
+        # 東京 - 大阪間で 18.9。その約半分の 10 を制限とする。
+        next if distance_from_center >= 10
 
         min[0] = item.point.loc[0] if min[0] > item.point.loc[0]
         min[1] = item.point.loc[1] if min[1] > item.point.loc[1]
         max[0] = item.point.loc[0] if max[0] < item.point.loc[0]
         max[1] = item.point.loc[1] if max[1] < item.point.loc[1]
       end
+      return if min[0] == 10_000 || min[1] == 10_000 || max[0] == -10_000 || max[1] == -10_000
       @map_center = Map::Extensions::Loc[(min[0] + max[0]) / 2, (min[1] + max[1]) / 2]
     end
 
