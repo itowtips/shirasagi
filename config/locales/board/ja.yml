@@ -172,6 +172,7 @@ ja:
         map_state: 状態
         map_zoom_level: 縮尺レベル
         map_center: 中心座標
+        map_view_state: 地図表示状態
       board/addon/public_scope:
         public_scope: 公開範囲
 
@@ -266,6 +267,8 @@ ja:
       map_center:
         - 中心座標を指定します。
         - 地図の中心座標を指定する際、自動的に縮尺レベルも設定されます。
+      map_view_state:
+        - 地図表示を有効にするかどうかを指定します。
     board/addon/public_scope:
       public_scope:
         - 安否の公開範囲を指定します。

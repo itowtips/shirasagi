@@ -8,7 +8,9 @@ class Member::Agents::Nodes::MyAnpiPostController < ApplicationController
   prepend_view_path "app/views/member/agents/nodes/my_anpi_post"
   before_action :deny
   before_action :set_groups
-  before_action :set_cur_group, only: [:index]
+  before_action :set_cur_group, only: [:index, :map]
+  before_action :set_items, only: [:index, :map]
+  before_action :set_map_center, only: [:map]
   before_action :check_owner, only: [:edit, :update, :delete, :destroy, :destroy_all]
 
   private
@@ -57,8 +59,7 @@ class Member::Agents::Nodes::MyAnpiPostController < ApplicationController
       raise "403" unless @item.owned?(@cur_member)
     end
 
-  public
-    def index
+    def set_items
       if @cur_group.present?
         @items = Board::AnpiPost.site(@cur_site).
           and_member_group(@cur_group).
@@ -73,6 +74,27 @@ class Member::Agents::Nodes::MyAnpiPostController < ApplicationController
       end
     end
 
+    def set_map_center
+      @map_center = Map::Extensions::Loc[*SS.config.cms.map_center]
+      return if @items.blank?
+
+      min = [10000, 10000]
+      max = [-10000, -10000]
+      @items.each do |item|
+        next if item.point.blank? || item.point.loc.blank?
+
+        min[0] = item.point.loc[0] if min[0] > item.point.loc[0]
+        min[1] = item.point.loc[1] if min[1] > item.point.loc[1]
+        max[0] = item.point.loc[0] if max[0] < item.point.loc[0]
+        max[1] = item.point.loc[1] if max[1] < item.point.loc[1]
+      end
+      @map_center = Map::Extensions::Loc[(min[0] + max[0]) / 2, (min[1] + max[1]) / 2]
+    end
+
+  public
+    def index
+    end
+
     def others_new
       @item = @model.new pre_params.merge(fix_params)
     end
@@ -80,5 +102,8 @@ class Member::Agents::Nodes::MyAnpiPostController < ApplicationController
     def others_create
       @item = @model.new get_params
       render_create @item.save, location: @cur_node.url
+    end
+
+    def map
     end
 end

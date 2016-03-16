@@ -96,6 +96,7 @@ SS::Application.routes.draw do
     resources :my_anpi_post, concerns: :deletion, controller: "public", cell: "nodes/my_anpi_post" do
       get "others/new(.:format)", action: :others_new, on: :collection, as: :new_others
       post "others(.:format)", action: :others_create, on: :collection
+      get "map", on: :collection
     end
 
     resources :my_group, concerns: :deletion, controller: "public", cell: "nodes/my_group" do

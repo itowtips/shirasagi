@@ -41,12 +41,63 @@ class @Board_Map
     if @opts['marker']
       @setMarker(@opts['marker'])
 
+    if @opts['popup']
+      @initPopup()
+
     if !@opts['readonly']
       @map.on 'click', (e) =>
         pos = ol.proj.transform(e.coordinate, "EPSG:3857", "EPSG:4326")
         @setMarker(pos)
 
-  setMarker: (position) ->
+  initPopup: ->
+    $("body").append('<div id="marker-popup"><div class="closer"></div><div class="content"></div></div>')
+    @popup = $('#marker-popup')
+    @popup.hide()
+
+    @popupOverlay = new ol.Overlay(({
+      element: @popup.get(0),
+      autoPan: true,
+      autoPanAnimation: {
+        duration: 250
+      }
+    }))
+    @map.addOverlay(@popupOverlay)
+
+    @map.on 'click', (e) =>
+      @showPopup(e)
+
+    @map.on 'pointermove', (e) =>
+      if (e.dragging)
+        @popup.hide()
+        return
+      pixel = @map.getEventPixel(e.originalEvent)
+      hit = @map.hasFeatureAtPixel(pixel)
+      cursor = `hit ? 'pointer' : ''`
+      @map.getTarget().style.cursor = cursor
+
+    @popup.find('.closer').on 'click', (e) =>
+      @popupOverlay.setPosition(undefined)
+      $(this).blur()
+      return false
+
+  showPopup: (evt) ->
+    feature = @map.forEachFeatureAtPixel(evt.pixel, (feature, layer) ->
+      return feature
+    )
+    unless feature
+      @popup.hide()
+      return
+
+    markerId = feature.get("markerId")
+    unless markerId
+      @popup.hide()
+      return
+
+    @popup.find('.content').html($("#marker-html-#{markerId}").html())
+    @popup.show()
+    @popupOverlay.setPosition(evt.coordinate)
+
+  setMarker: (position, opts = {}) ->
     if !@markerFeature
       src = '/assets/img/map-marker.png'
       src = @opts['image'] if @opts['image']
@@ -62,6 +113,7 @@ class @Board_Map
 
       @markerFeature = new ol.Feature({
         geometry: new ol.geom.Point(ol.proj.transform(position, "EPSG:4326", "EPSG:3857"))
+        markerId: (opts['markerId'] ? null)
       })
       @markerFeature.setStyle(style)
     else
@@ -92,15 +144,7 @@ class @Board_Map
 
     feature = new ol.Feature({
       geometry: new ol.geom.Point(ol.proj.transform(position, "EPSG:4326", "EPSG:3857"))
-      name: opts['name']
-      icon: opts['icon']
-      date: opts['date']
-      anpiState: opts['anpiState']
-      anpiMessage: opts['anpiMessage']
-      assemblageState: opts['assemblageState']
-      assemblageMessage: opts['assemblageMessage']
-      personFinderUri: opts['personFinderUri']
-      registMember: opts['registMember']
+      markerId: (opts['markerId'] ? null)
     })
     feature.setStyle(style)
 

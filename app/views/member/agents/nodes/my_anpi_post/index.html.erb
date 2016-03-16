@@ -8,6 +8,16 @@
 <% end %>
 
 <% if @items.present? %>
+<% if @cur_node.map_view_enabled? %>
+<div class="member-anpi-map">
+  <%
+    map_url = "#{@cur_node.url}map"
+    map_url = "#{map_url}?#{ { g: params[:g] }.to_query }" if params[:g].present?
+  %>
+  <%= link_to t("member.links.map"), map_url %>
+</div>
+<% end %>
+
 <table class="index mypage-index member-anpi-post">
   <thead>
   <tr>
