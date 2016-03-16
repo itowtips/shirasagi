@@ -66,7 +66,7 @@ module Cms::PublicFilter::Crud
     end
 
     def destroy
-      render_destroy @item.destroy
+      render_destroy @item.destroy, location: @cur_node.url
     end
 
   private
