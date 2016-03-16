@@ -52,12 +52,11 @@ class @Board_Map
       src = @opts['image'] if @opts['image']
 
       style = new ol.style.Style({
-        image: new ol.style.Circle({
-          radius: 8
-          stroke: new ol.style.Stroke({
-            color: 'rgba(244,67,54,0.8)'
-            width: 8
-          })
+        image: new ol.style.Icon({
+          anchor: [0.5, 1]
+          anchorXUnits: 'fraction'
+          anchorYUnits: 'fraction'
+          src: src
         })
       })
 
