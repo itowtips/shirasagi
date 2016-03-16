@@ -25,9 +25,9 @@
 
   var opts = {};
 
-  <% if @item.point.present? %>
+  <% if @item.point.present? && @item.point.loc.present? %>
   opts['center'] = opts['marker'] = [<%= @item.point.loc.lng %>, <%= @item.point.loc.lat %>];
-  <% elsif @cur_node.respond_to?(:map_center) %>
+  <% elsif @cur_node.try(:map_center).present? %>
   opts['center'] = [<%= @cur_node.map_center.lng %>,<%= @cur_node.map_center.lat %>];
   <% else %>
   opts['center'] = [<%= SS.config.cms.map_center[1] %>,<%= SS.config.cms.map_center[0] %>];
