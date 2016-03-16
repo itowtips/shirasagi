@@ -7,6 +7,16 @@ SS::Application.routes.draw do
     delete action: :destroy_all, :on => :collection
   end
 
+  concern :download do
+    get :download, :on => :collection
+  end
+
+  # Google Person Finder
+  concern :gpf do
+    get :gpf, action: :edit_gpf, on: :member
+    post :gpf, action: :update_gpf, on: :member
+  end
+
   content "member" do
     get "/" => redirect { |p, req| "#{req.path}/logins" }, as: :main
     resources :logins, only: [:index]
@@ -14,7 +24,7 @@ SS::Application.routes.draw do
     resources :my_profiles, concerns: :deletion
     resources :my_blogs, concerns: :deletion
     resources :my_photos, concerns: :deletion
-    resources :my_anpi_posts, concerns: :deletion
+    resources :my_anpi_posts, concerns: [:deletion, :download, :gpf]
     resources :my_groups, concerns: :deletion
     resources :blog_layouts, concerns: :deletion
     resources :blogs, concerns: :deletion
