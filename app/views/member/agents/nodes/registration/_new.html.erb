@@ -37,12 +37,16 @@
 
   <dl class="colum">
     <dt><%= @item.class.t :birthday %></dt>
-    <dd><%= f.text_field :birthday %></dd>
+    <dd>
+      <%= f.fields_for :in_birth do |birth_f| %>
+        <%= birth_f.select :era, options_for_select(%w(西暦 明治 大正 昭和 平成), tryb { @item.in_birth[:era] }) %>
+        <%= birth_f.number_field :year, value: tryb { @item.in_birth[:year] } %>
+        年
+        <%= birth_f.select :month, options_for_select((1..12).to_a, tryb { @item.in_birth[:month] }) %>
+        月
+        <%= birth_f.select :day, options_for_select((1..31).to_a, tryb { @item.in_birth[:day] }) %>
+        日
+      <% end %>
+    </dd>
   </dl>
 </div>
-
-<%= jquery do %>
-  if ($.support.opacity) {
-    $("#item_birthday").datetimepicker({ lang: "ja", timepicker: false, format: "Y/m/d" });
-  }
-<% end %>

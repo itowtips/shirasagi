@@ -46,6 +46,7 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
     let(:addr) { unique_id }
     let(:sex_label) { "男性" }
     let(:sex) { "male" }
+    let(:era) { "西暦" }
     let(:birthday) { Date.parse("1985-01-01") }
 
     it do
@@ -59,7 +60,10 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
         fill_in "item[tel]", with: tel
         fill_in "item[addr]", with: addr
         select sex_label, from: "item[sex]"
-        fill_in "item[birthday]", with: birthday.to_param
+        select era, from: "item[in_birth][era]"
+        fill_in "item[in_birth][year]", with: birthday.year
+        select birthday.month, from: "item[in_birth][month]"
+        select birthday.day, from: "item[in_birth][day]"
 
         click_button "確認画面へ"
       end
@@ -71,7 +75,10 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
         expect(page.find("input[name='item[tel]']", visible: false).value).to eq tel
         expect(page.find("input[name='item[addr]']", visible: false).value).to eq addr
         expect(page.find("input[name='item[sex]']", visible: false).value).to eq sex
-        expect(page.find("input[name='item[birthday]']", visible: false).value).to eq birthday.to_param
+        expect(page.find("input[name='item[in_birth][era]']", visible: false).value).to eq era
+        expect(page.find("input[name='item[in_birth][year]']", visible: false).value).to eq birthday.year.to_s
+        expect(page.find("input[name='item[in_birth][month]']", visible: false).value).to eq birthday.month.to_s
+        expect(page.find("input[name='item[in_birth][day]']", visible: false).value).to eq birthday.day.to_s
 
         click_button "登録"
       end

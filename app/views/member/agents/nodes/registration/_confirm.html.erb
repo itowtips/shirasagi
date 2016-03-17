@@ -56,8 +56,16 @@
   <dl class="colum">
     <dt><%= @item.class.t :birthday %></dt>
     <dd>
-      <%= tryb { @item.birthday.strftime("%Y/%m/%d") } %>
-      <%= f.hidden_field :birthday, value: @item.birthday %>
+      <%= tryb { @item.in_birth[:era] } %>
+      <%= tryb { "#{@item.in_birth[:year]}年" } %>
+      <%= tryb { "#{@item.in_birth[:month]}月" } %>
+      <%= tryb { "#{@item.in_birth[:day]}日" } %>
+      <%= f.fields_for :in_birth do |birth_f| %>
+        <%= birth_f.hidden_field :era, value: tryb { @item.in_birth[:era] } %>
+        <%= birth_f.hidden_field :year, value: tryb { @item.in_birth[:year] } %>
+        <%= birth_f.hidden_field :month, value: tryb { @item.in_birth[:month] } %>
+        <%= birth_f.hidden_field :day, value: tryb { @item.in_birth[:day] } %>
+      <% end %>
     </dd>
   </dl>
 

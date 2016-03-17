@@ -9,8 +9,12 @@ module Member::Addon
       field :addr, type: String
       field :sex, type: String
       field :birthday, type: Date
+      attr_accessor :in_birth
       permit_params :kana, :tel, :addr, :sex, :birthday
+      permit_params in_birth: [:era, :year, :month, :day]
       validates :sex, inclusion: { in: %w(male female), allow_blank: true }
+      validates_with Member::BirthValidator, attributes: :in_birth, if: ->{ in_birth.present? }
+      before_save :set_birthday, if: ->{ in_birth.present? }
     end
 
     def sex_options
@@ -22,5 +26,19 @@ module Member::Addon
       return nil if now < birthday
       (now.strftime('%Y%m%d').to_i - birthday.strftime('%Y%m%d').to_i) / 10_000
     end
+
+    private
+      def set_birthday
+        era = in_birth[:era]
+        year = in_birth[:year].to_i
+        month = in_birth[:month].to_i
+        day = in_birth[:day].to_i
+
+        wareki = SS.config.ss.wareki[era]
+        return nil if wareki.blank?
+        min = Date.parse(wareki['min'])
+
+        self.birthday = Date.new(min.year + year - 1, month, day)
+      end
   end
 end
