@@ -205,7 +205,7 @@ module SS::Model::File
       if image?
         image = Magick::Image.from_blob(in_file.read).shift
         image.auto_orient!
-        image.strip!
+        #image.strip!
         if resizing
           width, height = resizing
           image = image.resize_to_fit width, height if image.columns > width || image.rows > height
