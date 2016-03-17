@@ -22,7 +22,6 @@ class @Board_Map
       layers: [
         new ol.layer.Tile
           source: new ol.source.XYZ
-            attributions: [],
             url: "http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png"
             projection: "EPSG:3857"
       ],
@@ -48,6 +47,9 @@ class @Board_Map
     if !@opts['readonly']
       @map.on 'click', (e) =>
         pos = ol.proj.transform(e.coordinate, "EPSG:3857", "EPSG:4326")
+        # normalize geo position
+        pos[0] += 360 while pos[0] < 180
+        pos[0] -= 360 while pos[0] > 180
         @setMarker(pos)
 
   initPopup: ->
