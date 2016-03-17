@@ -88,4 +88,21 @@ describe Cms::Member, dbscope: :example do
       expect(described_class.name_of(info)).to eq "address"
     end
   end
+
+  describe ".age" do
+    context "when birthday is null" do
+      subject { create(:cms_member) }
+      its(:age) { is_expected.to be_nil }
+    end
+
+    context "when birthday is future day" do
+      subject { create(:cms_member, birthday: Time.zone.now + 1.year) }
+      its(:age) { is_expected.to be_nil }
+    end
+
+    context "when usual case" do
+      subject { create(:cms_member, birthday: Time.zone.now - 1.year) }
+      its(:age) { is_expected.to eq 1 }
+    end
+  end
 end

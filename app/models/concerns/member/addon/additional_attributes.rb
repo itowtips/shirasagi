@@ -18,8 +18,9 @@ module Member::Addon
     end
 
     def age(now = Time.zone.now)
+      return nil if birthday.blank?
       return nil if now < birthday
-      birthday ? (now.strftime('%Y%m%d').to_i - birthday.strftime('%Y%m%d').to_i) / 10_000 : nil
+      (now.strftime('%Y%m%d').to_i - birthday.strftime('%Y%m%d').to_i) / 10_000
     end
   end
 end
