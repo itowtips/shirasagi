@@ -1,0 +1,98 @@
+require 'spec_helper'
+
+describe 'members/agents/nodes/registration', type: :feature, dbscope: :example do
+  let(:site) { cms_site }
+  let(:node_mypage) { create :member_node_mypage, site: cms_site }
+  let(:reply_upper_text) do
+    %w(
+      会員登録ありがとうございました。
+      次の URL をクリックし、画面の指示にしたがって会員登録を完了させてください。).join("\n")
+  end
+  let(:reset_password_upper_text) do
+    %w(
+      ログインパスワードの再設定用のURLをお送りします。
+      次の URL をクリックし、画面の指示にしたがってパスワード再設定を完了させてください。).join("\n")
+  end
+  let(:node_registration) do
+    create(
+      :member_node_registration,
+      cur_site: cms_site,
+      sender_name: '会員登録',
+      sender_email: 'admin@example.jp',
+      subject: '登録確認',
+      reply_upper_text: reply_upper_text,
+      reply_lower_text: '本メールに心当たりのない方は、お手数ですがメールを削除してください。',
+      reply_signature: "----\nシラサギ市",
+      reset_password_subject: 'パスワード再設定案内',
+      reset_password_upper_text: reset_password_upper_text,
+      reset_password_lower_text: "本メールに心当たりのない方は、お手数ですがメールを削除してください。",
+      reset_password_signature: "----\nシラサギ市")
+  end
+  let(:index_path) { node_registration.full_url }
+
+  before do
+    ActionMailer::Base.deliveries = []
+  end
+
+  after do
+    ActionMailer::Base.deliveries = []
+  end
+
+  describe "register new member" do
+    let(:name) { unique_id }
+    let(:email) { "#{unique_id}@example.jp" }
+    let(:kana) { unique_id }
+    let(:tel) { unique_id }
+    let(:addr) { unique_id }
+    let(:sex_label) { "男性" }
+    let(:sex) { "male" }
+    let(:birthday) { Date.parse("1985-01-01") }
+
+    it do
+      visit index_path
+
+      within "form" do
+        fill_in "item[name]", with: name
+        fill_in "item[email]", with: email
+        fill_in "item[email_again]", with: email
+        fill_in "item[kana]", with: kana
+        fill_in "item[tel]", with: tel
+        fill_in "item[addr]", with: addr
+        select sex_label, from: "item[sex]"
+        fill_in "item[birthday]", with: birthday.to_param
+
+        click_button "確認画面へ"
+      end
+
+      within "form" do
+        expect(page.find("input[name='item[name]']", visible: false).value).to eq name
+        expect(page.find("input[name='item[email]']", visible: false).value).to eq email
+        expect(page.find("input[name='item[kana]']", visible: false).value).to eq kana
+        expect(page.find("input[name='item[tel]']", visible: false).value).to eq tel
+        expect(page.find("input[name='item[addr]']", visible: false).value).to eq addr
+        expect(page.find("input[name='item[sex]']", visible: false).value).to eq sex
+        expect(page.find("input[name='item[birthday]']", visible: false).value).to eq birthday.to_param
+
+        click_button "登録"
+      end
+
+      expect(ActionMailer::Base.deliveries.length).to eq 1
+      mail = ActionMailer::Base.deliveries.first
+      expect(mail.from.first).to eq "admin@example.jp"
+      expect(mail.to.first).to eq email
+      expect(mail.subject).to eq '登録確認'
+      expect(mail.body.raw_source).to include(node_registration.reply_upper_text)
+      expect(mail.body.raw_source).to include(node_registration.reply_lower_text)
+      expect(mail.body.raw_source).to include(node_registration.reply_signature)
+
+      member = Cms::Member.where(email: email).first
+      expect(member.name).to eq name
+      expect(member.email).to eq email
+      expect(member.kana).to eq kana
+      expect(member.tel).to eq tel
+      expect(member.addr).to eq addr
+      expect(member.sex).to eq sex
+      expect(member.birthday).to eq birthday
+    end
+  end
+end

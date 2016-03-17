@@ -98,7 +98,7 @@ module Cms::Model::Member
     end
 
     def send_verification_mail
-      Member::Mailer.verification_mail(self).deliver_now if self.skip_verification_mail.nil? && enabled?
+      Member::Mailer.verification_mail(self).deliver_now if self.skip_verification_mail.nil?
     end
 
     def validate_password

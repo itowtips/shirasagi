@@ -11,6 +11,36 @@
       <%= @item.email %>
       <%= f.hidden_field :email, value: @item.email %>
     </dd>
+
+    <dt><%= @item.class.t :kana %></dt>
+    <dd>
+      <%= @item.kana %>
+      <%= f.hidden_field :kana, value: @item.kana %>
+    </dd>
+
+    <dt><%= @item.class.t :tel %></dt>
+    <dd>
+      <%= @item.tel %>
+      <%= f.hidden_field :tel, value: @item.tel %>
+    </dd>
+
+    <dt><%= @item.class.t :addr %></dt>
+    <dd>
+      <%= @item.addr %>
+      <%= f.hidden_field :addr, value: @item.addr %>
+    </dd>
+
+    <dt><%= @item.class.t :sex %></dt>
+    <dd>
+      <%= @item.label :sex %>
+      <%= f.hidden_field :sex, value: @item.sex %>
+    </dd>
+
+    <dt><%= @item.class.t :birthday %></dt>
+    <dd>
+      <%= tryb { @item.birthday.strftime("%Y/%m/%d") } %>
+      <%= f.hidden_field :birthday, value: @item.birthday %>
+    </dd>
   </dl>
   <div class="confirm_email_address">
     <%= simple_format(h I18n.t("views.registration.confirm_email_address", sender_email: @cur_node.sender_email, sender_domain: @cur_node.sender_email.match(/@(.+)$/))) %>
