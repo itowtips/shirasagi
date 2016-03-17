@@ -40,6 +40,9 @@ ja:
       license_name:
         free: 誰でも利用可
         not_free: 許可が必要
+      confirm_personal_data_state:
+        enabled: 有効
+        disabled: 無効
     view:
       email: メールアドレス
       password: パスワード
@@ -94,6 +97,7 @@ ja:
       member/photo/license: ライセンス
       member/photo/license_setting: ライセンス
       member/registration/sender_address: 送信者設定
+      member/registration/confirmation: 登録確認
       member/registration/reply: 登録確認メール
       member/registration/reset_password_mail: パスワード再設定メール
       member/group_invitation_setting: グループ招待メール設定
@@ -188,6 +192,11 @@ ja:
       member/addon/registration/sender_address:
         sender_name: 送信者名
         sender_email: 送信メールアドレス
+      member/addon/registration/confirmation:
+        confirm_personal_data_state: 個人情報保護状態
+        confirm_personal_data_html: 個人情報保護HTML
+        header_html: ヘッダーHTML
+        footer_html: フッターHTML
       member/addon/registration/reply:
         subject: 件名
         reply_upper_text: 上部確認テキスト
@@ -276,6 +285,7 @@ ja:
       password_include_email: にメールアドレスが含まれています。
       password_include_name: に氏名が含まれています。
       password_include_kana: によみがなが含まれています。
+      please_confirm_personal_data_protection: 個人情報の保護に同意してください。
 
   tooltip:
     member/addon/redirection:

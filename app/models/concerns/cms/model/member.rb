@@ -8,6 +8,7 @@ module Cms::Model::Member
   attr_accessor :in_password
   attr_accessor :email_again
   attr_accessor :skip_verification_mail
+  attr_accessor :in_confirm_personal_info
 
   OAUTH_PROVIDER_TWITTER = 'twitter'.freeze
   OAUTH_PROVIDER_FACEBOOK = 'facebook'.freeze
@@ -35,6 +36,7 @@ module Cms::Model::Member
 
     permit_params :name, :email, :email_again, :email_type, :password, :in_password, :state
     permit_params interest_municipality_ids: []
+    permit_params :in_confirm_personal_info
 
     validates :name, presence: true, length: { maximum: 40 }, if: ->{ enabled? }
     validates :email, email: true, length: { maximum: 80 }

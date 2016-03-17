@@ -1,48 +1,81 @@
 <div class="columns">
+  <% if @cur_node.header_html.present? %>
+  <header class="footer">
+    <%= simple_format(@cur_node.header_html) %>
+  </header>
+  <% end %>
+
   <dl class="colum">
     <dt><%= @item.class.t :name %></dt>
     <dd>
       <%= @item.name %>
       <%= f.hidden_field :name, value: @item.name %>
     </dd>
+  </dl>
 
+  <dl class="colum">
     <dt><%= @item.class.t :email %></dt>
     <dd>
       <%= @item.email %>
       <%= f.hidden_field :email, value: @item.email %>
     </dd>
+  </dl>
 
+  <dl class="colum">
     <dt><%= @item.class.t :kana %></dt>
     <dd>
       <%= @item.kana %>
       <%= f.hidden_field :kana, value: @item.kana %>
     </dd>
+  </dl>
 
+  <dl class="colum">
     <dt><%= @item.class.t :tel %></dt>
     <dd>
       <%= @item.tel %>
       <%= f.hidden_field :tel, value: @item.tel %>
     </dd>
+  </dl>
 
+  <dl class="colum">
     <dt><%= @item.class.t :addr %></dt>
     <dd>
       <%= @item.addr %>
       <%= f.hidden_field :addr, value: @item.addr %>
     </dd>
+  </dl>
 
+  <dl class="colum">
     <dt><%= @item.class.t :sex %></dt>
     <dd>
       <%= @item.label :sex %>
       <%= f.hidden_field :sex, value: @item.sex %>
     </dd>
+  </dl>
 
+  <dl class="colum">
     <dt><%= @item.class.t :birthday %></dt>
     <dd>
       <%= tryb { @item.birthday.strftime("%Y/%m/%d") } %>
       <%= f.hidden_field :birthday, value: @item.birthday %>
     </dd>
   </dl>
-  <div class="confirm_email_address">
-    <%= simple_format(h I18n.t("views.registration.confirm_email_address", sender_email: @cur_node.sender_email, sender_domain: @cur_node.sender_email.match(/@(.+)$/))) %>
-  </div>
+
+  <% if @cur_node.confirm_personal_data_state == 'enabled' %>
+  <dl class="colum">
+    <dt><%= @item.class.t :in_confirm_personal_info %><span class="required"><%= t('views.required_field') %></span></dt>
+    <dd class="wide">
+      <%= f.label(:in_confirm_personal_info) do %>
+        <%= f.check_box(:in_confirm_personal_info, {}, 'yes', 'no') %>
+        <%= simple_format(@cur_node.confirm_personal_data_html, {}, wrapper_tag: :span) %>
+      <% end %>
+    </dd>
+  </dl>
+  <% end %>
+
+  <% if @cur_node.footer_html.present? %>
+  <footer class="footer">
+    <%= simple_format(@cur_node.footer_html) %>
+  </footer>
+  <% end %>
 </div>
