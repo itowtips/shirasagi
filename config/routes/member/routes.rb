@@ -81,7 +81,7 @@ SS::Application.routes.draw do
     resources :my_blog, concerns: :deletion, controller: "public", cell: "nodes/my_blog", except: :index
 
     get "my_photo(index.:format)" => "public#index", cell: "nodes/my_photo"
-    resources :my_photo, controller: "public", cell: "nodes/my_photo", except: :index
+    resources :my_photo, concerns: :deletion, controller: "public", cell: "nodes/my_photo", except: :index
 
     resources :my_anpi_post, concerns: :deletion, controller: "public", cell: "nodes/my_anpi_post" do
       get "others/new(.:format)", action: :others_new, on: :collection, as: :new_others
