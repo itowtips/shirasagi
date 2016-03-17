@@ -56,10 +56,12 @@
   <dl class="colum">
     <dt><%= @item.class.t :birthday %></dt>
     <dd>
-      <%= tryb { @item.in_birth[:era] } %>
-      <%= tryb { "#{@item.in_birth[:year]}年" } %>
-      <%= tryb { "#{@item.in_birth[:month]}月" } %>
-      <%= tryb { "#{@item.in_birth[:day]}日" } %>
+      <% if @item.in_birth.present? %>
+        <%= tryb { @item.in_birth[:era] } %>
+        <%= tryb { "#{@item.in_birth[:year]}年" } %>
+        <%= tryb { "#{@item.in_birth[:month]}月" } %>
+        <%= tryb { "#{@item.in_birth[:day]}日" } %>
+      <% end %>
       <%= f.fields_for :in_birth do |birth_f| %>
         <%= birth_f.hidden_field :era, value: tryb { @item.in_birth[:era] } %>
         <%= birth_f.hidden_field :year, value: tryb { @item.in_birth[:year] } %>

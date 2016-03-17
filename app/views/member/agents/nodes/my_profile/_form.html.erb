@@ -67,12 +67,12 @@
   <dt><%= @model.t :birthday %></dt>
   <dd>
     <%= f.fields_for :in_birth do |birth_f| %>
-      <%= birth_f.select :era, options_for_select(%w(西暦 明治 大正 昭和 平成), tryb { @item.in_birth[:era] } || '西暦') %>
-      <%= birth_f.number_field :year, value: tryb { @item.in_birth[:year] } || @item.birthday.year %>
+      <%= birth_f.select :era, options_for_select(%w(西暦 明治 大正 昭和 平成), tryb { @item.in_birth[:era] } || @item.birthday ? '西暦' : nil), include_blank: true %>
+      <%= birth_f.number_field :year, value: tryb { @item.in_birth[:year] } || @item.birthday.try(:year) %>
       年
-      <%= birth_f.select :month, options_for_select((1..12).to_a, tryb { @item.in_birth[:month] } || @item.birthday.month) %>
+      <%= birth_f.select :month, options_for_select((1..12).to_a, tryb { @item.in_birth[:month] } || @item.birthday.try(:month)), include_blank: true %>
       月
-      <%= birth_f.select :day, options_for_select((1..31).to_a, tryb { @item.in_birth[:day] } || @item.birthday.day) %>
+      <%= birth_f.select :day, options_for_select((1..31).to_a, tryb { @item.in_birth[:day] } || @item.birthday.try(:day)), include_blank: true %>
       日
     <% end %>
     <%= remarks :birthday %>

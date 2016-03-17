@@ -102,4 +102,54 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
       expect(member.birthday).to eq birthday
     end
   end
+
+  describe "only fill requried fields" do
+    let(:name) { unique_id }
+    let(:email) { "#{unique_id}@example.jp" }
+
+    it do
+      visit index_path
+
+      within "form" do
+        fill_in "item[name]", with: name
+        fill_in "item[email]", with: email
+        fill_in "item[email_again]", with: email
+
+        click_button "確認画面へ"
+      end
+
+      within "form" do
+        expect(page.find("input[name='item[name]']", visible: false).value).to eq name
+        expect(page.find("input[name='item[email]']", visible: false).value).to eq email
+        expect(page.find("input[name='item[kana]']", visible: false).value).to eq ""
+        expect(page.find("input[name='item[tel]']", visible: false).value).to eq ""
+        expect(page.find("input[name='item[addr]']", visible: false).value).to eq ""
+        expect(page.find("input[name='item[sex]']", visible: false).value).to eq ""
+        expect(page.find("input[name='item[in_birth][era]']", visible: false).value).to be_nil
+        expect(page.find("input[name='item[in_birth][year]']", visible: false).value).to be_nil
+        expect(page.find("input[name='item[in_birth][month]']", visible: false).value).to be_nil
+        expect(page.find("input[name='item[in_birth][day]']", visible: false).value).to be_nil
+
+        click_button "登録"
+      end
+
+      expect(ActionMailer::Base.deliveries.length).to eq 1
+      mail = ActionMailer::Base.deliveries.first
+      expect(mail.from.first).to eq "admin@example.jp"
+      expect(mail.to.first).to eq email
+      expect(mail.subject).to eq '登録確認'
+      expect(mail.body.raw_source).to include(node_registration.reply_upper_text)
+      expect(mail.body.raw_source).to include(node_registration.reply_lower_text)
+      expect(mail.body.raw_source).to include(node_registration.reply_signature)
+
+      member = Cms::Member.where(email: email).first
+      expect(member.name).to eq name
+      expect(member.email).to eq email
+      expect(member.kana).to be_nil
+      expect(member.tel).to be_nil
+      expect(member.addr).to be_nil
+      expect(member.sex).to be_nil
+      expect(member.birthday).to be_nil
+    end
+  end
 end

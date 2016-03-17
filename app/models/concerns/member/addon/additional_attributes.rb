@@ -12,6 +12,7 @@ module Member::Addon
       attr_accessor :in_birth
       permit_params :kana, :tel, :addr, :sex, :birthday
       permit_params in_birth: [:era, :year, :month, :day]
+      before_validation :normalize_in_birth
       validates :sex, inclusion: { in: %w(male female), allow_blank: true }
       validates_with Member::BirthValidator, attributes: :in_birth, if: ->{ in_birth.present? }
       before_save :set_birthday, if: ->{ in_birth.present? }
@@ -28,6 +29,11 @@ module Member::Addon
     end
 
     private
+      def normalize_in_birth
+        return if in_birth.blank?
+        self.in_birth = in_birth.select { |_, value| value.present? }
+      end
+
       def set_birthday
         era = in_birth[:era]
         year = in_birth[:year].to_i
