@@ -34,6 +34,7 @@ class @Board_Map
         center: ol.proj.transform(center, "EPSG:4326", "EPSG:3857")
         maxZoom: 18
         zoom: @opts['zoom'] || 10
+      logo: false
 
     if @opts['gps']
       @setMarkerFromGps()
