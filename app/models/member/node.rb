@@ -115,6 +115,7 @@ module Member::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
     include Cms::Addon::NodeList
+    include Member::Addon::Blog::BlogSetting
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
@@ -147,7 +148,7 @@ module Member::Node
   class BlogPage
     include Cms::Model::Node
     include Cms::Reference::Member
-    include Member::Addon::Blog::Setting
+    include Member::Addon::Blog::PageSetting
     include Cms::Addon::GroupPermission
 
     set_permission_name "member_blogs"

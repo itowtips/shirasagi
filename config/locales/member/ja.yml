@@ -86,7 +86,8 @@ ja:
       member/blog/body: 本文
       member/blog/genre: ジャンル
       member/blog/location: 地域
-      member/blog/setting: ブログ設定
+      member/blog/blog_setting: ブログ設定
+      member/blog/page_setting: ブログ設定
       member/photo/body: フォト
       member/photo/category: タグ
       member/photo/location: 地域
@@ -158,16 +159,20 @@ ja:
         github_oauth: OAuth 認証
         github_client_id: Client ID
         github_client_secret: Client Secret
+      member/addon/blog/blog_setting:
+        page_limit: ページ表示件数
+      member/addon/blog/page_setting:
+        description: 紹介文
+        genres: ジャンル設定
+        image_id: サムネイル
+        blog_page_location_ids: 地域設定
+        blog_page_locations: 地域設定
       member/node/blog_page:
         title: ブログタイトル
         basename: ブログURL
         filename: ブログURL
         foldername: フォルダー名
         layout: レイアウト
-        description: 紹介文
-        image_id: サムネイル
-        genres: ジャンル設定
-        blog_page_locations: 地域設定
       member/blog_page:
         name: タイトル
         body: 本文
@@ -434,7 +439,10 @@ ja:
       license_name:
         - ライセンスを設定します。
         - フォルダーに設定したテキストが表示されます。
-    member/addon/blog/setting:
+    member/addon/blog/blog_setting:
+      page_limit:
+        - ページ表示件数を設定します。
+    member/addon/blog/page_setting:
       description:
         - ブログの紹介文を設定します。
       genres:

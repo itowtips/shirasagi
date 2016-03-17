@@ -28,7 +28,7 @@ class Member::Agents::Nodes::BlogPageController < ApplicationController
       @items = pages.
         search(params).
         order_by(released: -1).
-        page(params[:page]).per(3)
+        page(params[:page]).per(@cur_node.parent.becomes_with_route.page_limit || 3)
     end
 
     def rss

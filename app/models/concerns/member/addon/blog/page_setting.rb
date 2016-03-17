@@ -1,5 +1,5 @@
 module Member::Addon::Blog
-  module Setting
+  module PageSetting
     extend ActiveSupport::Concern
     extend SS::Addon
     include SS::Relation::File
