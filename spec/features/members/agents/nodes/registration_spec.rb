@@ -119,10 +119,13 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
       visit url
 
       within "form" do
-        expect(page).to have_css(".colum dd", text: name)
+        expect(page.find("input[name='item[name]']", visible: false).value).to eq name
         expect(page).to have_css(".colum dd", text: email)
         fill_in "item[in_password]", with: password
         fill_in "item[in_password_again]", with: password
+        expect(page.find("input[name='item[kana]']", visible: false).value).to eq kana
+        expect(page.find("input[name='item[tel]']", visible: false).value).to eq tel
+        expect(page.find("input[name='item[addr]']", visible: false).value).to eq addr
 
         click_button "登録"
       end
