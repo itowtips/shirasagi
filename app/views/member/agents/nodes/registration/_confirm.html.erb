@@ -5,6 +5,8 @@
   </header>
   <% end %>
 
+  <%= f.hidden_field :sends_verification_mail, value: 'yes' %>
+
   <dl class="colum">
     <dt><%= @item.class.t :name %></dt>
     <dd>

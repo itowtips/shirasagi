@@ -5,11 +5,6 @@ module Cms::Model::Member
   include SS::Reference::Site
   include Cms::SitePermission
 
-  attr_accessor :in_password
-  attr_accessor :email_again
-  attr_accessor :skip_verification_mail
-  attr_accessor :in_confirm_personal_info
-
   OAUTH_PROVIDER_TWITTER = 'twitter'.freeze
   OAUTH_PROVIDER_FACEBOOK = 'facebook'.freeze
   OAUTH_PROVIDER_YAHOOJP = 'yahoojp'.freeze
@@ -21,6 +16,11 @@ module Cms::Model::Member
   included do
     store_in collection: "cms_members"
     set_permission_name "cms_members", :edit
+
+    attr_accessor :in_password
+    attr_accessor :email_again
+    attr_accessor :sends_verification_mail
+    attr_accessor :in_confirm_personal_info
 
     seqid :id
     field :name, type: String
@@ -36,7 +36,7 @@ module Cms::Model::Member
 
     permit_params :name, :email, :email_again, :email_type, :password, :in_password, :state
     permit_params interest_municipality_ids: []
-    permit_params :in_confirm_personal_info
+    permit_params :sends_verification_mail, :in_confirm_personal_info
 
     validates :name, presence: true, length: { maximum: 40 }, if: ->{ enabled? }
     validates :email, email: true, length: { maximum: 80 }
@@ -100,7 +100,7 @@ module Cms::Model::Member
     end
 
     def send_verification_mail
-      Member::Mailer.verification_mail(self).deliver_now if self.skip_verification_mail.nil?
+      Member::Mailer.verification_mail(self).deliver_now if self.sends_verification_mail == 'yes'
     end
 
     def validate_password

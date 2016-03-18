@@ -12,7 +12,7 @@ class Cms::MembersController < ApplicationController
     end
 
     def fix_params
-      { cur_site: @cur_site, skip_verification_mail: true }
+      { cur_site: @cur_site }
     end
 
   public
