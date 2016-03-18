@@ -1,28 +1,55 @@
 <%= f.hidden_field_tag("token", params[:token]) %>
 <%= f.hidden_field_tag("group", params[:group]) if params[:group].present? %>
 
-<% if @item.name.blank? %>
-<dl class="cms-member-registration-verify colum">
+<dl class="colum name">
   <dt><%= @item.class.t :name %><span class="required"><%= t('views.required_field') %></span></dt>
   <dd><%= f.text_field :name %></dd>
 </dl>
-<% else %>
-<dl class="cms-member-registration-verify colum">
-  <dt><%= @item.class.t :name %></dt>
-  <dd><%= @item.name %></dd>
-</dl>
-<% end %>
 
-<dl class="cms-member-registration-verify colum">
+<dl class="colum email">
   <dt><%= @item.class.t :email %></dt>
   <dd><%= @item.email %></dd>
 </dl>
 
-<dl class="cms-member-registration-verify colum">
-  <dt><%= @item.t :in_password %></dt>
+<dl class="colum in_password">
+  <dt><%= @item.t :in_password %><span class="required"><%= t('views.required_field') %></span></dt>
   <dd><%= f.password_field :in_password %></dd>
 
-  <dt><%= @item.class.t :in_password_again %></dt>
+  <dt><%= @item.class.t :in_password_again %><span class="required"><%= t('views.required_field') %></span></dt>
   <dd><%= f.password_field :in_password_again %></dd>
 </dl>
 
+<dl class="colum kana">
+  <dt><%= @item.class.t :kana %></dt>
+  <dd><%= f.text_field :kana %></dd>
+</dl>
+
+<dl class="colum tel">
+  <dt><%= @item.class.t :tel %></dt>
+  <dd><%= f.text_field :tel %></dd>
+</dl>
+
+<dl class="colum addr">
+  <dt><%= @item.class.t :addr %></dt>
+  <dd><%= f.text_field :addr %></dd>
+</dl>
+
+<dl class="colum sex">
+  <dt><%= @item.class.t :sex %></dt>
+  <dd><%= f.select :sex, @item.sex_options, include_blank: true %></dd>
+</dl>
+
+<dl class="colum birthday">
+  <dt><%= @item.class.t :birthday %></dt>
+  <dd>
+    <%= f.fields_for :in_birth do |birth_f| %>
+      <%= birth_f.select :era, options_for_select(%w(西暦 明治 大正 昭和 平成), tryb { @item.in_birth[:era] } || @item.birthday ? '西暦' : nil), include_blank: true %>
+      <%= birth_f.number_field :year, value: tryb { @item.in_birth[:year] } || @item.birthday.try(:year) %>
+      年
+      <%= birth_f.select :month, options_for_select((1..12).to_a, tryb { @item.in_birth[:month] } || @item.birthday.try(:month)), include_blank: true %>
+      月
+      <%= birth_f.select :day, options_for_select((1..31).to_a, tryb { @item.in_birth[:day] } || @item.birthday.try(:day)), include_blank: true %>
+      日
+    <% end %>
+  </dd>
+</dl>

@@ -76,7 +76,13 @@ describe 'members/agents/nodes/my_group', type: :feature, dbscope: :example do
     let(:invitation_message) { unique_id }
     let(:invitee_email) { "#{unique_id}@example.jp" }
     let(:invitee_name) { unique_id }
-    let(:invitee_password) { "abc123" }
+    let(:invitee_password) { 'abc123' }
+    let(:invitee_kana) { unique_id }
+    let(:invitee_tel) { unique_id }
+    let(:invitee_addr) { unique_id }
+    let(:invitee_sex_label) { '女性' }
+    let(:invitee_era) { '西暦' }
+    let(:invitee_birthday) { Date.parse('1988-10-25') }
 
     before do
       login_member(site, node_login)
@@ -132,14 +138,14 @@ describe 'members/agents/nodes/my_group', type: :feature, dbscope: :example do
         fill_in "item[name]", with: invitee_name
         expect(page).to have_css(".colum dd", text: invitee_email)
 
-        # fill_in "item[kana]", with: kana
-        # fill_in "item[tel]", with: tel
-        # fill_in "item[addr]", with: addr
-        # select sex_label, from: "item[sex]"
-        # select era, from: "item[in_birth][era]"
-        # fill_in "item[in_birth][year]", with: birthday.year
-        # select birthday.month, from: "item[in_birth][month]"
-        # select birthday.day, from: "item[in_birth][day]"
+        fill_in "item[kana]", with: invitee_kana
+        fill_in "item[tel]", with: invitee_tel
+        fill_in "item[addr]", with: invitee_addr
+        select invitee_sex_label, from: "item[sex]"
+        select invitee_era, from: "item[in_birth][era]"
+        fill_in "item[in_birth][year]", with: invitee_birthday.year
+        select invitee_birthday.month, from: "item[in_birth][month]"
+        select invitee_birthday.day, from: "item[in_birth][day]"
         fill_in "item[in_password]", with: invitee_password
         fill_in "item[in_password_again]", with: invitee_password
 
