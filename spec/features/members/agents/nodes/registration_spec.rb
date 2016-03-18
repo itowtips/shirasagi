@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'members/agents/nodes/registration', type: :feature, dbscope: :example do
   let(:site) { cms_site }
-  let!(:node_mypage) { create :member_node_mypage, site: site, html: '<div id="mypage"></div>' }
+  let!(:node_mypage) { create :member_node_mypage, cur_site: site, html: '<div id="mypage"></div>' }
   let(:reply_upper_text) do
     %w(
       会員登録ありがとうございました。

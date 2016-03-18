@@ -1,7 +1,7 @@
 FactoryGirl.define do
   trait :cms_role do
-    site_id { cms_site.id }
-    user_id { cms_user.id }
+    site_id { cur_site ? cur_site.id : cms_site.id }
+    user_id { cur_user ? cur_user.id : cms_user.id }
     name "cms_role"
     permissions []
     permission_level 1

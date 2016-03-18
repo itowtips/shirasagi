@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'members/agents/nodes/my_anpi_post', type: :feature, dbscope: :example do
   let(:site) { cms_site }
-  let(:node_mypage) { create :member_node_mypage, site: site }
+  let(:node_mypage) { create :member_node_mypage, cur_site: site }
   let(:node_my_anpi_post) { create :member_node_my_anpi_post, cur_site: site, cur_node: node_mypage }
-  let!(:node_login) { create :member_node_login, site: site, form_auth: 'enabled', redirect_url: node_my_anpi_post.url }
+  let!(:node_login) { create :member_node_login, cur_site: site, form_auth: 'enabled', redirect_url: node_my_anpi_post.url }
   let(:index_url) { node_my_anpi_post.url }
   let(:text) { unique_id }
 

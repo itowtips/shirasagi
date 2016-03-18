@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :cms_body_layout, class: Cms::BodyLayout do
-    site_id { cms_site.id }
-    user_id { cms_user.id }
+    site_id { cur_site ? cur_site.id : cms_site.id }
+    user_id { cur_user ? cur_user.id : cms_user.id }
     name "body_layout"
     filename { "#{name}.layout.html" }
     parts { %w(part1 part2 part3) }

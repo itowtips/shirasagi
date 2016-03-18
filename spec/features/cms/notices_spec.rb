@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "cms_notices", dbscope: :example, type: :feature do
   let(:site) { cms_site }
-  let(:item) { create(:cms_notice, site: site) }
+  let(:item) { create(:cms_notice, cur_site: site) }
   let(:index_path) { cms_notices_path site.id }
   let(:new_path) { new_cms_notice_path site.id }
   let(:show_path) { cms_notice_path site.id, item }
