@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe 'members/agents/nodes/my_group', type: :feature, dbscope: :example do
   let(:site) { cms_site }
-  let(:node_mypage) { create :member_node_mypage, cur_site: site }
+  let(:layout) { create_cms_layout }
+  let(:node_mypage) { create :member_node_mypage, cur_site: site, layout_id: layout.id }
   let(:group_invitation_template) do
     %w(
       #{sender_name} さんがあなたをグループへ招待しました。
@@ -36,6 +37,7 @@ describe 'members/agents/nodes/my_group', type: :feature, dbscope: :example do
       :member_node_my_group,
       cur_site: site,
       cur_node: node_mypage,
+      layout_id: layout.id,
       sender_name: 'グループ登録',
       sender_email: 'admin@example.jp',
       group_invitation_subject: 'グループ招待',
@@ -46,9 +48,21 @@ describe 'members/agents/nodes/my_group', type: :feature, dbscope: :example do
       member_invitation_signature: member_invitation_signature,
       member_joins_to_invited_group: 'auto')
   end
-  let!(:node_login) { create :member_node_login, cur_site: site, form_auth: 'enabled', redirect_url: node_my_group.url }
+  let!(:node_login) do
+    create(
+      :member_node_login,
+      cur_site: site,
+      layout_id: layout.id,
+      form_auth: 'enabled',
+      redirect_url: node_my_group.url)
+  end
   let!(:node_registration) do
-    create(:member_node_registration, cur_site: site, sender_name: '会員登録', sender_email: 'admin@example.jp')
+    create(
+      :member_node_registration,
+      cur_site: site,
+      layout_id: layout.id,
+      sender_name: '会員登録',
+      sender_email: 'admin@example.jp')
   end
   let(:index_url) { node_my_group.full_url }
 

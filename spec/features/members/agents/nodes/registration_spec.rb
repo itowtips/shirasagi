@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe 'members/agents/nodes/registration', type: :feature, dbscope: :example do
   let(:site) { cms_site }
-  let!(:node_mypage) { create :member_node_mypage, cur_site: site, html: '<div id="mypage"></div>' }
+  let(:layout) { create_cms_layout }
+  let!(:node_mypage) { create :member_node_mypage, cur_site: site, layout_id: layout.id, html: '<div id="mypage"></div>' }
   let(:reply_upper_text) do
     %w(
       会員登録ありがとうございました。
@@ -17,6 +18,7 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
     create(
       :member_node_registration,
       cur_site: site,
+      layout_id: layout.id,
       sender_name: '会員登録',
       sender_email: 'admin@example.jp',
       subject: '登録確認',
@@ -32,6 +34,7 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
     create(
       :member_node_login,
       cur_site: site,
+      layout_id: layout.id,
       redirect_url: node_mypage.url,
       form_auth: "enabled",
       twitter_oauth: "disabled",

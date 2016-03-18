@@ -2,10 +2,18 @@ require 'spec_helper'
 
 describe 'members/agents/nodes/my_group', type: :feature, dbscope: :example do
   let(:site) { cms_site }
-  let!(:node_blog) { create :member_node_blog, cur_site: site }
-  let(:node_mypage) { create :member_node_mypage, cur_site: site }
-  let(:node_my_blog) { create(:member_node_my_blog, cur_site: site, cur_node: node_mypage) }
-  let!(:node_login) { create :member_node_login, cur_site: site, form_auth: 'enabled', redirect_url: node_my_blog.url }
+  let(:layout) { create_cms_layout }
+  let!(:node_blog) { create :member_node_blog, cur_site: site, layout_id: layout.id }
+  let(:node_mypage) { create :member_node_mypage, cur_site: site, layout_id: layout.id }
+  let(:node_my_blog) { create(:member_node_my_blog, cur_site: site, cur_node: node_mypage, layout_id: layout.id) }
+  let!(:node_login) do
+    create(
+      :member_node_login,
+      cur_site: site,
+      layout_id: layout.id,
+      form_auth: 'enabled',
+      redirect_url: node_my_blog.url)
+  end
   let!(:blog_layout) { create :member_blog_layout, cur_site: site, cur_node: node_blog }
   let(:index_url) { node_my_blog.full_url }
 
