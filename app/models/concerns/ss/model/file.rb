@@ -203,6 +203,7 @@ module SS::Model::File
       return if in_file.blank?
 
       if image?
+        in_file.rewind
         image = Magick::Image.from_blob(in_file.read).shift
         image.auto_orient!
         #image.strip!
