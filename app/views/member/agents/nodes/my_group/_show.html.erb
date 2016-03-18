@@ -5,7 +5,7 @@ states += %w(inviting rejected) if @item.admin_member?(@cur_member)
 %>
 
 <div class="columns">
-  <dl class="column">
+  <dl class="column name">
     <dt><%= @model.t :name %></dt>
     <dd><%= @item.name %></dd>
   </dl>
@@ -13,7 +13,7 @@ states += %w(inviting rejected) if @item.admin_member?(@cur_member)
 
 <% if @item.admin_member?(@cur_member) %>
 <div class="columns">
-  <dl class="column">
+  <dl class="column invitation-message">
     <dt><%= @model.t :invitation_message %></dt>
     <dd><%= br @item.invitation_message %></dd>
   </dl>
@@ -21,10 +21,10 @@ states += %w(inviting rejected) if @item.admin_member?(@cur_member)
 <% end %>
 
 <div class="columns">
-  <dl class="column">
+  <dl class="column members">
     <dt><%= @model.t :members %></dt>
     <dd>
-<table class="index mypage-index member-group-page">
+<table class="index">
   <thead>
   <tr>
     <th class="name">名前</th>
@@ -34,7 +34,7 @@ states += %w(inviting rejected) if @item.admin_member?(@cur_member)
   <tbody>
   <% members.each do |member| %>
     <% next unless states.include?(member.state) %>
-    <tr>
+    <tr class="member-<%= member.id %>">
       <td class="item name"><%= member.member ? member.member.name || member.member.email : t('member.view.retired_member') %></td>
       <td class="item state"><%= member.label :state %></td>
     </tr>

@@ -1,4 +1,4 @@
-<dl class="column">
+<dl class="column name">
   <dt>
     <%= @model.t :name %>
     <% if params[:action] != 'invite' %>
@@ -16,13 +16,13 @@
 </dl>
 
 <% if params[:action] != 'invite' %>
-<dl class="column">
+<dl class="column admin">
   <dt>管理者</dt>
   <dd><%= @cur_member.name %></dd>
 </dl>
 <% end %>
 
-<dl class="column">
+<dl class="column invitees">
   <dt>メンバー</dt>
   <dd>
     <%= f.text_area :in_invitees %>
@@ -30,7 +30,7 @@
   </dd>
 </dl>
 
-<dl class="column">
+<dl class="column invitation-message">
   <dt>
     <%= @model.t :invitation_message %>
     <%= required_label %>

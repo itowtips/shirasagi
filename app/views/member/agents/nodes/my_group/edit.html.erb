@@ -1,7 +1,7 @@
 <%= render partial: "menu" %>
 
-<%= form_for :item, url: "#{@cur_node.url}#{@item.id}", html: { method: :put, multipart: true, autocomplete: :off, class: "mypage-edit member-group-page" } do |f| %>
-  <div class="mypage-form member-group-page">
+<%= form_for :item, url: "#{@cur_node.url}#{@item.id}", html: { method: :put, autocomplete: :off } do |f| %>
+  <div class="member-my-group member-my-group-edit">
     <%= error_messages_for :item, header_message: false %>
 
     <div class="columns">

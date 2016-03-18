@@ -1,8 +1,8 @@
 <%= render partial: "menu" %>
 
 <% if @items.present? %>
-  <div class="joined-groups">
-    <table class="index mypage-index member-group-page">
+  <div class="member-my-group joined-groups">
+    <table class="index">
       <thead>
       <tr>
         <th class="name">名前</th>
@@ -14,12 +14,12 @@
         <tr>
           <td class="item name"><%= link_to item.name, "#{@cur_node.url}#{item.id}/" %></td>
           <td class="item state">
-            <span>管理者: <%= item.members.where(state: 'admin').count %> 人</span>
+            <span class="admin">管理者: <%= item.members.where(state: 'admin').count %> 人</span>
             、
-            <span>ユーザー: <%= item.members.where(state: 'user').count %> 人</span>
+            <span class="user">ユーザー: <%= item.members.where(state: 'user').count %> 人</span>
             <% if item.admin_member?(@cur_member) %>
             、
-            <span>招待中: <%= item.members.where(state: 'inviting').count %> 人</span>
+            <span class="invitee">招待中: <%= item.members.where(state: 'inviting').count %> 人</span>
             <% end %>
           </td>
         </tr>

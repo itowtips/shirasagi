@@ -1,7 +1,7 @@
 <%= render partial: "menu" %>
 
-<%= form_for :item, url: "#{@cur_node.url}#{@item.id}/reject", html: { method: :post, multipart: true, class: "mypage-delete member-group-page" } do |f| %>
-  <div class="mypage-form member-group-page">
+<%= form_for :item, url: "#{@cur_node.url}#{@item.id}/reject", html: { method: :post } do |f| %>
+  <div class="member-my-group member-my-group-reject">
     <%= error_messages_for :item %>
 
     <div class="head"><h2><%= t("member.confirm.group.reject") %></h2></div>
