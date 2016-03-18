@@ -98,6 +98,7 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
       expect(mail.from.first).to eq "admin@example.jp"
       expect(mail.to.first).to eq email
       expect(mail.subject).to eq '登録確認'
+      expect(mail.body.multipart?).to be_falsey
       expect(mail.body.raw_source).to include(node_registration.reply_upper_text)
       expect(mail.body.raw_source).to include(node_registration.reply_lower_text)
       expect(mail.body.raw_source).to include(node_registration.reply_signature)
@@ -184,6 +185,7 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
       expect(mail.from.first).to eq "admin@example.jp"
       expect(mail.to.first).to eq email
       expect(mail.subject).to eq '登録確認'
+      expect(mail.body.multipart?).to be_falsey
       expect(mail.body.raw_source).to include(node_registration.reply_upper_text)
       expect(mail.body.raw_source).to include(node_registration.reply_lower_text)
       expect(mail.body.raw_source).to include(node_registration.reply_signature)
