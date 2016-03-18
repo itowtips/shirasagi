@@ -80,7 +80,7 @@ describe 'members/agents/nodes/my_group', type: :feature, dbscope: :example do
       logout_member(site, node_login)
     end
 
-    describe 'create new group and invite non-member' do
+    describe 'create new group with inviting non-member' do
       let(:group_name) { unique_id }
       let(:invitation_message) { unique_id }
       let(:invitee_email) { "#{unique_id}@example.jp" }
@@ -177,7 +177,7 @@ describe 'members/agents/nodes/my_group', type: :feature, dbscope: :example do
       end
     end
 
-    describe 'create new group, invite existing member and accept group invitation as invitee' do
+    describe 'create new group with inviting existing member and accept group invitation as invitee' do
       let(:group_name) { unique_id }
       let(:invitation_message) { unique_id }
       let(:invitee) { create(:cms_member) }
@@ -206,6 +206,107 @@ describe 'members/agents/nodes/my_group', type: :feature, dbscope: :example do
         expect(group.name).to eq group_name
         expect(group.invitation_message).to eq invitation_message
         expect(group.members.count).to eq 2
+
+        expect(ActionMailer::Base.deliveries.length).to eq 1
+        mail = ActionMailer::Base.deliveries.first
+        expect(mail.from.first).to eq 'admin@example.jp'
+        expect(mail.to.first).to eq invitee.email
+        expect(mail.subject).to eq 'グループ招待'
+        expect(mail.body.multipart?).to be_falsey
+        expect(mail.body.raw_source).to include(cms_member.name)
+        expect(mail.body.raw_source).to include(invitation_message)
+        expect(mail.body.raw_source).to include(group_invitation_signature)
+
+        mail.body.raw_source =~ /(#{Regexp.escape(node_my_group.full_url)}[^ \t\r\n]+\/accept)/
+        url = $1
+        expect(url).not_to be_nil
+
+        logout_member(site, node_login)
+        login_member(site, node_login, invitee)
+
+        visit url
+
+        within 'form div.member-my-group-accept' do
+          expect(page).to have_css('.name dd', text: group_name)
+
+          click_button '参加する'
+        end
+
+        within 'div.member-my-group' do
+          expect(page).to have_css('td.name', text: group_name)
+          expect(page).to have_css('span.admin', text: '管理者: 1 人')
+          expect(page).to have_css('span.user', text: 'ユーザー: 1 人')
+        end
+
+        logout_member(site, node_login, invitee)
+        login_member(site, node_login)
+
+        visit index_url
+
+        within 'div.member-my-group' do
+          expect(page).to have_css('td.name', text: group_name)
+          expect(page).to have_css('td.state span.admin', text: '管理者: 1 人')
+          expect(page).to have_css('td.state span.user', text: 'ユーザー: 1 人')
+          expect(page).to have_css('td.state span.invitee', text: '招待中: 0 人')
+        end
+
+        click_link group_name
+
+        group.reload
+        within 'div.member-my-group-show' do
+          expect(page).to have_css('dl.name dd', text: group_name)
+          expect(page).to have_css('dl.invitation-message dd', text: invitation_message)
+
+          group.members.each do |member|
+            expect(page).to have_css("tr.member-#{member.id} td.name", text: member.member.name)
+            expect(page).to have_css("tr.member-#{member.id} td.state", text: member.label(:state))
+          end
+        end
+      end
+    end
+
+    describe 'create new group, then invite existing member and accept group invitation as invitee' do
+      let(:group_name) { unique_id }
+      let(:invitation_message) { unique_id }
+      let(:invitee) { create(:cms_member) }
+
+      it do
+        visit index_url
+
+        click_link '新規作成'
+
+        within 'form div.member-my-group-new' do
+          expect(page).to have_css('dl.admin dd', text: cms_member.name)
+          fill_in 'item[name]', with: group_name
+          fill_in 'item[invitation_message]', with: invitation_message
+
+          click_button '保存'
+        end
+
+        expect(page).to have_css('td.name', text: group_name)
+        expect(page).to have_css('td.state span.admin', text: '管理者: 1 人')
+        expect(page).to have_css('td.state span.user', text: 'ユーザー: 0 人')
+        expect(page).to have_css('td.state span.invitee', text: '招待中: 0 人')
+
+        expect(Member::Group.site(site).count).to eq 1
+        group = Member::Group.site(site).first
+        expect(group.name).to eq group_name
+        expect(group.invitation_message).to eq invitation_message
+        expect(group.members.count).to eq 1
+
+        click_link group_name
+        click_link '招待する'
+
+        within 'form div.member-my-group-invite' do
+          fill_in 'item[in_invitees]', with: invitee.email
+
+          click_button '保存'
+        end
+
+        expect(page).to have_css('td.name', text: group_name)
+        expect(page).to have_css('td.state span.admin', text: '管理者: 1 人')
+        expect(page).to have_css('td.state span.user', text: 'ユーザー: 0 人')
+        expect(page).to have_css('td.state span.invitee', text: '招待中: 1 人')
 
         expect(ActionMailer::Base.deliveries.length).to eq 1
         mail = ActionMailer::Base.deliveries.first
