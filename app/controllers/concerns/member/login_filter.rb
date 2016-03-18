@@ -7,7 +7,8 @@ module Member::LoginFilter
   REDIRECT_OPTION_DISABLED = 2
 
   included do
-    before_action :logged_in?, if: -> { member_login_path }
+    # before_action :logged_in?, if: -> { member_login_path }
+    before_action :logged_in?
   end
 
   private
@@ -46,7 +47,7 @@ module Member::LoginFilter
     end
 
     def member_login_path
-      return false unless member_login_node
+      raise "404" unless member_login_node
       "#{member_login_node.url}login.html"
     end
 
