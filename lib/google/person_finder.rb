@@ -12,6 +12,10 @@ class Google::PersonFinder
     @domain_name = params[:domain_name].presence || 'testkey.personfinder.google.org'
   end
 
+  def base_uri
+    URI.parse("https://www.google.org/personfinder/#{repository}")
+  end
+
   def get_uri(params)
     query = {
       key: api_key,
@@ -43,6 +47,10 @@ class Google::PersonFinder
     URI.parse("https://www.google.org/personfinder/#{repository}/view?#{query.to_param}")
   end
 
+  def feed_uri
+    URI.parse("https://www.google.org/personfinder/#{repository}/feeds/repo")
+  end
+
   def get(params)
     uri = get_uri(params)
     c = connection(uri)
@@ -71,6 +79,25 @@ class Google::PersonFinder
     body = res.body.presence
     body = Hash.from_xml(body) if body.present?
     body
+  end
+
+  def mode
+    uri = feed_uri
+    c = connection(uri)
+    res = c.get("#{uri.path}?#{uri.query}") do |req|
+      req.options.timeout = timeout if timeout.present?
+      req.options.open_timeout = open_timeout if open_timeout.present?
+    end
+
+    return :unknown if res.status != 200
+
+    body = res.body.presence
+    xmldoc = REXML::Document.new(body)
+    return :unknown unless REXML::XPath.first(xmldoc, '/feed/entry/content/gpf:repo')
+
+    test_mode = REXML::XPath.first(xmldoc, '/feed/entry/content/gpf:repo/gpf:test_mode/text()')
+    return :test if test_mode == 'true'
+    :normal
   end
 
   PFIF_NS = 'http://zesty.ca/pfif/1.4'.freeze

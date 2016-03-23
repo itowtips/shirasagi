@@ -29,7 +29,7 @@ module Member::MypageHelper
   #   %(<span class="example">#{msg}</span>).html_safe
   # end
 
-  def remarks(key, html_wrap = true)
+  def remarks(key, html_wrap = true, options = {})
     modelnames = @model.ancestors.select { |x| x.respond_to?(:model_name) }
     msg = ""
     modelnames.each do |modelname|
@@ -37,7 +37,8 @@ module Member::MypageHelper
       break if msg.present?
     end
     return msg if msg.blank? || !html_wrap
-    msg = [msg] if msg.class.to_s == "String"
+    msg = [msg].flatten if msg.class != Array
+    msg = msg.map { |d| I18n.interpolate(d, options) }
     list = msg.map {|d| "<li>" + d.to_s.gsub(/\r\n|\n/, "<br />") + "<br /></li>"}
 
     h = []

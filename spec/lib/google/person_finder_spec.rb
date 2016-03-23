@@ -99,6 +99,39 @@ describe Google::PersonFinder, dbscope: :example do
     end
   end
 
+  describe "#mode" do
+    subject { described_class.new.mode }
+    let(:repo_url) do
+      "https://www.google.org/personfinder/test/feeds/repo"
+    end
+
+    before do
+      stub_request(:get, repo_url).
+        to_return(body: response, status: 200, headers: { 'Content-Type' => 'application/xml' })
+    end
+
+    context "when test repository" do
+      let(:response) { File.read(Rails.root.join('spec', 'fixtures', 'google', 'repository-feed-test.xml')) }
+      it do
+        expect(subject).to be :unknown
+      end
+    end
+
+    context "when japan repository which mode is in test" do
+      let(:response) { File.read(Rails.root.join('spec', 'fixtures', 'google', 'repository-feed-japan-test.xml')) }
+      it do
+        expect(subject).to be :test
+      end
+    end
+
+    context "when japan repository which mode is not in test" do
+      let(:response) { File.read(Rails.root.join('spec', 'fixtures', 'google', 'repository-feed-japan-normal.xml')) }
+      it do
+        expect(subject).to be :normal
+      end
+    end
+  end
+
   describe "#upload" do
     let(:response) { File.read(Rails.root.join('spec', 'fixtures', 'google', 'person-finder-error.xml')) }
     let(:item) { described_class.new }

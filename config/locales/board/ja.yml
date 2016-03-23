@@ -168,6 +168,7 @@ ja:
         gpf_repository: リポジトリ
         gpf_domain_name: ドメイン名
         gpf_api_key: APIキー
+        gpf_mode: モード
       board/addon/map_setting:
         map_state: 状態
         map_zoom_level: 縮尺レベル
@@ -278,10 +279,15 @@ ja:
 
   remarks:
     board/addon/google_person_finder:
+      gpf_normal_mode_warning:
+        - Google Person Finderは、ただいま<em>本番モード</em>で運用しております。
+      gpf_test_mode_info:
+        - Google Person Finderは、ただいまテストモードで運用しております。
+        - 訓練などの情報をGoogle Person Finderへ提供することができ、提供した情報は 24 時間程度でGoogle Person Finderから削除されます。
       in_post_gpf_after_save:
-        - Google Person Finderに提供した安否情報は、<a href="http://www.google.com/intl/ja/policies/terms/">Google 利用規約</a>および<a href="http://www.google.com/intl/ja/policies/privacy/">Google のプライバシー ポリシー</a>が適用され、全世界の人々が検索することができます。
+        - Google Person Finderに提供した安否情報は、<a href="http://www.google.com/intl/ja/policies/terms/" target="_blank">Google 利用規約</a>および<a href="http://www.google.com/intl/ja/policies/privacy/" target="_blank">Google のプライバシー ポリシー</a>が適用され、全世界の人々が検索することができます。
         - 詳しくは<a href="https://google.org/personfinder/global/home.html?lang=ja" target="_blank">Google パーソンファインダーについて</a>をご確認ください。
-        - Google Person Finderに提供した安否情報を削除するには、<a href="http://www.google.org/personfinder/japan">Google Person Finderのサイト</a>で実施してください。
+        - Google Person Finderに提供した安否情報を削除するには、<a href="%{gpf_url}" target="_blank">Google Person Finderのサイト</a>で実施してください。
     board/anpi_post:
       age:
         - 年齢を入力します。（例）53
