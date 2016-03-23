@@ -12,7 +12,7 @@ module Cms::Content
   included do
     seqid :id
     field :state, type: String, default: "public"
-    field :name, type: String
+    field :name, type: String, metadata: { unicode: :nfc }
     field :filename, type: String
     field :depth, type: Integer
     field :order, type: Integer, default: 0
