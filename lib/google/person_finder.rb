@@ -12,6 +12,10 @@ class Google::PersonFinder
     @domain_name = params[:domain_name].presence || 'testkey.personfinder.google.org'
   end
 
+  def base_uri
+    URI.parse("https://www.google.org/personfinder/#{repository}")
+  end
+
   def get_uri(params)
     query = {
       key: api_key,
