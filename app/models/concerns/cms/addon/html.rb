@@ -4,7 +4,7 @@ module Cms::Addon
     extend SS::Addon
 
     included do
-      field :html, type: String
+      field :html, type: String, metadata: { unicode: :nfc }
       permit_params :html
     end
   end

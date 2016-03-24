@@ -9,7 +9,7 @@ RSpec.describe SS::Document, type: :model, dbscope: :example do
     field :bool2, type: Boolean, default: false
     field :bool3, type: Boolean, default: -> { false }
     field :str1, type: String
-    field :str2, type: String, default: ""
+    field :str2, type: String, default: "", metadata: { unicode: :nfc }
     field :str3, type: String, default: -> { "" }, metadata: { normalize: false }
   end
 
@@ -273,6 +273,29 @@ RSpec.describe SS::Document, type: :model, dbscope: :example do
         # str3 field was not stripped because str3 has metadata: { normalize: false }
         expect(Klass.where(str3: /^#{Regexp.escape(@str)}$/).count).to eq 1
         expect(Klass.where(str3: /^#{Regexp.escape(@str.strip)}$/).count).to eq 0
+      end
+    end
+
+    context "when decomposed string is given" do
+      before do
+        @name = unique_id
+        @str = "うす\u3099しお"
+        Klass.create!(name: @name, str1: @str, str2: @str, str3: @str)
+      end
+
+      it do
+        # str1 field was not unicode normalized
+        expect(Klass.where(str1: /^#{Regexp.escape(@str)}$/).count).to eq 1
+      end
+
+      it do
+        # str2 field was unicode normalized
+        expect(Klass.where(str2: /^#{Regexp.escape(@str)}$/).count).to eq 0
+      end
+
+      it do
+        # str3 field was not unicode normalized
+        expect(Klass.where(str3: /^#{Regexp.escape(@str)}$/).count).to eq 1
       end
     end
   end

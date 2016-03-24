@@ -6,7 +6,7 @@ module Member::Addon::Photo
 
     included do
       belongs_to_file :image, class_name: "Member::PhotoFile"
-      field :caption, type: String
+      field :caption, type: String, metadata: { unicode: :nfc }
 
       permit_params :caption, :image_id, :loc
 

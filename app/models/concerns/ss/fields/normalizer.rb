@@ -18,11 +18,17 @@ module SS::Fields::Normalizer
     def normalize_string_field(name, field_def)
       normalize = true
       normalize = field_def.metadata.fetch(:normalize, true) if field_def.metadata
+      unicode = field_def.metadata.fetch(:unicode, nil) if field_def.metadata
+      unicode = unicode.to_sym if unicode
       return unless normalize
       value = send(name)
       if value.present? && value.length > 1
         value = value.dup
         if value.strip!
+          send("#{name}=", value)
+        end
+        if unicode
+          value = value.unicode_normalize(unicode)
           send("#{name}=", value)
         end
       end
