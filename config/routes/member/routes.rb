@@ -134,6 +134,7 @@ SS::Application.routes.draw do
   part "member" do
     get "login" => "public#index", cell: "parts/login"
     get "blog_page" => "public#index", cell: "parts/blog_page"
+    get "photo" => "public#index", cell: "parts/photo"
     get "photo_slide" => "public#index", cell: "parts/photo_slide"
     get "photo_search" => "public#index", cell: "parts/photo_search"
     get "invited_group" => "public#index", cell: "parts/invited_group"

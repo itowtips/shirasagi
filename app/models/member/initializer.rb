@@ -25,6 +25,7 @@ module Member
 
     Cms::Part.plugin "member/login"
     Cms::Part.plugin "member/blog_page"
+    Cms::Part.plugin "member/photo"
     Cms::Part.plugin "member/photo_search"
     Cms::Part.plugin "member/photo_slide"
     Cms::Part.plugin "member/invited_group"
