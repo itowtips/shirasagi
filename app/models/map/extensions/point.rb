@@ -23,6 +23,12 @@ class Map::Extensions::Point < Hash
     self[:zoom_level]
   end
 
+  def empty?
+    return true if super
+    loc.empty?
+  end
+  alias_method :blank?, :empty?
+
   class << self
     # convert mongoid native type to its custom type(this class)
     def demongoize(object)

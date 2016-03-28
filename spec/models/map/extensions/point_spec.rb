@@ -21,6 +21,29 @@ describe Map::Extensions::Point, dbscope: :example do
     end
   end
 
+  describe '#empty?' do
+    it do
+      point = described_class[loc: [ 34.0676396, 134.5891117 ], zoom_level: 8]
+      expect(point.empty?).to be_falsey
+      expect(point.blank?).to be_falsey
+      expect(point.present?).to be_truthy
+    end
+
+    it do
+      point = described_class.new
+      expect(point.empty?).to be_truthy
+      expect(point.blank?).to be_truthy
+      expect(point.present?).to be_falsey
+    end
+
+    it do
+      point = described_class[loc: []]
+      expect(point.empty?).to be_truthy
+      expect(point.blank?).to be_truthy
+      expect(point.present?).to be_falsey
+    end
+  end
+
   describe ".demongoize" do
     it do
       point = described_class.demongoize(loc: [ 34.0676396, 134.5891117 ], zoom_level: 8)

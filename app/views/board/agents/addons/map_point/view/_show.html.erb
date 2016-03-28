@@ -17,7 +17,7 @@
 
   <% if @item.point.present? %>
   opts['center'] = opts['marker'] = [<%= @item.point.loc.lng %>, <%= @item.point.loc.lat %>];
-  <% elsif @cur_node.respond_to?(:map_center) %>
+  <% elsif @cur_node.respond_to?(:map_center) && @cur_node.map_center.present? %>
   opts['center'] = [<%= @cur_node.map_center.lng %>,<%= @cur_node.map_center.lat %>];
   <% else %>
   opts['center'] = [<%= SS.config.cms.map_center[1] %>,<%= SS.config.cms.map_center[0] %>];
@@ -25,7 +25,7 @@
 
   <% if @item.point.present? && @item.point.zoom_level.present? %>
   opts['zoom'] = <%= @item.point.zoom_level %>;
-  <% elsif @cur_node.respond_to?(:map_zoom_level) %>
+  <% elsif @cur_node.respond_to?(:map_zoom_level) && @cur_node.map_zoom_level.present? %>
   opts['zoom'] = <%= @cur_node.map_zoom_level %>;
   <% end %>
 

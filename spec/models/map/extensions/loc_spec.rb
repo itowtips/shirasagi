@@ -17,6 +17,22 @@ describe Map::Extensions::Loc, dbscope: :example do
     end
   end
 
+  describe '#empty?' do
+    it do
+      loc = described_class[ 34.0676396, 134.5891117 ]
+      expect(loc.empty?).to be_falsey
+      expect(loc.blank?).to be_falsey
+      expect(loc.present?).to be_truthy
+    end
+
+    it do
+      loc = described_class.new
+      expect(loc.empty?).to be_truthy
+      expect(loc.blank?).to be_truthy
+      expect(loc.present?).to be_falsey
+    end
+  end
+
   describe ".demongoize" do
     it do
       loc = described_class.demongoize([ 34.0676396, 134.5891117 ])
