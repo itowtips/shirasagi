@@ -43,19 +43,8 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
     def confirm
       @item = @model.new get_params
       @item.in_check_name = true
+      @item.in_check_email_again = true
       @item.state = 'temporary'
-
-      if @item.email_again.blank?
-        @item.errors.add :email_again, I18n.t("errors.messages.not_input")
-        render action: :new
-        return
-      end
-
-      if @item.email != @item.email_again
-        @item.errors.add :email, I18n.t("errors.messages.mismatch")
-        render action: :new
-        return
-      end
 
       render action: :new unless @item.valid?
     end

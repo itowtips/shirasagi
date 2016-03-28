@@ -22,6 +22,7 @@ module Cms::Model::Member
     attr_accessor :sends_verification_mail
     attr_accessor :in_confirm_personal_info
     attr_accessor :in_check_name
+    attr_accessor :in_check_email_again
 
     seqid :id
     field :name, type: String
@@ -42,6 +43,7 @@ module Cms::Model::Member
     validates :name, presence: true, length: { maximum: 40 }, if: ->{ enabled? || in_check_name }
     validates :email, email: true, length: { maximum: 80 }
     validates :email, uniqueness: { scope: :site_id }, presence: true, if: ->{ oauth_type.blank? }
+    validate :validate_email_again, if: ->{ in_check_email_again }
     validates :email_type, inclusion: { in: %w(text html) }, if: ->{ email_type.present? }
     validates :password, presence: true, if: ->{ oauth_type.blank? && enabled? }
     validate :validate_password, if: ->{ in_password.present? && oauth_type.blank? && enabled? }
@@ -102,6 +104,17 @@ module Cms::Model::Member
 
     def send_verification_mail
       Member::Mailer.verification_mail(self).deliver_now if self.sends_verification_mail == 'yes'
+    end
+
+    def validate_email_again
+      if email_again.blank?
+        errors.add :email_again, :blank
+        return
+      end
+
+      if email.present? && email != email_again
+        errors.add :email, :mismatch
+      end
     end
 
     def validate_password

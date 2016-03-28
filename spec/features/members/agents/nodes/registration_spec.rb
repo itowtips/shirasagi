@@ -245,7 +245,7 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
       end
 
       within "form div.member-registration-form div.errorExplanation" do
-        expect(page).to have_css("li", text: "メールアドレスが一致しません。")
+        expect(page).to have_css("li", text: "メールアドレスを入力してください。")
       end
 
       expect(ActionMailer::Base.deliveries.length).to eq 0
