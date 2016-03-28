@@ -7,7 +7,7 @@
 
   <%= f.hidden_field :sends_verification_mail, value: 'yes' %>
 
-  <dl class="colum">
+  <dl class="colum name">
     <dt><%= @item.class.t :name %></dt>
     <dd>
       <%= @item.name %>
@@ -15,7 +15,7 @@
     </dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum email">
     <dt><%= @item.class.t :email %></dt>
     <dd>
       <%= @item.email %>
@@ -23,7 +23,7 @@
     </dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum kana">
     <dt><%= @item.class.t :kana %></dt>
     <dd>
       <%= @item.kana %>
@@ -31,7 +31,7 @@
     </dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum tel">
     <dt><%= @item.class.t :tel %></dt>
     <dd>
       <%= @item.tel %>
@@ -39,7 +39,7 @@
     </dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum addr">
     <dt><%= @item.class.t :addr %></dt>
     <dd>
       <%= @item.addr %>
@@ -47,7 +47,7 @@
     </dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum sex">
     <dt><%= @item.class.t :sex %></dt>
     <dd>
       <%= @item.label :sex %>
@@ -55,7 +55,7 @@
     </dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum birthday">
     <dt><%= @item.class.t :birthday %></dt>
     <dd>
       <% if @item.in_birth.present? %>
@@ -74,7 +74,7 @@
   </dl>
 
   <% if @cur_node.confirm_personal_data_state == 'enabled' %>
-  <dl class="colum">
+  <dl class="colum personal-info">
     <dt><%= @item.class.t :in_confirm_personal_info %><span class="required"><%= t('views.required_field') %></span></dt>
     <dd>
       <%= f.label(:in_confirm_personal_info) do %>

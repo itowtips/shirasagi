@@ -11,7 +11,7 @@
   <dd><%= @item.email %></dd>
 </dl>
 
-<dl class="colum in_password">
+<dl class="colum password">
   <dt><%= @item.t :in_password %><span class="required"><%= t('views.required_field') %></span></dt>
   <dd><%= f.password_field :in_password %></dd>
 
@@ -36,7 +36,13 @@
 
 <dl class="colum sex">
   <dt><%= @item.class.t :sex %></dt>
-  <dd><%= f.select :sex, @item.sex_options, include_blank: true %></dd>
+  <dd>
+    <% @item.sex_options.each do |text, val| %>
+      <%= label_tag("item_sex_#{val}", class: val) do %>
+        <%= f.radio_button :sex, val %><%= text %>
+      <% end %>
+    <% end %>
+  </dd>
 </dl>
 
 <dl class="colum birthday">

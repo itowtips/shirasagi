@@ -6,7 +6,13 @@
   <dt><%= @model.t :addr %><%= @model.tt :addr %></dt>
   <dd><%= f.text_field :addr %></dd>
   <dt><%= @model.t :sex %><%= @model.tt :sex %></dt>
-  <dd><%= f.select :sex, @item.sex_options, include_blank: true %></dd>
+  <dd>
+    <% @item.sex_options.each do |text, val| %>
+      <%= label_tag("item_sex_#{val}", class: val) do %>
+        <%= f.radio_button :sex, val %><%= text %>
+      <% end %>
+    <% end %>
+  </dd>
   <dt><%= @model.t :birthday %><%= @model.tt :birthday %></dt>
   <dd><%= f.text_field :birthday, class: "datetime", value: tryb { @item.birthday.strftime('%Y/%m/%d') } %></dd>
 </dl>

@@ -2,12 +2,12 @@
 <%= javascript_include_tag 'member/public' %>
 
 <div class="columns">
-  <dl class="colum">
+  <dl class="colum name">
     <dt><%= @item.class.t :name %><span class="required"><%= t('views.required_field') %></span></dt>
     <dd><%= f.text_field :name %></dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum email">
     <dt><%= @item.class.t :email %><span class="required"><%= t('views.required_field') %></span></dt>
     <dd><%= f.text_field :email %></dd>
 
@@ -15,27 +15,33 @@
     <dd><%= f.text_field :email_again %></dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum kana">
     <dt><%= @item.class.t :kana %></dt>
     <dd><%= f.text_field :kana %></dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum tel">
     <dt><%= @item.class.t :tel %></dt>
     <dd><%= f.text_field :tel %></dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum addr">
     <dt><%= @item.class.t :addr %></dt>
     <dd><%= f.text_field :addr %></dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum sex">
     <dt><%= @item.class.t :sex %></dt>
-    <dd><%= f.select :sex, @item.sex_options, include_blank: true %></dd>
+    <dd>
+      <% @item.sex_options.each do |text, val| %>
+        <%= label_tag("item_sex_#{val}", class: val) do %>
+        <%= f.radio_button :sex, val %><%= text %>
+        <% end %>
+      <% end %>
+    </dd>
   </dl>
 
-  <dl class="colum">
+  <dl class="colum birthday">
     <dt><%= @item.class.t :birthday %></dt>
     <dd>
       <%= f.fields_for :in_birth do |birth_f| %>
