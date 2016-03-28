@@ -21,6 +21,7 @@ module Cms::Model::Member
     attr_accessor :email_again
     attr_accessor :sends_verification_mail
     attr_accessor :in_confirm_personal_info
+    attr_accessor :in_check_name
 
     seqid :id
     field :name, type: String
@@ -38,7 +39,7 @@ module Cms::Model::Member
     permit_params interest_municipality_ids: []
     permit_params :sends_verification_mail, :in_confirm_personal_info
 
-    validates :name, presence: true, length: { maximum: 40 }, if: ->{ enabled? }
+    validates :name, presence: true, length: { maximum: 40 }, if: ->{ enabled? || in_check_name }
     validates :email, email: true, length: { maximum: 80 }
     validates :email, uniqueness: { scope: :site_id }, presence: true, if: ->{ oauth_type.blank? }
     validates :email_type, inclusion: { in: %w(text html) }, if: ->{ email_type.present? }

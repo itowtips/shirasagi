@@ -42,6 +42,7 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
     # 入力確認
     def confirm
       @item = @model.new get_params
+      @item.in_check_name = true
       @item.state = 'temporary'
 
       if @item.email_again.blank?
@@ -62,6 +63,7 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
     # 仮登録完了
     def interim
       @item = @model.new get_params
+      @item.in_check_name = true
       @item.state = 'temporary'
 
       # 戻るボタンのクリック

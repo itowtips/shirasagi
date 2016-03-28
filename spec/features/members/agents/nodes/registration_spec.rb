@@ -206,4 +206,69 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
       expect(member.birthday).to be_nil
     end
   end
+
+  describe "name is required" do
+    let(:email) { "#{unique_id}@example.jp" }
+
+    it do
+      visit index_path
+
+      within "form" do
+        fill_in "item[email]", with: email
+        fill_in "item[email_again]", with: email
+
+        click_button "確認画面へ"
+      end
+
+      within "form div.member-registration-form div.errorExplanation" do
+        expect(page).to have_css("li", text: "氏名を入力してください。")
+      end
+
+      expect(ActionMailer::Base.deliveries.length).to eq 0
+      expect(Cms::Member.where(email: email).count).to eq 0
+    end
+  end
+
+  describe "email is required" do
+    let(:name) { unique_id }
+    let(:email) { "#{unique_id}@example.jp" }
+
+    it do
+      visit index_path
+
+      within "form" do
+        fill_in "item[name]", with: name
+        # fill_in "item[email]", with: email
+        fill_in "item[email_again]", with: email
+
+        click_button "確認画面へ"
+      end
+
+      within "form div.member-registration-form div.errorExplanation" do
+        expect(page).to have_css("li", text: "メールアドレスが一致しません。")
+      end
+
+      expect(ActionMailer::Base.deliveries.length).to eq 0
+      expect(Cms::Member.where(email: email).count).to eq 0
+    end
+
+    it do
+      visit index_path
+
+      within "form" do
+        fill_in "item[name]", with: name
+        fill_in "item[email]", with: email
+        # fill_in "item[email_again]", with: email
+
+        click_button "確認画面へ"
+      end
+
+      within "form div.member-registration-form div.errorExplanation" do
+        expect(page).to have_css("li", text: "メールアドレス（確認用）を入力してください。")
+      end
+
+      expect(ActionMailer::Base.deliveries.length).to eq 0
+      expect(Cms::Member.where(email: email).count).to eq 0
+    end
+  end
 end
