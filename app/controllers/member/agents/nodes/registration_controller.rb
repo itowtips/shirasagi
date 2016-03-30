@@ -33,6 +33,17 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
       group.accept(@item)
     end
 
+    def fill_address
+      postal_code = @item.postal_code.presence
+      return if postal_code.blank?
+
+      postal_code = postal_code.tr('０-９ａ-ｚＡ-Ｚ', '0-9a-zA-Z').gsub(/[^0-9a-zA-Z]/, '')
+      postal_code = Cms::PostalCode.find_by(code: postal_code) rescue nil
+      return if postal_code.blank?
+
+      @item.addr = postal_code.prefecture + postal_code.city + postal_code.town
+    end
+
   public
     # 新規登録
     def new
@@ -50,6 +61,12 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
       @item.postal_code_required = true
       @item.addr_required = true
       @item.state = 'temporary'
+
+      if params.key?('postal-code-search')
+        fill_address
+        render action: :new
+        return
+      end
 
       render action: :new unless @item.valid?
     end
@@ -93,34 +110,20 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
       @item = Cms::Member.site(@cur_site).and_verification_token(params[:token]).and_temporary.first
       raise "404" if @item.blank?
 
-      safe_params = get_params
-      if safe_params[:in_password].blank?
-        @item.errors.add :in_password, I18n.t("errors.messages.not_input")
-        render action: :verify
-        return
-      end
-
-      if params[:item][:in_password_again].blank?
-        @item.errors.add :in_password_again, I18n.t("errors.messages.input_again")
-        render action: :verify
-        return
-      end
-
-      if safe_params[:in_password] != params[:item][:in_password_again]
-        @item.errors.add :in_password, I18n.t("errors.messages.mismatch")
-        render action: :verify
-        return
-      end
-
-      # @item.in_password = params[:item][:in_password]
-      @item.attributes = safe_params
-      @item.encrypt_password
+      @item.attributes = get_params
+      @item.in_check_password = true
       @item.kana_required = true
       @item.birthday_required = true
       @item.sex_required = true
       @item.postal_code_required = true
       @item.addr_required = true
       @item.state = 'enabled'
+
+      if params.key?('postal-code-search')
+        fill_address
+        render action: :verify
+        return
+      end
 
       unless @item.update
         render action: :verify

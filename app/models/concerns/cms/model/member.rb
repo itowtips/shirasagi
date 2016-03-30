@@ -18,11 +18,13 @@ module Cms::Model::Member
     set_permission_name "cms_members", :edit
 
     attr_accessor :in_password
+    attr_accessor :in_password_again
     attr_accessor :email_again
     attr_accessor :sends_verification_mail
     attr_accessor :in_confirm_personal_info
     attr_accessor :in_check_name
     attr_accessor :in_check_email_again
+    attr_accessor :in_check_password
 
     seqid :id
     field :name, type: String
@@ -36,7 +38,7 @@ module Cms::Model::Member
     field :site_email, type: String
     field :last_loggedin, type: DateTime
 
-    permit_params :name, :email, :email_again, :email_type, :password, :in_password, :state
+    permit_params :name, :email, :email_again, :email_type, :password, :in_password, :in_password_again, :state
     permit_params interest_municipality_ids: []
     permit_params :sends_verification_mail, :in_confirm_personal_info
 
@@ -46,7 +48,7 @@ module Cms::Model::Member
     validate :validate_email_again, if: ->{ in_check_email_again }
     validates :email_type, inclusion: { in: %w(text html) }, if: ->{ email_type.present? }
     validates :password, presence: true, if: ->{ oauth_type.blank? && enabled? }
-    validate :validate_password, if: ->{ in_password.present? && oauth_type.blank? && enabled? }
+    validate :validate_password, if: ->{ (in_password.present? && oauth_type.blank? && enabled?) || in_check_password }
 
     before_validation :encrypt_password, if: ->{ in_password.present? }
     before_save :set_site_email, if: ->{ email.present? }
@@ -118,6 +120,16 @@ module Cms::Model::Member
     end
 
     def validate_password
+      if self.in_password.blank?
+        # errors.add :in_password, :blank
+        return
+      end
+      if self.in_password_again.blank?
+        errors.add :in_password_again, :input_again
+        return
+      end
+
+      errors.add :in_password, :mismatch if in_password != in_password_again
       errors.add :in_password, :password_short if self.in_password.length < 6
       errors.add :in_password, :password_alphabet_only if self.in_password =~ /[A-Z]/i && self.in_password !~ /[^A-Z]/i
       errors.add :in_password, :password_numeric_only if self.in_password =~ /[0-9]/ && self.in_password !~ /[^0-9]/

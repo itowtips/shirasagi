@@ -304,6 +304,7 @@ ja:
         email: メールアドレス
         email_again: メールアドレス（確認用）
         email_type: メール形式
+        password: パスワード
         in_password: パスワード
         in_password_again: パスワード（入力確認）
         oauth_type: OAuth Type

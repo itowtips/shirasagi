@@ -99,6 +99,7 @@ class Member::Agents::Nodes::MyProfileController < ApplicationController
       end
 
       @item.in_password = params[:item][:new_password]
+      @item.in_password_again = params[:item][:new_password_again]
       @item.encrypt_password
 
       unless @item.update

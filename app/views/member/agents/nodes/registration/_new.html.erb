@@ -37,7 +37,10 @@
 
   <dl class="colum postal-code">
     <dt><%= @item.class.t :postal_code %><span class="required"><%= t('views.required_field') %></span></dt>
-    <dd><%= f.text_field :postal_code %></dd>
+    <dd>
+      <%= f.text_field :postal_code %>
+      <%= f.button "郵便番号検索", name: 'postal-code-search', type: :button %>
+    </dd>
   </dl>
 
   <dl class="colum addr">
@@ -71,3 +74,10 @@
     </dd>
   </dl>
 </div>
+
+<%= jquery do %>
+  $("button[name='postal-code-search']").on('click', function (e) {
+    $(this.form).append('<input name="' + this.name + '" type="hidden" value="' + this.value + '">');
+    this.form.submit.click();
+  });
+<% end %>
