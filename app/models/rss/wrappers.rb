@@ -95,6 +95,8 @@ module Rss::Wrappers
     end
 
     class RDF
+      attr_reader :rss
+
       def initialize(item)
         @item = item
       end
@@ -127,6 +129,8 @@ module Rss::Wrappers
   end
 
   class Atom
+    attr_reader :rss
+
     def initialize(rss)
       @rss = rss
     end
@@ -143,6 +147,8 @@ module Rss::Wrappers
   end
 
   class Rss
+    attr_reader :rss
+
     def initialize(rss)
       @rss = rss
     end
@@ -169,6 +175,10 @@ module Rss::Wrappers
 
     def self.wrap(rss)
       new(rss)
+    end
+
+    def items
+      @rss.items
     end
 
     def each(&block)
