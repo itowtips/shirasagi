@@ -33,17 +33,6 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
       group.accept(@item)
     end
 
-    def fill_address
-      postal_code = @item.postal_code.presence
-      return if postal_code.blank?
-
-      postal_code = postal_code.tr('０-９ａ-ｚＡ-Ｚ', '0-9a-zA-Z').gsub(/[^0-9a-zA-Z]/, '')
-      postal_code = Cms::PostalCode.find_by(code: postal_code) rescue nil
-      return if postal_code.blank?
-
-      @item.addr = "#{postal_code.prefecture}#{postal_code.city}#{postal_code.town}"
-    end
-
   public
     # 新規登録
     def new
@@ -61,12 +50,6 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
       @item.postal_code_required = true
       @item.addr_required = true
       @item.state = 'temporary'
-
-      if params.key?('postal-code-search')
-        fill_address
-        render action: :new
-        return
-      end
 
       render action: :new unless @item.valid?
     end
@@ -118,12 +101,6 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
       @item.postal_code_required = true
       @item.addr_required = true
       @item.state = 'enabled'
-
-      if params.key?('postal-code-search')
-        fill_address
-        render action: :verify
-        return
-      end
 
       unless @item.update
         render action: :verify
@@ -234,5 +211,19 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
       end
 
       redirect_to "#{@cur_node.url}reset_password", notice: t("notice.password_changed")
+    end
+
+    def postal_code
+      postal_code = params.permit(:code)[:code]
+      if postal_code.blank?
+        render json: {}
+        return
+      end
+
+      postal_code = postal_code.tr('０-９ａ-ｚＡ-Ｚ', '0-9a-zA-Z').gsub(/[^0-9a-zA-Z]/, '')
+      postal_code = Cms::PostalCode.find_by(code: postal_code) rescue nil
+      raise "404" if postal_code.blank?
+
+      render json: postal_code.attributes.except(:_id, :updated, :created)
     end
 end

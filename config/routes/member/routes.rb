@@ -121,6 +121,7 @@ SS::Application.routes.draw do
     post "registration/confirm_reset_password(.:format)" => "public#confirm_reset_password", cell: "nodes/registration"
     get "registration/change_password(.:format)" => "public#change_password", cell: "nodes/registration"
     post "registration/confirm_password(.:format)" => "public#confirm_password", cell: "nodes/registration"
+    get "registration/postal_code(.:format)" => "public#postal_code", cell: "nodes/registration"
   end
 
   page "member" do
