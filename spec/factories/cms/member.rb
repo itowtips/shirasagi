@@ -4,6 +4,7 @@ FactoryGirl.define do
     name { unique_id.to_s }
     email { "#{name}@example.jp" }
     in_password "abc123"
+    in_password_again "abc123"
     state "enabled"
   end
 end

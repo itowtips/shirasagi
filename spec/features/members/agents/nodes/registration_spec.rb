@@ -54,9 +54,12 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
     let(:name) { unique_id }
     let(:email) { "#{unique_id}@example.jp" }
     let(:kana) { unique_id }
+    let(:organization_name) { unique_id }
+    let(:job) { unique_id }
     let(:tel) { unique_id }
+    let(:postal_code) { unique_id }
     let(:addr) { unique_id }
-    let(:sex) { "male" }
+    let(:sex) { %w(male female).sample }
     let(:era) { "西暦" }
     let(:birthday) { Date.parse("1985-01-01") }
     let(:password) { "abc123" }
@@ -69,7 +72,10 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
         fill_in "item[email]", with: email
         fill_in "item[email_again]", with: email
         fill_in "item[kana]", with: kana
+        fill_in "item[organization_name]", with: organization_name
+        fill_in "item[job]", with: job
         fill_in "item[tel]", with: tel
+        fill_in "item[postal_code]", with: postal_code
         fill_in "item[addr]", with: addr
         choose "item_sex_#{sex}"
         select era, from: "item[in_birth][era]"
@@ -84,7 +90,10 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
         expect(page.find("input[name='item[name]']", visible: false).value).to eq name
         expect(page.find("input[name='item[email]']", visible: false).value).to eq email
         expect(page.find("input[name='item[kana]']", visible: false).value).to eq kana
+        expect(page.find("input[name='item[organization_name]']", visible: false).value).to eq organization_name
+        expect(page.find("input[name='item[job]']", visible: false).value).to eq job
         expect(page.find("input[name='item[tel]']", visible: false).value).to eq tel
+        expect(page.find("input[name='item[postal_code]']", visible: false).value).to eq postal_code
         expect(page.find("input[name='item[addr]']", visible: false).value).to eq addr
         expect(page.find("input[name='item[sex]']", visible: false).value).to eq sex
         expect(page.find("input[name='item[in_birth][era]']", visible: false).value).to eq era
@@ -110,7 +119,10 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
       expect(member.email).to eq email
       expect(member.state).to eq "temporary"
       expect(member.kana).to eq kana
+      expect(member.organization_name).to eq organization_name
+      expect(member.job).to eq job
       expect(member.tel).to eq tel
+      expect(member.postal_code).to eq postal_code
       expect(member.addr).to eq addr
       expect(member.sex).to eq sex
       expect(member.birthday).to eq birthday
@@ -158,6 +170,12 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
   describe "only fill requried fields" do
     let(:name) { unique_id }
     let(:email) { "#{unique_id}@example.jp" }
+    let(:kana) { unique_id }
+    let(:postal_code) { unique_id }
+    let(:addr) { unique_id }
+    let(:sex) { %w(male female).sample }
+    let(:era) { "西暦" }
+    let(:birthday) { Date.parse("1985-01-01") }
 
     it do
       visit index_path
@@ -166,6 +184,14 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
         fill_in "item[name]", with: name
         fill_in "item[email]", with: email
         fill_in "item[email_again]", with: email
+        fill_in "item[kana]", with: kana
+        fill_in "item[postal_code]", with: postal_code
+        fill_in "item[addr]", with: addr
+        choose "item_sex_#{sex}"
+        select era, from: "item[in_birth][era]"
+        fill_in "item[in_birth][year]", with: birthday.year
+        select birthday.month, from: "item[in_birth][month]"
+        select birthday.day, from: "item[in_birth][day]"
 
         click_button "確認画面へ"
       end
@@ -173,14 +199,17 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
       within "form" do
         expect(page.find("input[name='item[name]']", visible: false).value).to eq name
         expect(page.find("input[name='item[email]']", visible: false).value).to eq email
-        expect(page.find("input[name='item[kana]']", visible: false).value).to eq ""
+        expect(page.find("input[name='item[kana]']", visible: false).value).to eq kana
+        expect(page.find("input[name='item[organization_name]']", visible: false).value).to eq ""
+        expect(page.find("input[name='item[job]']", visible: false).value).to eq ""
         expect(page.find("input[name='item[tel]']", visible: false).value).to eq ""
-        expect(page.find("input[name='item[addr]']", visible: false).value).to eq ""
-        expect(page.find("input[name='item[sex]']", visible: false).value).to be_nil
-        expect(page.find("input[name='item[in_birth][era]']", visible: false).value).to be_nil
-        expect(page.find("input[name='item[in_birth][year]']", visible: false).value).to be_nil
-        expect(page.find("input[name='item[in_birth][month]']", visible: false).value).to be_nil
-        expect(page.find("input[name='item[in_birth][day]']", visible: false).value).to be_nil
+        expect(page.find("input[name='item[postal_code]']", visible: false).value).to eq postal_code
+        expect(page.find("input[name='item[addr]']", visible: false).value).to eq addr
+        expect(page.find("input[name='item[sex]']", visible: false).value).to eq sex
+        expect(page.find("input[name='item[in_birth][era]']", visible: false).value).to eq era
+        expect(page.find("input[name='item[in_birth][year]']", visible: false).value).to eq birthday.year.to_s
+        expect(page.find("input[name='item[in_birth][month]']", visible: false).value).to eq birthday.month.to_s
+        expect(page.find("input[name='item[in_birth][day]']", visible: false).value).to eq birthday.day.to_s
 
         click_button "登録"
       end
@@ -198,11 +227,14 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
       member = Cms::Member.where(email: email).first
       expect(member.name).to eq name
       expect(member.email).to eq email
-      expect(member.kana).to be_nil
+      expect(member.kana).to eq kana
+      expect(member.organization_name).to be_nil
+      expect(member.job).to be_nil
       expect(member.tel).to be_nil
-      expect(member.addr).to be_nil
-      expect(member.sex).to be_nil
-      expect(member.birthday).to be_nil
+      expect(member.postal_code).to eq postal_code
+      expect(member.addr).to eq addr
+      expect(member.sex).to eq sex
+      expect(member.birthday).to eq birthday
     end
   end
 

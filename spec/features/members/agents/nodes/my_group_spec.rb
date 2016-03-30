@@ -102,8 +102,9 @@ describe 'members/agents/nodes/my_group', type: :feature, dbscope: :example do
       let(:invitee_password) { 'abc123' }
       let(:invitee_kana) { unique_id }
       let(:invitee_tel) { unique_id }
+      let(:invitee_postal_code) { unique_id }
       let(:invitee_addr) { unique_id }
-      let(:invitee_sex_label) { '女性' }
+      let(:invitee_sex) { 'female' }
       let(:invitee_era) { '西暦' }
       let(:invitee_birthday) { Date.parse('1988-10-25') }
 
@@ -155,8 +156,9 @@ describe 'members/agents/nodes/my_group', type: :feature, dbscope: :example do
 
           fill_in "item[kana]", with: invitee_kana
           fill_in "item[tel]", with: invitee_tel
+          fill_in "item[postal_code]", with: invitee_postal_code
           fill_in "item[addr]", with: invitee_addr
-          select invitee_sex_label, from: "item[sex]"
+          choose "item_sex_#{invitee_sex}"
           select invitee_era, from: "item[in_birth][era]"
           fill_in "item[in_birth][year]", with: invitee_birthday.year
           select invitee_birthday.month, from: "item[in_birth][month]"
