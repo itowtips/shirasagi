@@ -63,6 +63,7 @@ ja:
       rss/page:
       rss/addon/import:
         rss_url: RSS配信URL
+        rss_basic_certs: ベーシック認証
         rss_max_docs: 最大保存件数
         rss_refresh_method: 更新方法
       rss/addon/page/body:
@@ -107,6 +108,8 @@ ja:
         - ・RSS 2.0
         - ・Atom
         - ・RDF
+      rss_basic_certs:
+        - RSS配信URLにベーシック認証が掛かっている場合、ユーザーとパスワードを設定します。
       rss_max_docs:
         - 最大保存件数を設定します。
         -

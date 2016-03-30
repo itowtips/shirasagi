@@ -30,7 +30,7 @@ class Rss::ImportJob < Rss::ImportBase
       return unless @cur_node
       @cur_user = Cms::User.site(@cur_site).or({id: user}, {name: user}).first if user.present?
 
-      @items = Rss::Wrappers.parse(@cur_node.rss_url)
+      @items = Rss::Wrappers.parse(@cur_node.rss_url, @cur_node.rss_url_options)
     end
 
     def after_import

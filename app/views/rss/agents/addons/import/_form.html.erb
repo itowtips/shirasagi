@@ -1,6 +1,11 @@
 <dl class="see mod-rss-import">
   <dt><%= @model.t :rss_url %><%= @model.tt :rss_url %></dt>
   <dd><%= f.text_field :rss_url %></dd>
+  <dt><%= @model.t :rss_basic_certs %><%= @model.tt :rss_basic_certs %></dt>
+  <dd>
+    <%= f.text_field :rss_basic_user, style: "width: 30%", placeholder: "user" %>
+    <%= f.password_field :rss_basic_password, value: @item.rss_basic_password, style: "width: 30%", placeholder: "password" %>
+  </dd>
   <dt><%= @model.t :rss_max_docs %><%= @model.tt :rss_max_docs %></dt>
   <dd><%= f.number_field :rss_max_docs %></dd>
   <dt><%= @model.t :rss_refresh_method %><%= @model.tt :rss_refresh_method %></dt>

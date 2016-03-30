@@ -178,8 +178,10 @@ module Rss::Wrappers
     end
   end
 
-  def self.parse(url)
-    rss = ::RSS::Parser.parse(url, false)
+  def self.parse(url, opts = {})
+    require 'open-uri'
+    rss_source = open(url, opts)
+    rss = ::RSS::Parser.parse(rss_source, false)
 
     case rss
     when ::RSS::Atom::Feed
