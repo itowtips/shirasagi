@@ -142,6 +142,7 @@ ja:
       ss/group_file: グループファイル
       ss/task: タスク
       ss/max_file_size: 最大ファイルサイズ
+      ss/postal_code: 郵便番号
     attributes:
       ss/document:
         created: 作成日時
@@ -213,6 +214,15 @@ ja:
         size: 制限サイズ
         order: 並び順
         state: 状態
+      ss/model/postal_code:
+        code: 郵便番号
+        prefecture: 都道府県名
+        prefecture_kana: 都道府県名（カナ）
+        prefecture_code: 全国地方公共団体コード
+        city: 市区町村名
+        city_kana: 市区町村名（カナ）
+        town: 町域名
+        town_kana: 町域名（カナ）
 
   tooltip:
     ss/model/user:
