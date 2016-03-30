@@ -230,11 +230,15 @@ ja:
         member_invitation_signature: 署名
         member_joins_to_invited_group: 招待グループへの参加
       member/addon/additional_attributes:
-        kana: 氏名（かな）
+        kana: 氏名（ふりがな）
+        organization_name: 会社、団体名
+        job: 職種
         tel: 電話番号
+        postal_code: 郵便番号
         addr: 住所
         sex: 性別
         birthday: 生年月日
+        in_birth: 生年月日
 
   cms_role:
     read_other_member_blogs: メンバーブログの閲覧（全て）

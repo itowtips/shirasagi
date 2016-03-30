@@ -31,11 +31,35 @@
     </dd>
   </dl>
 
+  <dl class="colum organization-name">
+    <dt><%= @item.class.t :organization_name %></dt>
+    <dd>
+      <%= @item.organization_name %>
+      <%= f.hidden_field :organization_name, value: @item.organization_name %>
+    </dd>
+  </dl>
+
+  <dl class="colum job">
+    <dt><%= @item.class.t :job %></dt>
+    <dd>
+      <%= @item.job %>
+      <%= f.hidden_field :job, value: @item.job %>
+    </dd>
+  </dl>
+
   <dl class="colum tel">
     <dt><%= @item.class.t :tel %></dt>
     <dd>
       <%= @item.tel %>
       <%= f.hidden_field :tel, value: @item.tel %>
+    </dd>
+  </dl>
+
+  <dl class="colum postal-code">
+    <dt><%= @item.class.t :postal_code %></dt>
+    <dd>
+      <%= @item.postal_code %>
+      <%= f.hidden_field :postal_code, value: @item.postal_code %>
     </dd>
   </dl>
 

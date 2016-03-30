@@ -24,9 +24,24 @@
   <dd><%= f.text_field :kana %></dd>
 </dl>
 
+<dl class="colum organization-name">
+  <dt><%= @item.class.t :organization_name %></dt>
+  <dd><%= f.text_field :organization_name %></dd>
+</dl>
+
+<dl class="colum job">
+  <dt><%= @item.class.t :job %></dt>
+  <dd><%= f.text_field :job %></dd>
+</dl>
+
 <dl class="colum tel">
   <dt><%= @item.class.t :tel %></dt>
   <dd><%= f.text_field :tel %></dd>
+</dl>
+
+<dl class="colum postal-code">
+  <dt><%= @item.class.t :postal_code %></dt>
+  <dd><%= f.text_field :postal_code %></dd>
 </dl>
 
 <dl class="colum addr">
