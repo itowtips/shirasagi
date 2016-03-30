@@ -41,7 +41,7 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
       postal_code = Cms::PostalCode.find_by(code: postal_code) rescue nil
       return if postal_code.blank?
 
-      @item.addr = postal_code.prefecture + postal_code.city + postal_code.town
+      @item.addr = "#{postal_code.prefecture}#{postal_code.city}#{postal_code.town}"
     end
 
   public
