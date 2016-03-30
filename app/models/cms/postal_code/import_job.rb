@@ -1,3 +1,5 @@
+require 'csv'
+
 class Cms::PostalCode::ImportJob
   include Job::Worker
 
@@ -11,7 +13,7 @@ class Cms::PostalCode::ImportJob
 
   private
   def import_file
-    table = CSV.read(@cur_file.path, headers: false, encoding: 'SJIS:UTF-8')
+    table = ::CSV.read(@cur_file.path, headers: false, encoding: 'SJIS:UTF-8')
     table.each_with_index do |row, i|
       import_row(row, i)
     end
