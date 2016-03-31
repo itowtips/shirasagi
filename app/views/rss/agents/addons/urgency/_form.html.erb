@@ -1,0 +1,21 @@
+<%= jquery do %> SS_AddonTabs.hide(".mod-rss-urgency"); <% end %>
+
+<%
+selectable_layouts = Cms::Layout.site(@cur_site).map do |layout|
+  [layout.name, layout.id]
+end
+%>
+
+<dl class="see mod-rss-urgency">
+  <dt><%= @model.t :urgency_state %><%= @model.tt :urgency_state %></dt>
+  <dd><%= f.select :urgency_state, @item.urgency_state_options %></dd>
+
+  <dt><%= @model.t :urgency_target_page_filename %><%= @model.tt :urgency_target_page_filename %></dt>
+  <dd><%= f.text_field :urgency_target_page_filename %></dd>
+
+  <dt><%= @model.t :urgency_layout %><%= @model.tt :urgency_layout %></dt>
+  <dd><%= f.select :urgency_layout_id, selectable_layouts, include_blank: true %></dd>
+
+  <dt><%= @model.t :urgency_default_layout %><%= @model.tt :urgency_default_layout %></dt>
+  <dd><%= f.select :urgency_default_layout_id, selectable_layouts, include_blank: true %></dd>
+</dl>

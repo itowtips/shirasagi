@@ -48,6 +48,7 @@ ja:
       rss/import: RSS取込
       rss/pub_sub_hubbub: PubSubHubbub
       rss/anpi_mail_setting: 安否確認メール設定
+      rss/urgency: 緊急災害レイアウト切替
 
   cms:
     nodes:
@@ -63,6 +64,7 @@ ja:
       rss/page:
       rss/addon/import:
         rss_url: RSS配信URL
+        rss_basic_certs: ベーシック認証
         rss_max_docs: 最大保存件数
         rss_refresh_method: 更新方法
       rss/addon/page/body:
@@ -92,6 +94,11 @@ ja:
         upper_mail_text: 上部メール
         loop_mail_text: ループメール
         lower_mail_text: 下部メール
+      rss/addon/urgency:
+        urgency_state: ステータス
+        urgency_target_page_filename: 切り替えページ
+        urgency_layout: 災害時レイアウト
+        urgency_default_layout: 通常時レイアウト
 
   job:
     models:
@@ -107,6 +114,8 @@ ja:
         - ・RSS 2.0
         - ・Atom
         - ・RDF
+      rss_basic_certs:
+        - RSS配信URLにベーシック認証が掛かっている場合、ユーザーとパスワードを設定します。
       rss_max_docs:
         - 最大保存件数を設定します。
         -
@@ -205,3 +214,13 @@ ja:
           使用例：
           下記の URL にアクセスし、安否を入力してください。
           #{anpi_post_url}
+
+    rss/addon/urgency:
+      urgency_state:
+        - 緊急災害レイアウトの切り替えを有効または無効にします。
+      urgency_target_page_filename:
+        - 切り替え対象となるページのファイル名を設定します。
+      urgency_layout:
+        - 災害切り替え時のレイアウトを設定します。
+      urgency_default_layout:
+        - 通常時のレイアウトを設定します。
