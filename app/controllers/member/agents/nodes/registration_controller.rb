@@ -3,6 +3,7 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
   include Member::PostalCodeFilter
 
   model Cms::Member
+  helper Member::MypageHelper
 
   after_action :try_to_join_group, only: :registration
 

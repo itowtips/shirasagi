@@ -4,35 +4,35 @@
 <div class="columns">
   <dl class="colum name">
     <dt><%= @item.class.t :name %><span class="required"><%= t('views.required_field') %></span></dt>
-    <dd><%= f.text_field :name %></dd>
+    <dd><%= f.text_field :name %><%= remarks :name %></dd>
   </dl>
 
   <dl class="colum email">
     <dt><%= @item.class.t :email %><span class="required"><%= t('views.required_field') %></span></dt>
-    <dd><%= f.text_field :email %></dd>
+    <dd><%= f.text_field :email %><%= remarks :email %></dd>
 
     <dt><%= @item.class.t :email_again %><span class="required"><%= t('views.required_field') %></span></dt>
-    <dd><%= f.text_field :email_again %></dd>
+    <dd><%= f.text_field :email_again %><%= remarks :email_again %></dd>
   </dl>
 
   <dl class="colum kana">
     <dt><%= @item.class.t :kana %><span class="required"><%= t('views.required_field') %></span></dt>
-    <dd><%= f.text_field :kana %></dd>
+    <dd><%= f.text_field :kana %><%= remarks :kana %></dd>
   </dl>
 
   <dl class="colum organization-name">
     <dt><%= @item.class.t :organization_name %></dt>
-    <dd><%= f.text_field :organization_name %></dd>
+    <dd><%= f.text_field :organization_name %><%= remarks :organization_name %></dd>
   </dl>
 
   <dl class="colum job">
     <dt><%= @item.class.t :job %></dt>
-    <dd><%= f.text_field :job %></dd>
+    <dd><%= f.text_field :job %><%= remarks :job %></dd>
   </dl>
 
   <dl class="colum tel">
     <dt><%= @item.class.t :tel %></dt>
-    <dd><%= f.text_field :tel %></dd>
+    <dd><%= f.text_field :tel %><%= remarks :tel %></dd>
   </dl>
 
   <dl class="colum postal-code">
@@ -41,12 +41,13 @@
       <%= f.text_field :postal_code %>
       <%= f.button t('member.button.address_search'), name: 'postal-code-search', type: :button %>
       <span class="postal-code-search-error"></span>
+      <%= remarks :postal_code %>
     </dd>
   </dl>
 
   <dl class="colum addr">
     <dt><%= @item.class.t :addr %><span class="required"><%= t('views.required_field') %></span></dt>
-    <dd><%= f.text_field :addr %></dd>
+    <dd><%= f.text_field :addr %><%= remarks :addr %></dd>
   </dl>
 
   <dl class="colum sex">
@@ -57,6 +58,7 @@
         <%= f.radio_button :sex, val %><%= text %>
         <% end %>
       <% end %>
+      <%= remarks :sex %>
     </dd>
   </dl>
 
@@ -72,6 +74,7 @@
         <%= birth_f.select :day, options_for_select((1..31).to_a, tryb { @item.in_birth[:day] }), include_blank: true %>
         日
       <% end %>
+      <%= remarks :birthday %>
     </dd>
   </dl>
 </div>

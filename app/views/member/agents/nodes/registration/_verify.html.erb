@@ -6,7 +6,7 @@
 
 <dl class="colum name">
   <dt><%= @item.class.t :name %><span class="required"><%= t('views.required_field') %></span></dt>
-  <dd><%= f.text_field :name %></dd>
+  <dd><%= f.text_field :name %><%= remarks :name %></dd>
 </dl>
 
 <dl class="colum email">
@@ -16,58 +16,61 @@
 
 <dl class="colum password">
   <dt><%= @item.t :in_password %><span class="required"><%= t('views.required_field') %></span></dt>
-  <dd><%= f.password_field :in_password %></dd>
+  <dd><%= f.password_field :in_password %><%= remarks :in_password %></dd>
 
   <dt><%= @item.class.t :in_password_again %><span class="required"><%= t('views.required_field') %></span></dt>
-  <dd><%= f.password_field :in_password_again %></dd>
+  <dd><%= f.password_field :in_password_again %><%= remarks :in_password_again %></dd>
 </dl>
 
 <dl class="colum kana">
-  <dt><%= @item.class.t :kana %></dt>
-  <dd><%= f.text_field :kana %></dd>
+  <dt><%= @item.class.t :kana %><span class="required"><%= t('views.required_field') %></span></dt>
+  <dd><%= f.text_field :kana %><%= remarks :kana %></dd>
 </dl>
 
 <dl class="colum organization-name">
   <dt><%= @item.class.t :organization_name %></dt>
-  <dd><%= f.text_field :organization_name %></dd>
+  <dd><%= f.text_field :organization_name %><%= remarks :organization_name %></dd>
 </dl>
 
 <dl class="colum job">
   <dt><%= @item.class.t :job %></dt>
-  <dd><%= f.text_field :job %></dd>
+  <dd><%= f.text_field :job %><%= remarks :job %></dd>
 </dl>
 
 <dl class="colum tel">
   <dt><%= @item.class.t :tel %></dt>
-  <dd><%= f.text_field :tel %></dd>
+  <dd><%= f.text_field :tel %><%= remarks :tel %></dd>
 </dl>
 
 <dl class="colum postal-code">
-  <dt><%= @item.class.t :postal_code %></dt>
+  <dt><%= @item.class.t :postal_code %><span class="required"><%= t('views.required_field') %></span></dt>
   <dd>
     <%= f.text_field :postal_code %>
     <%= f.button t('member.button.address_search'), name: 'postal-code-search', type: :button %>
+    <span class="postal-code-search-error"></span>
+    <%= remarks :postal_code %>
   </dd>
 </dl>
 
 <dl class="colum addr">
-  <dt><%= @item.class.t :addr %></dt>
-  <dd><%= f.text_field :addr %></dd>
+  <dt><%= @item.class.t :addr %><span class="required"><%= t('views.required_field') %></span></dt>
+  <dd><%= f.text_field :addr %><%= remarks :addr %></dd>
 </dl>
 
 <dl class="colum sex">
-  <dt><%= @item.class.t :sex %></dt>
+  <dt><%= @item.class.t :sex %><span class="required"><%= t('views.required_field') %></span></dt>
   <dd>
     <% @item.sex_options.each do |text, val| %>
       <%= label_tag("item_sex_#{val}", class: val) do %>
         <%= f.radio_button :sex, val %><%= text %>
       <% end %>
     <% end %>
+    <%= remarks :sex %>
   </dd>
 </dl>
 
 <dl class="colum birthday">
-  <dt><%= @item.class.t :birthday %></dt>
+  <dt><%= @item.class.t :birthday %><span class="required"><%= t('views.required_field') %></span></dt>
   <dd>
     <%= f.fields_for :in_birth do |birth_f| %>
       <%= birth_f.select :era, options_for_select(%w(西暦 明治 大正 昭和 平成), tryb { @item.in_birth[:era] } || @item.birthday ? '西暦' : nil), include_blank: true %>
@@ -78,6 +81,7 @@
       <%= birth_f.select :day, options_for_select((1..31).to_a, tryb { @item.in_birth[:day] } || @item.birthday.try(:day)), include_blank: true %>
       日
     <% end %>
+    <%= remarks :birthday %>
   </dd>
 </dl>
 
