@@ -27,7 +27,7 @@ class Map::Extensions::Point < Hash
     return true if super
     loc.empty?
   end
-  alias_method :blank?, :empty?
+  alias blank? empty?
 
   class << self
     # convert mongoid native type to its custom type(this class)
