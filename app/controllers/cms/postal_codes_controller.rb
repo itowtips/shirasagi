@@ -18,7 +18,7 @@ class Cms::PostalCodesController < ApplicationController
       @items = @model.
         allow(:edit, @cur_user, site: @cur_site).
         search(params[:s]).
-        order_by(code: 1).
+        order_by(prefecture_code: 1, code: 1, _id: 1).
         page(params[:page]).per(50)
     end
 

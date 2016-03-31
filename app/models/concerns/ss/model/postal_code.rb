@@ -28,6 +28,7 @@ module SS::Model::PostalCode
     validates :town_kana, length: { maximum: 80 }
 
     index({ code: 1 }, { unique: true })
+    index({ prefecture_code: 1, code: 1, _id: 1 })
   end
 
   module ClassMethods
