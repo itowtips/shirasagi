@@ -1,7 +1,7 @@
 <%= stylesheet_link_tag 'member/public', media: 'all' %>
 <%= javascript_include_tag 'member/public' %>
 
-<dl class="column">
+<dl class="column name">
   <dt>
     <%= @model.t :name %>
     <%= required_label %>
@@ -12,7 +12,7 @@
   </dd>
 </dl>
 
-<dl class="column">
+<dl class="column email">
   <dt>
     <%= @model.t :email %>
     <%= required_label %>
@@ -23,7 +23,7 @@
   </dd>
 </dl>
 
-<dl class="column">
+<dl class="column email-type">
   <dt><%= @model.t :email_type %></dt>
   <dd>
     <%= f.select :email_type, @item.email_type_options %>
@@ -31,11 +31,30 @@
   </dd>
 </dl>
 
-<dl class="column">
-  <dt><%= @model.t :kana %></dt>
+<dl class="column kana">
+  <dt>
+    <%= @model.t :kana %>
+    <%= required_label %>
+  </dt>
   <dd>
     <%= f.text_field :kana %>
     <%= remarks :kana %>
+  </dd>
+</dl>
+
+<dl class="column">
+  <dt><%= @model.t :organization_name %></dt>
+  <dd>
+    <%= f.text_field :organization_name %>
+    <%= remarks :organization_name %>
+  </dd>
+</dl>
+
+<dl class="column">
+  <dt><%= @model.t :job %></dt>
+  <dd>
+    <%= f.text_field :job %>
+    <%= remarks :job %>
   </dd>
 </dl>
 
@@ -47,8 +66,24 @@
   </dd>
 </dl>
 
+<dl class="colum postal-code">
+  <dt>
+    <%= @model.t :postal_code %>
+    <%= required_label %>
+  </dt>
+  <dd>
+    <%= f.text_field :postal_code %>
+    <%= f.button t('member.button.address_search'), name: 'postal-code-search', type: :button %>
+    <span class="postal-code-search-error"></span>
+    <%= remarks :postal_code %>
+  </dd>
+</dl>
+
 <dl class="column">
-  <dt><%= @model.t :addr %></dt>
+  <dt>
+    <%= @model.t :addr %>
+    <%= required_label %>
+  </dt>
   <dd>
     <%= f.text_field :addr %>
     <%= remarks :addr %>
@@ -56,15 +91,25 @@
 </dl>
 
 <dl class="column">
-  <dt><%= @model.t :sex %></dt>
+  <dt>
+    <%= @model.t :sex %>
+    <%= required_label %>
+  </dt>
   <dd>
-    <%= f.select :sex, @item.sex_options, include_blank: true %>
+    <% @item.sex_options.each do |text, val| %>
+      <%= label_tag("item_sex_#{val}", class: val) do %>
+        <%= f.radio_button :sex, val %><%= text %>
+      <% end %>
+    <% end %>
     <%= remarks :sex %>
   </dd>
 </dl>
 
 <dl class="column">
-  <dt><%= @model.t :birthday %></dt>
+  <dt>
+    <%= @model.t :birthday %>
+    <%= required_label %>
+  </dt>
   <dd>
     <%= f.fields_for :in_birth do |birth_f| %>
       <%= birth_f.select :era, options_for_select(%w(西暦 明治 大正 昭和 平成), tryb { @item.in_birth[:era] } || @item.birthday ? '西暦' : nil), include_blank: true %>
@@ -82,7 +127,7 @@
 <%= render file: '_mail_category_form', locals: { f: f } %>
 
 <%= jquery do %>
-  if ($.support.opacity) {
-    $("#item_birthday").datetimepicker({ lang: "ja", timepicker: false, format: "Y/m/d" });
-  }
+  $("button[name='postal-code-search']").postalCodeSearch({
+    path: "<%= "#{@cur_node.url}postal_code" %>"
+  });
 <% end %>
