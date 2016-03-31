@@ -5,13 +5,13 @@
 $ ->
   SS_AddonTabs.hide(".mod-member-photo")
 
-  @insertContent = (cont) ->
+  @insertPhotoContent = (cont) ->
     if (typeof tinymce) != "undefined"
       tinymce.get("item_html").execCommand("mceInsertContent", false, cont)
     else if (typeof CKEDITOR != "undefined")
       CKEDITOR.instances.item_html.insertHtml(cont)
 
-  @deleteContent = (id) ->
+  @deletePhotoContent = (id) ->
     $(".file-view").each ->
       $(this).remove() if id == $(this).find(".photo-id").attr("value")
 
@@ -39,10 +39,10 @@ $ ->
                 image_tag(item.image.thumb_url.sub(/\/thumb\//, "/thumb/detail/"), alt: item.name, onerror: '$(this).parent("a").hide();')
               end
             %>
-            <%= link_to :"sns.image_paste", "#", :onclick => "insertContent('#{escape_javascript(content)}'); return false;" %>
+            <%= link_to :"sns.image_paste", "#", :onclick => "insertPhotoContent('#{escape_javascript(content)}'); return false;" %>
           </div>
           <div class="action delete">
-            <%= link_to t("views.button.delete"), "#", :onclick => "deleteContent('#{item.id}'); return false;" %>
+            <%= link_to t("views.button.delete"), "#", :onclick => "deletePhotoContent('#{item.id}'); return false;" %>
           </div>
         </article>
       <% end %>

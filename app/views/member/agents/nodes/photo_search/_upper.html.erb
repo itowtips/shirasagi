@@ -23,8 +23,9 @@ $(window).on "load", ->
 
 <section class="result">
   <h2>
-    <%= "検索結果" %>
-    <span class="total"><%= @items.total_count %></span><%= "件" %>
+    <%= t("views.search_result") %>
+    <span class="total"><%= @items.count %></span>
+    <%= t("views.units.count") %>
   </h2>
 </section>
 

@@ -11,4 +11,7 @@
 
   <dt><%= @model.t :slideable_state %><%= @model.tt :slideable_state %></dt>
   <dd><%= f.select :slideable_state, @item.slideable_state_options %></dd>
+
+  <dt><%= @model.t :slide_order %><%= @model.tt :slide_order %></dt>
+  <dd><%= f.number_field :slide_order %></dd>
 </dl>
