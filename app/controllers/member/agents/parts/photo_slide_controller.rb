@@ -17,7 +17,7 @@ class Member::Agents::Parts::PhotoSlideController < ApplicationController
           node(node).
           and_public(@cur_date).
           slideable.
-          order_by(order: 1)
+          order_by(slide_order: 1)
 
         render :full_url_index
         return
@@ -32,6 +32,6 @@ class Member::Agents::Parts::PhotoSlideController < ApplicationController
       node(@node).
       and_public(@cur_date).
       slideable.
-      order_by(order: 1)
+      order_by(slide_order: 1)
   end
 end
