@@ -2,6 +2,7 @@ class Member::Agents::Nodes::MyProfileController < ApplicationController
   include Cms::NodeFilter::View
   include Member::LoginFilter
   include Cms::PublicFilter::Crud
+  include Member::PostalCodeFilter
 
   model Cms::Member
   helper Member::MypageHelper

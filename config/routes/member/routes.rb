@@ -83,6 +83,7 @@ SS::Application.routes.draw do
     get "my_profile/change_password(.:format)" => "public#change_password", cell: "nodes/my_profile"
     post "my_profile/confirm_password(.:format)" => "public#confirm_password", cell: "nodes/my_profile"
     get "my_profile/complete_password(.:format)" => "public#complete_password", cell: "nodes/my_profile"
+    post "my_profile/postal_code(.:format)" => "public#postal_code", cell: "nodes/my_profile"
 
     scope "my_blog" do
       resource :setting, controller: "public", cell: "nodes/my_blog/setting", except: [:index, :show, :destroy]
@@ -121,7 +122,7 @@ SS::Application.routes.draw do
     post "registration/confirm_reset_password(.:format)" => "public#confirm_reset_password", cell: "nodes/registration"
     get "registration/change_password(.:format)" => "public#change_password", cell: "nodes/registration"
     post "registration/confirm_password(.:format)" => "public#confirm_password", cell: "nodes/registration"
-    get "registration/postal_code(.:format)" => "public#postal_code", cell: "nodes/registration"
+    post "registration/postal_code(.:format)" => "public#postal_code", cell: "nodes/registration"
   end
 
   page "member" do
