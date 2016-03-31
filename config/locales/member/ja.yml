@@ -60,6 +60,7 @@ ja:
       resend_confirmation_mail: 確認メールを再送
       accept: 参加する
       reject: 辞退する
+      address_search: 住所検索
     links:
       blog_setting: ブログ設定
       invite: 招待する

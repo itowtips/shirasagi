@@ -39,7 +39,7 @@
     <dt><%= @item.class.t :postal_code %><span class="required"><%= t('views.required_field') %></span></dt>
     <dd>
       <%= f.text_field :postal_code %>
-      <%= f.button "郵便番号検索", name: 'postal-code-search', type: :button %>
+      <%= f.button t('member.button.address_search'), name: 'postal-code-search', type: :button %>
       <span class="postal-code-search-error"></span>
     </dd>
   </dl>
@@ -77,28 +77,7 @@
 </div>
 
 <%= jquery do %>
-  $("button[name='postal-code-search']").on('click', function (e) {
-    $(".postal-code-search-error").html("");
-    path = "<%= "#{@cur_node.url}postal_code" %>";
-    postal_code = $("input[name='item[postal_code]']").val();
-    $.ajax({
-      type: "GET",
-      url: path + "?code=" + encodeURIComponent(postal_code),
-      success: function (data) {
-        if (data.prefecture) {
-          addr = data.prefecture;
-          if (data.city) {
-            addr += data.city;
-          }
-          if (data.town) {
-            addr += data.town;
-          }
-          $("input[name='item[addr]']").val(addr);
-        }
-      },
-      error: function(data) {
-        $(".postal-code-search-error").html("郵便番号が見つかりません");
-      }
-    });
+  $("button[name='postal-code-search']").postalCodeSearch({
+    path: "<%= "#{@cur_node.url}postal_code" %>"
   });
 <% end %>
