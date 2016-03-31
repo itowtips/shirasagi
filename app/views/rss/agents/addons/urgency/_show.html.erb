@@ -1,0 +1,17 @@
+<dl class="see mod-rss-urgency">
+  <dt><%= @model.t :urgency_state %></dt>
+  <dd><%= @item.label :urgency_state %></dd>
+
+  <dt><%= @model.t :urgency_target_page_filename %></dt>
+  <dd><%= @item.urgency_target_page_filename %></dd>
+
+  <% if @item.urgency_layout.present? %>
+    <dt><%= @model.t :urgency_layout %></dt>
+    <dd><%= @item.urgency_layout.name %></dd>
+  <% end %>
+
+  <% if @item.urgency_default_layout.present? %>
+    <dt><%= @model.t :urgency_default_layout %></dt>
+    <dd><%= @item.urgency_default_layout.name %></dd>
+  <% end %>
+</dl>

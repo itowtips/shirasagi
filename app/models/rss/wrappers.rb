@@ -95,6 +95,8 @@ module Rss::Wrappers
     end
 
     class RDF
+      attr_reader :rss
+
       def initialize(item)
         @item = item
       end
@@ -127,6 +129,8 @@ module Rss::Wrappers
   end
 
   class Atom
+    attr_reader :rss
+
     def initialize(rss)
       @rss = rss
     end
@@ -143,6 +147,8 @@ module Rss::Wrappers
   end
 
   class Rss
+    attr_reader :rss
+
     def initialize(rss)
       @rss = rss
     end
@@ -171,6 +177,10 @@ module Rss::Wrappers
       new(rss)
     end
 
+    def items
+      @rss.items
+    end
+
     def each(&block)
       @rss.items.each do |item|
         yield ::Rss::Wrappers::Items::RDF.wrap(item)
@@ -178,8 +188,10 @@ module Rss::Wrappers
     end
   end
 
-  def self.parse(url)
-    rss = ::RSS::Parser.parse(url, false)
+  def self.parse(url, opts = {})
+    require 'open-uri'
+    rss_source = open(url, opts)
+    rss = ::RSS::Parser.parse(rss_source, false)
 
     case rss
     when ::RSS::Atom::Feed
