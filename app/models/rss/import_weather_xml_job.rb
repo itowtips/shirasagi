@@ -25,7 +25,7 @@ class Rss::ImportWeatherXmlJob < Rss::ImportBase
       @cur_file = Rss::TempFile.where(site_id: @cur_site.id, id: file).first
       return unless @cur_file
 
-      @items = Rss::Wrappers.parse(@cur_file.read)
+      @items = Rss::Wrappers.parse(@cur_file)
     end
 
     def after_import

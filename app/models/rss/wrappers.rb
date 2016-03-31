@@ -188,9 +188,13 @@ module Rss::Wrappers
     end
   end
 
-  def self.parse(url, opts = {})
+  def self.parse(url_or_file, opts = {})
     require 'open-uri'
-    rss_source = open(url, opts)
+    if url_or_file.respond_to?(:path)
+      rss_source = url_or_file.read
+    else
+      rss_source = open(url_or_file, opts)
+    end
     rss = ::RSS::Parser.parse(rss_source, false)
 
     case rss

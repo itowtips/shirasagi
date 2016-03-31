@@ -151,7 +151,7 @@ class Rss::ImportBase
     end
 
     def switch_urgency_layout
-      return unless @cur_node.urgency_enabled?
+      return unless @cur_node.try(:urgency_enabled?)
 
       if @items.present? && @items.rss.items.present?
         Rails.logger.info("switch to urgency layout")
