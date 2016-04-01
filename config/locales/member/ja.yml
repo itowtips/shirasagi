@@ -126,6 +126,7 @@ ja:
 
     parts:
       member/blog_page: ブログページ一覧
+      member/photo: フォト一覧
       member/photo_search: フォトサーチ
       member/photo_slide: フォトスライド
       member/login: ログイン
@@ -182,6 +183,7 @@ ja:
       member/photo:
         listable_state: 一覧及び検索結果への表示
         slideable_state: スライドへの表示
+        slide_order: スライド並び順
         image: 画像
         image_id: 画像
         caption: キャプション
@@ -433,6 +435,8 @@ ja:
         - 一覧及びフォトサーチの検索結果に表示するかを設定します。
       slideable_state:
         - フォトスライドパーツに表示するかを設定します。
+      slide_order:
+        - スライドに表示する際の並び順を設定します。
       image_id:
         - 画像を設定します。
       caption:

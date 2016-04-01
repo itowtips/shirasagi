@@ -19,7 +19,9 @@ class Member::Photo
   field :listable_state, type: String, default: "public"
   field :slideable_state, type: String, default: "closed"
 
-  permit_params :listable_state, :slideable_state
+  field :slide_order, type: Integer, default: 0
+
+  permit_params :listable_state, :slideable_state, :slide_order
 
   def listable_state_options
     [
@@ -33,6 +35,11 @@ class Member::Photo
       %w(表示 public),
       %w(非表示 closed),
     ]
+  end
+
+  def slide_order
+    value = self[:slide_order].to_i
+    value < 0 ? 0 : value
   end
 
   def html

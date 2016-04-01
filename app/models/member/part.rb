@@ -36,6 +36,16 @@ module Member::Part
       end
   end
 
+  class Photo
+    include Cms::Model::Part
+    include Cms::Addon::PageList
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "member/photo") }
+  end
+
   class PhotoSearch
     include Cms::Model::Part
     include KeyVisual::Addon::PageList
