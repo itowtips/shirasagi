@@ -54,7 +54,7 @@ class Member::Group
   end
 
   def enabled_members
-    members.where(state: { '$in' => %w(admin user) }).map(&:member)
+    members.where(state: { '$in' => %w(admin user) }).map(&:member).compact
   end
 
   def admin_member?(member)
