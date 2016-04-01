@@ -14,4 +14,14 @@
     <dt><%= @model.t :urgency_default_layout %></dt>
     <dd><%= @item.urgency_default_layout.name %></dd>
   <% end %>
+
+  <% if @item.notice_email.present? %>
+    <dt><%= @model.t :notice_email %></dt>
+    <dd><%= @item.notice_email %></dd>
+  <% end %>
+
+  <% if @item.from_email.present? %>
+    <dt><%= @model.t :from_email %></dt>
+    <dd><%= @item.from_email %></dd>
+  <% end %>
 </dl>
