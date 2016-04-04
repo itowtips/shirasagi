@@ -14,6 +14,9 @@ class Facility::Image
 
   before_save :seq_filename, if: ->{ basename.blank? }
 
+  after_save :update_parent_node
+  after_destroy :update_parent_node
+
   private
     def validate_filename
       (@basename && @basename.blank?) ? nil : super
@@ -25,5 +28,11 @@ class Facility::Image
 
     def serve_static_file?
       false
+    end
+    
+    def update_parent_node
+      node = parent.becomes_with_route
+      node.cur_user = cur_user
+      node.update
     end
 end

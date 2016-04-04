@@ -204,6 +204,7 @@ ja:
       cms/edit_lock: 排他制御
       cms/sns_share: SNS共有
       cms/captcha: 認証
+      cms/mail_setting: 通知メール設定
 
   mongoid:
     models:
@@ -333,6 +334,10 @@ ja:
         in_file: ファイル
       cms/addon/import/user:
         in_file: ファイル
+      cms/addon/mail_setting:
+        notice_mail_state: 通知メール
+        from_mail: 差出人メールアドレス
+        notice_mail: 通知メールアドレス
 
   errors:
     messages:
@@ -786,3 +791,15 @@ ja:
       notice_target:
         - 「全ユーザー」に表示するか、「同一グループ内」に表示するかを選択します。
         - 「同一グループ内」を選択した場合、「管理グループ」欄に設定したグループに表示されます。
+
+    cms/addon/mail_setting:
+      notice_mail_state:
+        - 通知メールの有効無効を設定します。
+        - 設定有効時に以下の通知メールが送信されます。
+        - ・施設機能更新時通知メール
+      from_mail:
+        - 通知メールの差出人メールアドレスを設定します。
+      notice_mail:
+        - 通知メールの宛先メールアドレスを設定します。
+        - 改行区切りで複数のメールアドレスを設定できます。
+

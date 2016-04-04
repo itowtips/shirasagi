@@ -1,0 +1,10 @@
+<dl class="see mod-cms-mail-setting">
+  <dt><%= @model.t :notice_mail_state %><%= @model.tt :notice_mail_state %></dt>
+  <dd><%= f.select :notice_mail_state, @item.notice_mail_state_options %></dd>
+
+  <dt><%= @model.t :from_mail %><%= @model.tt :from_mail %></dt>
+  <dd><%= f.email_field :from_mail %></dd>
+
+  <dt><%= @model.t :notice_mail %><%= @model.tt :notice_mail %></dt>
+  <dd><%= f.text_area :notice_mail %></dd>
+</dl>

@@ -1,0 +1,16 @@
+<% message.subject = @subject %>
+施設情報が更新されました。
+
+- 施設名
+  <%= @node.name %>
+
+- URL
+  <%= @node.full_url %>
+
+- 更新者
+  <%= @user %>
+
+<% if @fields %>
+- 更新項目
+  <%= @fields %>
+<% end %>

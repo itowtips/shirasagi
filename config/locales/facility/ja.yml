@@ -104,13 +104,18 @@ ja:
         fax: FAX
         related_url: URL
         categories: 施設の種類
+        category_ids: 施設の種類
         services: 施設の用途
+        service_ids: 施設の用途
         locations: 施設の地域
+        location_ids: 施設の地域
         additional_info: 追加情報
+        additional_secret_info: 関係者向け情報
         field: 項目名
         value: 内容
-        map_points: 座標
+        map_points: 地図マーカー
         groups: 管理グループ
+        images: 施設写真 
       facility/node/search:
         limit: 一覧表示件数
         map_points_limit: 地図表示件数

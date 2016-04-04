@@ -14,6 +14,7 @@ class Facility::Map
   before_save :seq_filename, if: ->{ basename.blank? }
 
   after_save :update_parent_node
+  after_destroy :update_parent_node
 
   private
     def validate_filename
@@ -29,6 +30,8 @@ class Facility::Map
     end
 
     def update_parent_node
-      parent.becomes_with_route.update
+      node = parent.becomes_with_route
+      node.cur_user = cur_user
+      node.update
     end
 end
