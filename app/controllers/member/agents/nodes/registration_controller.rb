@@ -144,9 +144,8 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
     # パスワード再設定
     def reset_password
       @item = Cms::Member.new
-    end
+      return if request.get?
 
-    def confirm_reset_password
       @item = @model.new get_params
 
       if @item.email.blank?
@@ -164,27 +163,17 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
 
       Member::Mailer.reset_password_mail(member).deliver_now
 
-      redirect_to "#{@cur_node.url}reset_password", notice: t("notice.send_reset_password_mail")
+      redirect_to "#{@cur_node.url}confirm_reset_password"
+    end
+
+    def confirm_reset_password
     end
 
     def change_password
-      begin
-        @item = Cms::Member.site(@cur_site).and_enabled.find_by_secure_id(params[:token])
-      rescue Mongoid::Errors::DocumentNotFound =>e
-        @item = nil
-      end
+      @item = Cms::Member.site(@cur_site).and_enabled.find_by_secure_id(params[:token]) rescue nil
+      raise "404" unless @item.present?
 
-      unless @item.present?
-        raise "404"
-      end
-    end
-
-    def confirm_password
-      begin
-        @item = Cms::Member.site(@cur_site).and_enabled.find_by_secure_id(params[:token])
-      rescue Mongoid::Errors::DocumentNotFound =>e
-        raise "404"
-      end
+      return if request.get?
 
       if params[:item][:new_password].blank?
         @item.errors.add I18n.t("member.view.new_password"), I18n.t("errors.messages.not_input")
@@ -205,6 +194,7 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
       end
 
       @item.in_password = params[:item][:new_password]
+      @item.in_password_again = params[:item][:new_password_again]
       @item.encrypt_password
 
       unless @item.update
@@ -212,6 +202,9 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
         return
       end
 
-      redirect_to "#{@cur_node.url}reset_password", notice: t("notice.password_changed")
+      redirect_to "#{@cur_node.url}confirm_password"
+    end
+
+    def confirm_password
     end
 end

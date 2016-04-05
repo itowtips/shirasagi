@@ -119,9 +119,11 @@ SS::Application.routes.draw do
     get "registration/send_again(.:format)" => "public#send_again", cell: "nodes/registration"
     post "registration/resend_confirmation_mail(.:format)" => "public#resend_confirmation_mail", cell: "nodes/registration"
     get "registration/reset_password(.:format)" => "public#reset_password", cell: "nodes/registration"
-    post "registration/confirm_reset_password(.:format)" => "public#confirm_reset_password", cell: "nodes/registration"
+    post "registration/reset_password(.:format)" => "public#reset_password", cell: "nodes/registration"
+    get "registration/confirm_reset_password(.:format)" => "public#confirm_reset_password", cell: "nodes/registration"
     get "registration/change_password(.:format)" => "public#change_password", cell: "nodes/registration"
-    post "registration/confirm_password(.:format)" => "public#confirm_password", cell: "nodes/registration"
+    post "registration/change_password(.:format)" => "public#change_password", cell: "nodes/registration"
+    get "registration/confirm_password(.:format)" => "public#confirm_password", cell: "nodes/registration"
     post "registration/postal_code(.:format)" => "public#postal_code", cell: "nodes/registration"
   end
 

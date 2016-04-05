@@ -302,4 +302,51 @@ describe 'members/agents/nodes/registration', type: :feature, dbscope: :example 
       expect(Cms::Member.where(email: email).count).to eq 0
     end
   end
+
+  describe "reset_password" do
+    let(:member) { create(:cms_member) }
+    let(:index_path) { "#{node_registration.full_url}reset_password/" }
+    let(:new_password) { "123abc" }
+
+    it do
+      visit index_path
+
+      within "form" do
+        fill_in "item[email]", with: member.email
+        click_button "送信する"
+      end
+
+      within "div.cms-member-registration-notice" do
+        expect(page).to have_css("h2", text: "パスワードの再設定案内メールの送付")
+      end
+
+      expect(ActionMailer::Base.deliveries.length).to eq 1
+      mail = ActionMailer::Base.deliveries.first
+      expect(mail.from.first).to eq node_registration.sender_email
+      expect(mail.to.first).to eq member.email
+      expect(mail.subject).to eq 'パスワード再設定案内'
+      expect(mail.body.multipart?).to be_falsey
+      expect(mail.body.raw_source).to include(node_registration.reset_password_upper_text)
+      expect(mail.body.raw_source).to include(node_registration.reset_password_lower_text)
+      expect(mail.body.raw_source).to include(node_registration.reset_password_signature)
+
+      mail.body.raw_source =~ /(#{Regexp.escape(node_registration.full_url)}[^ \t\r\n]+)/
+      url = $1
+      expect(url).not_to be_nil
+      visit url
+
+      within "form" do
+        fill_in "item[new_password]", with: new_password
+        fill_in "item[new_password_again]", with: new_password
+        click_button "パスワードを変更"
+      end
+
+      within "div.cms-member-registration-notice" do
+        expect(page).to have_css("h2", text: "パスワードの変更")
+      end
+
+      member.reload
+      expect(member.password).to eq SS::Crypt.crypt(new_password)
+    end
+  end
 end
