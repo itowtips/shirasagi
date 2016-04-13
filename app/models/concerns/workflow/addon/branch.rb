@@ -11,7 +11,7 @@ module Workflow::Addon
 
       permit_params :master_id
 
-      before_validation :seq_clone_filename, if: ->{ new_clone? && (new_record? || basename.blank?) }
+      before_save :seq_clone_filename, if: ->{ new_clone? && (new_record? || basename.blank?) }
       after_save :merge_to_master
 
       define_method(:master?) { master.blank? }
@@ -36,10 +36,11 @@ module Workflow::Addon
       item.cur_user = @cur_user
       item.cur_site = @cur_site
       item.cur_node = @cur_node
-      if attributes["filename"].nil?
-        item.filename = "#{dirname}/"
-        item.basename = ""
-      end
+
+      # TODO: use argument attributes if it given
+      # ex) new_clone(filename: "doc/page.html")
+      item.filename = "#{dirname}/"
+      item.basename = ""
 
       item.workflow_user_id = nil
       item.workflow_state = nil
