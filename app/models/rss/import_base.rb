@@ -10,8 +10,6 @@ class Rss::ImportBase
 
     Rails.logger.info("start importing rss")
 
-    switch_urgency_layout
-
     if @items.present?
       @items.each do |item|
         import_rss_item item
@@ -19,6 +17,8 @@ class Rss::ImportBase
     else
       Rails.logger.info("couldn't parse rss items")
     end
+
+    switch_urgency_layout
 
     after_import
 
@@ -154,10 +154,8 @@ class Rss::ImportBase
       return unless @cur_node.try(:urgency_enabled?)
 
       if @items.present? && @items.rss.items.present?
-        Rails.logger.info("switch to urgency layout")
         @cur_node.switch_to_urgency_layout
       else
-        Rails.logger.info("switch to default layout")
         @cur_node.switch_to_default_layout
 
         ## destroy all pages when switch to default layout

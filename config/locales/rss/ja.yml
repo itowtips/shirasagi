@@ -99,6 +99,8 @@ ja:
         urgency_target_page_filename: 切り替えページ
         urgency_layout: 災害時レイアウト
         urgency_default_layout: 通常時レイアウト
+        notice_email: 通知メールアドレス
+        from_email: 差出人メールアドレス
 
   job:
     models:
@@ -225,3 +227,7 @@ ja:
         - 災害切り替え時のレイアウトを設定します。
       urgency_default_layout:
         - 通常時のレイアウトを設定します。
+      from_email:
+        - レイアウト切替時にメールを送信する場合、差出人メールアドレスを設定します。
+      notice_email:
+        - レイアウト切替時にメールを送信する場合、通知メールアドレスを設定します。

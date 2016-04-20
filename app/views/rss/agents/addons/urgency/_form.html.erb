@@ -18,4 +18,10 @@ end
 
   <dt><%= @model.t :urgency_default_layout %><%= @model.tt :urgency_default_layout %></dt>
   <dd><%= f.select :urgency_default_layout_id, selectable_layouts, include_blank: true %></dd>
+
+  <dt><%= @model.t :notice_email %><%= @model.tt :notice_email %></dt>
+  <dd><%= f.email_field :notice_email %></dd>
+
+  <dt><%= @model.t :from_email %><%= @model.tt :from_email %></dt>
+  <dd><%= f.email_field :from_email %></dd>
 </dl>

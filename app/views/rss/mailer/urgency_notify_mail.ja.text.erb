@@ -1,0 +1,7 @@
+<% message.subject = @subject %>
+<%= "#{@site.name}:#{@site.full_url}" %>
+<%= "RSSの変更を検知しレイアウトの切替が行われました。" %>
+
+<%= "RSS配信URL:#{@node.rss_url}" %>
+<%= "切り替え前:#{@before_layout_name}" %>
+<%= "切り替え後:#{@after_layout_name}" %>
