@@ -1,0 +1,7 @@
+<dl class="see mod-urgency-mail">
+  <dt><%= @model.t :start_visible_date %></dt>
+  <dd><%= tryb{@item.send(:start_visible_date).strftime("%Y/%m/%d %H:%M")} %></dd>
+
+  <dt><%= @model.t :close_visible_date %></dt>
+  <dd><%= tryb{@item.send(:close_visible_date).strftime("%Y/%m/%d %H:%M")} %></dd>
+</dl>

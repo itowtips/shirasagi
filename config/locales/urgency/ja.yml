@@ -1,6 +1,7 @@
 ja:
   urgency:
     layout: 緊急災害レイアウト
+    page: 緊急情報ページ
     switch_layout: 反映
     selected_layout: 適用中
     default_layout: 通常時レイアウト
@@ -13,12 +14,24 @@ ja:
     urgency: 緊急災害レイアウト
     addons:
       urgency/layout: 緊急災害レイアウト設定
+      urgency/mail_setting: メール設定
+      urgency/mail: トップ掲載期間
 
   cms:
     nodes:
       urgency/layout: 緊急災害レイアウト
+      urgency/page: 緊急情報ページ
+    parts:
+      urgency/page: 緊急情報ページ一覧
 
   mongoid:
     attributes:
       urgency/node/layout:
         urgency_default_layout: 通常時レイアウト
+
+      urgency/addon/mail_setting:
+        receive_email: 受信メールアドレス
+
+      urgency/addon/mail:
+        start_visible_date: 掲載開始日時
+        close_visible_date: 掲載終了日時
