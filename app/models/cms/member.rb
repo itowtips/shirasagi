@@ -52,7 +52,7 @@ class Cms::Member
         criteria.each do |item|
           line = []
           line << item.id
-          line << item.state
+          line << (item.state.present? ? I18n.t("cms.options.member_state.#{item.state}") : '')
           line << item.name
           line << item.email
           line << item.email_type
@@ -62,7 +62,7 @@ class Cms::Member
           line << item.tel
           line << item.postal_code
           line << item.addr
-          line << item.sex
+          line << (item.sex.present? ? I18n.t("member.options.sex.#{item.sex}") : '')
           line << item.birthday.try(:strftime, "%Y/%m/%d")
           line << item.updated.strftime("%Y/%m/%d %H:%M")
           line << item.created.strftime("%Y/%m/%d %H:%M")
