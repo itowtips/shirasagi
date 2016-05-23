@@ -45,5 +45,30 @@ class Cms::Member
       end
       criteria
     end
+
+    def to_csv
+      CSV.generate do |data|
+        data << %w(id state name email email_type kana organization_name job tel postal_code addr sex birthday updated created)
+        criteria.each do |item|
+          line = []
+          line << item.id
+          line << item.state
+          line << item.name
+          line << item.email
+          line << item.email_type
+          line << item.kana
+          line << item.organization_name
+          line << item.job
+          line << item.tel
+          line << item.postal_code
+          line << item.addr
+          line << item.sex
+          line << item.birthday.try(:strftime, "%Y/%m/%d")
+          line << item.updated.strftime("%Y/%m/%d %H:%M")
+          line << item.created.strftime("%Y/%m/%d %H:%M")
+          data << line
+        end
+      end
+    end
   end
 end
