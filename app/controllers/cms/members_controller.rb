@@ -32,6 +32,6 @@ class Cms::MembersController < ApplicationController
         allow(:edit, @cur_user, site: @cur_site).
         order_by(id: 1).
         to_csv
-      send_data csv.encode("SJIS"), filename: "members_#{Time.zone.now.to_i}.csv"
+      send_data csv.encode("SJIS", invalid: :replace, undef: :replace), filename: "members_#{Time.zone.now.to_i}.csv"
     end
 end
