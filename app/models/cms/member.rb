@@ -41,7 +41,7 @@ class Cms::Member
       return criteria if params.blank?
 
       if params[:keyword].present?
-        criteria = criteria.keyword_in params[:keyword], :name, :email
+        criteria = criteria.keyword_in params[:keyword], :name, :email, :kana, :organization_name, :job, :tel, :postal_code, :addr
       end
       criteria
     end
