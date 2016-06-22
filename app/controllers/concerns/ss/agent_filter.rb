@@ -47,4 +47,12 @@ module SS::AgentFilter
     def preview_path?
       filters.include?(:preview)
     end
+
+    def javascript_config
+      controller.javascript_config
+    end
+
+    def javascript_configs(conf)
+      controller.javascript_configs(conf)
+    end
 end
