@@ -4,7 +4,7 @@
 <% url = @multi ? { action: :index } : { action: :index, single: 1 } %>
 <%= form_for :s, url: url, html: { method: "GET", class: :search } do |f| %>
   <%= f.text_field :name, value: params[:s].try(:[], :name) %>
-  <%= f.submit  t("cms.apis.pages.search"), class: :btn %>
+  <%= f.submit  t("cms.apis.nodes.search"), class: :btn %>
 <% end %>
 </div>
 
@@ -36,7 +36,7 @@
 </table>
 
 <div class="search-ui-select">
-  <%= button_tag t("cms.apis.pages.select"), { type: :button, class: "select-items btn" } %>
+  <%= button_tag t("cms.apis.nodes.select"), { type: :button, class: "select-items btn" } %>
 </div>
 
 <%= paginate @items if @items.try(:current_page) %>

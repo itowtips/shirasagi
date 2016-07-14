@@ -117,6 +117,7 @@ SS::Application.routes.draw do
     namespace "apis" do
       get "groups" => "groups#index"
       get "pages" => "pages#index"
+      get "nodes" => "nodes#index"
       get "categories" => "categories#index"
       get "contents" => "contents#index"
       get "contents/html" => "contents/html#index"
@@ -170,6 +171,7 @@ SS::Application.routes.draw do
     get "tabs"  => "public#index", cell: "parts/tabs"
     get "crumb" => "public#index", cell: "parts/crumb"
     get "sns_share" => "public#index", cell: "parts/sns_share"
+    get "menu" => "public#index", cell: "parts/menu"
   end
 
   page "cms" do

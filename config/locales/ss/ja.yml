@@ -39,6 +39,7 @@ ja:
       search: 検索
       replace: 置換
       replace_all: 全置換
+      select: 選択
       reset: リセット
       run: 実行
       stop: 停止

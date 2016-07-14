@@ -71,4 +71,15 @@ class Cms::Part
 
     default_scope ->{ where(route: "cms/sns_share") }
   end
+
+  class Menu
+    include Cms::Model::Part
+    include Cms::Addon::MenuList
+    include Cms::Addon::Menu
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "cms/link") }
+  end
 end

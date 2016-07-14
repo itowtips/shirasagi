@@ -1,0 +1,21 @@
+<dl class="see">
+  <dt><%= @item.t :links %></dt>
+  <dd>
+    <table class="index">
+      <thead>
+        <tr>
+          <th style="width: 200px"><%= @item.t :content %></th>
+          <th><%= @item.t :name %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @item.menu_links.each do |link| %>
+          <tr>
+            <td><%= t("cms.options.content.#{link[:content]}") %></td>
+            <td><%= link[:item].name %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>

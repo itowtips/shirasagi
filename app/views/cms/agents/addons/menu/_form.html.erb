@@ -1,0 +1,93 @@
+<%= jquery do %>
+$('.mod-cms-menu .sortable').sortable();
+$(".mod-cms-menu .select-content").on("change", function() {
+  cls = $(this).val();
+  if(cls){
+    tr = $(this).closest("tr");
+    tr.find(".content").hide();
+    tr.find("." + cls).show();
+    tr.find(".selected-item").html("");
+  }
+});
+$(".mod-cms-menu .select-content").each(function() {
+  cls = $(this).val();
+  if(cls){
+    tr = $(this).closest("tr");
+    tr.find(".content").hide();
+    tr.find("." + cls).show();
+  }
+});
+$(".mod-cms-menu .add").on("click", function() {
+  tr = $(".hidden-tr").clone(true);
+  tr.removeClass("hidden-tr");
+  tr.show();
+  $(".sortable").append(tr);
+});
+$(".mod-cms-menu .delete").on("click", function() {
+  tr = $(this).closest("tr");
+  tr.remove();
+});
+SS_SearchUI.select = function(item) {
+  input = $('<input type="hidden" name="item[links][][id]">');
+  input.val(item["id"]);
+
+  label = SS_SearchUI.anchorAjaxBox.closest("tr").find(".selected-item");
+  label.find("input").remove();
+  label.text(item["name"]);
+  label.append(input);
+};
+<% end %>
+
+<dl class="see mod-cms-menu">
+  <dt><%= @item.t :links %><%= @model.tt :links %></dt>
+  <dd>
+    <table class="index">
+      <thead>
+        <tr>
+          <th style="width: 200px"><%= @item.t :content %></th>
+          <th><%= @item.t :name %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="sortable">
+        <tr style="display:none" class="hidden-tr">
+          <td>
+            <%= select_tag "item[links][][content]", options_for_select(@item.content_options), class: "select-content", include_blank: true %>
+            <span class="content page" style="width: 80%; display: none;">
+               <%= link_to t("views.button.select"), cms_apis_pages_path(single: 1), class: "ajax-box" %>
+            </span>
+            <span class="content node" style="width: 80%; display: none;">
+               <%= link_to t("views.button.select"), cms_apis_nodes_path(single: 1), class: "ajax-box" %>
+            </span>
+          </td>
+          <td>
+            <label class="selected-item"></label>
+          </td>
+          <td><%= button_tag t("views.button.delete"), { type: :button, class: "delete btn" } %></td>
+        </tr>
+
+        <% @item.menu_links.each do |link| %>
+          <tr>
+            <td>
+              <%= select_tag "item[links][][content]", options_for_select(@item.content_options, link[:content]), class: "select-content", include_blank: true %>
+              <span class="content page" style="width: 80%; display: none;">
+                 <%= link_to t("views.button.select"), cms_apis_pages_path(single: 1), class: "ajax-box" %>
+              </span>
+              <span class="content node" style="width: 80%; display: none;">
+                 <%= link_to t("views.button.select"), cms_apis_nodes_path(single: 1), class: "ajax-box" %>
+              </span>
+            </td>
+            <td>
+              <label class="selected-item">
+                <input type="hidden" name="item[links][][id]" value="<%= link[:item].id %>">
+                <%= link[:item].name %>
+              </label>
+            </td>
+            <td><%= button_tag t("views.button.delete"), { type: :button, class: "delete btn" } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </dd>
+  <dd><%= button_tag t("cms.add_link"), { type: :button, class: "add btn" } %></dd>
+</dl>
