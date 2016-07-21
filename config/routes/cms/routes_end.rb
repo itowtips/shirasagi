@@ -79,6 +79,7 @@ SS::Application.routes.draw do
     resources :layouts, concerns: :deletion
     resources :body_layouts, concerns: :deletion
     resources :editor_templates, concerns: [:deletion, :template]
+    resources :theme_templates, concerns: [:deletion, :template]
     resources :notices, concerns: :deletion do
       get :copy, :on => :member
       put :copy, :on => :member
@@ -116,10 +117,12 @@ SS::Application.routes.draw do
 
     namespace "apis" do
       get "groups" => "groups#index"
+      get "nodes" => "nodes#index"
       get "pages" => "pages#index"
       get "categories" => "categories#index"
       get "contents" => "contents#index"
       get "contents/html" => "contents/html#index"
+      get "members" => "members#index"
 
       resources :files, concerns: :deletion do
         get :select, on: :member
@@ -151,6 +154,7 @@ SS::Application.routes.draw do
     resources :import_nodes, concerns: [:deletion, :copy, :move]
     resources :parts, concerns: :deletion
     resources :layouts, concerns: :deletion
+    resources :archives, only: [:index]
   end
 
   node "cms" do
@@ -159,6 +163,7 @@ SS::Application.routes.draw do
     get "page/rss.xml"         => "public#rss", cell: "nodes/page", format: "xml"
     get "import_node/(index.:format)" => "public#index", cell: "nodes/import_node"
     get "import_node/rss.xml"         => "public#rss", cell: "nodes/import_node", format: "xml"
+    get "archive/:ymd/(index.:format)" => "public#index", cell: "nodes/archive", ymd: /\d+/
   end
 
   part "cms" do

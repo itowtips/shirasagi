@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :member_node_login, class: Member::Node::Login, traits: [:cms_node] do
-    site_id { cur_site.present? ? cur_site.id : cms_site.id }
+    cur_site { cms_site }
     route "member/login"
     filename { SS.config.oauth.prefix_path.sub(/^\//, '') || "auth" }
     twitter_oauth "enabled"
@@ -57,5 +57,15 @@ FactoryGirl.define do
 
   factory :member_node_registration, class: Member::Node::Registration, traits: [:cms_node] do
     route "member/registration"
+  end
+
+  factory :member_node_my_anpi_post, class: Member::Node::MyAnpiPost, traits: [:cms_node] do
+    route "member/my_anpi_post"
+  end
+
+  factory :member_node_my_group, class: Member::Node::MyGroup, traits: [:cms_node] do
+    route "member/my_group"
+    sender_name { unique_id }
+    sender_email { "#{sender_name}@example.jp" }
   end
 end

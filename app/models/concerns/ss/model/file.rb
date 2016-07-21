@@ -21,9 +21,8 @@ module SS::Model::File
 
     belongs_to :site, class_name: "SS::Site"
 
-    permit_params :state, :name, :filename
+    permit_params :state, :name, :filename, :resizing
     permit_params :in_file, :in_files, in_files: []
-    permit_params :resizing
 
     before_validation :set_filename, if: ->{ in_file.present? }
 
@@ -37,9 +36,7 @@ module SS::Model::File
     before_save :save_file
     before_destroy :remove_file
 
-    default_scope ->{
-      order_by id: -1
-    }
+    default_scope ->{ order_by id: -1 }
   end
 
   module ClassMethods
@@ -192,20 +189,26 @@ module SS::Model::File
       return if in_file.blank?
 
       if image?
-        image = Magick::Image.from_blob(in_file.read).shift
+        list = Magick::ImageList.new
+        list.from_blob(in_file.read)
+        list.each do |image|
+          case SS.config.env.image_exif_option
+          when "auto_orient"
+            image.auto_orient!
+          when "strip"
+            image.strip!
+          end
 
-        case SS.config.env.image_exif_option
-        when "auto_orient"
-          image.auto_orient!
-        when "strip"
-          image.strip!
+          if resizing
+            width, height = resizing
+
+            if image.columns > width || image.rows > height
+              image.resize_to_fit! width, height
+            end
+          end
         end
 
-        if resizing
-          width, height = resizing
-          image = image.resize_to_fit width, height if image.columns > width || image.rows > height
-        end
-        binary = image.to_blob
+        binary = list.to_blob
       else
         binary = in_file.read
       end

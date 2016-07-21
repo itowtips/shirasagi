@@ -40,6 +40,7 @@ ja:
       replace: 置換
       replace_all: 全置換
       reset: リセット
+      send: 送信
       run: 実行
       stop: 停止
       toggle: 折りたたみ表示
@@ -128,6 +129,9 @@ ja:
         taisho: 大正
         showa: 昭和
         heisei: 平成
+      map_api:
+        googlemaps: Googleマップ
+        openlayers: OpenLayers
 
     state:
       public: 公開中
@@ -188,6 +192,7 @@ ja:
       ss/markdown: 内容
       ss/mobile_setting: モバイル設定
       ss/user_group_history: 異動履歴
+      ss/map_setting: 地図設定
 
   mongoid:
     models:
@@ -264,12 +269,14 @@ ja:
       ss/reference/site:
         site_id: サイト
       ss/model/task:
+        site_id: サイト
         name: タスク名
         started: 開始日時
         closed: 終了日時
+        interrupt: 中止命令
         total_count: 全体件数
         current_count: 処理件数
-        log: ログ
+        logs: ログ
       ss/model/file:
         model: モデル
         state: 状態
@@ -291,6 +298,9 @@ ja:
         mobile_state: 状態
         mobile_location: ロケーション
         mobile_css: CSS
+      ss/addon/map_setting:
+        map_api: 地図API
+        map_api_key: APIキー
       ss/max_file_size:
         name: 名前
         extensions: 拡張子
@@ -312,6 +322,15 @@ ja:
         image_size_name: 画像サイズ名
         thumb_width: 幅
         thumb_height: 高さ
+      ss/model/job_log:
+        job_id: ジョブID
+        class_name: ジョブ名
+        started: 開始日時
+        closed: 終了日時
+        state: 状態
+        args: パラメータ
+        logs: ログ
+        save_term: 保存期間
 
   tooltip:
     ss/model/user:
@@ -417,3 +436,20 @@ ja:
       order:
         - 並び順を入力します。
         - 数字が大きいほど上位に表示されます。
+    ss/addon/mobile_setting:
+      mobile_state:
+        - モバイルページの有効無効を設定します。
+      mobile_location:
+        - モバイルページのパスを設定します。
+      mobile_css:
+        - モバイルページで使用するCSSパスを設定できます。
+        - 複数の場合は改行区切りで入力します。
+        - 空欄の場合は既定のCSS
+        - /css/mobile.css
+        - が設定されます。
+    ss/addon/map_setting:
+      map_api:
+        - サイトで使用する地図APIを選択します。
+      map_api_key:
+        - 地図APIで使用するAPIキーを入力します。
+        - GoogleマップのAPIキーはこの項目に設定します。

@@ -170,6 +170,30 @@ td {
     color: $white;
     @include mb { display: none; }
   }
+  .user-message {
+    float: left;
+    width: 50px;
+    height: 49px;
+    background-image: url(/assets/img/ic-message-off.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    text-decoration: none;
+    text-align: right;
+    &:hover {
+      background-color: $gray3;
+    }
+    .unseen {
+      display: inline-block;
+      min-width: 16px;
+      margin: 8px 8px 0 0;
+      padding: 0 2px;
+      border-radius: 4px;
+      background-color: #f00;
+      color: #fff;
+      font-size: 80%;
+      text-align: center;
+    }
+  }
   .user {
     float: right;
     a {
@@ -182,14 +206,12 @@ td {
       float: left;
       h2 {
         padding: 15px 40px 15px 20px;
-        border-left: $border-black2;
         background: url(/assets/img/arrow-usr.png) no-repeat 90% center;
         color: $white;
         @include mb { padding: 10px 40px 10px 20px; }
       }
       &:hover h2, &.active h2 {
         position: relative;
-        border-left: $border-black;
         background-color: $gray3;
         text-decoration: none;
       }
@@ -404,6 +426,12 @@ td {
   }
   .icon-search:hover:before {
     background-position: -32px -448px;
+  }
+  .icon-message:before {
+    background-position: left -480px;
+  }
+  .icon-message:hover:before {
+    background-position: -32px -480px;
   }
   @include mb {
     @include clear;
@@ -804,7 +832,7 @@ dl.mod-cms-parent_crumbs {
   width: 16px;
   height: 16px;
   margin-left: 5px;
-  line-height: 1.2;
+  line-height: 1.1;
   @include border-radius(8px);
   background: $orange;
   color: $white;
@@ -1118,8 +1146,8 @@ div.index {
   @include mb { margin: 0 10px 10px; }
   label {
     float: left;
+    width: 50px;
     margin-left: -15px;
-    margin-right: 5px;
     padding: 0 3px 16px 13px;
     input {
       margin: 2px 4px;
@@ -1576,5 +1604,60 @@ form .CodeMirror {
   }
   .clear {
     vertical-align: top;
+  }
+}
+
+// -------------------------------------------------------------------------------------------------
+// openlayers
+#marker-popup {
+  position: absolute;
+  background-color: white;
+  -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  min-width: 260px;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  bottom: 12px;
+  left: -50px;
+  font-size: 12px;
+}
+#marker-popup:after, #marker-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+#marker-popup:after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+#marker-popup:before {
+  border-top-color: #cccccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+#marker-popup .closer {
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  cursor: pointer;
+}
+#marker-popup .closer:after {
+  content: "×";
+}
+#marker-popup {
+  .post-head {
+    padding: 0;
+  }
+  .post-text {
+    margin-top: 15px;
   }
 }

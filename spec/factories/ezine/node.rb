@@ -1,19 +1,15 @@
 FactoryGirl.define do
-  factory :ezine_node, class: Cms::Node do
-    site_id { cms_site.id }
-    user_id { cms_user.id }
-    name 'title'
-    filename 'magazine'
-    route 'magazine'
+  factory :ezine_node_page, class: Ezine::Node::Page, traits: [:cms_node] do
+    route 'ezine/page'
+    sender_name { unique_id }
+    sender_email { "#{sender_name}@example.jp" }
   end
 
-  factory :ezine_node_page, class: Ezine::Node::Page do
-    site_id { cms_site.id }
-    user_id { cms_user.id }
-    route 'ezine/page'
-    name 'ezine'
-    filename 'ezine'
-    sender_name "from"
-    sender_email "from@example.jp"
+  factory :ezine_node_member_page, class: Ezine::Node::MemberPage, traits: [:cms_node] do
+    route 'ezine/member_page'
+  end
+
+  factory :ezine_node_category_node, class: Ezine::Node::CategoryNode, traits: [:cms_node] do
+    route 'ezine/category_node'
   end
 end
