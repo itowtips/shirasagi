@@ -158,7 +158,7 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
 
       start = Time.now
       begin
-        Timeout.timeout(10) do
+        Timeout.timeout(30) do
           data = []
           open(url, proxy: true, allow_redirections: :all) do |f|
             f.each_line { |line| data << line }
@@ -184,7 +184,7 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
 
       start = Time.now
       begin
-        Timeout.timeout(5) do
+        Timeout.timeout(25) do
           open url, proxy: true, allow_redirections: :all, progress_proc: ->(size) { raise "200" }
         end
         false
