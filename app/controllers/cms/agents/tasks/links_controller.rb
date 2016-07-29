@@ -21,6 +21,7 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
       @urls    = { @site.url => "Site" }
       @results = {}
       @errors  = {}
+      @times   = []
 
       (10*1000*1000).times do |i|
         break if @urls.blank?
@@ -38,6 +39,11 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
           url = File.join(@base_url, url) if url[0] == "/"
           "  - #{url}"
         end
+      end
+      msg << ""
+      msg << "[times]"
+      @times.each do |url, time|
+        msg << "#{url} #{time}sec"
       end
       msg = msg.join("\n")
 
@@ -150,6 +156,7 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
         url = File.join(@base_url, url)
       end
 
+      start = Time.now
       begin
         Timeout.timeout(10) do
           data = []
@@ -162,6 +169,8 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
         nil
       rescue => e
         nil
+      ensure
+        @times << [url, Time.now - start]
       end
     end
 
@@ -173,6 +182,7 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
         url = File.join(@base_url, url)
       end
 
+      start = Time.now
       begin
         Timeout.timeout(5) do
           open url, proxy: true, allow_redirections: :all, progress_proc: ->(size) { raise "200" }
@@ -182,6 +192,8 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
         return false
       rescue => e
         return e.to_s == "200"
+      ensure
+        @times << [url, Time.now - start]
       end
     end
 end
