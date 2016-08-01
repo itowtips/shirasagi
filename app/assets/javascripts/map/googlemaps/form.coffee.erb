@@ -8,12 +8,12 @@ class @Map_Form
   @setMapLoc: (ele, lat, lon) ->
     lat = Math.ceil(lat * Math.pow(10,6)) / Math.pow(10,6)
     lon = Math.ceil(lon * Math.pow(10,6)) / Math.pow(10,6)
-    ele.val(lat.toFixed(6) + "," + lon.toFixed(6))
+    ele.val(lon.toFixed(6) + "," + lat.toFixed(6))
     return
 
   @getMapLoc: (ele) ->
-    latlon = ele.val().split(',')
-    return new google.maps.LatLng(parseFloat(latlon[0]), parseFloat(latlon[1]))
+    lonlat = ele.val().split(',')
+    return new google.maps.LatLng(parseFloat(lonlat[1]), parseFloat(lonlat[0]))
 
   @validateLoc: (ele) ->
     latlon = ele.val().split(',')
