@@ -21,6 +21,7 @@ SS::Application.routes.draw do
     resources :pages, concerns: [:deletion, :download, :import]
     resources :nodes, concerns: :deletion
     resources :searches, concerns: :deletion
+    resources :geolocations, concerns: :deletion
     resources :services, concerns: :deletion
     resources :locations, concerns: :deletion
     resources :categories, concerns: :deletion
@@ -40,6 +41,8 @@ SS::Application.routes.draw do
     get "search/(map.:format)" => "public#map", cell: "nodes/search"
     get "search/(map-all.:format)" => "public#map_all", cell: "nodes/search"
     get "search/(result.:format)" => "public#result", cell: "nodes/search"
+
+    get "geolocation/(index.:format)" => "public#index", cell: "nodes/geolocation"
   end
 
   page "facility" do

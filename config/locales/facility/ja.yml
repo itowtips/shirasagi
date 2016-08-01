@@ -70,6 +70,7 @@ ja:
       facility/category: 施設の種類
       facility/category_setting: 施設の種類
       facility/opendata_assoc: オープンデータ連携
+      facility/geolocation_list: リスト表示
 
   cms:
     nodes:
@@ -79,6 +80,7 @@ ja:
       facility/service: 施設の用途
       facility/location: 施設のある地域
       facility/search: 施設検索
+      facility/geolocation: 位置情報検索
 
   mongoid:
     models:

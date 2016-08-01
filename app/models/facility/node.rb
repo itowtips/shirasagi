@@ -124,6 +124,21 @@ module Facility::Node
     end
   end
 
+  class Geolocation
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Facility::Addon::GeolocationList
+    include Facility::Addon::CategorySetting
+    include Facility::Addon::ServiceSetting
+    include Facility::Addon::LocationSetting
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "facility/geolocation") }
+  end
+
   class Category
     include Cms::Model::Node
     include Cms::Addon::NodeSetting

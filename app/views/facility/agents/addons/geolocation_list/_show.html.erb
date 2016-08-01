@@ -1,0 +1,20 @@
+<%= code_editor ".mod-facility-geolocation-list .html", mode: :html, readonly: true %>
+
+<dl class="see mod-facility-geolocation-list">
+  <dt><%= @model.t :conditions %></dt>
+  <dd><%=br @item.conditions.join("\n") %></dd>
+
+  <dt><%= @model.t :upper_html %></dt>
+  <dd>
+    <% if @item.upper_html.present? %>
+    <%= text_area_tag :upper_html, @item.upper_html, class: "html" %>
+    <% end %>
+  </dd>
+
+  <dt><%= @model.t :lower_html %></dt>
+  <dd>
+    <% if @item.lower_html.present? %>
+    <%= text_area_tag :lower_html, @item.lower_html, class: "html" %>
+    <% end %>
+  </dd>
+</dl>
