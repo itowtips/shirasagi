@@ -2,9 +2,11 @@ class @Map
   @map        = null
   @form       = null
   @center     = [36.204824, 138.252924]
+  @zoom       = 5
   @markers    = null
   @openedInfo = null
   @resized    = null
+  @autoResize  = true
 
   @attachMessage: (id) ->
     google.maps.event.addListener Map.markers[id]["marker"], 'click', (event) ->
@@ -22,7 +24,7 @@ class @Map
   @load: (selector) ->
     mapOptions = {
       center: new google.maps.LatLng(@center[0], @center[1]),
-      zoom: 5,
+      zoom: @zoom,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       panControl: false,
       zoomControl: true,
@@ -101,7 +103,7 @@ class @Map
         #
       return
 
-    unless $.isEmptyObject(Map.markers)
+    if @autoResize && !$.isEmptyObject(Map.markers)
       zoomChangeBoundsListener = google.maps.event.addListener Map.map, 'bounds_changed', (event) ->
         if this.getZoom() > 13 && this.initialZoom == true
           this.setZoom(13)
