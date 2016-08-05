@@ -2,7 +2,7 @@ class Workflow::WizardController < ApplicationController
   include Cms::ApiFilter
 
   before_action :set_route, only: [:approver_setting]
-  before_action :set_item, only: [:approver_setting]
+  before_action :set_item, only: [:index, :approver_setting]
 
   private
     def set_model

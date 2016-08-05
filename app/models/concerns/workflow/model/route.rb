@@ -25,13 +25,23 @@ module Workflow::Model::Route
   end
 
   module ClassMethods
-    def route_options(user)
-      ret = [ [ t("my_group"), "my_group" ] ]
+    def route_options(user, opts = {})
+      item = opts[:page]
+
+      if item
+        ret = item.categories.where(:default_route_id.exists => true).map do |item|
+          cate = item.becomes_with_route
+          [ cate.default_route.name, cate.default_route.id ]
+        end
+      else
+        ret = [ [ t("my_group"), "my_group" ] ]
+      end
+
       group_ids = user.group_ids.to_a
       Workflow::Route.where(:group_ids.in => group_ids).each do |route|
         ret << [ route.name, route.id ]
       end
-      ret
+      ret.uniq
     end
 
     def search(params)

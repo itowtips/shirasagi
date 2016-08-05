@@ -1,6 +1,7 @@
 module Category::Node
   class Base
     include Cms::Model::Node
+    include Category::Addon::Workflow
 
     default_scope ->{ where(route: /^category\//) }
   end
@@ -11,6 +12,7 @@ module Category::Node
     include Cms::Addon::Meta
     include Cms::Addon::NodeList
     include Cms::Addon::Release
+    include Category::Addon::Workflow
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 
@@ -24,6 +26,7 @@ module Category::Node
     include Cms::Addon::PageList
     include Cms::Addon::Release
     include Cms::Addon::DefaultReleasePlan
+    include Category::Addon::Workflow
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 

@@ -1,0 +1,4 @@
+<dl class="see mod-category-workflow">
+  <dt>承認ルート<%= @model.tt :default_route %></dt>
+  <dd><%= select_tag "item[default_route_id]", options_for_select(@item.default_route_options, @item.default_route_id), include_blank: true %></dd>
+</dl>
