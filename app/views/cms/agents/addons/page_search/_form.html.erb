@@ -5,6 +5,9 @@
   <dt><%= @model.t :search_filename %><%= @model.tt :search_filename %></dt>
   <dd><%= f.text_field :search_filename, class: "search-filename" %></dd>
 
+  <dt><%= @model.t :search_keyword %><%= @model.tt :search_keyword %></dt>
+  <dd><%= f.text_field :search_keyword, class: "search-name" %></dd>
+
   <dt><%= @model.t :search_category_ids %><%= @model.tt :search_category_ids %></dt>
   <dd>
     <%= hidden_field_tag "item[search_category_ids][]", nil, class: "hidden-ids" %>

@@ -276,6 +276,7 @@ ja:
       cms/content:
         released: 公開日時
         name: タイトル
+        keyword: キーワード
         index_name: 一覧用タイトル
         depth: フォルダ階層
         order: 並び順
@@ -399,6 +400,7 @@ ja:
       cms/addon/page_search:
         search_name: タイトル
         search_filename: ファイル名
+        search_keyword: キーワード
         search_categories: カテゴリー
         search_category_ids: カテゴリー
         search_groups: グループ
@@ -925,6 +927,9 @@ ja:
         - 検索したいページタイトルを入力します。
       search_filename:
         - 検索したいファイル名を入力します。
+      search_keyword:
+        - 検索したいキーワードを入力します。
+        - ページ本文等にヒットします。
       search_group_ids:
         - 検索したい管理グループを選択します。
         - いずれかのグループに該当するページが検索されます。

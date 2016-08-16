@@ -3,9 +3,14 @@ module Cms::Addon
     extend ActiveSupport::Concern
     extend SS::Addon
 
+    HTML_FIELDS = [
+      :html, :question, :upper_html, :lower_html, :contact_charge, :contact_tel, :contact_fax, :contact_email
+    ].freeze
+
     included do
       field :search_name, type: String
       field :search_filename, type: String
+      field :search_keyword, type: String
       field :search_state, type: String
       field :search_approver_state, type: String
       field :search_released_start, type: DateTime
@@ -15,7 +20,7 @@ module Cms::Addon
       embeds_ids :search_categories, class_name: "Category::Node::Base"
       embeds_ids :search_groups, class_name: "SS::Group"
 
-      permit_params :search_name, :search_filename, :search_state, :search_approver_state
+      permit_params :search_name, :search_filename, :search_keyword, :search_state, :search_approver_state
       permit_params :search_released_start, :search_released_close, :search_updated_start, :search_updated_close
       permit_params search_category_ids: [], search_group_ids: []
 
@@ -30,6 +35,7 @@ module Cms::Addon
     def search
       @search ||= begin
         filename   = search_filename.present? ? { filename: /#{Regexp.escape(search_filename)}/i } : {}
+        keyword    = search_keyword.present? ? { "$or" => HTML_FIELDS.map { |field| { field => /#{Regexp.escape(search_keyword)}/ } } } : {}
         categories = search_category_ids.present? ? { category_ids: search_category_ids } : {}
         groups     = search_group_ids.present? ? { group_ids: search_group_ids } : {}
         state      = search_state.present? ? { state: search_state } : {}
@@ -59,12 +65,16 @@ module Cms::Addon
           allow(:read, @cur_user).
           search(name: search_name).
           where(filename).
+          and(keyword).
           in(categories).
           in(groups).
           where(state).
           and(released).
           and(updated).
           and(approver)
+
+        dump criteria.marshal_dump
+
         @search_count = criteria.count
         criteria.order_by(filename: 1)
       end
@@ -98,6 +108,7 @@ module Cms::Addon
 
       info << "#{Cms::Page.t(:name)}: #{search_name}" if search_name.present?
       info << "#{Cms::Page.t(:filename)}: #{search_filename}" if search_filename.present?
+      info << "#{Cms::Page.t(:keyword)}: #{search_keyword}" if search_keyword.present?
       info << "#{Cms::Page.t(:category_ids)}: #{search_categories.pluck(:name).join(",")}" if search_category_ids.present?
       info << "#{Cms::Page.t(:group_ids)}: #{search_groups.pluck(:name).join(",")}" if search_group_ids.present?
       if search_released_start.present? || search_released_close.present?

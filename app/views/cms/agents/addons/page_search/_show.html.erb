@@ -5,6 +5,9 @@
   <dt><%= @model.t :search_filename %></dt>
   <dd><%= @item.search_filename %></dd>
 
+  <dt><%= @model.t :search_keyword %></dt>
+  <dd><%= @item.search_keyword %></dd>
+
   <dt><%= @model.t :search_category_ids %></dt>
   <dd><%= tryb { @item.search_categories.pluck(:name).join(",") } %></dd>
 
