@@ -26,7 +26,7 @@ module Cms::Addon
       permit_params search_category_ids: [], search_group_ids: [], search_user_ids: []
 
       validates :search_state, inclusion: { in: %w(public closed ready), allow_blank: true }
-      validates :search_approver_state, inclusion: { in: %w(request approve), allow_blank: true }
+      validates :search_approver_state, inclusion: { in: %w(request approve remand), allow_blank: true }
       validates :search_released_start, datetime: true
       validates :search_released_close, datetime: true
       validates :search_updated_start, datetime: true
@@ -60,6 +60,11 @@ module Cms::Addon
             workflow_approvers: {
               "$elemMatch" => { "user_id" => @cur_user._id, "state" => "request" }
             }
+          }
+        when 'remand'
+          approver << {
+            workflow_state: "remand",
+            workflow_user_id: @cur_user._id,
           }
         end
 
@@ -95,7 +100,7 @@ module Cms::Addon
     end
 
     def search_approver_state_options
-      %w(request approve).map do |w|
+      %w(request approve remand).map do |w|
         [ I18n.t("workflow.page.#{w}"), w ]
       end
     end
