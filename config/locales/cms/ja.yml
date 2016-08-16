@@ -92,6 +92,10 @@ ja:
         index: メンバーを選択する
         search: メンバーを検索
         select: メンバーを設定する
+      users:
+        index: ユーザーを選択する
+        search: ユーザーを検索
+        select: ユーザーを設定する
     auto_correct:
       link: 自動修正
       notice: アクセシビリティチェック（保存時に自動で修正されます）
@@ -280,6 +284,7 @@ ja:
         index_name: 一覧用タイトル
         depth: フォルダ階層
         order: 並び順
+        user: 作成者
         md5: ハッシュ値
       cms/model/node:
         filename: フォルダー名
@@ -405,6 +410,8 @@ ja:
         search_category_ids: カテゴリー
         search_groups: グループ
         search_group_ids: グループ
+        search_users: 作成者
+        search_user_ids: 作成者
         search_released: 公開日時
         search_released_start: 公開日時（開始）
         search_released_close: 公開日時（終了）
@@ -933,6 +940,9 @@ ja:
       search_group_ids:
         - 検索したい管理グループを選択します。
         - いずれかのグループに該当するページが検索されます。
+      search_user_ids:
+        - 検索したい作成者（ユーザー）を選択します。
+        - いずれかのユーザーが作成者に該当するページが検索されます。
       search_category_ids:
         - 検索したいカテゴリーを選択します。
         - いずれかのカテゴリーに該当するページが検索されます。

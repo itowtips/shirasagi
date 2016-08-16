@@ -64,6 +64,33 @@
     </dl>
 
     <dl class="see">
+      <dt><%= @model.t :search_user_ids %><%= @model.tt :search_user_ids %></dt>
+      <dd class="wide">
+        <%= hidden_field_tag "s[user_ids][]", nil, class: "hidden-ids" %>
+        <%= link_to t("cms.apis.users.index"), cms_apis_users_path, class: "btn ajax-box" %>
+      </dd>
+      <dd>
+        <table class="index" style="visibility:hidden"></teble>
+        <table class="index ajax-selected">
+          <thead>
+            <tr>
+              <th class="name"><%= @model.t :search_user_ids %></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @item.search_users.each do |item| %>
+            <tr data-id="<%= item.id %>">
+              <td><%= hidden_field_tag "s[user_ids][]", item.id %> <%= item.name %></td>
+              <td><%= link_to t("views.button.delete"), "#", class: "deselect btn" %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </dd>
+    </dl>
+
+    <dl class="see">
       <dt><%= @model.t :search_released %><%= @model.tt :search_released %></dt>
       <dd>
         <%= text_field_tag "s[released_start]", tryb{@item.search_released_start.strftime("%Y/%m/%d %H:%M")}, class: "datetime js-datetime" %>
