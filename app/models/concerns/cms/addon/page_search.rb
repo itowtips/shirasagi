@@ -17,11 +17,12 @@ module Cms::Addon
       field :search_released_close, type: DateTime
       field :search_updated_start, type: DateTime
       field :search_updated_close, type: DateTime
+      field :search_sort, type: String
       embeds_ids :search_categories, class_name: "Category::Node::Base"
       embeds_ids :search_groups, class_name: "SS::Group"
       embeds_ids :search_users, class_name: "Cms::User"
 
-      permit_params :search_name, :search_filename, :search_keyword, :search_state, :search_approver_state
+      permit_params :search_name, :search_filename, :search_keyword, :search_state, :search_approver_state, :search_sort
       permit_params :search_released_start, :search_released_close, :search_updated_start, :search_updated_close
       permit_params search_category_ids: [], search_group_ids: [], search_user_ids: []
 
@@ -81,10 +82,8 @@ module Cms::Addon
           and(updated).
           and(approver)
 
-        dump criteria.marshal_dump
-
         @search_count = criteria.count
-        criteria.order_by(filename: 1)
+        criteria.order_by(search_sort_hash)
       end
     end
 
@@ -109,6 +108,25 @@ module Cms::Addon
       self.class.fields.keys.any? do |k|
         k.start_with?("search_") && self[k].present?
       end
+    end
+
+    def search_sort_options
+      [
+        [I18n.t('cms.options.sort.filename'), 'filename'],
+        [I18n.t('cms.options.sort.name'), 'name'],
+        [I18n.t('cms.options.sort.created'), 'created'],
+        [I18n.t('cms.options.sort.updated_1'), 'updated -1'],
+        [I18n.t('cms.options.sort.released_1'), 'released -1'],
+        #[I18n.t('cms.options.sort.user_id_1'), 'user_id -1'],
+        [I18n.t('cms.options.sort.status'), 'state -1 workflow_state 1'],
+      ]
+    end
+
+    def search_sort_hash
+      return { filename: 1 } if search_sort.blank?
+      h = {}
+      search_sort.split(" ").each_slice(2) { |k, v| h[k] = (v =~ /-1$/ ? -1 : 1) }
+      h
     end
 
     def brief_search_condition

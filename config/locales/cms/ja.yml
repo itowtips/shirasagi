@@ -117,6 +117,8 @@ ja:
         updated_1: 更新日時
         released_1: 公開日時
         order: 指定順
+        user_id_1: 作成者ID
+        status: ステータス
       parent_crumb:
         blank: カテゴリーから選択する
       notice_severity:
@@ -420,6 +422,7 @@ ja:
         search_updated_close: 更新日時（終了）
         search_state: ステータス
         search_approver_state: 承認ステータス
+        search_sort: 検索結果の並び順
       cms/task:
         node_id: フォルダー
       cms/addon/high_contrast_mode:
@@ -954,6 +957,8 @@ ja:
         - 検索したいページのステータスを選択します。
       search_approver_state:
         - 検索したいページの承認ステータスを選択します。
+      search_sort:
+        - 検索結果のページ並び順を選択します。
 
   all_content:
     page_id: ページID
