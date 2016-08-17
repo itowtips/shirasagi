@@ -3,8 +3,8 @@ module Cms::Addon
     extend ActiveSupport::Concern
     extend SS::Addon
 
-    HTML_FIELDS = [
-      :html, :question, :upper_html, :lower_html, :contact_charge, :contact_tel, :contact_fax, :contact_email
+    KEYWORD_FIELDS = [
+      :name, :html, :question, :upper_html, :lower_html, :contact_charge, :contact_tel, :contact_fax, :contact_email
     ].freeze
 
     included do
@@ -37,7 +37,7 @@ module Cms::Addon
     def search
       @search ||= begin
         filename   = search_filename.present? ? { filename: /#{Regexp.escape(search_filename)}/i } : {}
-        keyword    = search_keyword.present? ? { "$or" => HTML_FIELDS.map { |field| { field => /#{Regexp.escape(search_keyword)}/ } } } : {}
+        keyword    = search_keyword.present? ? { "$or" => KEYWORD_FIELDS.map { |field| { field => /#{Regexp.escape(search_keyword)}/ } } } : {}
         categories = search_category_ids.present? ? { category_ids: search_category_ids } : {}
         groups     = search_group_ids.present? ? { group_ids: search_group_ids } : {}
         users      = search_user_ids.present? ? { user_id: search_user_ids } : {}
@@ -117,8 +117,6 @@ module Cms::Addon
         [I18n.t('cms.options.sort.created'), 'created'],
         [I18n.t('cms.options.sort.updated_1'), 'updated -1'],
         [I18n.t('cms.options.sort.released_1'), 'released -1'],
-        #[I18n.t('cms.options.sort.user_id_1'), 'user_id -1'],
-        [I18n.t('cms.options.sort.status'), 'state -1 workflow_state 1'],
       ]
     end
 

@@ -110,6 +110,9 @@
 
       <dt><%= @model.t :search_approver_state %><%= @model.tt :search_approver_state %></dt>
       <dd><%= select_tag "s[approver_state]", options_for_select(@item.search_approver_state_options, selected: @item.search_approver_state), include_blank: true %></dd>
+
+      <dt><%= @model.t :search_sort %><%= @model.tt :search_sort %></dt>
+      <dd><%= select_tag "s[sort]", options_for_select(@item.search_sort_options, selected: @item.search_sort), include_blank: true %></dd>
     </dl>
   </div>
 

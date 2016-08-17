@@ -105,5 +105,5 @@
   <dd><%= f.select :search_approver_state, @item.search_approver_state_options, include_blank: true %></dd>
 
   <dt><%= @model.t :search_sort %><%= @model.tt :search_sort %></dt>
-  <dd><%= f.select :search_sort, @item.search_sort_options %></dd>
+  <dd><%= f.select :search_sort, @item.search_sort_options, include_blank: true %></dd>
 </dl>
