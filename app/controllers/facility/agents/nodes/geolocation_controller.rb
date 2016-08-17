@@ -24,6 +24,7 @@ class Facility::Agents::Nodes::GeolocationController < ApplicationController
 
   public
     def index
+      @items = []
       @markers = []
 
       return unless @loc
@@ -34,6 +35,7 @@ class Facility::Agents::Nodes::GeolocationController < ApplicationController
         item = Facility::Node::Page.site(@cur_site).public.in_path(parent_path).first
 
         next unless item
+        @items << item
         category_ids = item.categories.map(&:id)
 
         image_id = item.categories.map(&:image_id).first
@@ -49,5 +51,13 @@ class Facility::Agents::Nodes::GeolocationController < ApplicationController
           @markers.push point
         end
       end
+
+      set_filter_items
+    end
+
+  private
+    def set_filter_items
+      @filter_categories = @cur_node.st_categories.in(_id: @items.map(&:category_ids).flatten)
+      @filter_locations = @cur_node.st_locations.entries.select{ |l| l.center_point[:loc].present? }
     end
 end
