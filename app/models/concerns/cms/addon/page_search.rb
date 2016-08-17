@@ -55,7 +55,10 @@ module Cms::Addon
         approver = []
         case search_approver_state
         when 'request'
-          approver << { workflow_user_id: @cur_user._id }
+          approver << {
+            workflow_state: "request",
+            workflow_user_id: @cur_user._id,
+          }
         when 'approve'
           approver << {
             workflow_state: "request",
