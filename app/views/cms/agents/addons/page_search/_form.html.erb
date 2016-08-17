@@ -101,6 +101,9 @@
   <dt><%= @model.t :search_state %><%= @model.tt :search_state %></dt>
   <dd><%= f.select :search_state, @item.search_state_options, include_blank: true %></dd>
 
+  <dt><%= @model.t :search_publishable %><%= @model.tt :search_publishable_state %></dt>
+  <dd><%= f.select :search_publishable, @item.search_publishable_options, include_blank: true %></dd>
+
   <dt><%= @model.t :search_approver_state %><%= @model.tt :search_approver_state %></dt>
   <dd><%= f.select :search_approver_state, @item.search_approver_state_options, include_blank: true %></dd>
 

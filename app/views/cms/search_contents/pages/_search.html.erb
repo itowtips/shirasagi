@@ -108,6 +108,9 @@
       <dt><%= @model.t :search_state %><%= @model.tt :search_state %></dt>
       <dd><%= select_tag "s[state]", options_for_select(@item.search_state_options, selected: @item.search_state), include_blank: true %></dd>
 
+      <dt><%= @model.t :search_publishable %><%= @model.tt :search_publishable %></dt>
+      <dd><%= select_tag "s[publishable]", options_for_select(@item.search_publishable_options, selected: @item.search_publishable), include_blank: true %></dd>
+
       <dt><%= @model.t :search_approver_state %><%= @model.tt :search_approver_state %></dt>
       <dd><%= select_tag "s[approver_state]", options_for_select(@item.search_approver_state_options, selected: @item.search_approver_state), include_blank: true %></dd>
 

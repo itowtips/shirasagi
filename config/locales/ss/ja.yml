@@ -140,6 +140,9 @@ ja:
       map_api:
         googlemaps: Googleマップ
         openlayers: OpenLayers
+      publishable:
+        published: 公開済み
+        draft: 下書き
 
     state:
       public: 公開中

@@ -419,6 +419,7 @@ ja:
         search_updated_start: 更新日時（開始）
         search_updated_close: 更新日時（終了）
         search_state: ステータス
+        search_publishable: 公開ステータス
         search_approver_state: 承認ステータス
         search_sort: 検索結果の並び順
       cms/task:
@@ -953,6 +954,8 @@ ja:
         - 検索したい更新日時の範囲を入力します。
       search_state:
         - 検索したいページのステータスを選択します。
+      search_publishable:
+        - 検索したいページの公開ステータスを選択します。
       search_approver_state:
         - 検索したいページの承認ステータスを選択します。
       search_sort:

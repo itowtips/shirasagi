@@ -12,6 +12,7 @@ module Cms::Addon
       field :search_filename, type: String
       field :search_keyword, type: String
       field :search_state, type: String
+      field :search_publishable, type: String
       field :search_approver_state, type: String
       field :search_released_start, type: DateTime
       field :search_released_close, type: DateTime
@@ -22,7 +23,7 @@ module Cms::Addon
       embeds_ids :search_groups, class_name: "SS::Group"
       embeds_ids :search_users, class_name: "Cms::User"
 
-      permit_params :search_name, :search_filename, :search_keyword, :search_state, :search_approver_state, :search_sort
+      permit_params :search_name, :search_filename, :search_keyword, :search_state, :search_approver_state, :search_publishable, :search_sort
       permit_params :search_released_start, :search_released_close, :search_updated_start, :search_updated_close
       permit_params search_category_ids: [], search_group_ids: [], search_user_ids: []
 
@@ -73,6 +74,14 @@ module Cms::Addon
           }
         end
 
+        if search_publishable == "draft"
+          publishable = { :published.exists => false }
+        elsif search_publishable == "published"
+          publishable = { :published.exists => true }
+        else
+          publishable = {}
+        end
+
         criteria = Cms::Page.site(@cur_site).
           allow(:read, @cur_user).
           where(name).
@@ -85,6 +94,7 @@ module Cms::Addon
           and(released).
           and(updated).
           and(approver).
+          and(publishable).
           search(opts)
 
         @search_count = criteria.count
@@ -110,6 +120,12 @@ module Cms::Addon
     def search_state_options
       %w(public closed ready).map do |w|
         [ I18n.t("views.options.state.#{w}"), w ]
+      end
+    end
+
+    def search_publishable_options
+      %w(draft published).map do |w|
+        [ I18n.t("views.options.publishable.#{w}"), w ]
       end
     end
 

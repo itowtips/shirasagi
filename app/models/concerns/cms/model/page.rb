@@ -141,7 +141,9 @@ module Cms::Model::Page
     end
 
     def set_released
-      self.released ||= Time.zone.now
+      now = Time.zone.now
+      self.released ||= now
+      self.published ||= now
     end
 
     def fix_extname
