@@ -34,9 +34,10 @@ module Cms::Addon
       validates :search_updated_close, datetime: true
     end
 
-    def search
+    def search(opts = {})
       @search ||= begin
-        filename   = search_filename.present? ? { filename: /#{Regexp.escape(search_filename)}/i } : {}
+        name       = search_name.present? ? { name: /#{Regexp.escape(search_name)}/ } : {}
+        filename   = search_filename.present? ? { filename: /#{Regexp.escape(search_filename)}/ } : {}
         keyword    = search_keyword.present? ? { "$or" => KEYWORD_FIELDS.map { |field| { field => /#{Regexp.escape(search_keyword)}/ } } } : {}
         categories = search_category_ids.present? ? { category_ids: search_category_ids } : {}
         groups     = search_group_ids.present? ? { group_ids: search_group_ids } : {}
@@ -71,7 +72,7 @@ module Cms::Addon
 
         criteria = Cms::Page.site(@cur_site).
           allow(:read, @cur_user).
-          search(name: search_name).
+          where(name).
           where(filename).
           and(keyword).
           in(categories).
@@ -80,11 +81,22 @@ module Cms::Addon
           where(state).
           and(released).
           and(updated).
-          and(approver)
+          and(approver).
+          search(opts)
 
         @search_count = criteria.count
         criteria.order_by(search_sort_hash)
       end
+    end
+
+    def status_options
+      [
+        [I18n.t('views.options.state.public'), 'public'],
+        [I18n.t('views.options.state.closed'), 'closed'],
+        [I18n.t('views.options.state.ready'), 'ready'],
+        [I18n.t('views.options.state.request'), 'request'],
+        [I18n.t('views.options.state.remand'), 'remand'],
+      ]
     end
 
     def search_count
