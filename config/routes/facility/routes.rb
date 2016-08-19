@@ -17,7 +17,7 @@ SS::Application.routes.draw do
   end
 
   content "facility" do
-    get "/" => redirect { |p, req| "#{req.path}/searches" }, as: :main
+    get "/" => redirect { |p, req| "#{req.path}/pages" }, as: :main
     resources :pages, concerns: [:deletion, :download, :import]
     resources :nodes, concerns: :deletion
     resources :searches, concerns: :deletion

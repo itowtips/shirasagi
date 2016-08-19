@@ -51,7 +51,7 @@ class Fs::FilesController < ApplicationController
       height = params[:height]
       thumb  = @item.thumb(size)
 
-      if thumb
+      if thumb && !width && !height
         @item = thumb
         index
       else
