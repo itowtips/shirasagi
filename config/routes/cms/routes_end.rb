@@ -188,6 +188,9 @@ SS::Application.routes.draw do
     get "import_page/:filename.:format" => "public#index", cell: "pages/import_page"
   end
 
+  get "/.www/" => "mzk_redirect#index"
+  get "/.www/*after_path" => "mzk_redirect#index"
+
   match "*public_path" => "cms/public#index", public_path: /[^\.].*/,
     via: [:get, :post, :put, :patch, :delete], format: true
   match "*public_path" => "cms/public#index", public_path: /[^\.].*/,
