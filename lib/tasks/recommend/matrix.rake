@@ -12,7 +12,7 @@ namespace :recommend do
   end
 
   task :create_matrix => :environment do
-    Recommend::CreateMatrixJob.perform_now
+    Recommend::CreateMatrixJob.bind(days: ENV["site"]).perform_now
   end
 
   task :create_random_logs => :environment do

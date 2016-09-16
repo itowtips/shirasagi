@@ -1,12 +1,13 @@
 class Recommend::CreateMatrixJob < Cms::ApplicationJob
-  def perform(param = "")
+  def perform(days = nil)
     delete_matrix
 
-    #TODO: logs term
+    term = {}
+    term = { :created.gte => Time.zone.now.advance(days: days.to_i * -1 ) } if days.present?
     recommender = Recommend::History::Recommender.new
-    tokens = Recommend::History::Log.pluck(:token).uniq
+    tokens = Recommend::History::Log.where(term).pluck(:token).uniq
     tokens.each do |token|
-      logs = Recommend::History::Log.where(token: token)
+      logs = Recommend::History::Log.where(term).where(token: token)
       items = logs.map(&:redis_key).uniq
       Rails.logger.info("#{token} [#{items.join(", ")}]")
       recommender.order_items.add_set(token, items)
