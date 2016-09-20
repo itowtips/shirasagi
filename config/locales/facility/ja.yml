@@ -110,6 +110,8 @@ ja:
         map_points: 座標
         groups: 管理グループ
       facility/node/search:
+        limit: 一覧表示件数
+        map_points_limit: 地図表示件数
         search_html: 検索HTML
         map_html: 地図HTML
       facility/node/location:
@@ -156,6 +158,10 @@ ja:
       image_thumb_size:
         - サムネイルのサイズを指定します。
     facility/addon/search_setting:
+      limit:
+        - 一覧検索結果に表示する件数を指定します。
+      map_points_limit:
+        - 地図検索結果に表示する件数を指定します。
       conditions:
         - 自フォルダーの配下以外で検索対象に含める施設リストフォルダー名を記入します。
         - |-

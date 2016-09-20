@@ -32,16 +32,13 @@ module Facility::Node
     include Facility::Addon::Category
     include Facility::Addon::Service
     include Facility::Addon::Location
+    include Facility::Addon::SearchCache
     include Cms::Addon::Release
     include Cms::Addon::DefaultReleasePlan
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 
     default_scope ->{ where(route: "facility/page") }
-
-    def serve_static_file?
-      false
-    end
 
     def map_pages
       Facility::Map.site(site).where(filename: /^#{filename}\//, depth: depth + 1)
@@ -187,6 +184,8 @@ module Facility::Node
 
     default_scope ->{ where(route: "facility/category") }
 
+    after_save :save_facility_node_page
+
     def condition_hash
       cond = []
       cids = []
@@ -201,6 +200,10 @@ module Facility::Node
       cond << { :category_ids.in => cids } if cids.present?
 
       { '$or' => cond }
+    end
+
+    def save_facility_node_page
+      Facility::Node::Page.site(site).in(category_ids: [id]).map(&:save)
     end
   end
 

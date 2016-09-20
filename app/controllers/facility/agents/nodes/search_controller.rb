@@ -15,9 +15,9 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
       @q_service  = @service_ids.present? ? { service_ids: @service_ids } : {}
       @q_location = @location_ids.present? ? { location_ids: @location_ids } : {}
 
-      @categories = Facility::Node::Category.in(_id: @category_ids)
-      @services   = Facility::Node::Service.in(_id: @service_ids)
-      @locations  = Facility::Node::Location.in(_id: @location_ids)
+      @categories = Facility::Node::Category.site(@cur_site).in(_id: @category_ids)
+      @services   = Facility::Node::Service.site(@cur_site).in(_id: @service_ids)
+      @locations  = Facility::Node::Location.site(@cur_site).in(_id: @location_ids)
     end
 
     def set_items
@@ -27,49 +27,27 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
         in(@q_category).
         in(@q_service).
         in(@q_location).
-        order_by(name: 1)
+        order_by(name: 1).
+        page(params[:page]).
+        per(@cur_node.limit)
     end
 
     def set_markers
-      @items = []
-      @markers = []
-      images = SS::File.all.map {|image| [image.id, image.url]}.to_h
-
-      Facility::Map.site(@cur_site).and_public.each do |map|
-        parent_path = ::File.dirname(map.filename)
-        item = Facility::Node::Page.site(@cur_site).and_public.
-          where(@cur_node.condition_hash).
-          in_path(parent_path).
-          search(name: @keyword).
-          in(@q_category).
-          in(@q_service).
-          in(@q_location).first
-
-        next unless item
-
-        @items << item
-        categories   = item.categories.entries
-        category_ids = categories.map(&:id)
-        image_id     = categories.map(&:image_id).first
-
-        image_url = images[image_id]
-        marker_info = view_context.render_marker_info(item)
-
-        map.map_points.each do |point|
-          point[:id] = item.id
-          point[:html] = marker_info
-          point[:category] = category_ids
-          point[:image] = image_url if image_url.present?
-          @markers.push point
-        end
-      end
-
-      @items.sort_by!(&:name)
+      limit = @cur_node.map_points_limit.to_i
+      @items = Facility::Node::Page.site(@cur_site).and_public.
+        where(@cur_node.condition_hash).
+        search(name: @keyword).
+        in(@q_category).
+        in(@q_service).
+        in(@q_location).
+        order_by(name: 1)
+      @items = @items.page(params[:page]).per(limit) if limit > 0
+      @markers = @items.pluck(:map_points).flatten
     end
 
     def set_filter_items
-      @filter_categories = @cur_node.st_categories.in(_id: @items.map(&:category_ids).flatten)
-      @filter_locations = @cur_node.st_locations.entries.select{ |l| l.center_point[:loc].present? }
+      @filter_categories = @cur_node.st_categories.in(_id: @items.pluck(:category_ids).flatten)
+      @filter_locations = @cur_node.st_locations.select{ |l| l.center_point[:loc].present? }
       @focus_options = @filter_locations.map do |l|
         opts = {}
         opts["data-zoom-level"] = l.center_point[:zoom_level] if l.center_point[:zoom_level]
@@ -96,8 +74,6 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
       set_query
       set_items
       @current = "result"
-      @items = @items.page(params[:page]).
-        per(@cur_node.limit)
       render :result
     end
 
