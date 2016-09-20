@@ -13,3 +13,5 @@ $(window).on "load", ->
 
 <%= render file: "facility/agents/addons/search_result/view/upper" %>
 <%= render file: "facility/agents/addons/search_result/view/map" %>
+
+<%= paginate @items if @items.try(:current_page) %>

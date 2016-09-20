@@ -2,9 +2,14 @@ class Cms::Agents::Tasks::NodesController < ApplicationController
   include Cms::PublicFilter::Node
 
   before_action :set_params
+  before_action :set_facilities, only: :generate
   PER_BATCH = 100
 
   private
+    def set_facilities
+      @facilities = (@facilities == "1")
+    end
+
     def set_params
       #
     end
@@ -34,6 +39,7 @@ class Cms::Agents::Tasks::NodesController < ApplicationController
         agent.controller.instance_variable_set :@task, @task
         agent.controller.instance_variable_set :@site, @site
         agent.controller.instance_variable_set :@node, node
+        agent.controller.instance_variable_set :@facilities, @facilities
         agent.invoke :generate
 
         #generate_node_pages node
