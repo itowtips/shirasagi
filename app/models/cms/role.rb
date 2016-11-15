@@ -1,6 +1,7 @@
 class Cms::Role
   include SS::Model::Role
   include SS::Reference::Site
+  include Cms::Addon::HideAddonSetting
   include Cms::SitePermission
 
   set_permission_name "cms_roles", :edit

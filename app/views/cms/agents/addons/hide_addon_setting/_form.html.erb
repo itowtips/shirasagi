@@ -1,0 +1,28 @@
+<%
+  hideable_addons = SS::Config.cms.hideable_addons
+  return "" if hideable_addons.blank?
+
+  modules = {}
+  hideable_addons.each do |name, remark|
+    mod = name.sub(/\/.*$/, "")
+    modules[mod] ||= []
+    modules[mod] << [name, t("modules.addons.#{name}"), remark]
+  end
+%>
+
+<%= hidden_field_tag "item[hide_addons][]" %>
+<dl class="see role-permissions">
+  <dt><%= @model.t :hide_addons %><%= @model.tt :hide_addons %></dt>
+  <dd>
+    <% modules.each do |mod, addons| %>
+    <div class="module">
+      <p class="module-name">[<%= t("modules.#{mod}") %>]</p>
+      <div class="permissions">
+        <% addons.each do |name, title, remark| %>
+          <label><%= f.check_box("hide_addons[]", {}, name) %> <%= "#{title}（#{remark}）" %></label><br />
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+  </dd>
+</dl>

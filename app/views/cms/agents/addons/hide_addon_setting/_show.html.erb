@@ -1,0 +1,18 @@
+<%
+  hideable_addons = SS::Config.cms.hideable_addons
+  return "" if hideable_addons.blank?
+
+  modules = {}
+  hideable_addons.each do |name, remark|
+    mod = name.sub(/\/.*$/, "")
+    modules[mod] ||= []
+    modules[mod] << [t("modules.addons.#{name}"), remark]
+  end
+  hide_addons = @item.hide_addons.select(&:present?).map { |name| t("modules.addons.#{name}") }
+  return "" if hide_addons.blank?
+%>
+
+<dl class="see role-permissions">
+  <dt><%= @model.t :hide_addons %><%= @model.tt :hide_addons %></dt>
+  <dd><%=br hide_addons.join("\n") %></dd>
+</dl>

@@ -60,6 +60,14 @@ production: &production
   # Session Lifetime in seconds
   session_lifetime: 1800
 
+  # hideable addons in cms crud
+  hideable_addons:
+    - [ "category/category", "ページ" ]
+    - [ "cms/parent_crumb", "ページ" ]
+    - [ "cms/related_page", "ページ" ]
+    - [ "cms/group_permission", "ページ/フォルダー" ]
+    - [ "contact/page", "ページ" ]
+
 test:
   <<: *production
 

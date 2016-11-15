@@ -318,6 +318,7 @@ ja:
       cms/opendata_ref/license: オープンデータ/ライセンス
       cms/monthly_nav: アーカイブナビ（月次）
       cms/archive_view_switcher: アーカイブ用表示設定
+      cms/hide_addon_setting: アドオン非表示設定
 
   mongoid:
     models:
@@ -538,6 +539,8 @@ ja:
         periods: 表示期間
       cms/addon/archive_view_switcher:
         archive_view: 表示設定
+      cms/addon/hide_addon_setting:
+        hide_addons: 非表示
 
   errors:
     messages:
