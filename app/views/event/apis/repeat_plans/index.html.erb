@@ -1,29 +1,29 @@
-<%= jquery do %>
-$(".event-repeat-js-date").datetimepicker({ lang: "ja", timepicker: false, format: "Y/m/d" });
-<% end %>
-
 <%= coffee do %>
-
-SS.ajaxForm "form.event-repeat",
-  success: (data) ->
-    alert(data)
-    #$("#cboxLoadedContent").load "<%= url_for(action: :index) %>"
-
+$(".event-repeat-js-date").datetimepicker({ lang: "ja", timepicker: false, format: "Y/m/d" })
+$("form.event-repeat").on "submit", (e) ->
+  $(this).ajaxSubmit(
+    url: $(this).attr("action")
+    success: (data) ->
+      $("#cboxLoadedContent").html data
+    error: (data, status) ->
+      alert(["== Error =="].concat(data.responseJSON).join("\n"))
+  )
+  return false
 <% end %>
 
 <%= form_tag(event_apis_repeat_plans_path(site: @cur_site.id), :method => :put, class: "event-repeat") do |f| %>
 
   <dl class="see">
     <dt>繰り返し設定</dt>
-    <dd><%= select_tag :interval, options_for_select(["毎日", "毎週", "毎月", "毎年"]) %></dd>
+    <dd><%= select_tag :repeat_type, options_for_select([["毎日", "daily"], ["毎週", "weekly"], ["毎月", "monthly"]]) %></dd>
 
-    <dt>繰り返し間隔</dt>
-    <dd><%= select_tag :interval, options_for_select(1..10) %></dd>
+    <dt>日にち</dt>
+    <dd><%= select_tag :interval, options_for_select(1..31) %></dd>
 
     <dt class="repeat-weekly">曜日</dt>
     <dd class="repeat-weekly">
       <% (0..6).each do |i| %>
-      <label><%= check_box_tag "wdays[]", {}, i.to_s %> <%= t("date.abbr_day_names")[i] %></label>
+      <label><%= check_box_tag "wdays[]", i.to_s, false %> <%= t("date.abbr_day_names")[i] %></label>
       <% end %>
     </dd>
 
@@ -31,7 +31,7 @@ SS.ajaxForm "form.event-repeat",
     <dd><%= text_field_tag :repeat_start, "", class: "date event-repeat-js-date repeat_start" %></dd>
 
     <dt>終了日</dt>
-    <dd><%= text_field_tag :repeat_start, "", class: "date event-repeat-js-date repeat_end" %></dd>
+    <dd><%= text_field_tag :repeat_end, "", class: "date event-repeat-js-date repeat_end" %></dd>
   </dl>
 
   <%= button_tag t("views.button.save"), class: "save btn", style: "margin-left: 10px;" %>
