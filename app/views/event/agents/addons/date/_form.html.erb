@@ -13,6 +13,9 @@
     - <%= text_field_tag "event[][close_date]", nil, { id: nil, class: "date js-date close" } %>
     <%= button_tag t("event.del_date"), { type: :button, class: "clear btn" } %>
   </dd>
-  <dd><%= button_tag t("event.add_date"), { type: :button, class: "add-date btn" } %></dd>
+  <dd>
+    <%= button_tag t("event.add_date"), { type: :button, class: "add-date btn" } %>
+    <%= link_to t("event.repeat_plan"), event_apis_repeat_plans_path, class: "ajax-box btn" %>
+  </dd>
   <dd style="display: none;"><%= f.text_area :event_dates, class: "event-dates btn" %></dd>
 </dl>

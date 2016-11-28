@@ -57,4 +57,10 @@ SS::Application.routes.draw do
     get "search/(index.:format)" => "public#index", cell: "node/search"
   end
 
+  namespace "event", path: ".s:site/event" do
+    namespace "apis" do
+      get "repeat_plans" => "repeat_plans#index"
+      put "repeat_plans" => "repeat_plans#create"
+    end
+  end
 end
