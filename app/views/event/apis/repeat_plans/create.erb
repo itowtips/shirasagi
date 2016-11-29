@@ -1,3 +1,4 @@
-<%= jquery do %>
-alert("<%= @dates.join(",") %>")
+<%= coffee do %>
+dates = <%== @dates.to_json %>
+console.log(date)
 <% end %>

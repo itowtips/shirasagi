@@ -27,7 +27,7 @@ class Event::Apis::RepeatPlansController < ApplicationController
         range << d
       end
       dates << range if range.present?
-      @dates = dates
+      @dates = dates.map { |range| [range.first, range.last] }
     end
 
   private
