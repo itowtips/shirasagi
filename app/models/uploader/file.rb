@@ -91,7 +91,7 @@ class Uploader::File
   end
 
   def basename
-    ::File.basename(filename)
+    ::File.basename(path)
   end
 
   def name
