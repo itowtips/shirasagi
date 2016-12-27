@@ -2,7 +2,7 @@ require "csv"
 
 class Facility::ImportJob < Cms::ApplicationJob
   def put_log(message)
-    Rails.logger.info(message)
+    Rails.logger.warn(message)
   end
 
   def perform(ss_file_id)
@@ -33,9 +33,9 @@ class Facility::ImportJob < Cms::ApplicationJob
 
   def update_row(row)
     filename = "#{node.filename}/#{row[@model.t(:filename)]}"
-    item = @model.find_or_create_by filename: filename
+    item = @model.find_or_initialize_by filename: filename, site_id: site.id
+    item.cur_site = site
     set_page_attributes(row, item)
-    item.site = site
 
     if item.save
       name = item.name
