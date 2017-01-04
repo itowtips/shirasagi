@@ -3,6 +3,7 @@ class Cms::Member
   include ::Member::ExpirableSecureId
   include ::Member::Addon::AdditionalAttributes
   include Ezine::Addon::Subscription
+  include Nices::Addon::MemberKind
 
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
 

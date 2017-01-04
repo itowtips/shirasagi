@@ -1,0 +1,19 @@
+ja:
+  nices:
+    nices: NICES
+
+  modules:
+    nices: NICES
+    addons:
+      nices/member_kind: メンバー種別
+
+  cms:
+    nodes:
+      nices/mypage: マイページ
+      nices/curriculum: 授業履修計画
+      nices/curriculum_checker: マイカリキュラムチェックリスト
+
+  mongoid:
+    attributes:
+      nices/addon/member_kind:
+        member_kind: メンバー種別

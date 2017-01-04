@@ -1,6 +1,7 @@
 class Member::Agents::Nodes::LoginController < ApplicationController
   include Cms::NodeFilter::View
-  include Member::LoginFilter
+  #include Member::LoginFilter
+  include Nices::LoginFilter
 
   skip_action_callback :logged_in?, only: [:login, :logout, :callback, :failure]
 
