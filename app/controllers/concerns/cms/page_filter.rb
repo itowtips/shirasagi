@@ -65,7 +65,7 @@ module Cms::PageFilter
         location = { action: :index }
         master = @item.master
         @item.delete
-        master.remove_file
+        master.generate_file
       end
       render_update result, location: location
     end
