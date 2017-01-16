@@ -1,3 +1,8 @@
 ja:
   modules:
     bank_sys: バンクシステム
+
+  mongoid:
+    models:
+      bank_sys/job_seeker: 求職者
+      bank_sys/company_member: 企業担当者

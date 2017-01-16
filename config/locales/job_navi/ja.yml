@@ -1,3 +1,7 @@
 ja:
   modules:
     job_navi: 就活ナビ
+
+  mongoid:
+    models:
+      job_navi/member: 学生
