@@ -1,0 +1,12 @@
+<dl class="see mod-job-db-member-applicant">
+  <dt><%= @model.t :kind_ids %><%= @model.tt :kind_ids %></dt>
+  <dd>
+    <%= hidden_field_tag "#{f.object_name}[kind_ids][]", nil, { id: "#{f.object_name}_kind_ids_z" } %>
+    <% JobDb::Member::Kind.all.each do |kind| %>
+      <label>
+        <%= check_box_tag "#{f.object_name}[kind_ids][]", kind.id, @item.kind_ids.include?(kind.id), { id: "#{f.object_name}_kind_ids_#{kind.id}" } %>
+        <%= kind.name %>
+      </label>
+    <% end %>
+  </dd>
+</dl>

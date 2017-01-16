@@ -1,0 +1,21 @@
+ja:
+  sys_role:
+    edit_job_db_members: メンバーの管理
+    edit_job_db_companies: 企業情報の管理
+
+  modules:
+    job_db: 仕事DB
+    addons:
+      job_db/member/applicant: 種類
+
+  mongoid:
+    models:
+      job_db/member: メンバー
+      job_db/member/kind: メンバー種別
+      job_db/company/profile: 企業情報
+      job_db/company/call: 求人情報
+      job_db/company/sector: 業種
+      job_db/company/area: 地域
+    attributes:
+      job_db/addon/member/applicant:
+        kind_ids: 種類

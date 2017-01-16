@@ -1,0 +1,4 @@
+<dl class="see mod-job-db-member-applicant">
+  <dt><%= @model.t :kind_ids %></dt>
+  <dd><%= br @item.kinds.pluck(:name).join("\n") %></dd>
+</dl>
