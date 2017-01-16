@@ -1,0 +1,21 @@
+<dl class="see mod-job-db-member-permission">
+  <dt><%= @model.t :member_ids %></dt>
+  <dd>
+    <table class="index">
+      <thead>
+      <tr>
+        <th class="name"><%= JobDb::Member.t :name %></th>
+        <th class="email"><%= JobDb::Member.t :email %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @item.members.each do |member| %>
+        <tr data-id="<%= member.id %>">
+          <td><%= member.name %></td>
+          <td><%= member.email %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>

@@ -24,5 +24,9 @@ SS::Application.routes.draw do
       resources :sectors, concerns: :deletion
       resources :areas, concerns: :deletion
     end
+
+    namespace "apis" do
+      get "members" => "members#index"
+    end
   end
 end

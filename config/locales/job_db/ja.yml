@@ -1,4 +1,11 @@
 ja:
+  job_db:
+    apis:
+      members:
+        index: メンバーを選択する
+        search: メンバーを検索
+        select: メンバーを設定する
+
   sys_role:
     edit_job_db_members: メンバーの管理
     edit_job_db_companies: 企業情報の管理
@@ -8,6 +15,7 @@ ja:
     addons:
       job_db/member/applicant: 種類
       job_db/member/target: ターゲット
+      job_db/member/admins: 管理メンバー
 
   cms:
     nodes:
@@ -26,3 +34,16 @@ ja:
         kind_ids: 種類
       job_db/addon/member/target:
         target_class: ターゲット
+      job_db/addon/member/admins:
+        member_ids: メンバー
+      job_db/company/profile:
+        name: 名前
+
+  tooltip:
+    job_db/addon/member/admins:
+      member_ids:
+        - この企業情報を管理するメンバーを選択します。
+
+    job_db/company/profile:
+      name:
+        - 企業名を入力します。

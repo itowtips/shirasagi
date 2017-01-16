@@ -1,0 +1,25 @@
+<dl class="see mod-job-db-member-permission">
+  <dt><%= @model.t :member_ids %><%= @model.tt :member_ids %></dt>
+  <dd>
+    <%= f.hidden_field "member_ids[]", value: "", class: "hidden-ids" %>
+    <%= link_to t("job_db.apis.members.index"), job_db_apis_members_path, class: "ajax-box" %>
+  </dd>
+  <dd>
+    <table class="index ajax-selected">
+      <thead>
+      <tr>
+        <th class="name"><%= JobDb::Member.t :name %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @item.members.each do |member| %>
+        <tr data-id="<%= member.id %>">
+          <td><%= f.hidden_field "member_ids[]", value: member.id %> <%= member.name %></td>
+          <td><%= link_to t("views.button.delete"), "#", class: "deselect btn" %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>
