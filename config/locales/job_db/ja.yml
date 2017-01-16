@@ -7,6 +7,11 @@ ja:
     job_db: 仕事DB
     addons:
       job_db/member/applicant: 種類
+      job_db/member/target: ターゲット
+
+  cms:
+    nodes:
+      job_db/login: ログイン
 
   mongoid:
     models:
@@ -19,3 +24,5 @@ ja:
     attributes:
       job_db/addon/member/applicant:
         kind_ids: 種類
+      job_db/addon/member/target:
+        target_class: ターゲット
