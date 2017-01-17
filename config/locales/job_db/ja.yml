@@ -16,6 +16,7 @@ ja:
       job_db/member/applicant: 種類
       job_db/member/target: ターゲット
       job_db/member/admins: 管理メンバー
+      job_db/release: 公開設定
 
   cms:
     nodes:
@@ -36,6 +37,11 @@ ja:
         target_class: ターゲット
       job_db/addon/member/admins:
         member_ids: メンバー
+      job_db/addon/release:
+        state: ステータス
+        released: 公開日時
+        release_date: 公開開始日時(予約)
+        close_date: 公開終了日時(予約)
       job_db/company/profile:
         name: 名前
 
@@ -43,6 +49,13 @@ ja:
     job_db/addon/member/admins:
       member_ids:
         - この企業情報を管理するメンバーを選択します。
+
+    job_db/addon/release:
+      state:
+        - 公開状態を選択します。
+      released:
+        - ページに表示する更新日の指定に利用します。
+        - 実際の更新日以外の日付を指定する場合に利用します。
 
     job_db/company/profile:
       name:

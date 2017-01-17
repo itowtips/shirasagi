@@ -11,18 +11,14 @@ SS::Application.routes.draw do
     get :download, on: :collection
   end
 
-  # namespace "company_list", path: ".company_list" do
-  #   get "/" => "main#index", as: :main
-  #   resources :members, concerns: [ :deletion, :download ]
-  #   namespace "member" do
-  #     resources :kinds, concerns: :deletion
-  #   end
-  #
-  #   namespace "company" do
-  #     resources :profiles, concerns: :deletion
-  #     resources :calls, concerns: :deletion
-  #     resources :sectors, concerns: :deletion
-  #     resources :areas, concerns: :deletion
-  #   end
-  # end
+  content "company_list" do
+    get "/" => redirect { |p, req| "#{req.path}/searches" }, as: :main
+    resources :searches, only: [:index, :show]
+  end
+
+  node "company_list" do
+    get "search/(index.:format)" => "public#index", cell: "nodes/search"
+    get "search/:filename/(index.:format)" => "public#show", cell: "nodes/search"
+    get "search/rss.xml" => "public#rss", cell: "nodes/search", format: "xml"
+  end
 end

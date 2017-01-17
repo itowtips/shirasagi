@@ -1,0 +1,24 @@
+<dl class="see">
+  <dt><%= @model.t :name %></dt>
+  <dd><%= @item.name %></dd>
+
+  <dt>フォルダー名</dt>
+  <dd><%= @item.filename %></dd>
+  <dd>
+    <% public_url = public_url_for_company(@cur_node, @item) %>
+    <% public_path = public_path_for_company(@cur_node, @item) %>
+    <%= @item.public? ? link_to(public_url, public_url, target: "_blank") : public_url %>
+    (
+    <% if @cur_site.mobile_enabled? %>
+      <%= link_to :"cms.preview_pc_page", cms_preview_path(path: public_path[1..-1]), target: :_blank %>
+      |
+      <%= link_to :"cms.preview_mobile_page", cms_mobile_preview_path(path: public_path), target: :_blank %>
+    <% else %>
+      <%= link_to :"cms.preview_page", cms_preview_path(path: public_path[1..-1]), target: :_blank %>
+    <% end %>
+    )
+  </dd>
+
+  <dt><%= @model.t :layout %></dt>
+  <dd><%= @cur_node.page_layout.name %></dd>
+</dl>

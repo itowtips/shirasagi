@@ -1,3 +1,11 @@
 ja:
   modules:
     company_list: 企業ガイド
+
+  cms:
+    nodes:
+      company_list/search: 企業検索
+
+  mongoid:
+    models:
+      company_list/node/search: 企業検索
