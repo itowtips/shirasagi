@@ -32,8 +32,9 @@ SS::Application.routes.draw do
     resources :max_file_sizes, concerns: :deletion
 
     namespace "apis" do
-      get "groups" => "groups#index"
       get "sites" => "sites#index"
+      get "groups" => "groups#index"
+      get "users" => "users#index"
     end
 
     namespace "db" do
