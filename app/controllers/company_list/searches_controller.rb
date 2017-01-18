@@ -27,13 +27,13 @@ class CompanyList::SearchesController < ApplicationController
 
   public
     def index
-      raise "403" unless @model.allowed?(:read, @cur_ss_user)
+      raise "403" unless @cur_user.cms_role_permission(@cur_site, :company_list, :companies, :read) > 0
       set_items
       @items = @items.search(params[:s]).page(params[:page]).per(50)
     end
 
     def show
-      raise "403" unless @item.allowed?(:read, @cur_ss_user)
+      raise "403" unless @cur_user.cms_role_permission(@cur_site, :company_list, :companies, :read) > 0
       render
     end
 end

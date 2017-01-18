@@ -24,6 +24,10 @@ module Cms::Reference
       @cms_role_permissions
     end
 
+    def cms_role_permission(site, module_name, permission_name, action)
+      cms_role_permissions["#{action}_#{module_name}_#{permission_name}_#{site.id}"].to_i
+    end
+
     def cms_role_level(site)
       3
       # cms_roles.site(site).pluck(:permission_level).max
