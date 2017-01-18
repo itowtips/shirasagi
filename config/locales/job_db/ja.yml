@@ -8,7 +8,10 @@ ja:
 
   sys_role:
     edit_job_db_members: メンバーの管理
-    edit_job_db_companies: 企業情報の管理
+    read_job_db_companies: 企業情報の閲覧
+    edit_job_db_companies: 企業情報の編集
+    delete_job_db_companies: 企業情報の削除
+    release_job_db_companies: 企業情報の公開
 
   modules:
     job_db: 仕事DB

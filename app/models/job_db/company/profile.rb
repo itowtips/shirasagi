@@ -7,7 +7,7 @@ class JobDb::Company::Profile
   include JobDb::Addon::Release
   include Sys::Permission
 
-  set_permission_name "job_db_companies", :edit
+  set_permission_name "job_db_companies"
 
   seqid :id
   field :name, type: String

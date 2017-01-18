@@ -4,7 +4,13 @@
 
 <dl class="see mod-job-db-release">
   <dt><%= @model.t :state %><%= @model.tt :state %></dt>
-  <dd><%= f.select :state, @item.state_options %></dd>
+  <dd>
+    <% if @model.allowed?(:release, @cur_user) %>
+    <%= f.select :state, @item.state_options %>
+    <% else %>
+    <%= f.hidden_field :state %><%= @item.label :state %>
+    <% end %>
+  </dd>
 
   <dt><%= @model.t :released %><%= @model.tt :released %></dt>
   <dd><%= f.text_field :released, class: "datetime js-datetime", value: tryb { @item.released.strftime("%Y/%m/%d %H:%M") } %></dd>
