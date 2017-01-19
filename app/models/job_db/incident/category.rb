@@ -1,14 +1,14 @@
 class JobDb::Incident::Category
   include JobDb::Model::Category
-  # include Gws::Referenceable
-  # include Gws::Reference::User
-  # include Gws::Reference::Site
-  # include Gws::Addon::ReadableSetting
-  # include Gws::Addon::GroupPermission
-  include Sys::Permission
+  include JobDb::Referenceable
+  include JobDb::Addon::ReadableSetting
+  include JobDb::Addon::GroupPermission
   include Gws::Addon::History
 
+  set_permission_name "job_db_incidents"
   default_scope ->{ where(model: "gws/board/category").order_by(name: 1) }
+
+  attr_accessor :cur_user
 
   validate :validate_name_depth
   validate :validate_parent_name

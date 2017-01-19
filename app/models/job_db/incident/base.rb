@@ -5,7 +5,7 @@ class JobDb::Incident::Base
   include SS::Addon::Markdown
   include JobDb::Addon::File
   # include JobDb::Incident::DescendantsFileInfo
-  # include JobDb::Addon::Incident::Category
+  include JobDb::Addon::Incident::Category
   include JobDb::Addon::ReadableSetting
   include JobDb::Addon::GroupPermission
   include JobDb::Addon::History

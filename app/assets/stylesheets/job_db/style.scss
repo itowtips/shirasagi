@@ -14,3 +14,17 @@
     }
   }
 }
+
+// Category
+.job_db-category-label {
+  padding: 1px 5px;
+  @include border-radius(3px);
+  background-color: #e8e8e8;
+  background-image: url(/assets/img/gws/bg-plan.png);
+  color: #444;
+  font-size: 90%;
+  font-weight: normal;
+}
+a.job_db-category-label:hover {
+  //opacity: 0.85;
+}

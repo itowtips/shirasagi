@@ -15,6 +15,10 @@ ja:
         index: メンバーを選択する
         search: メンバーを検索
         select: メンバーを設定する
+      categories:
+        index: カテゴリーを選択する
+        search: カテゴリーを検索
+        select: カテゴリーを設定する
 
   sys_role:
     read_other_job_db_members: メンバーの閲覧（全て）
@@ -49,6 +53,7 @@ ja:
       job_db/member/applicant: 種類
       job_db/member/target: ターゲット
       job_db/member/admins: 管理メンバー
+      job_db/incident/category: カテゴリー
 
   cms:
     nodes:
@@ -67,10 +72,18 @@ ja:
       job_db/incident/category: カテゴリー
       job_db/history: 操作履歴
     attributes:
+      job_db/model/category:
+        model: モデル
+        state: 状態
+        name: 種別名
+        color: 表示色
+        order: 並び順
+        bg_color: 背景色
+        text_color: 文字色
+
       job_db/addon/group_permission:
         group_ids: 管理グループ
         user_ids: 管理ユーザー
-      job_db/addon/history:
 
       job_db/addon/release:
         state: ステータス
@@ -99,8 +112,21 @@ ja:
         updated_fields: 変更内容
         updated_field_names: 変更フィールド名
         created: 変更日時
+      job_db/addon/incident/category:
+        category_ids: カテゴリー
 
   tooltip:
+    job_db/model/category:
+      name:
+        - 種別名を入力します。
+      color:
+        - 表示色を入力します。
+        -
+        - 表示色は "#RRGGBB" 形式で入力します（RR, GG, BB はそれぞれ赤、緑、青の成分を16進数で入力）。
+      order:
+        - 並び順を入力します。
+        - 数字が小さいほど上位に表示されます。
+
     job_db/addon/member/admins:
       member_ids:
         - この企業情報を管理するメンバーを選択します。
@@ -125,3 +151,7 @@ ja:
     job_db/incident/base:
       name:
         - 対応履歴の名前を入力します。
+
+    job_db/addon/incident/category:
+      category_ids:
+        - カテゴリーを選択します。
