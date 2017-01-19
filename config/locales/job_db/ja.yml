@@ -35,12 +35,18 @@ ja:
     delete_private_job_db_companies: 企業情報の削除（所有）
     release_other_job_db_companies: 企業情報の公開（全て）
     release_private_job_db_companies: 企業情報の公開（所有）
-    read_other_job_db_incidents: 対応履歴の閲覧（全て）
-    read_private_job_db_incidents: 対応履歴の閲覧（所有）
-    edit_other_job_db_incidents: 対応履歴の編集（全て）
-    edit_private_job_db_incidents: 対応履歴の編集（所有）
-    delete_other_job_db_incidents: 対応履歴の削除（全て）
-    delete_private_job_db_incidents: 対応履歴の削除（所有）
+    read_other_job_db_incident_topics: 対応履歴の閲覧（全て）
+    read_private_job_db_incident_topics: 対応履歴の閲覧（所有）
+    edit_other_job_db_incident_topics: 対応履歴の編集（全て）
+    edit_private_job_db_incident_topics: 対応履歴の編集（所有）
+    delete_other_job_db_incident_topics: 対応履歴の削除（全て）
+    delete_private_job_db_incident_topics: 対応履歴の削除（所有）
+    read_other_job_db_incident_categories: 対応履歴カテゴリーの閲覧（全て）
+    read_private_job_db_incident_categories: 対応履歴カテゴリーの閲覧（所有）
+    edit_other_job_db_incident_categories: 対応履歴カテゴリーの編集（全て）
+    edit_private_job_db_incident_categories: 対応履歴カテゴリーの編集（所有）
+    delete_other_job_db_incident_categories: 対応履歴カテゴリーの削除（全て）
+    delete_private_job_db_incident_categories: 対応履歴カテゴリーの削除（所有）
 
   modules:
     job_db: 仕事DB

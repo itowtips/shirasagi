@@ -5,7 +5,6 @@ class JobDb::Incident::Category
   include JobDb::Addon::GroupPermission
   include Gws::Addon::History
 
-  set_permission_name "job_db_incidents"
   default_scope ->{ where(model: "gws/board/category").order_by(name: 1) }
 
   attr_accessor :cur_user

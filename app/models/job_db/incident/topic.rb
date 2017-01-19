@@ -4,8 +4,6 @@ class JobDb::Incident::Topic < JobDb::Incident::Base
   include JobDb::Addon::ReadableSetting
   include JobDb::Addon::GroupPermission
 
-  set_permission_name "job_db_incidents"
-
   field :name, type: String
   field :descendants_updated, type: DateTime
 
