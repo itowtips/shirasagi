@@ -33,6 +33,14 @@ module JobDb::GroupPermission
         { user_ids: user.id }
       end
     end
+
+    def site(site, opts = {})
+      if opts[:state].present?
+        self.in(group_ids: Cms::Group.unscoped.site(site).state(opts[:state]).pluck(:id))
+      else
+        self.in(group_ids: Cms::Group.site(site).pluck(:id))
+      end
+    end
   end
 
   def owned?(user)

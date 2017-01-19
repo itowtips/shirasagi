@@ -17,14 +17,6 @@ class JobDb::Company::Profile
   validates :name, presence: true, length: { maximum: 40 }
 
   class << self
-    def site(site, opts = {})
-      if opts[:state].present?
-        self.in(group_ids: Cms::Group.unscoped.site(site).state(opts[:state]).pluck(:id))
-      else
-        self.in(group_ids: Cms::Group.site(site).pluck(:id))
-      end
-    end
-
     def search(parasm = {})
       # TODO: Implement
       all
