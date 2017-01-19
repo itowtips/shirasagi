@@ -13,6 +13,24 @@
       content: " >>"
     }
   }
+  .portal-incidents {
+    margin-bottom: 10px;
+  }
+  .portal-incidents-owned {
+    width: 50%;
+    float: left;
+    padding-right: 4px;
+    @include mb { width: 100%; }
+  }
+  .portal-incidents-new {
+    width: 50%;
+    float: left;
+    padding-left: 4px;
+    @include mb { width: 100%; }
+  }
+  .portal-cms-contents {
+    clear: both;
+  }
 }
 
 // Category

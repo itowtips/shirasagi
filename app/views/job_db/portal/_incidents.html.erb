@@ -1,39 +1,85 @@
-<div class="index portal-incidents">
-  <div class="list-head">対応履歴管理</div>
-  <ul class="list-items">
-    <li class="list-item">
-      <div class="info">
-        <%= link_to "Web から移住に関する問い合わせがありました。", "#", class: "title" %>
+<div class="portal-incidents">
+  <div class="portal-incidents-owned">
+    <div class="index">
+      <div class="list-head">対応履歴管理（所有）</div>
+      <ul class="list-items">
+        <li class="list-item">
+          <div class="info">
+            <%= link_to "Web から移住に関する問い合わせがありました。", "#", class: "title" %>
 
-        <div class="meta">
-          <span class="datetime"><%= tryb { Time.zone.now.strftime("%Y/%m/%d %H:%M") } %></span>
-          <span class="person">担当: 大野智</span>
-          <span class="method">問い合わせフォーム</span>
-        </div>
-      </div>
-    </li>
-    <li class="list-item">
-      <div class="info">
-        <%= link_to "電話で物件に関する問い合わせがありました。", "#", class: "title" %>
+            <div class="meta">
+              <span class="datetime"><%= tryb { Time.zone.now.strftime("%Y/%m/%d %H:%M") } %></span>
+              <span class="person">担当: 大野智</span>
+              <span class="method">問い合わせフォーム</span>
+            </div>
+          </div>
+        </li>
+        <li class="list-item">
+          <div class="info">
+            <%= link_to "電話で物件に関する問い合わせがありました。", "#", class: "title" %>
 
-        <div class="meta">
-          <span class="datetime"><%= tryb { Time.zone.now.strftime("%Y/%m/%d %H:%M") } %></span>
-          <span class="person">担当: 櫻井翔</span>
-          <span class="method">電話</span>
-        </div>
-      </div>
-    </li>
-    <li class="list-item">
-      <div class="info">
-        <%= link_to "イベントへの申し込みがありました。", "#", class: "title" %>
+            <div class="meta">
+              <span class="datetime"><%= tryb { Time.zone.now.strftime("%Y/%m/%d %H:%M") } %></span>
+              <span class="person">担当: 櫻井翔</span>
+              <span class="method">電話</span>
+            </div>
+          </div>
+        </li>
+        <li class="list-item">
+          <div class="info">
+            <%= link_to "イベントへの申し込みがありました。", "#", class: "title" %>
 
-        <div class="meta">
-          <span class="datetime"><%= tryb { Time.zone.now.strftime("%Y/%m/%d %H:%M") } %></span>
-          <span class="person">担当: なし</span>
-          <span class="method">イベント申込フォーム</span>
-        </div>
-      </div>
-    </li>
-  </ul>
-  <div class="more"><%= link_to I18n.t("views.links.more"), '#portal-incidents' %></div>
+            <div class="meta">
+              <span class="datetime"><%= tryb { Time.zone.now.strftime("%Y/%m/%d %H:%M") } %></span>
+              <span class="person">担当: なし</span>
+              <span class="method">イベント申込フォーム</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="more"><%= link_to I18n.t("views.links.more"), '#portal-incidents' %></div>
+    </div>
+  </div>
+
+  <div class="portal-incidents-new">
+    <div class="index">
+      <div class="list-head">対応履歴管理（新着）</div>
+      <ul class="list-items">
+        <li class="list-item">
+          <div class="info">
+            <%= link_to "Web から移住に関する問い合わせがありました。", "#", class: "title" %>
+
+            <div class="meta">
+              <span class="datetime"><%= tryb { Time.zone.now.strftime("%Y/%m/%d %H:%M") } %></span>
+              <span class="person">担当: 大野智</span>
+              <span class="method">問い合わせフォーム</span>
+            </div>
+          </div>
+        </li>
+        <li class="list-item">
+          <div class="info">
+            <%= link_to "電話で物件に関する問い合わせがありました。", "#", class: "title" %>
+
+            <div class="meta">
+              <span class="datetime"><%= tryb { Time.zone.now.strftime("%Y/%m/%d %H:%M") } %></span>
+              <span class="person">担当: 櫻井翔</span>
+              <span class="method">電話</span>
+            </div>
+          </div>
+        </li>
+        <li class="list-item">
+          <div class="info">
+            <%= link_to "イベントへの申し込みがありました。", "#", class: "title" %>
+
+            <div class="meta">
+              <span class="datetime"><%= tryb { Time.zone.now.strftime("%Y/%m/%d %H:%M") } %></span>
+              <span class="person">担当: なし</span>
+              <span class="method">イベント申込フォーム</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="more"><%= link_to I18n.t("views.links.more"), '#portal-incidents' %></div>
+    </div>
+  </div>
 </div>

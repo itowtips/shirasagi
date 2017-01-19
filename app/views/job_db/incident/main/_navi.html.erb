@@ -1,7 +1,9 @@
 <% if JobDb::Incident::Topic.allowed?(:read, @cur_user) %>
     <nav class="mod-navi">
-      <h2><%= JobDb::Incident::Topic.model_name.human %></h2>
-      <h3><%= link_to JobDb::Incident::Topic.model_name.human, job_db_incident_topics_path %></h3>
+      <h2><%= link_to JobDb::Incident::Topic.model_name.human, job_db_incident_topics_path %></h2>
+      <h3><%= link_to '所有', job_db_incident_topics_path %></h3>
+      <h3><%= link_to 'すべて', job_db_incident_topics_path %></h3>
+      <h3><%= link_to '担当者未定', job_db_incident_topics_path %></h3>
       <h3><%= link_to JobDb::Incident::Category.model_name.human, job_db_incident_categories_path %></h3>
     </nav>
 <% end %>
