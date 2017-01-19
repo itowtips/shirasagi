@@ -2,9 +2,6 @@ ja:
   modules:
     company_list: 企業ガイド
 
-  cms_role:
-    read_company_list_companies: 企業情報の閲覧
-
   cms:
     nodes:
       company_list/search: 企業検索

@@ -1,0 +1,9 @@
+<%= jquery do %> SS_AddonTabs.hide(".mod-job_db-group_permission"); <% end %>
+
+<dl class="see mod-job_db-group_permission">
+  <dt><%= @model.t :group_ids %></dt>
+  <dd><%= br @item.groups.pluck(:name).join("\n") %></dd>
+
+  <dt><%= @model.t :user_ids %></dt>
+  <dd><%= br @item.users.pluck(:name).join("\n") %></dd>
+</dl>

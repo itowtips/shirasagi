@@ -1,0 +1,58 @@
+<%= jquery do %> SS_AddonTabs.hide(".mod-job_db-group_permission"); <% end %>
+
+<div class="mod-job_db-group_permission">
+  <dl class="see mod-job_db-group_permission-groups">
+    <dt><%= @model.t :group_ids %><%= @model.tt :group_ids %></dt>
+    <dd>
+      <%= f.hidden_field "group_ids[]", value: "", class: "hidden-ids" %>
+      <%= link_to t("ss.apis.groups.index"), sys_apis_groups_path, class: "ajax-box" %>
+      <%# link_to t("views.button.copy"), "#", class: "btn js-copy-groups" %>
+      <%# link_to t("views.button.paste"), "#", class: "btn js-paste-groups" %>
+    </dd>
+    <dd>
+      <table class="index ajax-selected">
+        <thead><tr><th class="name"><%= SS::Group.t :name %></th><th class="deselect"></th></tr></thead>
+        <tbody>
+          <% if params[:action] =~ /new/ && !@skip_default_group %>
+            <% @cur_user.groups.each do |group| %>
+            <tr data-id="<%= group.id %>">
+              <td><%= f.hidden_field "group_ids[]", value: group.id %> <%= group.name %></td>
+              <td><%= link_to t("views.button.delete"), "#", class: "deselect btn" %></td>
+            </tr>
+            <% end %>
+        <% end %>
+
+          <% @item.groups.each do |group| %>
+          <tr data-id="<%= group.id %>">
+            <td><%= f.hidden_field "group_ids[]", value: group.id %> <%= group.name %></td>
+            <td><%= link_to t("views.button.delete"), "#", class: "deselect btn" %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </dd>
+  </dl>
+
+  <dl class="see mod-job_db-group_permission-users">
+    <dt><%= @model.t :user_ids %><%= @model.tt :user_ids %></dt>
+    <dd>
+      <%= f.hidden_field "user_ids[]", value: "", class: "hidden-ids" %>
+      <%= link_to t("ss.apis.users.index"), sys_apis_users_path, class: "ajax-box" %>
+      <%# link_to t("views.button.copy"), "#", class: "btn js-copy-users" %>
+      <%# link_to t("views.button.paste"), "#", class: "btn js-paste-users" %>
+    </dd>
+    <dd>
+      <table class="index ajax-selected">
+        <thead><tr><th class="name"><%= SS::User.t :name %></th><th class="deselect"></th></tr></thead>
+        <tbody>
+          <% @item.users.each do |user| %>
+          <tr data-id="<%= user.id %>">
+            <td><%= f.hidden_field "user_ids[]", value: user.id %> <%= user.long_name %></td>
+            <td><%= link_to t("views.button.delete"), "#", class: "deselect btn" %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </dd>
+  </dl>
+</div>
