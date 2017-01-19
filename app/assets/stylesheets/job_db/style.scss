@@ -31,6 +31,18 @@ a.job_db-category-label:hover {
 
 // Incident - show
 .job_db-incident {
+  .main {
+    float: left;
+    width: 60%;
+    padding: 0px 4px;
+    @include mb { width: 100%; }
+  }
+  .meta {
+    float: left;
+    width: 40%;
+    padding: 0px 4px;
+    @include mb { width: 100%; }
+  }
   .topic, .comment {
     @include box;
     margin-bottom: 2px;
@@ -39,9 +51,11 @@ a.job_db-category-label:hover {
       .name {
         margin-right: 4px;
       }
+      border-bottom: 1px solid $gray1;
     }
     .body {
       @include box-body;
+      border-top: none;
     }
     .files {
       margin: 10px;
@@ -75,5 +89,8 @@ a.job_db-category-label:hover {
   }
   .comments {
     padding-left: 20px;
+  }
+  .attributes {
+    padding: 15px;
   }
 }
