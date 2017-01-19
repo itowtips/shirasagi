@@ -1,0 +1,53 @@
+<%= jquery do %>
+  <% if !@item.readable_setting_present? %>
+  SS_AddonTabs.hide(".job_db-addon-readable-setting");
+  <% end %>
+<% end %>
+
+<div class="job_db-addon-readable-setting">
+  <dl class="see job_db-addon-readable-setting-group">
+    <dt><%= @model.t :readable_group_ids %><%= @model.tt :readable_group_ids %></dt>
+    <dd>
+      <%= f.hidden_field "readable_group_ids[]", value: "", class: "hidden-ids" %>
+      <%= link_to t("ss.apis.groups.index"), sys_apis_groups_path, class: "ajax-box" %>
+      <%# link_to t("views.button.copy"), "#", class: "btn js-copy-groups" %>
+      <%# link_to t("views.button.paste"), "#", class: "btn js-paste-groups" %>
+    </dd>
+    <dd>
+      <table class="index ajax-selected">
+        <thead><tr><th class="name"><%= Gws::Group.t :name %></th><th class="deselect"></th></tr></thead>
+        <tbody>
+          <% @item.readable_groups.each do |group| %>
+          <tr data-id="<%= group.id %>">
+            <td><%= f.hidden_field "readable_group_ids[]", value: group.id %> <%= group.name %></td>
+            <td><%= link_to t("views.button.delete"), "#", class: "deselect btn" %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </dd>
+  </dl>
+
+  <dl class="see job_db-addon-readable-setting-member">
+    <dt><%= @model.t :readable_user_ids %><%= @model.tt :readable_user_ids %></dt>
+    <dd>
+      <%= f.hidden_field "readable_user_ids[]", value: "", class: "hidden-ids" %>
+      <%= link_to t("ss.apis.users.index"), sys_apis_users_path, class: "ajax-box" %>
+      <%# link_to t("views.button.copy"), "#", class: "btn js-copy-users" %>
+      <%# link_to t("views.button.paste"), "#", class: "btn js-paste-users" %>
+    </dd>
+    <dd>
+      <table class="index ajax-selected">
+        <thead><tr><th class="name"><%= Gws::User.t :name %></th><th class="deselect"></th></tr></thead>
+        <tbody>
+          <% @item.readable_users.each do |user| %>
+          <tr data-id="<%= user.id %>">
+            <td><%= f.hidden_field "readable_user_ids[]", value: user.id %> <%= user.long_name %></td>
+            <td><%= link_to t("views.button.delete"), "#", class: "deselect btn" %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </dd>
+  </dl>
+</div>

@@ -1,0 +1,15 @@
+<%= jquery do %>
+  <% if !@item.readable_setting_present? %>
+  SS_AddonTabs.hide(".gws-addon-readable-setting");
+  <% end %>
+<% end %>
+
+<div class="gws-addon-readable-setting">
+  <dl class="see">
+    <dt><%= @model.t :readable_group_ids %></dt>
+    <dd><%=br @item.readable_group_names.join("\n") %></dd>
+
+    <dt><%= @model.t :readable_user_ids %></dt>
+    <dd><%=br @item.readable_user_names.join("\n") %></dd>
+  </dl>
+</div>

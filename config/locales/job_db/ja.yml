@@ -1,6 +1,15 @@
 ja:
   job_db:
     portal: ポータル
+    history:
+      mode:
+        create: 登録
+        update: 変更
+        delete: 削除
+      user:
+        create: 作成者
+        update: 更新者
+        delete: 削除者
     apis:
       members:
         index: メンバーを選択する
@@ -22,12 +31,21 @@ ja:
     delete_private_job_db_companies: 企業情報の削除（所有）
     release_other_job_db_companies: 企業情報の公開（全て）
     release_private_job_db_companies: 企業情報の公開（所有）
+    read_other_job_db_incidents: 対応履歴の閲覧（全て）
+    read_private_job_db_incidents: 対応履歴の閲覧（所有）
+    edit_other_job_db_incidents: 対応履歴の編集（全て）
+    edit_private_job_db_incidents: 対応履歴の編集（所有）
+    delete_other_job_db_incidents: 対応履歴の削除（全て）
+    delete_private_job_db_incidents: 対応履歴の削除（所有）
 
   modules:
     job_db: 仕事DB
     addons:
       job_db/group_permission: 管理権限
+      job_db/file: ファイル
+      job_db/history: 変更履歴
       job_db/release: 公開設定
+      job_db/readable_setting: 閲覧権限
       job_db/member/applicant: 種類
       job_db/member/target: ターゲット
       job_db/member/admins: 管理メンバー
@@ -44,15 +62,24 @@ ja:
       job_db/company/call: 求人情報
       job_db/company/sector: 業種
       job_db/company/area: 地域
+      job_db/incident/topic: 対応履歴
+      job_db/incident/comment: コメント
+      job_db/incident/category: カテゴリー
+      job_db/history: 操作履歴
     attributes:
       job_db/addon/group_permission:
         group_ids: 管理グループ
         user_ids: 管理ユーザー
+      job_db/addon/history:
+
       job_db/addon/release:
         state: ステータス
         released: 公開日時
         release_date: 公開開始日時(予約)
         close_date: 公開終了日時(予約)
+      job_db/addon/readable_setting:
+        readable_group_ids: 閲覧グループ
+        readable_user_ids: 閲覧ユーザー
       job_db/addon/member/applicant:
         kind_ids: 種類
       job_db/addon/member/target:
@@ -61,6 +88,17 @@ ja:
         member_ids: 管理メンバー
       job_db/company/profile:
         name: 名前
+      job_db/incident/base:
+        name: 名前
+      job_db/history:
+        name: 名前
+        mode: 区分
+        model: モデル
+        model_name: モデル名
+        item_id: アイテム
+        updated_fields: 変更内容
+        updated_field_names: 変更フィールド名
+        created: 変更日時
 
   tooltip:
     job_db/addon/member/admins:
@@ -74,6 +112,16 @@ ja:
         - ページに表示する更新日の指定に利用します。
         - 実際の更新日以外の日付を指定する場合に利用します。
 
+    job_db/addon/readable_setting:
+      readable_group_ids:
+        - このページを閲覧できるグループを選択します。
+      readable_user_ids:
+        - このページを閲覧できるユーザーを選択します。
+
     job_db/company/profile:
       name:
         - 企業名を入力します。
+
+    job_db/incident/base:
+      name:
+        - 対応履歴の名前を入力します。

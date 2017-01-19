@@ -27,6 +27,10 @@ SS::Application.routes.draw do
       resources :areas, concerns: :deletion
     end
 
+    namespace "incident" do
+      resources :topics, concerns: :deletion
+    end
+
     namespace "apis" do
       get "members" => "members#index"
     end

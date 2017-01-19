@@ -2,7 +2,7 @@
   <h2><%= link_to t('job_db.portal'), "#{job_db_portal_path}/", class: "icon-portal" %></h2>
 
   <%
-    models = [ JobDb::Member, JobDb::Company::Profile ].select { |model| model.allowed?(:read, @cur_user) }
+    models = [ JobDb::Member, JobDb::Company::Profile, JobDb::Incident::Topic ].select { |model| model.allowed?(:read, @cur_user) }
   %>
   <% models.each do |model| %>
     <h2><%= link_to model.model_name.human, send("#{model.name.underscore.pluralize.tr('/', '_')}_path"), class: "icon-portal" %></h2>
