@@ -1,5 +1,6 @@
 ja:
   job_db:
+    portal: ポータル
     apis:
       members:
         index: メンバーを選択する

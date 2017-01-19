@@ -1,0 +1,21 @@
+<div class="index portal-cms-contents">
+  <div class="list-head"><%= t "cms.content" %></div>
+  <ul class="list-items">
+    <% @cms_contents.each do |item| %>
+    <li class="list-item">
+      <div class="info">
+        <%= link_to "#{item.name} - #{item.site.name}", contents_path(item), class: "title" %>
+
+        <div class="meta">
+          <span class="id">#<%= item.id %></span>
+          <span class="site"><%= item.site.name %></span>
+          <span class="datetime"><%= item.updated.strftime("%Y/%m/%d %H:%M") %></span>
+          <span class="filename"><%= File.basename item.filename %></span>
+          <span class="route"><%= t "modules.#{item.route.sub(/\/.*/, '')}" %></span>
+          <span class="state"><%= t "views.state.#{item.status}" %></span>
+        </div>
+      </div>
+    </li>
+    <% end %>
+  </ul>
+</div>

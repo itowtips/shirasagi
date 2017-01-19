@@ -115,7 +115,7 @@ td {
       text-indent: -9999px;
     }
   }
-  .cms, .gws, .sns {
+  .cms, .gws, .sns, .job_db {
     @include clear;
     float: left;
     @include mb { display: none; }
@@ -163,6 +163,13 @@ td {
     background: url(/assets/img/ic-sns-off.png) no-repeat 20px center;
     &.current, &:hover {
       background: $white url(/assets/img/ic-sns-on.png) no-repeat 20px center;
+    }
+  }
+  .job_db h2 a {
+    padding: 15px 20px 15px 55px;
+    background: url(/assets/img/ic-job_db-off.png) no-repeat 20px center;
+    &.current, &:hover {
+      background: $white url(/assets/img/ic-job_db-on.png) no-repeat 20px center;
     }
   }
   .env {

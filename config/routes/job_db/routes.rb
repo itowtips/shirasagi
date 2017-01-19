@@ -11,6 +11,8 @@ SS::Application.routes.draw do
     get :download, on: :collection
   end
 
+  get '.jobdb/', to: 'job_db/portal#index', as: :job_db_portal
+
   namespace "job_db", path: ".jobdb" do
     get "/" => "main#index", as: :main
     resources :members, concerns: [ :deletion, :download ]

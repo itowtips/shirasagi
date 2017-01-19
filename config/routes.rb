@@ -54,6 +54,7 @@ SS::Application.routes.draw do
     get   "auth_token" => "auth_token#index", as: :auth_token
     get   "cms" => "mypage#cms"
     get   "gws" => "mypage#gws"
+    get   "job_db" => "mypage#job_db"
 
     namespace "login" do
       # SAML SSO

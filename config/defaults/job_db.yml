@@ -1,0 +1,21 @@
+# job_db
+production: &production
+  # Disable JobDb.
+  disable: false
+
+  # StyleSheets on gws pages.
+  stylesheets: ['job_db/style']
+
+  # JavaScripts on gws pages.
+  javascripts: ["job_db/script"]
+
+  portal:
+    items_limit: 5
+
+test:
+  <<: *production
+  disable: false
+
+development:
+  <<: *production
+  disable: false

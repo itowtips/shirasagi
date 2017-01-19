@@ -29,6 +29,16 @@
       <% end %>
     </div>
 
+    <% if SS.config.job_db.disable.blank? %>
+    <div class="job_db">
+    <% if @ss_mode == :job_db %>
+      <h2><%= link_to :job_db, job_db_portal_path, class: "current" %></h2>
+    <% else %>
+      <h2><%= link_to :job_db, sns_job_db_path %></h2>
+    <% end %>
+    </div>
+    <% end %>
+
     <% if SS.config.gws.disable.blank? %>
     <div class="gws">
       <% if @ss_mode == :gws %>

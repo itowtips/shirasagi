@@ -1,6 +1,6 @@
 class JobDb::MembersController < ApplicationController
-  include Sys::BaseFilter
-  include Sys::CrudFilter
+  include JobDb::BaseFilter
+  include JobDb::CrudFilter
 
   model JobDb::Member
 

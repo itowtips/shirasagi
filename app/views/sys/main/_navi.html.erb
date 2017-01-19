@@ -1,15 +1,4 @@
 <nav class="mod-navi">
-  <%
-    models = [ JobDb::Member, JobDb::Company::Profile ].select { |model| model.allowed?(:read, @cur_user) }
-  %>
-  <% if models.present? %>
-    <h2><%= link_to :"modules.job_db", send("#{models.first.name.underscore.pluralize.tr('/', '_')}_path") %></h2>
-
-    <% models.each do |model| %>
-      <h3><%= link_to model.model_name.human, send("#{model.name.underscore.pluralize.tr('/', '_')}_path") %></h3>
-    <% end %>
-  <% end %>
-
   <h2><%= link_to :"sys.conf", sys_conf_path %></h2>
 
   <h3><%= link_to :"sys.info", sys_conf_path %></h3>

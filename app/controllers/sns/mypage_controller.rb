@@ -44,4 +44,7 @@ class Sns::MypageController < ApplicationController
       end
     end
 
+    def job_db
+      redirect_to job_db_portal_path
+    end
 end

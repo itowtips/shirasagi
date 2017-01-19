@@ -1,6 +1,6 @@
 class JobDb::Company::ProfilesController < ApplicationController
-  include Sys::BaseFilter
-  include Sys::CrudFilter
+  include JobDb::BaseFilter
+  include JobDb::CrudFilter
 
   model JobDb::Company::Profile
 
