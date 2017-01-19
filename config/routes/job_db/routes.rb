@@ -28,7 +28,9 @@ SS::Application.routes.draw do
     end
 
     namespace "incident" do
-      resources :topics, concerns: :deletion
+      resources :topics, concerns: :deletion do
+        resources :comments, concerns: :deletion
+      end
       resources :categories, concerns: :deletion
     end
 

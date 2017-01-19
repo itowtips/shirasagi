@@ -32,7 +32,7 @@ module JobDb::Addon::File
         elsif !allowed_other_user_files? && @cur_user && @cur_user.id != file.user_id
           next
         else
-          file.update_attributes(model: model_name.i18n_key, state: state)
+          file.update_attributes(model: model_name.i18n_key, state: 'public')
         end
         ids << file.id
       end

@@ -1,0 +1,42 @@
+<%
+
+  menu = []
+  if recursion && @item.allowed?(:edit, @cur_user)
+    link = new_job_db_incident_topic_comment_path(topic_id: @item.id, parent_id: comment.id)
+    menu << link_to(t('gws/board.links.comment'), link, class: "btn primary")
+  end
+  if @item.allowed?(:edit, @cur_user)
+    link = edit_job_db_incident_topic_comment_path(topic_id: @item.id, id: comment.id)
+    menu << link_to(:edit, link, class: "btn")
+  end
+  if @item.allowed?(:delete, @cur_user)
+    link = delete_job_db_incident_topic_comment_path(topic_id: @item.id, id: comment.id)
+    menu << link_to(:delete, link, class: "btn")
+  end
+
+%>
+<aside class="comment" id="<%= comment.id %>">
+  <header class="<%= 'toggle-head' if recursion %>">
+    <nav class="meta">
+      <span class="user"><%= tryb { comment.user.name } %></span>
+      <span class="datetime"><%= comment.created.strftime("%Y/%m/%d %H:%M") %></span>
+    </nav>
+  </header>
+
+  <div class="toggle-body <%= 'hide' if recursion %>">
+    <div class="body markdown-body"><%= comment.html %></div>
+
+    <% if comment.files.present? %>
+        <div class="files">
+          <% comment.files.each do |file| %>
+              <img src="/assets/img/gws/ic-file.png" alt="" />
+              <%= link_to file.humanized_name, file.url, class: "icon-#{file.extname}", target: '_blank' %>
+          <% end %>
+        </div>
+    <% end %>
+
+    <% if menu.present? %>
+        <div class="menu"><%= safe_join(menu) %></div>
+    <% end %>
+  </div>
+</aside>
