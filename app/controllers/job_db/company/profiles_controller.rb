@@ -15,18 +15,4 @@ class JobDb::Company::ProfilesController < ApplicationController
     def pre_params
       { state: 'closed' }
     end
-
-  public
-    def index
-      raise "403" unless @model.allowed?(:read, @cur_user)
-      @items = @model.allow(:read, @cur_user).
-        search(params[:s]).
-        order_by(_id: -1).
-        page(params[:page]).per(50)
-    end
-
-    def destroy
-      raise "403" unless @item.allowed?(:delete, @cur_user)
-      render_destroy @item.disable
-    end
 end
