@@ -28,7 +28,7 @@ module JobDb::Addon::File
       ids = []
       files.each do |file|
         if !add_ids.include?(file.id)
-          file.update_attributes(state: state) if state_changed?
+          # file.update_attributes(state: state) if state_changed?
         elsif !allowed_other_user_files? && @cur_user && @cur_user.id != file.user_id
           next
         else
