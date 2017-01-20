@@ -1,4 +1,29 @@
+@import "font-awesome-sprockets";
+@import "font-awesome";
 @import "ss/init";
+
+// Navi
+.main-navi {
+  .icon-awesome:before {
+    background: none;
+    font-family: FontAwesome;
+    text-align: center;
+    top: auto;
+  }
+  .icon-awesome:hover:before {
+    color: $orange;
+    background: none;
+  }
+  .icon-awesome-member:before {
+    content: "\f0c0";
+  }
+  .icon-awesome-company:before {
+    content: "\f0f7";
+  }
+  .icon-awesome-incident:before {
+    content: "\f086";
+  }
+}
 
 // Portal
 .job_db-portal {
@@ -10,7 +35,8 @@
     padding-left: 10px;
     border-top: solid 1px $gray1;
     a:after {
-      content: " >>"
+      content: " \f105\f105";
+      font-family: FontAwesome;
     }
   }
   .portal-incidents {

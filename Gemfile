@@ -80,6 +80,8 @@ gem 'unf'
 
 #gem "rails-dev-boost", git: "git://github.com/thedarkone/rails-dev-boost.git", group: :development
 
+gem 'font-awesome-sass'
+
 group :development, :test do
   gem 'spring', '~> 1.1.3'
   gem 'rspec'
