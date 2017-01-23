@@ -1,4 +1,82 @@
-<dl class="see">
+<dl class="see company-profiles">
   <dt><%= @model.t :name %><%= @model.tt :name %></dt>
-  <dd><%= f.text_field :name %></dd>
+  <dd><%= f.text_area :name %></dd>
+
+  <dt><%= @model.t :kana %><%= @model.tt :kana %></dt>
+  <dd><%= f.text_area :kana %></dd>
+
+  <dt><%= @model.t :company_number %><%= @model.tt :company_number %></dt>
+  <dd><%= f.text_field :company_number %></dd>
+
+  <dt><%= @model.t :logo_image %><%= @model.tt :logo_image %></dt>
+  <dd><%= f.file_field :in_logo_image %></dd>
+  <% if @item.logo_image %>
+  <dd><label><%= f.check_box :rm_logo_image %><%= t "views.button.delete" %> (<%= @item.logo_image.filename %>)</label></dd>
+  <% end %>
+
+  <dt><%= @model.t :catchphrase %><%= @model.tt :catchphrase %></dt>
+  <dd><%= f.text_area :catchphrase %></dd>
+
+  <dt><%= @model.t :profile_image %><%= @model.tt :profile_image %></dt>
+  <dd><%= f.file_field :in_profile_image %></dd>
+  <% if @item.profile_image %>
+  <dd><label><%= f.check_box :rm_profile_image %><%= t "views.button.delete" %> (<%= @item.profile_image.filename %>)</label></dd>
+  <% end %>
+  <dt><%= @model.t :profile_image_caption %><%= @model.tt :profile_image_caption %></dt>
+  <dd><%= f.text_area :profile_image_caption %></dd>
+
+  <dt><%= @model.t :profile_image_small_1 %><%= @model.tt :profile_image_small_1 %></dt>
+  <dd><%= f.file_field :in_profile_image_small_1 %></dd>
+  <% if @item.profile_image_small_1 %>
+  <dd><label><%= f.check_box :rm_profile_image_small_1 %><%= t "views.button.delete" %> (<%= @item.profile_image_small_1.filename %>)</label></dd>
+  <% end %>
+  <dt><%= @model.t :profile_image_small_1_caption %><%= @model.tt :profile_image_small_1_caption %></dt>
+  <dd><%= f.text_area :profile_image_small_1_caption %></dd>
+
+  <dt><%= @model.t :profile_image_small_2 %><%= @model.tt :profile_image_small_2 %></dt>
+  <dd><%= f.file_field :in_profile_image_small_2 %></dd>
+  <% if @item.profile_image_small_2 %>
+  <dd><label><%= f.check_box :rm_profile_image_small_2 %><%= t "views.button.delete" %> (<%= @item.profile_image_small_2.filename %>)</label></dd>
+  <% end %>
+  <dt><%= @model.t :profile_image_small_2_caption %><%= @model.tt :profile_image_small_2_caption %></dt>
+  <dd><%= f.text_area :profile_image_small_2_caption %></dd>
+
+  <dt><%= @model.t :sector %><%= @model.tt :sector %></dt>
+  <dd><%= f.select :sector_id, @item.sector_options, include_blank: true %></dd>
+</dl>
+
+<dl class="see company-profiles category-form">
+  <dt class="wide"><%= @model.t :work_areas %><%= @model.tt :work_areas %></dt>
+  <dd class="wide">
+    <%= f.hidden_field "work_area_ids[]", value: "" %>
+    <% JobDb::Company::Area.where(depth: 1).each do |a1| %>
+      <div class="parent">
+        <label class="parent">
+          <%= f.check_box("work_area_ids[]", {}, a1.id) %>
+          <%= a1.name %>
+          <% a1.children.each do |a2| %>
+            <div class="child">
+              <label>
+                <%= f.check_box("work_area_ids[]", {}, a2.id) %>
+                <%= a2.name %>
+              </label>
+            </div>
+          <% end %>
+        </label>
+      </div>
+    <% end %>
+  </dd>
+</dl>
+
+<dl class="see company-profiles category-form">
+  <dt><%= @model.t :prefecture_certifications %><%= @model.tt :prefecture_certifications %></dt>
+  <dd>
+    <%= f.hidden_field "prefecture_certification_ids[]", value: "" %>
+    <% JobDb::Company::PrefectureCertification.where(depth: 1).each do |pc| %>
+      <label>
+        <%= f.check_box("prefecture_certification_ids[]", {}, pc.id) %>
+        <%= pc.name %>
+      </label><br />
+    <% end %>
+  </dd>
 </dl>

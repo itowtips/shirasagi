@@ -23,8 +23,18 @@ SS::Application.routes.draw do
     namespace "company" do
       resources :profiles, concerns: :deletion
       resources :calls, concerns: :deletion
+
       resources :sectors, concerns: :deletion
+      namespace :sector, path: "sector:sector_id", sector_id: /\w+/ do
+        resources :sectors, concerns: :deletion
+      end
+
       resources :areas, concerns: :deletion
+      namespace :area, path: "area:area_id", area_id: /\w+/ do
+        resources :areas, concerns: :deletion
+      end
+
+      resources :prefecture_certifications, concerns: :deletion
     end
 
     namespace "incident" do

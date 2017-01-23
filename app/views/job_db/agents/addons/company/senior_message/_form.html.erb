@@ -1,0 +1,25 @@
+<%= jquery do %>
+  SS_AddonTabs.hide(".mod-job_db-company-senior_message");
+<% end %>
+
+<dl class="see mod-job_db-company-senior_message">
+  <dt><%= @model.t :job_challenging %><%= @model.tt :job_challenging %></dt>
+  <dd><%= f.text_area :job_challenging %></dd>
+
+  <dt><%= @model.t :up_and_coming_recruit %><%= @model.tt :up_and_coming_recruit %></dt>
+  <dd><%= f.text_area :up_and_coming_recruit %></dd>
+
+  <dt><%= @model.t :senior_image %><%= @model.tt :senior_image %></dt>
+  <dd><%= f.file_field :in_senior_image %></dd>
+  <% if @item.senior_image %>
+  <dd><label><%= f.check_box :rm_senior_image %><%= t "views.button.delete" %> (<%= @item.senior_image.filename %>)</label></dd>
+  <% end %>
+  <dt><%= @model.t :senior_image_caption %><%= @model.tt :senior_image_caption %></dt>
+  <dd><%= f.text_area :senior_image_caption %></dd>
+
+  <dt><%= @model.t :senior_name %><%= @model.tt :senior_name %></dt>
+  <dd><%= f.text_field :senior_name %></dd>
+
+  <dt><%= @model.t :senior_year_of_employment %><%= @model.tt :senior_year_of_employment %></dt>
+  <dd><%= f.text_field :senior_year_of_employment %></dd>
+</dl>

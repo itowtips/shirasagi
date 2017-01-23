@@ -1,4 +1,43 @@
-<dl class="see">
+<dl class="see company-profiles">
   <dt><%= @model.t :name %></dt>
-  <dd><%= @item.name %></dd>
+  <dd><%=br @item.name %></dd>
+
+  <dt><%= @model.t :kana %></dt>
+  <dd><%= @item.kana %></dd>
+
+  <dt><%= @model.t :company_number %></dt>
+  <dd><%= @item.company_number %></dd>
+
+  <dt><%= @model.t :logo_image %></dt>
+  <dd><%= tryb{ image_tag @item.logo_image.url } %></dd>
+
+  <dt><%= @model.t :catchphrase %></dt>
+  <dd><%=br @item.catchphrase %></dd>
+
+  <dt><%= @model.t :profile_image %><dt>
+  <dd><%= tryb{ image_tag @item.profile_image.url } %></dd>
+
+  <dt><%= @model.t :profile_image_caption %><dt>
+  <dd><%=br @item.profile_image_caption %></dd>
+
+  <dt><%= @model.t :profile_image_small_1 %><dt>
+  <dd><%= tryb{ image_tag @item.profile_image_small_1.url } %></dd>
+
+  <dt><%= @model.t :profile_image_small_1_caption %><dt>
+  <dd><%=br @item.profile_image_small_1_caption %></dd>
+
+  <dt><%= @model.t :profile_image_small_2 %><dt>
+  <dd><%= tryb{ image_tag @item.profile_image_small_2.url } %></dd>
+
+  <dt><%= @model.t :profile_image_small_2_caption %><dt>
+  <dd><%=br @item.profile_image_small_2_caption %></dd>
+
+  <dt><%= @model.t :sector %></dt>
+  <dd><%= tryb{ @item.sector.filename } %></dd>
+
+  <dt><%= @model.t :work_areas %></dt>
+  <dd><%=br @item.work_areas.pluck(:name).join("\n") %></dd>
+
+  <dt><%= @model.t :prefecture_certifications %></dt>
+  <dd><%=br @item.prefecture_certifications.pluck(:name).join("\n") %></dd>
 </dl>

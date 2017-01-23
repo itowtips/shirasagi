@@ -1,5 +1,5 @@
-# 業種
-class JobDb::Company::Sector
+# 県認定
+class JobDb::Company::PrefectureCertification
   extend SS::Translation
   include SS::Document
   #include Sys::Permission
@@ -14,8 +14,8 @@ class JobDb::Company::Sector
   field :order, type: Integer
   field :display_name, type: String
 
-  belongs_to :parent, class_name: "JobDb::Company::Sector", inverse_of: :children
-  has_many :children, class_name: "JobDb::Company::Sector", dependent: :destroy, inverse_of: :parent,
+  belongs_to :parent, class_name: "JobDb::Company::PrefectureCertification", inverse_of: :children
+  has_many :children, class_name: "JobDb::Company::PrefectureCertification", dependent: :destroy, inverse_of: :parent,
     order: { order: 1 }
 
   permit_params :name, :order

@@ -1,0 +1,89 @@
+<dl class="see">
+  <dt><%= @model.t :representative_position %></dt>
+  <dd><%= @item.representative_position %></dd>
+
+  <dt><%= @model.t :representative_name %></dt>
+  <dd><%= @item.representative_name %></dd>
+
+  <dt><%= @model.t :postal_code %></dt>
+  <dd><%= @item.postal_code %></dd>
+
+  <dt><%= @model.t :address_1 %></dt>
+  <dd><%=br @item.address_1 %></dd>
+
+  <dt><%= @model.t :address_2 %></dt>
+  <dd><%=br @item.address_2 %></dd>
+
+  <dt><%= @model.t :address_3 %></dt>
+  <dd><%=br @item.address_3 %></dd>
+
+  <dt><%= @model.t :address_tel %></dt>
+  <dd><%= @item.address_tel %></dd>
+
+  <dt><%= @model.t :address_fax %></dt>
+  <dd><%= @item.address_fax %></dd>
+
+  <dt><%= @model.t :address_email %></dt>
+  <dd><%= @item.address_email %></dd>
+
+  <dt><%= @model.t :address_related_url %></dt>
+  <dd>
+    <% if @item.address_related_url.present? %>
+      <%= link_to @item.address_related_url, @item.address_related_url %>
+    <% end %>
+  </dd>
+
+  <dt><%= @model.t :founding_year %></dt>
+  <dd><%=br @item.founding_year %></dd>
+
+  <dt><%= @model.t :annual_sales %></dt>
+  <dd><%=br @item.annual_sales %></dd>
+
+  <dt><%= @model.t :capital %></dt>
+  <dd><%=br @item.capital %></dd>
+
+  <dt><%= @model.t :number_of_employees %></dt>
+  <dd><%=br @item.number_of_employees %></dd>
+
+  <dt><%= @model.t :branch_office %></dt>
+  <dd><%=br @item.branch_office %></dd>
+
+  <dt><%= @model.t :job_category %></dt>
+  <dd><%=br @item.job_category %></dd>
+
+  <dt><%= @model.t :working_hours %></dt>
+  <dd><%=br @item.working_hours %></dd>
+
+  <dt><%= @model.t :holiday %></dt>
+  <dd><%=br @item.holiday %></dd>
+
+  <dt><%= @model.t :starting_salary %></dt>
+  <dd><%=br @item.starting_salary %></dd>
+
+  <dt><%= @model.t :allowances %></dt>
+  <dd><%=br @item.allowances %></dd>
+
+  <dt><%= @model.t :pay_rise %></dt>
+  <dd><%=br @item.pay_rise %></dd>
+
+  <dt><%= @model.t :bonus %></dt>
+  <dd><%=br @item.bonus %></dd>
+
+  <dt><%= @model.t :retirement_age %></dt>
+  <dd><%=br @item.retirement_age %></dd>
+
+  <dt><%= @model.t :severance_pay %></dt>
+  <dd><%=br @item.severance_pay %></dd>
+
+  <dt><%= @model.t :welfare %></dt>
+  <dd><%=br @item.welfare %></dd>
+
+  <dt><%= @model.t :training_system %></dt>
+  <dd><%=br @item.training_system %></dd>
+
+  <dt><%= @model.t :new_graduate_employment %></dt>
+  <dd><%=br @item.new_graduate_employment %></dd>
+
+  <dt><%= @model.t :new_graduate_employment_school %></dt>
+  <dd><%=br @item.new_graduate_employment_school %></dd>
+</dl>

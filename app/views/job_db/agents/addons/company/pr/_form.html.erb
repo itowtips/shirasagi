@@ -1,0 +1,43 @@
+<%= jquery do %>
+  SS_AddonTabs.hide(".mod-job_db-company-pr");
+<% end %>
+
+<dl class="see mod-job_db-company-pr">
+  <dt><%= @model.t :office_introduction %><%= @model.tt :office_introduction %></dt>
+  <dd><%= f.text_area :office_introduction %></dd>
+
+  <dt><%= @model.t :office_introduction_image %><%= @model.tt :office_introduction_image %></dt>
+  <dd><%= f.file_field :in_office_introduction_image %></dd>
+  <% if @item.office_introduction_image %>
+  <dd><label><%= f.check_box :rm_office_introduction_image %><%= t "views.button.delete" %> (<%= @item.office_introduction_image.filename %>)</label></dd>
+  <% end %>
+  <dt><%= @model.t :office_introduction_image_caption %><%= @model.tt :office_introduction_image_caption %></dt>
+  <dd><%= f.text_area :office_introduction_image_caption %></dd>
+
+  <dt><%= @model.t :pr_point %><%= @model.tt :pr_point %></dt>
+  <dd><%= f.text_area :pr_point %></dd>
+
+  <dt><%= @model.t :pr_image_1 %><%= @model.tt :pr_image_1 %></dt>
+  <dd><%= f.file_field :in_pr_image_1 %></dd>
+  <% if @item.pr_image_1 %>
+  <dd><label><%= f.check_box :rm_pr_image_1 %><%= t "views.button.delete" %> (<%= @item.pr_image_1.filename %>)</label></dd>
+  <% end %>
+  <dt><%= @model.t :pr_image_1_caption %><%= @model.tt :pr_image_1_caption %></dt>
+  <dd><%= f.text_area :pr_image_1_caption %></dd>
+
+  <dt><%= @model.t :pr_image_2 %><%= @model.tt :pr_image_2 %></dt>
+  <dd><%= f.file_field :in_pr_image_2 %></dd>
+  <% if @item.pr_image_2 %>
+  <dd><label><%= f.check_box :rm_pr_image_2 %><%= t "views.button.delete" %> (<%= @item.pr_image_2.filename %>)</label></dd>
+  <% end %>
+  <dt><%= @model.t :pr_image_2_caption %><%= @model.tt :pr_image_2_caption %></dt>
+  <dd><%= f.text_area :pr_image_2_caption %></dd>
+
+  <dt><%= @model.t :pr_image_3 %><%= @model.tt :pr_image_3 %></dt>
+  <dd><%= f.file_field :in_pr_image_3 %></dd>
+  <% if @item.pr_image_3 %>
+  <dd><label><%= f.check_box :rm_pr_image_3 %><%= t "views.button.delete" %> (<%= @item.pr_image_3.filename %>)</label></dd>
+  <% end %>
+  <dt><%= @model.t :pr_image_3_caption %><%= @model.tt :pr_image_3_caption %></dt>
+  <dd><%= f.text_area :pr_image_3_caption %></dd>
+</dl>

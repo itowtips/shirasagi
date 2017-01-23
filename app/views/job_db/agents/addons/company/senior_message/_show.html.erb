@@ -1,0 +1,19 @@
+<dl class="see mod-job_db-company-senior_message">
+  <dt><%= @model.t :job_challenging %></dt>
+  <dd><%=br @item.job_challenging %></dd>
+
+  <dt><%= @model.t :up_and_coming_recruit %></dt>
+  <dd><%=br @item.up_and_coming_recruit %></dd>
+
+  <dt><%= @model.t :senior_image %><dt>
+  <dd><%= tryb{ image_tag @item.senior_image.url } %></dd>
+
+  <dt><%= @model.t :senior_image_caption %></dt>
+  <dd><%=br @item.senior_image_caption %></dd>
+
+  <dt><%= @model.t :senior_name %></dt>
+  <dd><%= @item.senior_name %></dd>
+
+  <dt><%= @model.t :senior_year_of_employment %></dt>
+  <dd><%= @item.senior_year_of_employment %></dd>
+</dl>

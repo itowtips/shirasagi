@@ -1,0 +1,20 @@
+<%= jquery do %>
+  SS_AddonTabs.hide(".mod-job_db-guide_author");
+<% end %>
+
+<dl class="see mod-job_db-guide_author">
+  <dt><%= @model.t :guide_author_created %><%= @model.tt :guide_author_created %></dt>
+  <dd><%= f.text_field :guide_author_created, class: "date js-date" %></dd>
+
+  <dt><%= @model.t :guide_author_name %><%= @model.tt :guide_author_name %></dt>
+  <dd><%= f.text_field :guide_author_name %></dd>
+
+  <dt><%= @model.t :guide_author_position %><%= @model.tt :guide_author_position %></dt>
+  <dd><%= f.text_field :guide_author_position %></dd>
+
+  <dt><%= @model.t :guide_author_tel %><%= @model.tt :guide_author_tel %></dt>
+  <dd><%= f.text_field :guide_author_tel %></dd>
+
+  <dt><%= @model.t :guide_author_email %><%= @model.tt :guide_author_email %></dt>
+  <dd><%= f.email_field :guide_author_email %></dd>
+</dl>

@@ -1,0 +1,29 @@
+<%= jquery do %>
+  SS_AddonTabs.hide(".mod-job_db-company-inquiry");
+<% end %>
+
+<dl class="see mod-job_db-company-inquiry">
+  <dt><%= @model.t :human_resources_representative_position %><%= @model.tt :human_resources_representative_position %></dt>
+  <dd><%= f.text_field :human_resources_representative_position %></dd>
+
+  <dt><%= @model.t :human_resources_representative_name %><%= @model.tt :human_resources_representative_name %></dt>
+  <dd><%= f.text_field :human_resources_representative_name %></dd>
+
+  <dt><%= @model.t :inquiry_tel %><%= @model.tt :inquiry_tel %></dt>
+  <dd><%= f.text_field :inquiry_tel %></dd>
+
+  <dt><%= @model.t :inquiry_fax %><%= @model.tt :inquiry_fax %></dt>
+  <dd><%= f.text_field :inquiry_fax %></dd>
+
+  <dt><%= @model.t :inquiry_email %><%= @model.tt :inquiry_email %></dt>
+  <dd><%= f.email_field :inquiry_email %></dd>
+
+  <dt><%= @model.t :recruitment_method %><%= @model.tt :recruitment_method %></dt>
+  <dd><%= f.text_area :recruitment_method %></dd>
+
+  <dt><%= @model.t :application_document %><%= @model.tt :application_document %></dt>
+  <dd><%= f.text_area :application_document %></dd>
+
+  <dt><%= @model.t :screening_method %><%= @model.tt :screening_method %></dt>
+  <dd><%= f.text_area :screening_method %></dd>
+</dl>

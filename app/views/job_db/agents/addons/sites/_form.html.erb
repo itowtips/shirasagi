@@ -1,0 +1,12 @@
+<dl class="see mod-job_db-site">
+  <dt><%= @model.t :sites %></dt>
+  <dd>
+    <%= f.hidden_field "site_ids[]", value: "" %>
+    <% Cms::Site.each do |s| %>
+      <label>
+        <%= f.check_box("site_ids[]", {}, s.id) %>
+        <%= s.name %>
+      </label><br />
+    <% end %>
+  </dd>
+</dl>

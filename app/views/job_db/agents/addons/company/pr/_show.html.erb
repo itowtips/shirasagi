@@ -1,0 +1,25 @@
+<dl class="see">
+  <dt><%= @model.t :office_introduction %></dt>
+  <dd><%=br @item.office_introduction %></dd>
+
+  <dt><%= @model.t :office_introduction_image %><dt>
+  <dd><%= tryb{ image_tag @item.office_introduction_image.url } %></dd>
+
+  <dt><%= @model.t :office_introduction_image_caption %></dt>
+  <dd><%=br @item.office_introduction_image_caption %></dd>
+
+  <dt><%= @model.t :pr_point %></dt>
+  <dd><%=br @item.pr_point %></dd>
+
+  <dt><%= @model.t :pr_image_1 %><dt>
+  <dd><%= tryb{ image_tag @item.pr_image_1.url } %></dd>
+
+  <dt><%= @model.t :pr_image_1_caption %></dt>
+  <dd><%=br @item.pr_image_1_caption %></dd>
+
+  <dt><%= @model.t :pr_image_2 %><dt>
+  <dd><%= tryb{ image_tag @item.pr_image_2.url } %></dd>
+
+  <dt><%= @model.t :pr_image_3_caption %></dt>
+  <dd><%=br @item.pr_image_3_caption %></dd>
+</dl>

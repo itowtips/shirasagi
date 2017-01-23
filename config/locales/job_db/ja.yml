@@ -60,6 +60,12 @@ ja:
       job_db/member/target: ターゲット
       job_db/member/admins: 管理メンバー
       job_db/incident/category: カテゴリー
+      job_db/company/data: 企業DATA
+      job_db/company/inquiry: 人事担当
+      job_db/company/pr: 企業PR
+      job_db/company/senior_message: 先輩からのメッセージ
+      job_db/company/guide_author: 企業ガイド原稿作成者
+      job_db/sites: サイト設定
 
   cms:
     nodes:
@@ -75,6 +81,7 @@ ja:
       job_db/company/call: 求人情報
       job_db/company/sector: 業種
       job_db/company/area: 地域
+      job_db/company/prefecture_certification: 県認定
       job_db/incident/topic: 対応履歴
       job_db/incident/comment: コメント
       job_db/incident/category: カテゴリー
@@ -91,6 +98,19 @@ ja:
         order: 並び順
         bg_color: 背景色
         text_color: 文字色
+      job_db/company/sector:
+        name: 名前
+        filename: 名前
+        display_name: 表示名
+        order: 並び順
+      job_db/company/area:
+        name: 名前
+        filename: 名前
+        order: 並び順
+      job_db/company/prefecture_certification:
+        name: 名前
+        filename: 名前
+        order: 並び順
       job_db/addon/group_permission:
         group_ids: 管理グループ
         user_ids: 管理ユーザー
@@ -126,6 +146,85 @@ ja:
       job_db/member/kind:
         id: ID
         name: 名前
+      job_db/addon/company/data:
+        representative_position: 代表者 職名
+        representative_name: 代表者 氏名
+        postal_code: 郵便番号
+        address_1: 住所 市区町村
+        address_2: 住所 番地以降
+        address_3: 住所 マンション名
+        address_tel: 住所 電話番号
+        address_fax: 住所 FAX
+        address_email: 住所 E-MAIL
+        address_related_url: 住所 ホームページ
+        founding_year: 創業
+        annual_sales: 年商
+        capital: 資本金
+        number_of_employees: 従業員数
+        branch_office: 支社・支店・営業所等
+        job_category: 職種
+        working_hours: 勤務時間
+        holiday: 休日・休暇
+        starting_salary: 初任給
+        allowances: 諸手当
+        pay_rise: 昇給
+        bonus: 賞与
+        retirement_age: 定年
+        severance_pay: 退職金
+        welfare: 福利厚生（各種保険等）
+        training_system: 研修制度
+        new_graduate_employment: 新卒採用実績
+        new_graduate_employment_school: 新卒採用学校
+      job_db/addon/company/inquiry:
+        human_resources_representative_position: 職名
+        human_resources_representative_name: 氏名
+        inquiry_tel: 電話番号
+        inquiry_fax: FAX
+        inquiry_email: E-MAIL
+        recruitment_method: 応募方法
+        application_document: 応募書類
+        screening_method: 選考方法
+      job_db/addon/company/pr:
+        office_introduction: 事業所紹介
+        office_introduction_image: 事業所イメージ
+        office_introduction_image_caption: 事業所イメージ キャプション
+        pr_point: 注目ポイント
+        pr_image_1: 注目ポイントイメージ１
+        pr_image_1_caption: 注目ポイントイメージ１ キャプション
+        pr_image_2: 注目ポイントイメージ２
+        pr_image_2_caption: 注目ポイントイメージ２ キャプション
+        pr_image_3: 注目ポイントイメージ３
+        pr_image_3_caption: 注目ポイントイメージ３ キャプション
+      job_db/addon/company/senior_message:
+        job_challenging: 仕事のやりがい
+        up_and_coming_recruit: 求める人材
+        senior_image: 先輩イメージ
+        senior_image_caption: 先輩イメージ キャプション
+        senior_name: 先輩氏名
+        senior_year_of_employment: 先輩入社年
+      job_db/addon/company/guide_author:
+        guide_author_created: 原稿提出日
+        guide_author_name: 職名
+        guide_author_position: 職名
+        guide_author_tel: 電話番号
+        guide_author_email: E-MAIL
+      job_db/company/profile:
+        name: 企業名
+        kana: 企業名フリガナ
+        company_number: 整理番号
+        logo_image: 企業ロゴ
+        catchphrase: キャッチフレーズ
+        profile_image: 企業イメージ
+        profile_image_caption: 企業イメージ キャプション
+        profile_image_small_1: 企業イメージ小１
+        profile_image_small_1_caption: 企業イメージ小１ キャプション
+        profile_image_small_2: 企業イメージ小２
+        profile_image_small_2_caption: 企業イメージ小２ キャプション
+        sector: 業種
+        work_areas: 勤務地
+        prefecture_certifications: 県認定
+      job_db/addon/sites:
+        sites: 掲載サイト
 
   tooltip:
     job_db/model/category:
