@@ -1,0 +1,12 @@
+ja:
+  modules:
+    iju_support: 移住相談者管理
+
+  cms:
+    nodes:
+      iju_support/login: ログイン
+
+  mongoid:
+    models:
+      iju_support/member: 移住相談者
+      iju_support/node/login: ログイン

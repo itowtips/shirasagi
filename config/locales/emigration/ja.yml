@@ -1,7 +1,0 @@
-ja:
-  modules:
-    emigration: 移住相談者管理
-
-  mongoid:
-    models:
-      emigration/member: 移住相談者

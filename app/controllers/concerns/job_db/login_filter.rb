@@ -42,7 +42,7 @@ module JobDb::LoginFilter
       end
 
       @item.attributes = get_params
-      member = member_class.site(@cur_site).and_enabled.and_kinds(@cur_node.kind_ids).where(email: @item.email, password: SS::Crypt.crypt(@item.password)).first
+      member = member_class.site(@cur_site).and_enabled.where(email: @item.email, password: SS::Crypt.crypt(@item.password)).first
       unless member
         @error = t "sns.errors.invalid_login"
         return
@@ -60,11 +60,11 @@ module JobDb::LoginFilter
 
     def callback
       auth = request.env["omniauth.auth"]
-      member = member_class.site(@cur_site).and_enabled.and_kinds(@cur_node.kind_ids).where(oauth_type: auth.provider, oauth_id: auth.uid).first
+      member = member_class.site(@cur_site).and_enabled.where(oauth_type: auth.provider, oauth_id: auth.uid).first
       if member.blank?
         #外部認証していない場合、ログイン情報を保存してから、ログインさせる
         member_class.create_auth_member(auth, @cur_site)
-        member = member_class.site(@cur_site).and_enabled.and_kinds(@cur_node.kind_ids).where(oauth_type: auth.provider, oauth_id: auth.uid).first
+        member = member_class.site(@cur_site).and_enabled.where(oauth_type: auth.provider, oauth_id: auth.uid).first
       end
 
       set_member_and_redirect member

@@ -10,7 +10,7 @@ class JobDb::Member::Kind
   replace_field "_id", String
   field :name, type: String
   permit_params :_id, :name
-  validates :_id, presence: true, length: { maximum: 8 }, format: { with: /\A[A-Za-z0-9_\-]+\z/ }
+  validates :_id, presence: true, length: { maximum: 20 }, format: { with: /\A[A-Za-z0-9_\-]+\z/ }
   validates :name, presence: true, length: { maximum: 40 }
 
   class << self
