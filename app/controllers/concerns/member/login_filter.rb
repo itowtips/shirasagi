@@ -7,6 +7,7 @@ module Member::LoginFilter
   REDIRECT_OPTION_DISABLED = 2
 
   included do
+    cattr_accessor(:member_login_node_class) { Member::Node::Login }
     before_action :logged_in?, if: -> { member_login_path }
   end
 
@@ -56,7 +57,7 @@ module Member::LoginFilter
 
     def member_login_node
       @member_login_node ||= begin
-        node = Member::Node::Login.site(@cur_site).and_public.first
+        node = member_login_node_class.site(@cur_site).and_public.first
         node.present? ? node : false
       end
     end

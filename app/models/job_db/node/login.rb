@@ -2,7 +2,7 @@ class JobDb::Node::Login
   include Cms::Model::Node
   include Cms::Addon::NodeSetting
   include Cms::Addon::Meta
-  include JobDb::Addon::Member::Target
+  include JobDb::Addon::Member::Applicant
   include Member::Addon::Redirection
   include Member::Addon::FormAuth
   include Member::Addon::TwitterOauth

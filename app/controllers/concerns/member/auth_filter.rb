@@ -1,14 +1,18 @@
 module Member::AuthFilter
   extend ActiveSupport::Concern
 
+  included do
+    cattr_accessor(:member_class) { Cms::Member }
+  end
+
   def get_member_by_session(site = false)
     return nil unless member_session_alives?
 
     member_id = session[:member]["member_id"]
     if site == false
-      Cms::Member.find member_id rescue nil
+      self.member_class.find member_id rescue nil
     else
-      Cms::Member.site(site).find member_id rescue nil
+      self.member_class.site(site).find member_id rescue nil
     end
   end
 
