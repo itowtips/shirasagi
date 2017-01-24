@@ -64,6 +64,7 @@ ja:
   cms:
     nodes:
       job_db/login: ログイン
+      job_db/member_ezine: 会員向けメールマガジン
 
   mongoid:
     models:
@@ -77,6 +78,8 @@ ja:
       job_db/incident/comment: コメント
       job_db/incident/category: カテゴリー
       job_db/history: 操作履歴
+      job_db/node/login: ログイン
+      job_db/node/member_ezine: 会員向けメールマガジン
     attributes:
       job_db/model/category:
         model: モデル
