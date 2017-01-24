@@ -2,12 +2,20 @@
 class JobDb::Member::Kind
   extend SS::Translation
   include SS::Document
-  include Sys::Permission
+  include JobDb::Addon::GroupPermission
 
-  set_permission_name "job_db_members", :edit
+  set_permission_name "job_db_members"
 
-  seqid :id
+  # seqid :id
+  replace_field "_id", String
   field :name, type: String
-  permit_params :name
+  permit_params :_id, :name
+  validates :_id, presence: true, length: { maximum: 8 }, format: { with: /\A[A-Za-z0-9_\-]+\z/ }
   validates :name, presence: true, length: { maximum: 40 }
+
+  class << self
+    def search(params = {})
+      all
+    end
+  end
 end

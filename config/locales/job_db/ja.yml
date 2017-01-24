@@ -86,11 +86,9 @@ ja:
         order: 並び順
         bg_color: 背景色
         text_color: 文字色
-
       job_db/addon/group_permission:
         group_ids: 管理グループ
         user_ids: 管理ユーザー
-
       job_db/addon/release:
         state: ステータス
         released: 公開日時
@@ -120,6 +118,9 @@ ja:
         created: 変更日時
       job_db/addon/incident/category:
         category_ids: カテゴリー
+      job_db/member/kind:
+        id: ID
+        name: 名前
 
   tooltip:
     job_db/model/category:
@@ -161,3 +162,10 @@ ja:
     job_db/addon/incident/category:
       category_ids:
         - カテゴリーを選択します。
+
+    job_db/member/kind:
+      id:
+        - IDを入力します。
+        - アルファベット、数字、アンダースコア、ハイフンが使用できます。
+      name:
+        - 名前を入力します。
