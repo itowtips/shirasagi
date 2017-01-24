@@ -1,3 +1,6 @@
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
 // -------------------------------------------------------------------------------------------------
 // base
 
@@ -166,10 +169,23 @@ td {
     }
   }
   .job_db h2 a {
+    position: relative;
     padding: 15px 20px 15px 55px;
-    background: url(/assets/img/ic-job_db-off.png) no-repeat 20px center;
+    &:before {
+      font-family: FontAwesome;
+      font-size: $px17;
+      content: "\f1c0";
+      position: absolute;
+      top: 12px;
+      left: 20px;
+      width: 32px;
+      height: 32px;
+    }
     &.current, &:hover {
-      background: $white url(/assets/img/ic-job_db-on.png) no-repeat 20px center;
+      background: $white;
+      &:before {
+        color: $orange;
+      }
     }
   }
   .env {
