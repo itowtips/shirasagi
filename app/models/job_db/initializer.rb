@@ -7,6 +7,7 @@ module JobDb
     # login node
     Cms::Node.plugin "job_db/login"
     Cms::Node.plugin "job_db/member_ezine"
+    Cms::Node.plugin "job_db/inquiry_form"
 
     #
     # permissions

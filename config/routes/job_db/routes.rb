@@ -43,6 +43,7 @@ SS::Application.routes.draw do
   content "job_db" do
     resources :logins, concerns: :deletion
     resources :member_ezines, concerns: :deletion
+    resources :inquiry_forms, concerns: :deletion
   end
 
   node "job_db" do
