@@ -5,8 +5,10 @@
   .icon-awesome:before {
     background: none;
     font-family: FontAwesome;
+    font-size: $px17;
     text-align: center;
     top: auto;
+    bottom: -2px;
   }
   .icon-awesome:hover:before {
     color: $orange;
