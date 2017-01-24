@@ -37,6 +37,19 @@
       font-family: FontAwesome;
     }
   }
+  .portal-searches {
+    form {
+      margin: 4px;
+      padding: 4px;
+      label {
+        float: none;
+        width: auto;
+      }
+      div ~ div {
+        margin-top: 4px;
+      }
+    }
+  }
   .portal-incidents {
     margin-bottom: 10px;
   }
