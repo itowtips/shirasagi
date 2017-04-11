@@ -23,6 +23,11 @@ ja:
       search: 施設の用途を検索
       setting: 施設の用途を選択
       name: 用途
+    apis:
+      page:
+        index: 施設情報から選択する
+        search: 施設情報を検索
+        select: 施設情報を設定する
 
     search: 施設検索
     result: 検索結果

@@ -55,6 +55,7 @@ SS::Application.routes.draw do
       get "categories" => "categories#index"
       get "locations" => "locations#index"
       get "services" => "services#index"
+      get "pages" => "pages#index"
     end
   end
 

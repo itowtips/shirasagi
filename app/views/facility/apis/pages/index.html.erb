@@ -1,0 +1,76 @@
+<%= jquery do %> SS_SearchUI.modal(); <% end %>
+
+<div class="search-ui-form">
+  <%= form_tag({ action: :index }, { method: "GET", class: :search }) do %>
+      <%= hidden_field_tag :single, params[:single] if params[:single].present? %>
+      <%= hidden_field_tag :search_node_id, params[:search_node_id] if params[:search_node_id].present? %>
+      <%= hidden_field_tag :model, params[:model] if params[:model].present? %>
+
+      <dl class="see">
+        <dt>キーワード</dt>
+        <dd>
+          <%= text_field_tag 's[name]', params[:s].try(:[], :name) %>
+        </dd>
+        <% if @search_node %>
+        <%
+          @categories = @search_node.st_categories.site(@cur_site).map { |item| [item.name, item.id] }
+          @locations = @search_node.st_locations.site(@cur_site).map { |item| [item.name, item.id] }
+          @services = @search_node.st_services.site(@cur_site).map { |item| [item.name, item.id] }
+
+          @category_id = params[:s][:category_ids].first rescue nil
+          @location_id = params[:s][:location_ids].first rescue nil
+          @service_id = params[:s][:service_ids].first rescue nil
+        %>
+        <dt><%= @model.t :categories %></dt>
+        <dd>
+          <%= select_tag "s[category_ids][]", options_for_select(@categories, @category_id), include_blank: true %>
+        </dd>
+        <dt><%= @model.t :services %></dt>
+        <dd>
+          <%= select_tag "s[service_ids][]", options_for_select(@services, @service_id), include_blank: true %>
+        </dd>
+        <dt><%= @model.t :locations %></dt>
+        <dd>
+          <%= select_tag "s[location_ids][]", options_for_select(@locations, @location_id), include_blank: true %>
+        </dd>
+        <% end %>
+      </dl>
+
+      <%= submit_tag t("facility.apis.page.search"), class: :btn %>
+  <% end %>
+</div>
+
+<table class="index">
+  <thead class="list-head">
+  <tr>
+    <% if @multi %>
+        <th class="checkbox"><input type="checkbox" /></th>
+    <% end %>
+    <th class="name"><%= @model.t :name %></th>
+    <th class="url"><%= @model.t :url %></th>
+    <th class="route"><%= t :module %></th>
+    <th class="updated"><%= @model.t :updated %></th>
+  </tr>
+  </thead>
+  <tbody class="items">
+  <% @items.each do |item| %>
+      <tr data-id="<%= item.id %>" class="list-item">
+        <% if @multi %>
+            <td class="checkbox">
+              <input type="checkbox" name="ids[]" value="<%= item.id %>" />
+            </td>
+        <% end %>
+        <td class="name"><%= link_to item.name, "#", class: @multi ? "select-item" : "select-single-item" %></td>
+        <td class="url"><%= item.url %></td>
+        <td class="route"><%= t "modules.#{item.route.sub(/\/.*/, '')}" %></td>
+        <td class="updated"><%= tryb { item.updated.strftime("%Y/%m/%d %H:%M") } %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="search-ui-select">
+  <%= button_tag t("facility.apis.page.select"), { type: :button, class: "select-items btn" } %>
+</div>
+
+<%= paginate @items if @items.try(:current_page) %>

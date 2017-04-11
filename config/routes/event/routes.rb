@@ -45,6 +45,9 @@ SS::Application.routes.draw do
     get "page/:year:month:day.:format" => "public#daily", cell: "nodes/page",
       year: /\d{4}/, month: /\d{2}/, day: /\d{2}/
     get "search/(index.:format)" => "public#index", cell: "nodes/search"
+    get "search/(search.:format)" => "public#search", cell: "nodes/search"
+    get "search/(map.:format)" => "public#map", cell: "nodes/search"
+    get "search/(list.:format)" => "public#list", cell: "nodes/search"
   end
 
   part "event" do

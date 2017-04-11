@@ -5,6 +5,11 @@
   <dt><%= @model.t :venue %></dt>
   <dd><%=br @item.venue.to_s %></dd>
 
+  <% if @item.facility_pages.present? %>
+    <dt><%= @model.t :facility_pages %></dt>
+    <dd><%=br @item.facility_pages.pluck(:name).join("\n") %></dd>
+  <% end %>
+
   <dt><%= @model.t :content %></dt>
   <dd><%=br @item.content.to_s %></dd>
 

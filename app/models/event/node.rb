@@ -11,6 +11,7 @@ module Event::Node
     include Category::Addon::Setting
     include Event::Addon::CalendarList
     include Cms::Addon::TagSetting
+    include Event::Addon::FacilitySetting
     include Cms::Addon::Release
     include Cms::Addon::DefaultReleasePlan
     include Cms::Addon::MaxFileSizeSetting
@@ -28,6 +29,7 @@ module Event::Node
   class Search
     include Cms::Model::Node
     include Cms::Addon::PageList
+    include Event::Addon::SearchFacilitySetting
     include Cms::Addon::Release
     include Cms::Addon::DefaultReleasePlan
     include Cms::Addon::GroupPermission

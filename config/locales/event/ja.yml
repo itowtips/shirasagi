@@ -14,9 +14,11 @@ ja:
     date_range_delimiter: ～
     keyword: 検索キーワード
     dates:
-      setting: 検索期間設定
+      setting: 期間設定
     category:
       setting: 検索カテゴリー設定
+    facility:
+      setting: 開催場所
     search:
       no-result: 検索結果が見つかりませんでした。
 
@@ -37,6 +39,10 @@ ja:
         order: 指定順
         event_dates: イベント日
         unfinished_event_dates: イベント日（未終了）
+      search_url_state:
+        disabled: 使用しない
+        front_map: 使用する（地図表示トップ）
+        front_result: 使用する（一覧表示トップ）
 
     apis:
       repeat_dates:
@@ -56,6 +62,8 @@ ja:
       event/calendar_list: リスト表示
       event/page_list: リスト表示
       event/body: イベント情報
+      event/facility_setting: 施設設定
+      event/search_facility_setting: 地図設定
 
   cms:
     nodes:
@@ -89,6 +97,7 @@ ja:
         event_dates: イベント日
         schedule: 日時
         venue: 開催場所
+        facility_pages: 施設
         content: 内容
         cost: 費用
         related_url: URL
@@ -96,6 +105,10 @@ ja:
         value: 内容
         contact: お問い合わせ
         event_keyword: イベント検索ワード
+      event/addon/facility_setting:
+        st_facility_search_id: 施設検索フォルダー
+      event/addon/search_facility_setting:
+        search_url_state: 地図の表示
 
   datetime:
     prompts:
@@ -179,3 +192,9 @@ ja:
             &lt;/header>
             &lt;p>#{summary}&lt;/p>
           &lt;/article>
+
+    event/addon/facility_setting:
+      st_facility_search_id: 施設検索フォルダーを設定します。
+
+    event/addon/search_facility_setting:
+      search_url_state: 地図の表示を設定します。

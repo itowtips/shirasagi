@@ -13,5 +13,9 @@ module Facility::Addon
 
       permit_params :kana, :postcode, :address, :tel, :fax, :related_url
     end
+
+    def event_pages
+      Event::Page.in(facility_page_ids: id)
+    end
   end
 end

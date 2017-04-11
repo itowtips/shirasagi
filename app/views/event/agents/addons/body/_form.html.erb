@@ -3,7 +3,37 @@
   <dd><%= f.text_area :schedule %></dd>
 
   <dt><%= @model.t :venue %><%= @model.tt :venue %></dt>
-  <dd><%= f.text_area :venue %></dd>
+  <dd>
+    <%= f.text_area :venue %>
+    <%= f.hidden_field "facility_page_ids[]", value: "", class: "hidden-ids" %>
+  </dd>
+  <dd>
+    <% st_facility_search = @cur_node.becomes_with_route.try(:st_facility_search) %>
+    <% if st_facility_search %>
+      <%= link_to t("facility.apis.page.index"), facility_apis_pages_path(search_node_id: st_facility_search.id), class: "ajax-box" %>
+    <% else %>
+      <%= link_to t("facility.apis.page.index"), facility_apis_pages_path, class: "ajax-box" %>
+    <% end %>
+  </dd>
+  <dd>
+    <table class="index ajax-selected">
+      <thead>
+      <tr>
+        <th class="name"><%= Facility::Node::Page.t :name %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        <% @item.facility_pages.each do |page| %>
+          <tr data-id="<%= page.id %>">
+            <td><%= f.hidden_field "facility_page_ids[]", value: page.id %> <%= page.name %></td>
+            <td><%= link_to t("views.button.delete"), "#", class: "deselect btn" %></td>
+          </tr>
+        <% end %>
+        <tr style="display:none" <%= raw(@item.present? ? "data-id=#{@item.id}" : "") %>></tr>
+      </tbody>
+    </table>
+  </dd>
 
   <dt><%= @model.t :content %><%= @model.tt :content %></dt>
   <dd><%= f.text_area :content %></dd>

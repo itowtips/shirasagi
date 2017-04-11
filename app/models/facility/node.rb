@@ -26,6 +26,7 @@ module Facility::Node
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
+    include Event::Addon::PageList
     include Facility::Addon::Body
     include Cms::Addon::AdditionalInfo
     include Facility::Addon::Category
@@ -40,6 +41,14 @@ module Facility::Node
 
     def serve_static_file?
       false
+    end
+
+    def map_pages
+      Facility::Map.site(site).where(filename: /^#{filename}\//, depth: depth + 1)
+    end
+
+    def image_pages
+      Facility::Image.site(site).where(filename: /^#{filename}\//, depth: depth + 1)
     end
 
     COLUMNS = %w(
@@ -65,6 +74,33 @@ module Facility::Node
             data << attributes_to_row(item, additional_columns, opts)
           end
         end
+      end
+
+      def search(params)
+        criteria = self.where({})
+        return criteria if params.blank?
+
+        category_ids = params[:category_ids].select(&:present?).map(&:to_i) rescue nil
+        location_ids = params[:location_ids].select(&:present?).map(&:to_i) rescue nil
+        service_ids = params[:service_ids].select(&:present?).map(&:to_i) rescue nil
+
+        if params[:name].present?
+          criteria = criteria.search_text params[:name]
+        end
+        if params[:keyword].present?
+          criteria = criteria.keyword_in params[:keyword], :name, :filename, :html
+        end
+        if category_ids.present?
+          criteria = criteria.in(category_ids: category_ids)
+        end
+        if location_ids.present?
+          criteria = criteria.in(location_ids: location_ids)
+        end
+        if service_ids.present?
+          criteria = criteria.in(service_ids: service_ids)
+        end
+
+        criteria
       end
 
       private

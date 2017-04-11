@@ -1,5 +1,6 @@
 class Facility::Agents::Nodes::PageController < ApplicationController
   include Cms::NodeFilter::View
+  helper Cms::ListHelper
 
   def map_pages
     Facility::Map.site(@cur_site).and_public.
@@ -41,5 +42,8 @@ class Facility::Agents::Nodes::PageController < ApplicationController
         @summary_image = page
       end
     end
+
+    @items = @cur_node.event_pages.site(@cur_site).and_public(@cur_date).order_by(@cur_node.sort_hash).
+      page(params[:page]).per(@cur_node.limit)
   end
 end

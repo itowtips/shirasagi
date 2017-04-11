@@ -1,3 +1,13 @@
+<% if @items.current_page > 1 %>
+
+<h2><%= "イベント一覧" %></h2>
+<div class="event-pages">
+  <%= render_page_list %>
+</div>
+<%= paginate @items if @items.try(:current_page) %>
+
+<% else %>
+
 <%= javascript_include_tag "/assets/js/jquery.colorbox.js" %>
 <%= stylesheet_link_tag "/assets/css/colorbox/colorbox.css" %>
 
@@ -60,7 +70,17 @@ $(window).on("load", function() {
   </div>
 <% end %>
 
+<% if @items.present? %>
+  <h2><%= "イベント一覧" %></h2>
+  <div class="event-pages">
+    <%= render_page_list %>
+  </div>
+  <%= paginate @items if @items.try(:current_page) %>
+<% end %>
+
 <% if @merged_map.present? %>
   <% @cur_page = @merged_map %>
   <%= render file: "map/agents/addons/page/view/index" %>
+<% end %>
+
 <% end %>

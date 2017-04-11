@@ -19,7 +19,9 @@ module Event::Part
     def find_search_node
       # first, look parent
       parent = self.parent
-      return parent if parent.route == 'event/search'
+      if parent.route == 'event/search'
+        return parent.becomes_with_route
+      end
 
       # second, lookup siblings node
       Event::Node::Search.site(self.site).and_public.
@@ -27,7 +29,7 @@ module Event::Part
     end
 
     def search_url
-      find_search_node.try(:url)
+      find_search_node.try(:search_url)
     end
 
     def cate_ids

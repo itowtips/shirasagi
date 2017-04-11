@@ -1,0 +1,4 @@
+<dl class="see mod-event-pagelist">
+  <dt><%= @model.t :st_facility_search_id %><%= @model.tt :st_facility_search_id %></dt>
+  <dd><%= f.select :st_facility_search_id, Facility::Node::Search.site(@cur_site).map { |item| [item.name, item.id ] }, include_blank: true %></dd>
+</dl>

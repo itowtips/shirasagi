@@ -3,6 +3,7 @@ module Cms::Model::Page
   extend SS::Translation
   include Cms::Content
   include Cms::Reference::Layout
+  include Cms::Reference::FacilityPage
 
   included do
     define_model_callbacks :generate_file

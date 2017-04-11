@@ -38,21 +38,6 @@
     <dd><%= @item.send(:locations).pluck(:name).join(", ") %></dd>
   </dl>
 
-  <div class="summary image">
-    <% if @summary_image.present? %>
-      <% @summary_image.each do |page, path, thumb_size| %>
-        <p>
-          <%= link_to path do %>
-            <%= image_tag page.image.thumb_url + "?" + thumb_size.to_query, alt: page.image_alt %>
-          <% end %>
-        </p>
-        <% if page.image_comment.present? %>
-          <p><%= page.image_comment %></p>
-        <% end %>
-      <% end %>
-    <% end %>
-  </div>
-
   <% if @images.present? %>
   <header>
     <h2><%= t("facility.image") %></h2>
@@ -71,6 +56,19 @@
       </div>
     <% end %>
   </div>
+  <% end %>
+
+  <% if @event_pages.present? %>
+    <header>
+      <h2><%= t("event.page") %></h2>
+    </header>
+    <table class="index">
+      <% @event_pages.each do |item| %>
+        <tr>
+          <td><%= link_to item.name, item.private_show_path %></td>
+        <tr>
+      <% end %>
+    </table>
   <% end %>
 
   <% if @merged_map.present? %>

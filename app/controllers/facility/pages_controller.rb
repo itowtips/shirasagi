@@ -58,7 +58,9 @@ class Facility::PagesController < ApplicationController
           { width: page.image_thumb_width, height: page.image_thumb_height }
         ]
       end
-      @summary_image = [ pages.shift ].compact
       @images = pages
+
+      @items = @item.event_pages.site(@cur_site).and_public(@cur_date).order_by(@item.sort_hash).
+        limit(@item.limit)
     end
 end

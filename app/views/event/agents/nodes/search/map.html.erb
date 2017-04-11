@@ -1,0 +1,7 @@
+<%= render partial: "search" %>
+
+<% @current = "map" %>
+<%= render partial: "tabs" %>
+
+<%= render_facility_search_map "#map-canvas", markers: @markers, site: @cur_site %>
+<div id="map-canvas" style="width: 100%; height: 400px;"></div>
