@@ -26,7 +26,7 @@ module Facility::Node
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
-    include Event::Addon::PageList
+    include Facility::Addon::PageList
     include Facility::Addon::Body
     include Cms::Addon::AdditionalInfo
     include Facility::Addon::Category

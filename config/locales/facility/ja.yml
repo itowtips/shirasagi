@@ -76,6 +76,7 @@ ja:
       facility/category_setting: 施設の種類
       facility/opendata_assoc: オープンデータ連携
       facility/geolocation_list: リスト表示
+      facility/page_list: リスト表示
 
   cms:
     nodes:

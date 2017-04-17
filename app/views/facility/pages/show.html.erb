@@ -61,14 +61,14 @@
 <section class="main-box">
   <header><h2><%= "イベント一覧" %></h2></header>
   <table class="index">
-    <tr>
-      <th><%= Cms::Page.t :name %></th>
-    </tr>
+    <thead>
+      <tr><th><%= Cms::Page.t :name %></th></tr>
+    </thead>
+    <tbody>
     <% @items.each do |item| %>
-      <tr>
-        <td><%= link_to item.name, item.private_show_path %></td>
-      <tr>
+      <tr><td><%= link_to item.name, item.private_show_path %></td><tr>
     <% end %>
+    </tbody>
   </table>
 </section>
 <% end %>
