@@ -1,4 +1,4 @@
-<section class="main-box" id="facility-info">
+<section class="main-box">
   <header><h2><%= t("modules.addons.facility/body") %></h2></header>
 
   <dl class="see body">
@@ -37,46 +37,51 @@
     <dt><%= t("modules.addons.facility/location") %></dt>
     <dd><%= @item.send(:locations).pluck(:name).join(", ") %></dd>
   </dl>
+</section>
 
-  <% if @images.present? %>
-  <header>
-    <h2><%= t("facility.image") %></h2>
-  </header>
+<% if @images.present? %>
+<section class="main-box">
+  <header><h2><%= t("facility.image") %></h2></header>
   <div class="images">
     <% @images.each do |page, path, thumb_size| %>
       <div class="image">
-        <p>
-          <%= link_to path do %>
-            <%= image_tag page.image.thumb_url + "?" + thumb_size.to_query, alt: page.image_alt %>
-          <% end %>
-        </p>
+        <%= link_to path do %>
+          <%= image_tag page.image.thumb_url + "?" + thumb_size.to_query, alt: page.image_alt %>
+        <% end %>
         <% if page.image_comment.present? %>
           <p><%= page.image_comment %></p>
         <% end %>
       </div>
     <% end %>
   </div>
-  <% end %>
+</section>
+<% end %>
 
-  <% if @event_pages.present? %>
-    <header>
-      <h2><%= t("event.page") %></h2>
-    </header>
-    <table class="index">
-      <% @event_pages.each do |item| %>
-        <tr>
-          <td><%= link_to item.name, item.private_show_path %></td>
-        <tr>
-      <% end %>
-    </table>
-  <% end %>
+<% if @items.present? %>
+<section class="main-box">
+  <header><h2><%= "イベント一覧" %></h2></header>
+  <table class="index">
+    <tr>
+      <th><%= Cms::Page.t :name %></th>
+    </tr>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= link_to item.name, item.private_show_path %></td>
+      <tr>
+    <% end %>
+  </table>
+</section>
+<% end %>
 
-  <% if @merged_map.present? %>
-    <% @cur_page = @merged_map %>
-    <%= render file: "map/agents/addons/page/view/index" %>
-  <% end %>
+<% if @merged_map.present? %>
+  <section class="main-box">
+  <% @cur_page = @merged_map %>
+  <%= render file: "map/agents/addons/page/view/index" %>
+  </section>
+<% end %>
 
-  <% if @maps.present? %>
+<% if @maps.present? %>
+<section class="main-box">
   <div class="map-pages">
     <% if @cur_node.allowed?(:edit, @cur_user, site: @cur_site) %>
       <% @maps.each do |map| %>
@@ -88,5 +93,5 @@
       <% end %>
     <% end %>
   </div>
-  <% end %>
 </section>
+<% end %>
