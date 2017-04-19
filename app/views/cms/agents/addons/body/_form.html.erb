@@ -37,7 +37,7 @@
     <% end %>
 
     Form_Preview.page_route        = "<%= @item.try(:route) %>";
-    Form_Preview.form_preview_path = "<%= cms_form_preview_path(path: "#{tryb{@cur_node.filename + "/"}}.html") %>";
+    Form_Preview.form_preview_path = "<%= [ request.protocol, request.host_with_port, cms_form_preview_path(path: "#{tryb{@cur_node.filename + "/"}}.html") ].join %>";
     Cms_Form.render();
 
     <% if source_cleaner_conf[:source_cleaner].present? %>
