@@ -1,4 +1,41 @@
-<%= render partial: "search" %>
+<% controller.javascript "/assets/js/jquery.colorbox.js" %>
+<% controller.stylesheet "/assets/css/colorbox/colorbox.css" %>
+
+<%= coffee do %>
+$(window).on "load", ->
+  # setup search modal window
+  $(".ajax-box").on "click", ->
+    $.colorbox({ html: "<%=j render(partial: "modal", locals: { search_url: "#{@cur_node.url}map.html" }) %>"})
+    return false
+<% end %>
+
+<dl class="condition">
+  <dt class="keyword"><%= t("event.keyword") %></dt>
+  <dd><%= @keyword %></dd>
+
+  <dt class="category"><%= t("event.category.setting") %></dt>
+  <dd><%= @select_categories.map(&:name).join("、") %></dd>
+
+  <dt class="dates location"><%= t("event.dates.setting") %></dt>
+  <dd>
+    <% if @start_date.present? || @close_date.present?%>
+      <% if @start_date.present? %>
+        <span class="start-date"><%= I18n.l(@start_date) %></span>
+      <% end %>
+      <span><%= "～" %></span>
+      <% if @close_date.present? %>
+        <span class="close-date"><%= I18n.l(@close_date) %></span>
+      <% end %>
+    <% end %>
+  </dd>
+
+  <dt class="facility"><%= t("event.facility.setting") %></dt>
+  <dd><%= @facility.try(:name) %></dd>
+</dl>
+
+<nav class="settings">
+  <%= link_to t("facility.submit.change"), "#", class: "ajax-box" %>
+</nav>
 
 <% @current = "map" %>
 <%= render partial: "tabs" %>

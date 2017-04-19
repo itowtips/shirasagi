@@ -14,11 +14,13 @@ class Event::Agents::Nodes::SearchController < ApplicationController
   end
 
   def map
+    raise "404" if @cur_node.search_url_state == "index"
     list_events
     set_markers
   end
 
   def list
+    raise "404" if @cur_node.search_url_state == "index"
     list_events
   end
 
@@ -38,8 +40,10 @@ class Event::Agents::Nodes::SearchController < ApplicationController
 
       if @cur_node.parent
         @categories = Cms::Node.site(@cur_site).where({:id.in => @cur_node.parent.st_category_ids}).sort(filename: 1)
+        @select_categories = @categories.to_a.select { |item| @category_ids.index(item.id) }
       else
         @categories = []
+        @select_categories = []
       end
       facility_page_ids = Cms::Page.site(@cur_site).and_public(@cur_date).where(@cur_node.condition_hash).pluck(:facility_page_ids).flatten.compact
       @facility_options = Facility::Node::Page.in(id: facility_page_ids).map { |item| [ item.name, item.id ] }
