@@ -4,10 +4,6 @@ module Facility::Addon
     extend SS::Addon
     include Cms::Addon::List::Model
 
-    included do
-      field :sort, type: String, default: "unfinished_event_dates", overwrite: true
-    end
-
     def sort_options
       [
         [I18n.t('event.options.sort.name'), 'name'],
@@ -19,6 +15,31 @@ module Facility::Addon
         [I18n.t('event.options.sort.event_dates'), 'event_dates'],
         [I18n.t('event.options.sort.unfinished_event_dates'), 'unfinished_event_dates'],
       ]
+    end
+
+    def sort
+      value = self[:sort]
+      if value
+        value
+      else
+        "unfinished_event_dates"
+      end
+    end
+
+    def loop_html
+      value = self[:loop_html]
+      if value
+        value
+      else
+        h = []
+        h << '<article class="item-#{class} #{new} #{current}">'
+        h << '  <header>'
+        h << '    #{event_dates.long}'
+        h << '    <h3><a href="#{url}">#{index_name}</a></h3>'
+        h << '  </header>'
+        h << '</article>'
+        h.join("\n")
+      end
     end
 
     def condition_hash(opts = {})
