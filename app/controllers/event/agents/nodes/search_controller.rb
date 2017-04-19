@@ -95,6 +95,7 @@ class Event::Agents::Nodes::SearchController < ApplicationController
           end
         elsif item.respond_to?(:map_points) && item.map_points.present?
           item.map_points.each do |point|
+            point[:html] = "<p><a href=\"#{item.url}\">#{item.name}</a></p>"
             @markers.push point
           end
         end
