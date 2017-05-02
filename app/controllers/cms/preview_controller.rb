@@ -107,12 +107,8 @@ class Cms::PreviewController < ApplicationController
             @item = thumb if thumb
           end
 
-          if @thumb_width && @thumb_height
-            send_thumb @item.read, type: @item.content_type, filename: @item.filename,
-              disposition: :inline, width: width, height: height
-          else
-            send_file @item.path, type: @item.content_type, filename: @item.filename,
-              disposition: :inline, x_sendfile: true
+          send_file @item.path, type: @item.content_type, filename: @item.filename,
+            disposition: :inline, x_sendfile: true
           end
         end
       end
