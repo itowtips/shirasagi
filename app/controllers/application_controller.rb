@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
   #before_action -> { FileUtils.touch "#{Rails.root}/Gemfile" } if Rails.env.to_s == "development"
   before_action :set_cache_buster
+  before_action :set_x_ua_headers
 
   def t(key, opts = {})
     opts[:scope] = [:views] if key !~ /\./ && !opts[:scope]
@@ -103,5 +104,9 @@ class ApplicationController < ActionController::Base
         response.headers["Pragma"] = "no-cache"
         response.headers["Expires"] = "-1"
       end
+    end
+
+    def set_x_ua_headers
+      response.headers["X-UA-Compatible"] = "IE=edge"
     end
 end
