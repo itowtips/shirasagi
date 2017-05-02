@@ -4,6 +4,7 @@ module Cms::PageFilter
 
   included do
     before_action :set_item, only: [:show, :edit, :update, :delete, :destroy, :lock, :unlock, :move, :copy, :contains_urls]
+    before_action :set_sort_hash, only: [:index]
     before_action :set_contains_urls_items, only: [:contains_urls, :edit, :delete]
   end
 
@@ -13,6 +14,12 @@ module Cms::PageFilter
       return unless @cur_node
       return if (@item.filename =~ /^#{@cur_node.filename}\//) && (@item.depth == @cur_node.depth + 1)
       raise "404"
+    end
+
+    def set_sort_hash
+      return unless @cur_node
+      node = @cur_node.becomes_with_route
+      @sort_hash = node.try(:sort_hash) if node.try(:sort).present?
     end
 
     def pre_params
@@ -59,8 +66,9 @@ module Cms::PageFilter
         raise "403" unless @cur_node.allowed?(:read, @cur_user, site: @cur_site)
 
         set_items
-        @items = @items.search(params[:s]).
-          page(params[:page]).per(50)
+        @items = @items.search(params[:s])
+        @items = @items.reorder(@sort_hash) if @sort_hash
+        @items = @items.page(params[:page]).per(50)
       end
     end
 

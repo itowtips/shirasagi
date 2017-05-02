@@ -5,6 +5,7 @@ module Cms::NodeFilter
   included do
     prepend_view_path "app/views/cms/nodes"
     before_action :set_item, only: [:show, :edit, :update, :delete, :destroy, :move]
+    before_action :set_sort_hash, only: [:index]
     before_action :change_item_class, if: -> { @item.present? }
   end
 
@@ -14,6 +15,13 @@ module Cms::NodeFilter
       if @cur_node
         raise "500" if @item.id == @cur_node.id && @item.collection_name.to_s == "cms_nodes"
       end
+    end
+
+    def set_sort_hash
+      return unless @cur_node
+      node = @cur_node.becomes_with_route
+      @sort_hash = { filename: 1 }
+      @sort_hash = node.try(:sort_hash) if node.try(:sort).present?
     end
 
     def change_item_class
@@ -31,9 +39,11 @@ module Cms::NodeFilter
     def index
       @items = @model.site(@cur_site).node(@cur_node).
         allow(:read, @cur_user).
-        search(params[:s]).
-        order_by(filename: 1).
-        page(params[:page]).per(50)
+        search(params[:s])
+      @items = @items.reorder(@sort_hash) if @sort_hash
+      @items = @items.page(params[:page]).per(50)
+
+      dump(@items.marshal_dump)
     end
 
     def new
