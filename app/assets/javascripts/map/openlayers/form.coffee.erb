@@ -15,14 +15,28 @@ class @Openlayers_Map_Form
     @render()
 
   getMapLoc: (ele) ->
-    latlon = ele.val().split(',')
-    return [parseFloat(latlon[0]), parseFloat(latlon[1])]
+    lonlat = ele.val().split(',')
+    return [parseFloat(lonlat[0]), parseFloat(lonlat[1])]
 
   setMapLoc: (ele, lat, lon)->
     lat = Math.ceil(lat * Math.pow(10,6)) / Math.pow(10,6)
     lon = Math.ceil(lon * Math.pow(10,6)) / Math.pow(10,6)
-    ele.val(lat.toFixed(6) + "," + lon.toFixed(6))
+    ele.val(lon.toFixed(6) + "," + lat.toFixed(6))
     return
+
+  validateLoc: (ele) ->
+    lonlat = ele.val().split(',')
+
+    lat = parseFloat(lonlat[1])
+    lon = parseFloat(lonlat[0])
+
+    return false unless (lat && !isNaN(lat))
+    return false unless (lon && !isNaN(lon))
+
+    if lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180
+      return true
+    else
+      return false
 
   render: () ->
     @initMap()
@@ -149,7 +163,7 @@ class @Openlayers_Map_Form
       })
     })
 
-    pos = [loc[1], loc[0]]
+    pos = [loc[0], loc[1]]
     feature = new ol.Feature({
       geometry: new ol.geom.Point(ol.proj.transform(pos, "EPSG:4326", "EPSG:3857"))
       markerId: (opts['id'] ? null)
@@ -209,11 +223,10 @@ class @Openlayers_Map_Form
       # normalize geo position
       pos[0] += 360 while pos[0] < 180
       pos[0] -= 360 while pos[0] > 180
-      pos.reverse()
 
       @clickMarkerId = "click"
       @setMarker(pos, { image: @clickIcon, id: @clickMarkerId })
-      @setMapLoc($(".mod-map .clicked"), pos[0], pos[1])
+      @setMapLoc($(".mod-map .clicked"), pos[1], pos[0])
 
     $(".mod-map .add-marker").on 'click', (e) =>
       @clonePointForm()
@@ -283,7 +296,7 @@ class @Openlayers_Map_Form
     if $(".mod-map .clicked").val() != ""
       loc = $(".mod-map .clicked").val()
     else if ele.find(".marker-loc-input").val() != ""
-      if Map_Form.validateLoc(ele.find(".marker-loc-input"))
+      if @validateLoc(ele.find(".marker-loc-input"))
         loc = ele.find(".marker-loc-input").val()
       else
         alert("<%= I18n.t('map.alert.invalid_location').join("\n") %>")

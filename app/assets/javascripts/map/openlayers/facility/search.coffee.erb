@@ -74,7 +74,7 @@ class @Openlayers_Facility_Search
         return false if $(this).val() == ""
         loc = $(this).val().split(",")
         zoomLevel = $(this).attr("data-zoom-level")
-        pos = [parseFloat(loc[1]), parseFloat(loc[0])]
+        pos = [parseFloat(loc[0]), parseFloat(loc[1])]
         map.setCenter(pos)
         map.setZoom(parseInt(zoomLevel)) if zoomLevel
         select.val("")

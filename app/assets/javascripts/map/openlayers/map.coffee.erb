@@ -119,7 +119,7 @@ class @Openlayers_Map
     iconSrc = @markerIcon
     iconSrc = opts['image'] if opts['image']
     style = @createMarkerStyle(iconSrc)
-    pos = [opts['loc'][1], opts['loc'][0]]
+    pos = [opts['loc'][0], opts['loc'][1]]
 
     feature = new ol.Feature({
       geometry: new ol.geom.Point(ol.proj.transform(pos, "EPSG:4326", "EPSG:3857"))
@@ -181,7 +181,7 @@ class @Openlayers_Map
           else
             markerHtml += '<p>' + this + '</p>'
 
-      pos = [marker['loc'][1], marker['loc'][0]]
+      pos = [marker['loc'][0], marker['loc'][1]]
       feature = new ol.Feature({
         geometry: new ol.geom.Point(ol.proj.transform(pos, "EPSG:4326", "EPSG:3857"))
         markerId: (marker['id'] ? id)
