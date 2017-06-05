@@ -1,4 +1,4 @@
-<%= javascript_include_tag "//maps.googleapis.com/maps/api/js?v=3" %>
+<% include_googlemaps_api(markers: @markers, site: @cur_site) %>
 
 <%= coffee do %>
 $(window).on "load", () ->
@@ -24,10 +24,6 @@ $(window).on "load", () ->
     strokeOpacity: 1,
     strokeWeight: 1,
   )
-  #new google.maps.Marker(
-  # position: new google.maps.LatLng(lat, lon),
-  # map: Map.map
-  #)
   <% else %>
   lat = Map.center[0]
   lon = Map.center[1]

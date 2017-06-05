@@ -30,9 +30,9 @@ class Facility::Agents::Nodes::GeolocationController < ApplicationController
       return unless @loc
 
       images = SS::File.all.map {|image| [image.id, image.url]}.to_h
-      Facility::Map.site(@cur_site).public.where(@cur_node.condition_hash).center_sphere(@loc, @radius).each do |map|
+      Facility::Map.site(@cur_site).and_public.where(@cur_node.condition_hash).center_sphere(@loc, @radius).each do |map|
         parent_path = ::File.dirname(map.filename)
-        item = Facility::Node::Page.site(@cur_site).public.in_path(parent_path).first
+        item = Facility::Node::Page.site(@cur_site).and_public.in_path(parent_path).first
 
         next unless item
         @items << item
