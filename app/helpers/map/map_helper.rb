@@ -117,6 +117,34 @@ module Map::MapHelper
     jquery { s.join("\n").html_safe }
   end
 
+  def render_facility_geolocation(selector, opts = {})
+    map_setting = opts[:site].map_setting rescue {}
+
+    api = opts[:api] || map_setting[:api] || SS.config.map.api
+    center = opts[:center] || SS.config.map.map_center
+    markers = opts[:markers]
+    loc = opts[:loc]
+    radius = opts[:radius]
+
+    s = []
+    if api == "openlayers"
+      include_openlayers_api
+      #
+    else
+      include_googlemaps_api(opts)
+
+      s << 'Map.center = ' + center.to_json + ';' if center.present?
+      s << 'var opts = {'
+      s << '  markers: ' + markers.to_json + ',' if markers.present?
+      s << '  loc: ' + loc.to_json + ',' if loc.present?
+      s << '  radius: ' + radius.to_json + ',' if radius.present?
+      s << '};'
+      s << 'Facility_Geolocation.render("' + selector + '", opts);'
+    end
+
+    jquery { s.join("\n").html_safe }
+  end
+
   def render_member_photo_form_map(selector, opts = {})
     map_setting = opts[:site].map_setting rescue {}
 

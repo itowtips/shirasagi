@@ -1,0 +1,97 @@
+class @Facility_Geolocation
+  @render :(selector, opts = {})->
+    markers = opts["markers"]
+    loc = opts["loc"]
+    radius = opts["radius"]
+
+    Map.autoResize = false
+    Map.load("#map-canvas")
+    Map.setMarkers(markers)
+
+    if loc && radius
+      lat = loc[1]
+      lon = loc[0]
+      new google.maps.Circle(
+        center: new google.maps.LatLng(lat, lon),
+        fillColor: '#fe8db4',
+        fillOpacity: 0.4,
+        map: Map.map,
+        radius: (radius * 1000),
+        strokeColor: '#fe8db4',
+        strokeOpacity: 1,
+        strokeWeight: 1,
+      )
+    else
+      lat = Map.center[0]
+      lon = Map.center[1]
+
+    Map.map.setCenter new google.maps.LatLng(lat, lon)
+    Map.map.setZoom(15)
+
+    # setup geolocation search
+    $(".geolocation").on "click", () ->
+      success = (position) ->
+        loc = [position.coords.latitude, position.coords.longitude]
+        r = $(".radius").val()
+        $(".geolocation").text("位置情報取得に成功")
+        #console.log(position.coords.latitude + "," + position.coords.longitude)
+
+        form = $("<form>")
+        form.append($("<input/>", name: "lat", value: loc[0], type: "hidden" ))
+        form.append($("<input/>", name: "lon", value: loc[1], type: "hidden" ))
+        form.append($("<input/>", name: "r", value: r, type: "hidden" ))
+        form.appendTo("body")
+        form.submit()
+
+      error = (error) ->
+        errorMessage = {
+          0: "位置情報の取得に失敗しました。" ,
+          1: "位置情報の取得が許可されませんでした。" ,
+          2: "位置情報の取得に失敗しました。" ,
+          3: "位置情報の取得に失敗しました。" ,
+        }
+        alert(errorMessage[error.code] + " ERROR(" + error.code + ")" + error.message)
+        $(".geolocation").text("現在地から検索")
+        $(".geolocation").removeAttr("disabled")
+
+      option = {
+        "enableHighAccuracy": true,
+        "maximumAge": 30000,
+        #"timeout": 8000,
+      }
+
+      if( navigator.geolocation )
+        $(".geolocation").text("現在地を取得しています...")
+        $(".geolocation").attr("disabled", "disabled")
+        navigator.geolocation.getCurrentPosition(success, error, option)
+      else
+        alert("お使いの端末では、現在位置を取得できませんでした。")
+
+    # setup category filter
+    $(".filters a").on "click", ->
+      if $(this).hasClass("clicked")
+        $(this).removeClass("clicked")
+      else
+        $(this).addClass("clicked")
+
+      dataIDs = []
+      $(".filters a.clicked").each ->
+        dataIDs.push parseInt($(this).attr("data-id"))
+
+      $.each Map.markers, (id, value) ->
+        visible = false
+        $.each dataIDs, ->
+          if $.inArray(parseInt(this), Map.markers[id]["category"]) >= 0
+            visible = true
+            return false
+
+        dataID = Map.markers[id]["facility_id"]
+        column = $('#map-sidebar .column[data-id="' + dataID + '"]')
+        if visible
+          Map.markers[id]["marker"].setVisible(true)
+          column.show()
+        else
+          Map.markers[id]["marker"].setVisible(false)
+          Map.markers[id]["window"].close()
+          column.hide()
+      return false
