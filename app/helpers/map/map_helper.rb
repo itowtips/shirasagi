@@ -63,7 +63,7 @@ module Map::MapHelper
       s << 'var canvas = $("' + selector + '")[0];'
       s << 'var opts = {'
       s << '  readonly: true,'
-      s << '  center:' + center.reverse.to_json + ',' if center.present?
+      s << '  center:' + center.to_json + ',' if center.present?
       s << '  layers: ' + SS.config.map.layers.to_json + ','
       s << '  max_point_form: ' + max_point_form.to_json + ',' if max_point_form.present?
       s << '};'
@@ -74,7 +74,7 @@ module Map::MapHelper
 
       s = []
       s << 'SS_AddonTabs.hide(".mod-map");'
-      s << 'Map.center = ' + center.to_json + ';' if center.present?
+      s << 'Map.center = ' + center.reverse.to_json + ';' if center.present?
       s << 'Map_Form.maxPointForm = ' + max_point_form.to_json + ';' if max_point_form.present?
       s << 'Map.setForm(Map_Form);'
       s << 'Map.load("' + selector + '");'
@@ -99,7 +99,7 @@ module Map::MapHelper
 
       s << 'var opts = {'
       s << '  readonly: true,'
-      s << '  center:' + center.reverse.to_json + ',' if center.present?
+      s << '  center:' + center.to_json + ',' if center.present?
       s << '  markers: ' + markers.to_json + ',' if markers.present?
       s << '  layers: ' + SS.config.map.layers.to_json + ','
       s << '};'
@@ -107,7 +107,7 @@ module Map::MapHelper
     else
       include_googlemaps_api(opts)
 
-      s << 'Map.center = ' + center.to_json + ';' if center.present?
+      s << 'Map.center = ' + center.reverse.to_json + ';' if center.present?
       s << 'var opts = {'
       s << '  markers: ' + markers.to_json + ',' if markers.present?
       s << '};'
@@ -132,7 +132,7 @@ module Map::MapHelper
 
       s << 'var opts = {'
       s << '  readonly: true,'
-      s << '  center:' + center.reverse.to_json + ',' if center.present?
+      s << '  center:' + center.to_json + ',' if center.present?
       s << '  markers: ' + markers.to_json + ',' if markers.present?
       s << '  layers: ' + SS.config.map.layers.to_json + ','
       s << '  loc: ' + loc.to_json + ',' if loc.present?
@@ -142,7 +142,7 @@ module Map::MapHelper
     else
       include_googlemaps_api(opts)
 
-      s << 'Map.center = ' + center.to_json + ';' if center.present?
+      s << 'Map.center = ' + center.reverse.to_json + ';' if center.present?
       s << 'var opts = {'
       s << '  markers: ' + markers.to_json + ',' if markers.present?
       s << '  loc: ' + loc.to_json + ',' if loc.present?
@@ -169,7 +169,7 @@ module Map::MapHelper
       s << 'var canvas = $("' + selector + '")[0];'
       s << 'var opts = {'
       s << '  readonly: true,'
-      s << '  center:' + center.reverse.to_json + ',' if center.present?
+      s << '  center:' + center.to_json + ',' if center.present?
       s << '  layers: ' + SS.config.map.layers.to_json + ','
       s << '};'
       s << 'var map = new Openlayers_Member_Photo_Form(canvas, opts);'
@@ -178,7 +178,7 @@ module Map::MapHelper
       include_googlemaps_api(opts)
       controller.javascript "/assets/js/exif-js.js"
 
-      s << 'Map.center = ' + center.to_json + ';' if center.present?
+      s << 'Map.center = ' + center.reverse.to_json + ';' if center.present?
       s << 'Map.setForm(Member_Photo_Form);'
       s << 'Map.load("' + selector + '");'
       s << 'Map.renderMarkers();'

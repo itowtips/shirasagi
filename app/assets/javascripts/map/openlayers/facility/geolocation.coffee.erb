@@ -1,14 +1,20 @@
 class @Openlayers_Facility_Geolocation
   @render :(selector, opts = {})->
-    markers = opts["markers"]
-    loc = opts["loc"]
-    radius = opts["radius"]
+    # define functions
+    slideSidebar = (column) ->
+      columnTop = column.offset().top
+      indexTop  = column.closest("#map-sidebar").offset().top
+      scrolled  = column.closest("#map-sidebar").scrollTop()
+      column.closest("#map-sidebar").animate({ scrollTop: columnTop - indexTop + scrolled }, 'fast')
 
     # setup map
     canvas = $(selector)[0]
     map = new Openlayers_Map(canvas, opts)
     window.ol_map = map
 
+    # setup geolocation search
+    loc = opts["loc"]
+    radius = opts["radius"]
     if loc && radius
       lat = loc[1]
       lon = loc[0]
@@ -41,7 +47,7 @@ class @Openlayers_Facility_Geolocation
       lat = Map.center[0]
       lon = Map.center[1]
 
-    # setup geolocation search
+    # setup geolocation event
     $(".geolocation").on "click", () ->
       success = (position) ->
         loc = [position.coords.latitude, position.coords.longitude]
@@ -73,38 +79,77 @@ class @Openlayers_Facility_Geolocation
         #"timeout": 8000,
       }
 
-      if( navigator.geolocation )
+      if(navigator.geolocation)
         $(".geolocation").text("現在地を取得しています...")
         $(".geolocation").attr("disabled", "disabled")
         navigator.geolocation.getCurrentPosition(success, error, option)
       else
         alert("お使いの端末では、現在位置を取得できませんでした。")
 
+    # setup markers
+    overrided = map.showPopup
+    map.showPopup = (feature, coordinate) ->
+      overrided.call(map, feature, coordinate)
+      $("#map-sidebar .column").removeClass("current")
+      dataId = feature.get("markerId")
+      column = $('#map-sidebar .column[data-id="' + dataId + '"]')
+      column.addClass("current")
+      slideSidebar(column)
+
+    # setup sidebar
+    $("#map-sidebar .column .click-marker").on "click", ->
+      dataId = parseInt($(this).closest(".column").attr("data-id"))
+      $("#map-sidebar .column").removeClass("current")
+      marker = map.getMarker(dataId)
+      return false unless marker
+
+      coordinate = marker.getGeometry().getCoordinates()
+      map.showPopup(marker, coordinate)
+      return false
+
     # setup category filter
-    #$(".filters a").on "click", ->
-    #  if $(this).hasClass("clicked")
-    #    $(this).removeClass("clicked")
-    #  else
-    #    $(this).addClass("clicked")
-    #
-    #  dataIDs = []
-    #  $(".filters a.clicked").each ->
-    #    dataIDs.push parseInt($(this).attr("data-id"))
-    #
-    #  $.each Map.markers, (id, value) ->
-    #    visible = false
-    #    $.each dataIDs, ->
-    #      if $.inArray(parseInt(this), Map.markers[id]["category"]) >= 0
-    #        visible = true
-    #        return false
-    #
-    #    dataID = Map.markers[id]["facility_id"]
-    #    column = $('#map-sidebar .column[data-id="' + dataID + '"]')
-    #    if visible
-    #      Map.markers[id]["marker"].setVisible(true)
-    #      column.show()
-    #    else
-    #      Map.markers[id]["marker"].setVisible(false)
-    #      Map.markers[id]["window"].close()
-    #      column.hide()
-    #  return false
+    $(".filters a").on "click", ->
+      if $(this).hasClass("clicked")
+        $(this).removeClass("clicked")
+      else
+        $(this).addClass("clicked")
+
+      dataIds = []
+      $(".filters a.clicked").each ->
+        dataIds.push parseInt($(this).attr("data-id"))
+
+      markers = map.getMarkers()
+      $.each markers, ->
+        visible = false
+        category = this.get("category")
+
+        $.each dataIds, ->
+          if $.inArray(parseInt(this), category) >= 0
+            visible = true
+            return false
+
+        dataId = this.get("markerId")
+        column = $('#map-sidebar .column[data-id="' + dataId + '"]')
+
+        map.popup.hide()
+        if visible
+          iconSrc = this.get("iconSrc")
+          style = map.createMarkerStyle(iconSrc)
+          this.setStyle(style)
+        else
+          style = new ol.style.Style({})
+          this.setStyle(style)
+
+      return false
+
+    # setup location filter
+    $(".filters .focus").on "change", ->
+      select = $(this)
+      select.find("option:selected").each ->
+        return false if $(this).val() == ""
+        loc = $(this).val().split(",")
+        zoomLevel = $(this).attr("data-zoom-level")
+        pos = [parseFloat(loc[0]), parseFloat(loc[1])]
+        map.setCenter(pos)
+        map.setZoom(parseInt(zoomLevel)) if zoomLevel
+        select.val("")

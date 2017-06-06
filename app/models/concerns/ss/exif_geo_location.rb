@@ -24,6 +24,6 @@ module SS::ExifGeoLocation
       exif_lng_ref = img.get_exif_by_entry('GPSLongitudeRef')[0][1]
       longitude *= -1 if exif_lng_ref == 'W'
 
-      self.geo_location = [ latitude, longitude ]
+      self.geo_location = { lng: longitude, lat: latitude }
     end
 end

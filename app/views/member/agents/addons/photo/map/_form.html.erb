@@ -11,8 +11,8 @@
     <% end %>
     <% @item.map_points.each do |point| %>
       <dt class="marker wide">
-        <%= hidden_field_tag "item[map_points][][loc]", point[:loc].join(","), class: "loc marker-loc" %>
-        <%#= text_field_tag "item[map_points][][loc]", point[:loc].join(","), class: "loc marker-loc" %>
+        <%= hidden_field_tag "item[map_points][][loc]", point[:loc].values.join(","), class: "loc marker-loc" %>
+        <%#= text_field_tag "item[map_points][][loc]", point[:loc].values.join(","), class: "loc marker-loc" %>
       </dt>
     <% end %>
     <div id="map-canvas" style="width: 100%; height: 320px"></div>

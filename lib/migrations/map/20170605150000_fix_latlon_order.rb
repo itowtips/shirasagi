@@ -10,10 +10,10 @@ class SS::Migration20170605150000
       next unless item.map_points.present?
 
       map_points = item.map_points.map do |map_point|
-        if map_point["loc"].present?
+        if map_point["loc"].present? && map_point["loc"].kind_of?(Array)
           lat = map_point["loc"][0]
-          lon = map_point["loc"][1]
-          map_point["loc"] = [lon, lat]
+          lng = map_point["loc"][1]
+          map_point["loc"] = { lng: lng, lat: lat }
           map_point
         else
           map_point

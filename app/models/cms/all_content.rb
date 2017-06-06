@@ -30,7 +30,7 @@ class Cms::AllContent
         node_id    = (content.class == Cms::Node) ? content.id : ""
         files      = content.files.map(&:name).join("\n") rescue ""
         file_urls  = content.files.map(&:url).join("\n") rescue ""
-        map_points = content.map_points.map { |point| point[:loc].join(",") }.join("\n") rescue ""
+        map_points = content.map_points.map { |point| point[:loc].values.join(",") }.join("\n") rescue ""
 
         [
           page_id,

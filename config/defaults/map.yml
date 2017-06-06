@@ -13,8 +13,8 @@ production: &production
 
   # Map Addon Center Location
   map_center:
-    - 36.204824
     - 138.252924
+    - 36.204824
 
   # Max Number of Markers in Map Addon
   map_max_point_form: 10

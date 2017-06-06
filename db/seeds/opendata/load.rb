@@ -319,7 +319,7 @@ save_page route: "cms/page", filename: "tutorial-data.html", name: "データ登
 save_page route: "cms/page", filename: "tutorial-app.html", name: "アプリ登録手順", layout_id: layouts["portal-general"].id
 save_page route: "cms/page", filename: "tutorial-idea.html", name: "アイデア登録手順", layout_id: layouts["portal-general"].id
 page0 = save_page route: "article/page", filename: "docs/1.html", name: "○○が公開されました。", layout_id: layouts["portal-general"].id, \
-  map_points: Map::Extensions::Points.new([{loc: Map::Extensions::Loc.mongoize([34.067022, 134.589982])}]), \
+  map_points: Map::Extensions::Points.new([{loc: Map::Extensions::Loc.mongoize([134.589982, 34.067022])}]), \
   contact_group_id: contact_group_id, contact_charge: contact_charge, contact_email: contact_email, \
   contact_tel: contact_tel, contact_fax: contact_fax
 page1 = save_page route: "article/page", filename: "docs/2.html", name: "○○○○○○が公開されました。", \

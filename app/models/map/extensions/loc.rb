@@ -1,25 +1,25 @@
-class Map::Extensions::Loc < Array
+class Map::Extensions::Loc < Hash
   def to_s
-    join(", ")
-  end
-
-  def lat
-    self[0]
+    [self["lng"], self["lat"]].join(", ")
   end
 
   def lng
-    self[1]
+    self["lng"]
+  end
+
+  def lat
+    self["lat"]
   end
 
   # convert to mongoid native type
   def mongoize
-    self.to_a
+    { "lat" => lat, "lng" => lng }
   end
 
   class << self
     # convert mongoid native type to its custom type(this class)
     def demongoize(object)
-      self.new(object.to_a)
+      self.new(object)
     end
 
     # convert any possible object to mongoid native type
@@ -29,13 +29,11 @@ class Map::Extensions::Loc < Array
         object.mongoize
       when String then
         object = object.gsub(/[, 　、\r\n]+/, ",").split(",").select(&:present?)
-        self[Float(object[0]), Float(object[1])].mongoize rescue []
+        { "lng" => Float(object[0]), "lat" => Float(object[1]) }
       when Array then
-        self[Float(object[0]), Float(object[1])].mongoize rescue []
+        { "lng" => Float(object[0]), "lat" => Float(object[1]) }
       when Hash then
-        lat = object[:lat].presence || object['lat']
-        lng = object[:lng].presence || object['lng']
-        self[Float(lat), Float(lng)].mongoize rescue []
+        object.mongoize
       else
         # unknown type
         object
