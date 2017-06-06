@@ -157,6 +157,9 @@ class @Openlayers_Map
     features = source.getFeatures();
     return features
 
+  getMap: ()->
+    @map
+
   setCenter: (pos) ->
     @map.getView().setCenter(ol.proj.transform(pos, 'EPSG:4326', 'EPSG:3857'))
 

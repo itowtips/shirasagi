@@ -129,7 +129,16 @@ module Map::MapHelper
     s = []
     if api == "openlayers"
       include_openlayers_api
-      #
+
+      s << 'var opts = {'
+      s << '  readonly: true,'
+      s << '  center:' + center.reverse.to_json + ',' if center.present?
+      s << '  markers: ' + markers.to_json + ',' if markers.present?
+      s << '  layers: ' + SS.config.map.layers.to_json + ','
+      s << '  loc: ' + loc.to_json + ',' if loc.present?
+      s << '  radius: ' + radius.to_json + ',' if radius.present?
+      s << '};'
+      s << 'Openlayers_Facility_Geolocation.render("' + selector + '", opts);'
     else
       include_googlemaps_api(opts)
 
