@@ -2,10 +2,11 @@ class @Openlayers_Facility_Search
   @render :(selector, opts = {})->
     # define functions
     slideSidebar = (column) ->
-      columnTop = column.offset().top
-      indexTop  = column.closest("#map-sidebar").offset().top
-      scrolled  = column.closest("#map-sidebar").scrollTop()
-      column.closest("#map-sidebar").animate({ scrollTop: columnTop - indexTop + scrolled }, 'fast')
+      if column && column.offset()
+        columnTop = column.offset().top
+        indexTop  = column.closest("#map-sidebar").offset().top
+        scrolled  = column.closest("#map-sidebar").scrollTop()
+        column.closest("#map-sidebar").animate({ scrollTop: columnTop - indexTop + scrolled }, 'fast')
 
     # setup map
     canvas = $(selector)[0]
@@ -31,6 +32,61 @@ class @Openlayers_Facility_Search
       coordinate = marker.getGeometry().getCoordinates()
       map.showPopup(marker, coordinate)
       return false
+
+    # setup categorybar filter
+    if $("#map-categorybar").length
+      $("#map-categorybar .filter").on "click", ->
+        dataIds = []
+        $("#map-categorybar .filter:checked").each ->
+          dataIds.push parseInt($(this).attr("data-id"))
+
+        markers = map.getMarkers()
+        $.each markers, ->
+          visible = false
+          category = this.get("category")
+
+          $.each dataIds, ->
+            if $.inArray(parseInt(this), category) >= 0
+              visible = true
+            return false
+
+          map.popup.hide()
+          if visible
+            iconSrc = this.get("iconSrc")
+            style = map.createMarkerStyle(iconSrc)
+            this.setStyle(style)
+
+            dataId = this.get("markerId")
+            $('#map-sidebar .column[data-id="' + dataId + '"]').show()
+          else
+            style = new ol.style.Style({})
+            this.setStyle(style)
+
+            dataId = this.get("markerId")
+            $('#map-sidebar .column[data-id="' + dataId + '"]').hide()
+        return
+
+      $("#map-categorybar .filter-all").on "click", ->
+        visible = $(this).prop('checked')
+        $("#map-categorybar .filter").prop("checked", visible)
+
+        markers = map.getMarkers()
+        $.each markers, ->
+          map.popup.hide()
+          if visible
+            iconSrc = this.get("iconSrc")
+            style = map.createMarkerStyle(iconSrc)
+            this.setStyle(style)
+
+            dataId = this.get("markerId")
+            $('#map-sidebar .column[data-id="' + dataId + '"]').show()
+          else
+            style = new ol.style.Style({})
+            this.setStyle(style)
+
+            dataId = this.get("markerId")
+            $('#map-sidebar .column[data-id="' + dataId + '"]').hide()
+        return
 
     # setup category filter
     $(".filters a").on "click", ->

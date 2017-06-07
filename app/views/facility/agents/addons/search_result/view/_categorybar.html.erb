@@ -1,0 +1,20 @@
+<div id="map-categorybar" style="height: 400px;">
+  <h2>検索結果<%= @items.count %>件</h2>
+  <div class="all">
+    <label>
+      <%= check_box_tag "category_ids[]", "all", true, { "class" => "filter-all", "data-id" => 0 } %>
+      <%= "全て表示する" %>
+    </label>
+  </div>
+
+  <h2>大項目</h2>
+  <div class="example">
+    <% @filter_categories.each do |cate| %>
+      <label>
+        <%= check_box_tag "category_ids[]", cate.id, true, { "class" => "filter", "data-id" => cate.id } %>
+        <%= image_tag cate.image.url if cate.image %>
+        <%= cate.name %>
+      </label>
+    <% end %>
+  </div>
+</div>

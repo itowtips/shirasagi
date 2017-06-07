@@ -4,10 +4,11 @@ class @Facility_Search
 
     # define functions
     slideSidebar = (column) ->
-      columnTop = column.offset().top
-      indexTop  = column.closest("#map-sidebar").offset().top
-      scrolled  = column.closest("#map-sidebar").scrollTop()
-      column.closest("#map-sidebar").animate({ scrollTop: columnTop - indexTop + scrolled }, 'fast')
+      if column && column.offset()
+        columnTop = column.offset().top
+        indexTop  = column.closest("#map-sidebar").offset().top
+        scrolled  = column.closest("#map-sidebar").scrollTop()
+        column.closest("#map-sidebar").animate({ scrollTop: columnTop - indexTop + scrolled }, 'fast')
 
     # setup map
     Map.load(selector)
@@ -41,6 +42,51 @@ class @Facility_Search
           slideSidebar(column)
           return false
       return false
+
+    # setup category sidebar
+    if $("#map-categorybar").length
+      $("#map-categorybar .filter").on "click", ->
+        dataIDs = []
+        $("#map-categorybar .filter:checked").each ->
+          dataIDs.push parseInt($(this).attr("data-id"))
+
+        $.each Map.markers, (id, value) ->
+          visible = false
+          $.each dataIDs, ->
+            if $.inArray(parseInt(this), Map.markers[id]["category"]) >= 0
+              visible = true
+              return false
+
+          if visible
+            Map.markers[id]["marker"].setVisible(true)
+
+            dataID = Map.markers[id]["id"]
+            $('#map-sidebar .column[data-id="' + dataID + '"]').show()
+          else
+            Map.markers[id]["marker"].setVisible(false)
+            Map.markers[id]["window"].close()
+
+            dataID = Map.markers[id]["id"]
+            $('#map-sidebar .column[data-id="' + dataID + '"]').hide()
+        return
+
+      $("#map-categorybar .filter-all").on "click", ->
+        visible = $(this).prop('checked')
+        $("#map-categorybar .filter").prop("checked", visible)
+
+        $.each Map.markers, (id, value) ->
+          if visible
+            Map.markers[id]["marker"].setVisible(true)
+
+            dataID = Map.markers[id]["id"]
+            $('#map-sidebar .column[data-id="' + dataID + '"]').show()
+          else
+            Map.markers[id]["marker"].setVisible(false)
+            Map.markers[id]["window"].close()
+
+            dataID = Map.markers[id]["id"]
+            $('#map-sidebar .column[data-id="' + dataID + '"]').hide()
+        return
 
     # setup category filter
     $(".filters a").on "click", ->
