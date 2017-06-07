@@ -1,5 +1,6 @@
 class Facility::Agents::Nodes::PageController < ApplicationController
   include Cms::NodeFilter::View
+  helper Map::MapHelper
 
   def map_pages
     Facility::Map.site(@cur_site).and_public.
@@ -13,13 +14,15 @@ class Facility::Agents::Nodes::PageController < ApplicationController
 
   def index
     map_pages.each do |map|
-
       points = []
       map.map_points.each_with_index do |point, i|
         points.push point
 
         image_ids = @cur_node.categories.pluck(:image_id)
         points[i][:image] = SS::File.in(id: image_ids).first.try(:url)
+        if points[i][:name].blank? && points[i][:text].blank?
+          points[i][:html] = view_context.render_marker_info(@cur_node)
+        end
       end
       map.map_points = points
 

@@ -45,10 +45,10 @@ SS::Application.routes.draw do
     get "geolocation/(index.:format)" => "public#index", cell: "nodes/geolocation"
   end
 
-  page "facility" do
-    get "image/:filename.:format" => "public#index", cell: "pages/image"
-    get "map/:filename.:format" => "public#index", cell: "pages/map"
-  end
+  #page "facility" do
+  #  get "image/:filename.:format" => "public#index", cell: "pages/image"
+  #  get "map/:filename.:format" => "public#index", cell: "pages/map"
+  #end
 
   namespace "facility", path: ".s:site/facility" do
     namespace "apis" do

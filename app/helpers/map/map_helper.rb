@@ -192,10 +192,12 @@ module Map::MapHelper
   def render_marker_info(item)
     h = []
 
+    image_pages = item.image_pages.and_public.order_by(order: 1).to_a
+    image_page = image_pages.select { |page| page.image.present? }.first
     h << %(<div class="maker-info" data-id="#{item.id}">)
-    h << %(<p class="name">#{item.name}</p>)
+    h << %(<p class="name"><a href="#{item.url}">#{item.name}</a></p>)
+    h << %(<img src="#{image_page.image.thumb_url}" alt="#{item.name}">) if image_page
     h << %(<p class="address">#{item.address}</p>)
-    h << %(<p class="show"><a href="#{item.url}">#{item.name}</a></p>)
     h << %(</div>)
 
     h.join("\n")

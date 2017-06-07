@@ -2,7 +2,7 @@ class Facility::Image
   include Cms::Model::Page
   include Cms::Page::SequencedFilename
   include Workflow::Addon::Approver
-  include Cms::Addon::Meta
+  #include Cms::Addon::Meta
   include Facility::Addon::ImageFile
   include Facility::Addon::ImageInfo
   include Cms::Addon::Release
