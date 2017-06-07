@@ -8,8 +8,8 @@ class Facility::ImportJob < Cms::ApplicationJob
   def perform(ss_file_id)
     @ss_file = ::SS::File.where(id: ss_file_id).first
 
-    put_log("destory all pages /#{node.filename}/*")
-    ::Facility::Node::Page.where(filename: /^#{node.filename}\//, site_id: site.id).destroy_all
+    #put_log("destory all pages /#{node.filename}/*")
+    #::Facility::Node::Page.where(filename: /^#{node.filename}\//, site_id: site.id).destroy_all
 
     put_log("import start " + ::File.basename(@ss_file.name))
     import_csv(@ss_file)
@@ -45,7 +45,7 @@ class Facility::ImportJob < Cms::ApplicationJob
 
     if row[@model.t(:map_points)].present?
       filename = "#{filename}/map.html"
-      map = ::Facility::Map.find_or_create_by filename: filename
+      map = ::Facility::Map.find_or_initialize_by filename: filename, site_id: site.id
       set_map_attributes(row, map)
       map.site = site
       map.save
