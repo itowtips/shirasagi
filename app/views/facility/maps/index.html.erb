@@ -17,7 +17,7 @@
   <% end %>
   <% if item.try(:map_points) %>
     <% item.map_points.each do |map_point| %>
-      <span class="map-point"><%= map_point[:name] %><%= map_point[:loc] %></span>
+      <span class="map-point"><%= map_point[:name] %><%= tryb { map_point[:loc].values } %></span>
     <% end %>
   <% end %>
 <% end %>

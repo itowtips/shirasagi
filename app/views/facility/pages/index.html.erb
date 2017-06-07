@@ -18,7 +18,7 @@
   <% Facility::Map.site(@cur_site).and_public.where(filename: /^#{item.filename}\//,
     depth: item.depth + 1).order_by(order: 1).each do |map| %>
     <% map.map_points.each do |map_point| %>
-      <span class="map-point"><%= map_point[:name] %><%= map_point[:loc] %></span>
+      <span class="map-point"><%= map_point[:name] %><%= tryb { map_point[:loc].values } %></span>
     <% end %>
   <% end %>
 <% end %>
