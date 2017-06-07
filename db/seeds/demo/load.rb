@@ -1027,7 +1027,7 @@ save_page route: "facility/image", filename: "institution/shisetsu/library/libra
 save_page route: "facility/image", filename: "institution/shisetsu/library/equipment.html", name: "設備",
   layout_id: layouts["map"].id, image_id: facility_images["equipment.jpg"].id, order: 10
 save_page route: "facility/map", filename: "institution/shisetsu/library/map.html", name: "地図",
-  layout_id: layouts["map"].id, map_points: [ { name: "シラサギ市立図書館", loc: [ 34.067035, 134.589971 ], text: "" } ]
+  layout_id: layouts["map"].id, map_points: [ { name: "シラサギ市立図書館", loc: { "lng" => 134.589971, "lat" => 34.067035 }, text: "" } ]
 
 puts "# ezine"
 save_page route: "ezine/page", filename: "ezine/page36.html", name: "シラサギ市メールマガジン", completed: true,
@@ -1063,7 +1063,7 @@ puts "# member photo"
 photo_page_1 = save_page route: "member/photo", filename: "kanko-info/photo/page1.html", name: "観光地1",
   member_id: @member_1.id,
   layout_id: layouts["kanko-info"].id,
-  map_points: [ { loc: [33.902679, 134.526215] } ],
+  map_points: [ { loc: { "lng" => 134.526215, "lat" => 33.902679 } } ],
   listable_state: "public",
   slideable_state: "hide",
   license_name: "not_free",
@@ -1074,7 +1074,7 @@ photo_page_1 = save_page route: "member/photo", filename: "kanko-info/photo/page
 photo_page_2 = save_page route: "member/photo", filename: "kanko-info/photo/page2.html", name: "観光地2",
   member_id: @member_1.id,
   layout_id: layouts["kanko-info"].id,
-  map_points: [ { loc: [33.729822, 134.538575] } ],
+  map_points: [ { loc: { "lng" => 134.538575, "lat" => 33.729822 } } ],
   listable_state: "public",
   slideable_state: "public",
   license_name: "not_free",
@@ -1085,7 +1085,7 @@ photo_page_2 = save_page route: "member/photo", filename: "kanko-info/photo/page
 photo_page_3 = save_page route: "member/photo", filename: "kanko-info/photo/page3.html", name: "観光地3",
   member_id: @member_1.id,
   layout_id: layouts["kanko-info"].id,
-  map_points: [ { loc: [33.839396, 134.450684] } ],
+  map_points: [ { loc: { "lng" => 134.450684, "lat" => 33.839396 } } ],
   listable_state: "public",
   slideable_state: "public",
   license_name: "not_free",
@@ -1096,7 +1096,7 @@ photo_page_3 = save_page route: "member/photo", filename: "kanko-info/photo/page
 photo_page_4 = save_page route: "member/photo", filename: "kanko-info/photo/page4.html", name: "観光地4",
   member_id: @member_1.id,
   layout_id: layouts["kanko-info"].id,
-  map_points: [ { loc: [33.946095, 134.088135] } ],
+  map_points: [ { loc: { "lng" => 134.088135, "lat" => 33.946095 } } ],
   listable_state: "public",
   slideable_state: "public",
   license_name: "not_free",
@@ -1107,7 +1107,7 @@ photo_page_4 = save_page route: "member/photo", filename: "kanko-info/photo/page
 photo_page_5 = save_page route: "member/photo", filename: "kanko-info/photo/page5.html", name: "観光地5",
   member_id: @member_1.id,
   layout_id: layouts["kanko-info"].id,
-  map_points: [ { loc: [33.793757, 134.538575] } ],
+  map_points: [ { loc: { "lng" => 134.538575, "lat" => 33.793757 } } ],
   listable_state: "public",
   slideable_state: "hide",
   license_name: "not_free",
