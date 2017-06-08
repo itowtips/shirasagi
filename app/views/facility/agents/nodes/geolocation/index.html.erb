@@ -7,11 +7,13 @@
   <%= select_tag :r,  options_for_select([["1km", "1"], ["3km", "3"], ["5km", "5"], ["10km", "10"], ["20km", "20"], ["30km", "30"]], @radius), class: "radius" %>
 </nav>
 
+<% if @items.present? || @loc.present? %>
 <div id="map-sidebar" style="height: 400px;">
   <% @items.each do |item| %>
     <%== item.sidebar_html %>
   <% end %>
 </div>
+<% end %>
 
 <div id="map-canvas" style="width: 100%; height: 400px;"></div>
 

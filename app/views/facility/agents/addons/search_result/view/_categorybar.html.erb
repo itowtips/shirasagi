@@ -7,14 +7,24 @@
     </label>
   </div>
 
-  <h2>大項目</h2>
-  <div class="example">
-    <% @filter_categories.each do |cate| %>
+  <% h = {} %>
+  <% @filter_categories.each do |cate| %>
+    <% h[cate.parent] ||= [] %>
+    <% h[cate.parent] << cate %>
+  <% end %>
+  <% h.each do |parent, cates| %>
+    <% if parent %>
+      <h2><%= parent.name %></h2>
+      <div class="<%= parent.basename %>">
+    <% else %>
+      <div class="depth1">
+    <% end %>
+    <% cates.each do |cate| %>
       <label>
         <%= check_box_tag "category_ids[]", cate.id, true, { "class" => "filter", "data-id" => cate.id } %>
         <%= image_tag cate.image.url if cate.image %>
         <%= cate.name %>
       </label>
     <% end %>
-  </div>
+  <% end %>
 </div>
