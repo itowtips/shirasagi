@@ -29,9 +29,9 @@ class Map::Extensions::Loc < Hash
         object.mongoize
       when String then
         object = object.gsub(/[, 　、\r\n]+/, ",").split(",").select(&:present?)
-        { "lng" => Float(object[0]), "lat" => Float(object[1]) }
+        { "lng" => Float(object[0]), "lat" => Float(object[1]) } rescue {}
       when Array then
-        { "lng" => Float(object[0]), "lat" => Float(object[1]) }
+        { "lng" => Float(object[0]), "lat" => Float(object[1]) } rescue {}
       when Hash then
         object.mongoize
       else
