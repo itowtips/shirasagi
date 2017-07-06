@@ -48,7 +48,7 @@ class @Openlayers_Facility_Search
           $.each dataIds, ->
             if $.inArray(parseInt(this), category) >= 0
               visible = true
-            return false
+              return false
 
           map.popup.hide()
           if visible
