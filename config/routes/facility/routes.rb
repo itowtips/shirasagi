@@ -22,7 +22,7 @@ SS::Application.routes.draw do
     resources :nodes, concerns: :deletion
     resources :searches, concerns: :deletion
     resources :geolocations, concerns: :deletion
-    resources :search_geolocations, concerns: :deletion
+    resources :search_with_geolocations, concerns: :deletion
     resources :services, concerns: :deletion
     resources :locations, concerns: :deletion
     resources :categories, concerns: :deletion
