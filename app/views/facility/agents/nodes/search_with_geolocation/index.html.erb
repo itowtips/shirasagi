@@ -66,12 +66,18 @@
   </tr>
   </thead>
   <tbody>
-    <% @items.each do |item| %>
+    <% @markers.each do |marker| %>
     <tr>
-      <td><%= link_to item.name, item.url %></td>
-      <td><%= item.address %></td>
-      <td><%= "SSID" %></td>
-      <td><%= "" %></td>
+      <td><%= link_to marker[:facility_name], marker[:facility_url] %></td>
+      <td><%= marker[:address] %></td>
+      <td><%= marker[:ssid] %></td>
+      <td>
+        <% if marker[:distance] > 1.0 %>
+          <%= "#{marker[:distance].round(1)}km" %>
+        <% else %>
+          <%= "#{(marker[:distance] * 1000).round}m" %>
+        <% end %>
+      </td>
     </tr>
     <% end %>
   </tbody>

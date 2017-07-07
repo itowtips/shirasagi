@@ -1,4 +1,74 @@
 class @Openlayers_Facility_Geolocation
+  @setCircle :(map, loc, radius) ->
+    ol_map = map.getMap()
+    ol_layers = ol_map.getLayers()
+
+    wgs84Sphere = new ol.Sphere(6378137)
+
+    outer_style = new ol.style.Style({
+      fill: new ol.style.Fill({
+        color: 'rgba(255, 100, 50, 0.15)'
+      })
+      stroke: new ol.style.Stroke({
+        width: 1,
+        color: 'rgba(255, 100, 50, 0.8)'
+      })
+    })
+    inner_style = new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        width: 1,
+        color: 'rgba(255, 100, 50, 0.8)'
+      })
+    })
+    center_style = new ol.style.Style({
+      image: new ol.style.Icon({
+        anchor: [0.5, 1]
+        anchorXUnits: 'fraction'
+        anchorYUnits: 'fraction'
+        src: '/assets/img/map-marker.png'
+      })
+    })
+
+    outer_layer = new ol.layer.Vector({
+      source: new ol.source.Vector(),
+      style: outer_style
+    })
+    inner_layer = new ol.layer.Vector({
+      source: new ol.source.Vector(),
+      style: inner_style
+    })
+    center_layer = new ol.layer.Vector({
+      source: new ol.source.Vector(),
+      style: center_style
+    })
+
+    ol_layers.insertAt(5, center_layer)
+    ol_layers.insertAt(1, outer_layer)
+    ol_layers.insertAt(1, inner_layer)
+
+    feature = new ol.Feature({
+      geometry: new ol.geom.Point(ol.proj.transform(loc, "EPSG:4326", "EPSG:3857"))
+      featureType: "marker"
+    })
+    feature.setStyle(center_style)
+    center_layer.getSource().addFeature(feature)
+
+    circle4326 = ol.geom.Polygon.circular(wgs84Sphere, loc, radius, 64)
+    circle4326.transform('EPSG:4326', 'EPSG:3857');
+    feature = new ol.Feature(circle4326)
+    outer_layer.getSource().addFeature(feature)
+
+    extent = outer_layer.getSource().getExtent()
+    ol_map.getView().fit(extent, ol_map.getSize())
+
+    for inner_radius in [1000, 3000, 5000, 10000, 30000, 50000]
+      if (radius - inner_radius) <= 0
+        break
+      circle4326 = ol.geom.Polygon.circular(wgs84Sphere, loc, inner_radius, 64)
+      circle4326.transform('EPSG:4326', 'EPSG:3857');
+      feature = new ol.Feature(circle4326)
+      inner_layer.getSource().addFeature(feature)
+
   @render :(selector, opts = {})->
     # define functions
     slideSidebar = (column) ->
@@ -21,32 +91,7 @@ class @Openlayers_Facility_Geolocation
       lat = loc[1]
       lon = loc[0]
       radius = radius * 1000
-
-      style = new ol.style.Style({
-        fill: new ol.style.Fill({
-          color: 'rgba(255, 100, 50, 0.15)'
-        })
-        stroke: new ol.style.Stroke({
-          width: 1,
-          color: 'rgba(255, 100, 50, 0.8)'
-        })
-      })
-      wgs84Sphere = new ol.Sphere(6378137)
-      circle4326 = ol.geom.Polygon.circular(wgs84Sphere, [parseFloat(lon), parseFloat(lat)], radius, 64)
-      circle4326.transform('EPSG:4326', 'EPSG:3857');
-      feature = new ol.Feature(circle4326)
-      vectorSource = new ol.source.Vector({
-        features: [feature]
-      })
-      ol_map = map.getMap()
-      ol_layer = new ol.layer.Vector({
-        source: vectorSource,
-        style: style
-      })
-      layers = ol_map.getLayers()
-      layers.insertAt(1, ol_layer)
-      extent = ol_layer.getSource().getExtent()
-      ol_map.getView().fit(extent, ol_map.getSize())
+      Openlayers_Facility_Geolocation.setCircle(map, [parseFloat(lon), parseFloat(lat)], radius)
     else
       lat = Map.center[0]
       lon = Map.center[1]
