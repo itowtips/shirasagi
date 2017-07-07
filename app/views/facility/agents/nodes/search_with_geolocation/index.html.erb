@@ -1,0 +1,78 @@
+<%= render_facility_geolocation "#map-canvas", markers: @markers, site: @cur_site, loc: @loc, radius: @radius, center: @loc %>
+
+<% if @loc.blank? %>
+<%= jquery do %>$(".geolocation").click();<% end %>
+<% end %>
+
+<div class="map-wrap">
+  <form>
+    <%= hidden_field_tag :current_loc, "#{@lon},#{@lat}", class: "current-loc" %>
+    <%= hidden_field_tag :map_clicked, nil, class: "map-clicked" %>
+    <div class="circle">
+      <label>円の範囲<%= select_tag :r, options_for_select(@radius_options, @radius), class: "radius" %></label>
+    </div>
+    <div class="city">
+      <label>市町村<%= select_tag :loc, options_for_select(@location_options), class: "facility-location" %></label>
+    </div>
+    <span class="map-search" style="text-align: right;">
+      <a>検索</a>
+    </span>
+    <span class="geolocation" style="text-align: right;">
+      <a>現在位置に移動</a>
+    </span>
+  </form>
+</div>
+
+<div id="map-canvas" style="width: 100%; height: 400px;"></div>
+
+<div id="map-categorybar" style="height: 400px;">
+  <h2>検索結果<%= @items.count %>件</h2>
+  <div class="all">
+    <label>
+      <%= check_box_tag "category_ids[]", "all", true, { "class" => "filter-all", "data-id" => 0 } %>
+      <%= "全て表示する" %>
+    </label>
+  </div>
+  <% h = {} %>
+  <% @filter_categories.each do |cate| %>
+    <% h[cate.parent] ||= [] %>
+    <% h[cate.parent] << cate %>
+  <% end %>
+  <% h.each do |parent, cates| %>
+    <% if parent %>
+      <h2><%= parent.name %></h2>
+      <div class="<%= parent.basename %>">
+        <% cates.each do |cate| %>
+          <label>
+            <%= check_box_tag "category_ids[]", cate.id, true, { "class" => "filter", "data-id" => cate.id } %>
+            <%= image_tag cate.image.url if cate.image %>
+            <%= cate.name %>
+          </label>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="depth1"></div>
+    <% end %>
+  <% end %>
+</div>
+
+<table class="spot-lists">
+  <thead>
+  <tr>
+    <th>施設名</th>
+    <th>所在地</th>
+    <th>SSID</th>
+    <th>中心からの距離</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% @items.each do |item| %>
+    <tr>
+      <td><%= link_to item.name, item.url %></td>
+      <td><%= item.address %></td>
+      <td><%= "SSID" %></td>
+      <td><%= "" %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

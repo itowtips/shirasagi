@@ -6,8 +6,16 @@ class @Openlayers_Map
     @markerLayer   = null
     @popup         = null
     @markerIcon    = '/assets/img/map-marker.png'
+    @clickIcon     = '/assets/img/map-marker-click.png'
+    @clickMarkerId = null
 
     @render()
+
+  setMapLoc: (ele, lat, lon)->
+    lat = Math.ceil(lat * Math.pow(10,6)) / Math.pow(10,6)
+    lon = Math.ceil(lon * Math.pow(10,6)) / Math.pow(10,6)
+    ele.val(lon.toFixed(6) + "," + lat.toFixed(6))
+    return
 
   render: () ->
     @initMap()
@@ -101,9 +109,27 @@ class @Openlayers_Map
         return feature
       )
 
-      if feature
+      if feature && (feature.get("featureType") == "marker")
         @showPopup(feature, e.coordinate)
         return
+
+      if !@opts["clickEnabled"]
+        return
+
+      if @clickMarkerId
+        feature = @getMarker(@clickMarkerId)
+        source = @markerLayer.getSource()
+        source.removeFeature(feature)
+
+      pos = ol.proj.transform(e.coordinate, "EPSG:3857", "EPSG:4326")
+      # normalize geo position
+      pos[0] += 360 while pos[0] < 180
+      pos[0] -= 360 while pos[0] > 180
+
+      @clickMarkerId = "click"
+      @setMarker(pos, { image: @clickIcon, id: @clickMarkerId })
+      if $(".map-clicked").length
+        @setMapLoc($(".map-clicked"), pos[1], pos[0])
 
   createMarkerStyle: (iconSrc) ->
     new ol.style.Style({
@@ -116,17 +142,25 @@ class @Openlayers_Map
     })
 
   setMarker: (loc, opts={}) ->
-    iconSrc = @markerIcon
-    iconSrc = opts['image'] if opts['image']
-    style = @createMarkerStyle(iconSrc)
-    pos = [opts['loc'][0], opts['loc'][1]]
+    src = @markerIcon
+    src = opts['image'] if opts['image']
 
+    style = new ol.style.Style({
+      image: new ol.style.Icon({
+        anchor: [0.5, 1]
+        anchorXUnits: 'fraction'
+        anchorYUnits: 'fraction'
+        src: src
+      })
+    })
+
+    pos = [loc[0], loc[1]]
     feature = new ol.Feature({
       geometry: new ol.geom.Point(ol.proj.transform(pos, "EPSG:4326", "EPSG:3857"))
       markerId: (opts['id'] ? null)
       markerHtml: (opts['html'] ? null)
       category: (opts['category'] ? null)
-      iconSrc: iconSrc
+      featureType: "marker"
     })
     feature.setStyle(style)
 
@@ -139,6 +173,7 @@ class @Openlayers_Map
       @map.addLayer(@markerLayer)
     else
       @markerLayer.getSource().addFeature(feature)
+
     return feature
 
   getMarker: (markerId) ->
@@ -190,6 +225,7 @@ class @Openlayers_Map
         markerHtml: (marker['html'] ? markerHtml)
         category: (marker['category'] ? null)
         iconSrc: iconSrc
+        featureType: "marker"
       })
       feature.setStyle(style)
 

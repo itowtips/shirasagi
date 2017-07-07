@@ -22,6 +22,7 @@ SS::Application.routes.draw do
     resources :nodes, concerns: :deletion
     resources :searches, concerns: :deletion
     resources :geolocations, concerns: :deletion
+    resources :search_geolocations, concerns: :deletion
     resources :services, concerns: :deletion
     resources :locations, concerns: :deletion
     resources :categories, concerns: :deletion
@@ -43,6 +44,11 @@ SS::Application.routes.draw do
     get "search/(result.:format)" => "public#result", cell: "nodes/search"
 
     get "geolocation/(index.:format)" => "public#index", cell: "nodes/geolocation"
+
+    get "search_with_geolocation/(index.:format)" => "public#index", cell: "nodes/search_with_geolocation"
+    get "search_with_geolocation/(map.:format)" => "public#map", cell: "nodes/search_with_geolocation"
+    get "search_with_geolocation/(map-all.:format)" => "public#map_all", cell: "nodes/search_with_geolocation"
+    get "search_with_geolocation/(result.:format)" => "public#result", cell: "nodes/search_with_geolocation"
   end
 
   #page "facility" do

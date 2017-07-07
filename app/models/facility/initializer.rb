@@ -7,6 +7,7 @@ module Facility
     Cms::Node.plugin "facility/location"
     Cms::Node.plugin "facility/search"
     Cms::Node.plugin "facility/geolocation"
+    Cms::Node.plugin "facility/search_with_geolocation"
 
     SS::File.model "facility/file", SS::File
   end

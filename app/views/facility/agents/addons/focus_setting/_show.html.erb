@@ -1,6 +1,6 @@
 <dl class="see">
   <dt><%= @model.t :center_point %></dt>
-  <dd><%= @item.center_point[:loc].try(:join, ", ") %></dd>
+  <dd><%= tryb{ @item.center_point[:loc].values.join(", ") } %></dd>
   <dt><%= @model.t :zoom_level %></dt>
   <dd><%= @item.center_point[:zoom_level] %></dd>
 </dl>

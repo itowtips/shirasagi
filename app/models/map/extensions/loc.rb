@@ -13,7 +13,7 @@ class Map::Extensions::Loc < Hash
 
   # convert to mongoid native type
   def mongoize
-    { "lat" => lat, "lng" => lng }
+    { "lng" => lng, "lat" => lat }
   end
 
   class << self

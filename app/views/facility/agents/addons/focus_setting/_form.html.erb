@@ -1,8 +1,8 @@
 <dl class="see">
   <dt><%= @model.t :center_point %><%= @model.tt :center_point %></dt>
   <dd>
-    <%= text_field_tag "item[center_point][loc]", @item.center_point[:loc].try(:join, ", "),
-      placeholder: SS.config.map.map_center.join(", "), style: "width: 240px" %>
+    <% value = @item.center_point[:loc].values.join(", ") rescue nil%>
+    <%= text_field_tag "item[center_point][loc]", value, placeholder: SS.config.map.map_center.join(", "), style: "width: 240px" %>
   </dd>
   <dt><%= @model.t :zoom_level %><%= @model.tt :zoom_level %></dt>
   <dd>

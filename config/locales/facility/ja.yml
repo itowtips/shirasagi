@@ -3,6 +3,7 @@ ja:
     facility: 施設
     node: 施設一覧
     search: 施設検索
+    search_with_geolocation: 周辺施設検索
     page: 施設情報
     keyword: キーワード
     category:
@@ -81,6 +82,7 @@ ja:
       facility/location: 施設のある地域
       facility/search: 施設検索
       facility/geolocation: 位置情報検索
+      facility/search_with_geolocation: 周辺施設検索
 
   mongoid:
     models:
@@ -105,6 +107,11 @@ ja:
         map_points: 座標
         groups: 管理グループ
       facility/node/search:
+        limit: 一覧表示件数
+        map_points_limit: 地図表示件数
+        search_html: 検索HTML
+        map_html: 地図HTML
+      facility/node/search_with_geolocation:
         limit: 一覧表示件数
         map_points_limit: 地図表示件数
         search_html: 検索HTML

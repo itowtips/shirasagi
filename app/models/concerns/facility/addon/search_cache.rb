@@ -4,6 +4,8 @@ module Facility::Addon
     extend SS::Addon
     include Map::MapHelper
 
+    EARTH_RADIUS_KM = 6378.137
+
     included do
       before_save :set_map_points
       before_save :set_sidebar_html
@@ -34,6 +36,20 @@ module Facility::Addon
 
     def set_sidebar_html
       self.sidebar_html = render_map_sidebar(self)
+    end
+
+    module ClassMethods
+      def center_sphere(loc, radius_km)
+        where(
+          map_points: {
+            "$elemMatch" => {
+              "loc" => {
+                "$geoWithin" => { "$centerSphere" => [ loc, radius_km / EARTH_RADIUS_KM ] }
+              }
+            }
+          }
+        )
+      end
     end
   end
 end

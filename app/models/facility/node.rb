@@ -129,6 +129,34 @@ module Facility::Node
     end
   end
 
+  class SearchWithGeolocation
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Facility::Addon::CategorySetting
+    include Facility::Addon::ServiceSetting
+    include Facility::Addon::LocationSetting
+    include Facility::Addon::SearchSetting
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "facility/search_with_geolocation") }
+
+    def condition_hash
+      cond = []
+
+      cond << { filename: /^#{filename}\// } if conditions.blank?
+      conditions.each do |url|
+        node = Cms::Node.site(cur_site || site).filename(url).first rescue nil
+        next unless node
+        cond << { filename: /^#{node.filename}\//, depth: node.depth + 1 }
+      end
+
+      { '$or' => cond }
+    end
+  end
+
   class Geolocation
     include Cms::Model::Node
     include Cms::Addon::NodeSetting

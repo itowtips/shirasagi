@@ -1,22 +1,18 @@
 class Map::Extensions::Point < Hash
-  # convert to mongoid native type
-  def mongoize
-    loc = self.loc
-    return {} if loc.nil?
+  def to_s
+    return "" if self.loc.blank?
+    [self.loc["lng"], self.loc["lat"]].join(", ")
+  end
 
-    ret = { 'loc' => loc.mongoize }
-    ret['zoom_level'] = self[:zoom_level] if self[:zoom_level].present?
+  def mongoize
+    ret = {}
+    ret["loc"] = self.loc
+    ret["zoom_level"] = self.zoom_level if self.zoom_level
     ret
   end
 
   def loc
-    value = self[:loc]
-    return nil if value.nil?
-
-    unless value.is_a?(Map::Extensions::Loc)
-      self[:loc] = value = Map::Extensions::Loc.demongoize(value)
-    end
-    value
+    self[:loc]
   end
 
   def zoom_level
@@ -42,13 +38,14 @@ class Map::Extensions::Point < Hash
       when self then
         object.mongoize
       when Hash then
-        loc = object[:loc].presence || object['loc'].presence
-        return self.new.mongoize if loc.blank?
-
-        ret = self[loc: Map::Extensions::Loc.mongoize(loc)]
+        loc = Map::Extensions::Loc.mongoize(object[:loc].presence || object['loc'].presence)
         zoom_level = object[:zoom_level].presence || object['zoom_level'].presence
         zoom_level = Integer(zoom_level) rescue nil if zoom_level.present?
-        ret[:zoom_level] = zoom_level if zoom_level.present?
+
+        return self.new.mongoize if loc.blank?
+        ret = self.new
+        ret[:loc] = loc
+        ret[:zoom_level] = zoom_level if zoom_level
         ret.mongoize
       else object
         object
