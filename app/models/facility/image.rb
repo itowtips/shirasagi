@@ -11,8 +11,15 @@ class Facility::Image
 
   default_scope ->{ where(route: "facility/image") }
 
+  after_save :save_facility_node_page
+
   private
     def serve_static_file?
       false
     end
+
+    def save_facility_node_page
+      node = Facility::Node::Page.site(site).where(filename: ::File.dirname(filename), depth: depth - 1).first
+      node.save if node
+   end
 end
