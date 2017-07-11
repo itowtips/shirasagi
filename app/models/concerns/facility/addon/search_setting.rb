@@ -14,6 +14,11 @@ module Facility::Addon
       permit_params :search_html, :map_points_limit, :search_result_type
     end
 
+    def limit
+      value = self[:limit].to_i
+      (value < 1 || 10000 < value) ? 100 : value
+    end
+
     def sort_hash
       return { filename: 1 } if sort.blank?
       { sort.sub(/ .*/, "") => (sort =~ /-1$/ ? -1 : 1) }

@@ -19,8 +19,10 @@ $(window).on "load", ->
       <% locations.each do |loc| %>
           <% items = @items.in(location_ids: loc.id).order_by(address: -1) %>
           <% if items.present? %>
-              <table id="<%= loc.basename %>">
-                <caption><%= loc.name %></caption>
+              <header>
+                <h2 class="name" id="tokushima"><%= loc.name %></h2>
+              </header>
+              <table id="<%= loc.basename %>" class="spot-lists">
                 <thead>
                 <tr>
                   <th><%= Facility::Node::Page.t :name %></th>
