@@ -48,13 +48,13 @@ module Facility::Node
     end
 
     COLUMNS = %w(
-      filename name layout kana address postcode tel
+      filename name layout ssid kana address postcode tel
       fax related_url categories locations services
       map_points groups
     ).freeze
 
     PUBLIC_COLUMNS = %w(
-      name kana address postcode tel
+      name ssid kana address postcode tel
       fax related_url categories locations services
       map_points
     ).freeze
@@ -81,6 +81,7 @@ module Facility::Node
           row << item.basename unless opts[:public]
           row << item.name
           row << item.layout.try(:name) unless opts[:public]
+          row << item.ssid
           row << item.kana
           row << item.address
           row << item.postcode

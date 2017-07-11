@@ -91,10 +91,11 @@ ja:
     attributes:
       facility/node/page:
         name: 施設名
+        ssid: SSID
         kana: 施設名ふりがな
         layout: レイアウト
         postcode: 郵便番号
-        address: 住所
+        address: 所在地
         tel: 電話番号
         fax: FAX
         related_url: URL
@@ -135,12 +136,14 @@ ja:
 
   tooltip:
     facility/addon/body:
+      ssid:
+        - SSIDを入力します。
       kana:
         - 施設名（ページタイトル）のふりがなを入力します。
       postcode:
         - 施設の郵便番号を入力します。
       address:
-        - 施設の住所を入力します。
+        - 施設の所在地を入力します。
       tel:
         - 施設の電話番号を入力します。
       fax:

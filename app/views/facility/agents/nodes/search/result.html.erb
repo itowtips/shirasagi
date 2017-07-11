@@ -11,23 +11,58 @@ $(window).on "load", ->
 
 <%= render file: "facility/agents/addons/search_result/view/upper" %>
 
-<div class="columns">
-  <% @items.each do |item| %>
-    <article class="column">
-      <header>
-        <h2 class="name"><%= link_to item.name, item.url %></h2>
-      </header>
-      <div class="categories">
-        <ul>
-          <% item.categories.each do |cate| %>
-            <li class="<%= cate.basename %>">
-              <%= link_to cate.name, cate.url %>
-            </li>
+<% locations = @items.map(&:locations).flatten.uniq.sort_by{ |item| item.order } %>
+
+<div class="facility-nodes">
+  <% if locations.present? %>
+
+      <% locations.each do |loc| %>
+          <% items = @items.in(location_ids: loc.id).order_by(address: -1) %>
+          <% if items.present? %>
+              <table id="<%= loc.basename %>">
+                <caption><%= loc.name %></caption>
+                <thead>
+                <tr>
+                  <th><%= Facility::Node::Page.t :name %></th>
+                  <th><%= Facility::Node::Page.t :address %></th>
+                  <th><%= Facility::Node::Page.t :ssid %></th>
+                </tr>
+                </thead>
+                <tbody>
+                <% items.each do |item| %>
+                    <tr>
+                      <td><%= link_to item.name, item.url %></td>
+                      <td><%= item.address %></td>
+                      <td><%= item.try(:ssid) %></td>
+                    </tr>
+                <% end %>
+                </tbody>
+              </table>
           <% end %>
-        </ul>
-      </div>
-      <p class="address"><%= item.address %></p>
-    </article>
+      <% end %>
+
+  <% else %>
+
+      <table>
+        <caption><%= @cur_node.name %></caption>
+        <thead>
+        <tr>
+          <th><%= Facility::Node::Page.t :name %></th>
+          <th><%= Facility::Node::Page.t :address %></th>
+          <th><%= Facility::Node::Page.t :ssid %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @items.each do |item| %>
+            <tr>
+              <td><%= link_to item.name, item.url %></td>
+              <td><%= item.address %></td>
+              <td><%= item.try(:ssid) %></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
   <% end %>
 </div>
 

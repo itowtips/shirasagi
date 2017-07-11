@@ -12,7 +12,7 @@
             <tr>
               <th><%= Facility::Node::Page.t :name %></th>
               <th><%= Facility::Node::Page.t :address %></th>
-              <th><%= Facility::Node::Page.t :tel %></th>
+              <th><%= Facility::Node::Page.t :ssid %></th>
             </tr>
           </thead>
           <tbody>
@@ -20,7 +20,7 @@
             <tr>
               <td><%= link_to item.name, item.url %></td>
               <td><%= item.address %></td>
-              <td><%= item.tel %></td>
+              <td><%= item.try(:ssid) %></td>
             </tr>
           <% end %>
           </tbody>
@@ -36,7 +36,7 @@
         <tr>
           <th><%= Facility::Node::Page.t :name %></th>
           <th><%= Facility::Node::Page.t :address %></th>
-          <th><%= Facility::Node::Page.t :tel %></th>
+          <th><%= Facility::Node::Page.t :ssid %></th>
         </tr>
       </thead>
       <tbody>
@@ -44,7 +44,7 @@
           <tr>
             <td><%= link_to item.name, item.url %></td>
             <td><%= item.address %></td>
-            <td><%= item.tel %></td>
+            <td><%= item.try(:ssid) %></td>
           </tr>
         <% end %>
       </tbody>

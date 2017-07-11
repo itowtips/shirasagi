@@ -4,6 +4,7 @@ module Facility::Addon
     extend SS::Addon
 
     included do
+      field :ssid, type: String
       field :kana, type: String
       field :postcode, type: String
       field :address, type: String
@@ -11,7 +12,7 @@ module Facility::Addon
       field :fax, type: String
       field :related_url, type: String
 
-      permit_params :kana, :postcode, :address, :tel, :fax, :related_url
+      permit_params :ssid, :kana, :postcode, :address, :tel, :fax, :related_url
     end
   end
 end

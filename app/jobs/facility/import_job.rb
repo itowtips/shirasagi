@@ -58,6 +58,7 @@ class Facility::ImportJob < Cms::ApplicationJob
   def set_page_attributes(row, item)
     item.name            = row[@model.t(:name)].try(:squish)
     item.layout          = Cms::Layout.site(site).where(name: row[@model.t(:layout)].try(:squish)).first
+    item.ssid            = row[@model.t(:ssid)].try(:squish)
     item.kana            = row[@model.t(:kana)].try(:squish)
     item.address         = row[@model.t(:address)].try(:squish)
     item.postcode        = row[@model.t(:postcode)].try(:squish)

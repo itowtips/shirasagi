@@ -1,4 +1,9 @@
 <dl class="see body">
+  <% if @cur_node.ssid.present? %>
+      <dt><%= @cur_node.class.t :ssid %></dt>
+      <dd><%= @cur_node.ssid %></dd>
+  <% end %>
+
   <% if @cur_node.kana.present? %>
     <dt><%= @cur_node.class.t :kana %></dt>
     <dd><%= @cur_node.kana %></dd>

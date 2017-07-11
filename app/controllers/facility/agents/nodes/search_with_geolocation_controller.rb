@@ -35,7 +35,7 @@ class Facility::Agents::Nodes::SearchWithGeolocationController < ApplicationCont
           point[:facility_name] = item.name
           point[:facility_url] = item.url
           point[:address] = item.address
-          point[:ssid] = "ssid"
+          point[:ssid] = item.try(:ssid)
           point[:distance] = ::Geocoder::Calculations.distance_between([@lat,@lon], [point["loc"]["lat"], point["loc"]["lng"]], units: :km) rescue 0.0
           point
         end
