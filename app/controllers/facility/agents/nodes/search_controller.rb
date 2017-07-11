@@ -59,10 +59,12 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
   public
     def index
       set_query
-      render :index, locals: { search_path: "./map.html" }
+      render :index, locals: { search_path: @cur_node.default_search_result_path }
     end
 
     def map
+      raise "404" unless @cur_node.enabled_map_path?
+
       set_query
       set_markers
       set_filter_items
@@ -71,6 +73,8 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
     end
 
     def result
+      raise "404" unless @cur_node.enabled_result_path?
+
       set_query
       set_items
       @current = "result"
@@ -78,6 +82,8 @@ class Facility::Agents::Nodes::SearchController < ApplicationController
     end
 
     def map_all
+      raise "404" unless @cur_node.enabled_map_path?
+
       params[:category_ids] = nil
       params[:service_ids]  = nil
       params[:location_ids] = nil
