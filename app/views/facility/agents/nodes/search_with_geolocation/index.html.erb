@@ -1,4 +1,4 @@
-<%= render_facility_geolocation "#map-canvas", markers: @markers, site: @cur_site, loc: @loc, radius: @radius, center: @loc %>
+<%= render_facility_geolocation "#map-canvas", markers: @markers, site: @cur_site, loc: @loc, radius: @radius, center: @loc, layer: @layer %>
 
 <% if @loc.blank? %>
 <%= jquery do %>$(".geolocation").click();<% end %>
@@ -14,6 +14,13 @@
     <div class="city">
       <label>市町村<%= select_tag :loc, options_for_select(@location_options), class: "facility-location" %></label>
     </div>
+    <% if @cur_site.map_setting[:api] == "openlayers" %>
+    <div class="layer">
+      <label>レイヤー
+        <%= select_tag :loc, options_for_select([["オープンストリートマップ", "OSM"], ["グーグルマップ", "GOOGLE"]], @layer), class: "switch-layer" %>
+      </label>
+    </div>
+    <% end %>
     <span class="map-search" style="text-align: right;">
       <a>検索</a>
     </span>

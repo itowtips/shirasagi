@@ -1,3 +1,280 @@
+class @Openlayers_Geolocation_Map
+  constructor: (canvas, opts = {}) ->
+    @canvas        = canvas
+    @opts          = opts
+    @markerFeature = null
+    @markerLayer   = null
+    @popup         = null
+    @markerIcon    = '/assets/img/map-marker.png'
+    @clickIcon     = '/assets/img/map-marker-click.png'
+    @clickMarkerId = null
+    @baseLayers    = {}
+
+    @render()
+
+  setMapLoc: (ele, lat, lon)->
+    lat = Math.ceil(lat * Math.pow(10,6)) / Math.pow(10,6)
+    lon = Math.ceil(lon * Math.pow(10,6)) / Math.pow(10,6)
+    ele.val(lon.toFixed(6) + "," + lat.toFixed(6))
+    return
+
+  render: () ->
+    @initMap()
+    @initPopup()
+    if @opts['markers']
+      @renderMarkers(@opts['markers'])
+    @resize()
+    @renderEvents()
+    if @opts['defaultLayer']
+      @setBaseLayer(@opts['defaultLayer'])
+
+  createLayers: (layerOpts) ->
+    layers = []
+
+    # add config layers
+    for opts in layerOpts
+      source     = opts["source"]
+      url        = opts["url"]
+      projection = opts["projection"]
+
+      layer = new ol.layer.Tile({
+        source: new ol.source[source]({
+          url: url
+          projection: projection
+        })
+      })
+      layers.push layer
+      @baseLayers[source] = layer
+
+    # add google layer
+    layer = new olgm.layer.Google()
+    layers.push layer
+    @baseLayers["GOOGLE"] = layer
+
+    for i in [0..layers-1]
+      if i != 0
+        layers[i].setVisible(false)
+
+    return layers
+
+  initMap: ->
+    center = @opts['center'] || [138.252924,36.204824]
+
+    layerOpts = @opts['layers']
+    layerOpts ||= [
+      source: "XYZ"
+      url: "http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png"
+      projection: "EPSG:3857"
+    ]
+
+    @map = new ol.Map
+      target: @canvas
+      renderer: ['canvas', 'dom']
+      interactions: olgm.interaction.defaults()
+      layers: @createLayers(layerOpts)
+      controls: ol.control.defaults
+        attributionOptions:
+          collapsible: false
+      view: new ol.View
+        projection: "EPSG:3857"
+        center: ol.proj.transform(center, "EPSG:4326", "EPSG:3857")
+        maxZoom: 18
+        zoom: @opts['zoom'] || 10
+      logo: true
+
+    # activate olgm
+    olGM = new olgm.OLGoogleMaps({map: @map})
+    olGM.activate();
+
+  setBaseLayer: (name) ->
+    for n, layer of @baseLayers
+      if name == n
+        layer.setVisible(true)
+      else
+        layer.setVisible(false)
+
+  initPopup: ->
+    $("body").append('<div id="marker-popup"><div class="closer"></div><div class="content"></div></div>')
+    @popup = $('#marker-popup')
+    @popup.hide()
+
+    @popupOverlay = new ol.Overlay(({
+      element: @popup.get(0),
+      autoPan: true,
+      autoPanAnimation: {
+        duration: 250
+      }
+    }))
+    @map.addOverlay(@popupOverlay)
+
+    @map.on 'pointermove', (e) =>
+      if (e.dragging)
+        @popup.hide()
+        return
+      pixel = @map.getEventPixel(e.originalEvent)
+      hit = @map.hasFeatureAtPixel(pixel)
+      cursor = `hit ? 'pointer' : ''`
+      @map.getTarget().style.cursor = cursor
+
+    @popup.find('.closer').on 'click', (e) =>
+      @popupOverlay.setPosition(undefined)
+      $(this).blur()
+      return false
+
+  showPopup: (feature, coordinate) ->
+    markerHtml = feature.get("markerHtml")
+    unless markerHtml
+      @popup.hide()
+      return
+
+    @popup.find('.content').html(markerHtml)
+    @popup.show()
+    @popupOverlay.setPosition(coordinate)
+
+  renderEvents: ()->
+    @map.on 'click', (e)=>
+      feature = @map.forEachFeatureAtPixel(e.pixel, (feature, layer) ->
+        return feature
+      )
+
+      if feature && (feature.get("featureType") == "marker")
+        @showPopup(feature, e.coordinate)
+        return
+
+      if !@opts["clickEnabled"]
+        return
+
+      if @clickMarkerId
+        feature = @getMarker(@clickMarkerId)
+        source = @markerLayer.getSource()
+        source.removeFeature(feature)
+
+      pos = ol.proj.transform(e.coordinate, "EPSG:3857", "EPSG:4326")
+      # normalize geo position
+      pos[0] += 360 while pos[0] < 180
+      pos[0] -= 360 while pos[0] > 180
+
+      @clickMarkerId = "click"
+      @setMarker(pos, { image: @clickIcon, id: @clickMarkerId })
+      if $(".map-clicked").length
+        @setMapLoc($(".map-clicked"), pos[1], pos[0])
+
+  createMarkerStyle: (iconSrc) ->
+    new ol.style.Style({
+      image: new ol.style.Icon({
+        anchor: [0.5, 1]
+        anchorXUnits: 'fraction'
+        anchorYUnits: 'fraction'
+        src: iconSrc
+      })
+    })
+
+  setMarker: (loc, opts={}) ->
+    src = @markerIcon
+    src = opts['image'] if opts['image']
+
+    style = new ol.style.Style({
+      image: new ol.style.Icon({
+        anchor: [0.5, 1]
+        anchorXUnits: 'fraction'
+        anchorYUnits: 'fraction'
+        src: src
+      })
+    })
+
+    pos = [loc[0], loc[1]]
+    feature = new ol.Feature({
+      geometry: new ol.geom.Point(ol.proj.transform(pos, "EPSG:4326", "EPSG:3857"))
+      markerId: (opts['id'] ? null)
+      markerHtml: (opts['html'] ? null)
+      category: (opts['category'] ? null)
+      featureType: "marker"
+    })
+    feature.setStyle(style)
+
+    if !@markerLayer
+      @markerLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+          features: [feature]
+        })
+      })
+      @map.addLayer(@markerLayer)
+    else
+      @markerLayer.getSource().addFeature(feature)
+
+    return feature
+
+  getMarker: (markerId) ->
+    ret = null
+    return ret unless @markerLayer
+
+    source = @markerLayer.getSource()
+    source.forEachFeature (feature) ->
+      if feature.get("markerId") == markerId
+        ret = feature
+    return ret
+
+  getMarkers: ()->
+    source = @markerLayer.getSource()
+    features = source.getFeatures();
+    return features
+
+  getMarkerLayer: ()->
+    @markerLayer
+
+  getMap: ()->
+    @map
+
+  setCenter: (pos) ->
+    @map.getView().setCenter(ol.proj.transform(pos, 'EPSG:4326', 'EPSG:3857'))
+
+  setZoom: (level) ->
+    @map.getView().setZoom(level)
+
+  renderMarkers: (markers) ->
+    for id, marker of markers
+      iconSrc = '/assets/img/map-marker.png'
+      iconSrc = marker['image'] if marker['image']
+      style = @createMarkerStyle(iconSrc)
+
+      markerHtml = ""
+      name = marker['name']
+      text = marker['text']
+      if name
+        markerHtml += '<p>' + name + '</p>'
+      if text
+        $.each text.split(/[\r\n]+/), ->
+          if this.match(/^https?:\/\//)
+            markerHtml += '<p><a href="' + this + '">' + this + '</a></p>'
+          else
+            markerHtml += '<p>' + this + '</p>'
+
+      pos = [marker['loc']['lng'], marker['loc']['lat']]
+      feature = new ol.Feature({
+        geometry: new ol.geom.Point(ol.proj.transform(pos, "EPSG:4326", "EPSG:3857"))
+        markerId: (marker['id'] ? id)
+        markerHtml: (marker['html'] ? markerHtml)
+        category: (marker['category'] ? null)
+        iconSrc: iconSrc
+        featureType: "marker"
+      })
+      feature.setStyle(style)
+
+      if !@markerLayer
+        @markerLayer = new ol.layer.Vector({
+          source: new ol.source.Vector({
+            features: [feature]
+          })
+        })
+        @map.addLayer(@markerLayer)
+      else
+        @markerLayer.getSource().addFeature(feature)
+
+  resize: () ->
+    return unless @markerLayer
+    extent = @markerLayer.getSource().getExtent()
+    @map.getView().fit(extent, @map.getSize())
+
 class @Openlayers_Facility_Geolocation
   @setCircle :(map, loc, radius) ->
     ol_map = map.getMap()
@@ -15,6 +292,9 @@ class @Openlayers_Facility_Geolocation
       })
     })
     inner_style = new ol.style.Style({
+      fill: new ol.style.Fill({
+        color: 'rgba(255, 100, 50, 0.0)'
+      })
       stroke: new ol.style.Stroke({
         width: 1,
         color: 'rgba(255, 100, 50, 0.8)'
@@ -43,8 +323,8 @@ class @Openlayers_Facility_Geolocation
     })
 
     ol_layers.insertAt(5, center_layer)
-    ol_layers.insertAt(1, outer_layer)
-    ol_layers.insertAt(1, inner_layer)
+    ol_layers.insertAt(2, outer_layer)
+    ol_layers.insertAt(2, inner_layer)
 
     feature = new ol.Feature({
       geometry: new ol.geom.Point(ol.proj.transform(loc, "EPSG:4326", "EPSG:3857"))
@@ -81,7 +361,7 @@ class @Openlayers_Facility_Geolocation
     # setup map
     canvas = $(selector)[0]
     opts["clickEnabled"] = true
-    map = new Openlayers_Map(canvas, opts)
+    map = new Openlayers_Geolocation_Map(canvas, opts)
     window.ol_map = map
 
     # setup geolocation search
@@ -102,12 +382,14 @@ class @Openlayers_Facility_Geolocation
         loc = [position.coords.latitude, position.coords.longitude]
         r = $(".radius").val()
         $(".geolocation").text("位置情報取得に成功")
+        layer = $(".switch-layer").val()
         #console.log(position.coords.latitude + "," + position.coords.longitude)
 
         form = $("<form>")
         form.append($("<input/>", name: "lon", value: loc[1], type: "hidden" ))
         form.append($("<input/>", name: "lat", value: loc[0], type: "hidden" ))
         form.append($("<input/>", name: "r", value: r, type: "hidden" ))
+        form.append($("<input/>", name: "layer", value: layer, type: "hidden" ))
         form.appendTo("body")
         form.submit()
 
@@ -135,24 +417,24 @@ class @Openlayers_Facility_Geolocation
       else
         alert("お使いの端末では、現在位置を取得できませんでした。")
 
-    # setup geolocation click
+    # setup geolocation search
     $(".map-search").on "click", () ->
       loc = $(".current-loc").val()
-      console.log(loc)
 
       if $(".map-clicked").val()
         loc = $(".map-clicked").val()
-
       if !loc
         return false
 
       loc = loc.split(",")
       r = $(".radius").val()
+      layer = $(".switch-layer").val()
 
       form = $("<form>")
       form.append($("<input/>", name: "lon", value: loc[0], type: "hidden" ))
       form.append($("<input/>", name: "lat", value: loc[1], type: "hidden" ))
       form.append($("<input/>", name: "r", value: r, type: "hidden" ))
+      form.append($("<input/>", name: "layer", value: layer, type: "hidden" ))
       form.appendTo("body")
       form.submit()
       return false
@@ -189,14 +471,20 @@ class @Openlayers_Facility_Geolocation
       loc = $(this).val().split(",")
       loc = [parseFloat(loc[0]), parseFloat(loc[1])]
       r = $(".radius").val()
+      layer = $(".switch-laye").val()
 
       form = $("<form>")
       form.append($("<input/>", name: "lon", value: loc[0], type: "hidden" ))
       form.append($("<input/>", name: "lat", value: loc[1], type: "hidden" ))
       form.append($("<input/>", name: "r", value: r, type: "hidden" ))
+      form.append($("<input/>", name: "layer", value: layer, type: "hidden" ))
       form.appendTo("body")
       form.submit()
       return false
+
+    # setup geolocation switch-layer
+    $(".switch-layer").on "change", ->
+      map.setBaseLayer($(this).val())
 
     # setup markers
     overrided = map.showPopup
@@ -207,17 +495,6 @@ class @Openlayers_Facility_Geolocation
       column = $('#map-sidebar .column[data-id="' + dataId + '"]')
       column.addClass("current")
       slideSidebar(column)
-
-    # setup sidebar
-    $("#map-sidebar .column .click-marker").on "click", ->
-      dataId = parseInt($(this).closest(".column").attr("data-id"))
-      $("#map-sidebar .column").removeClass("current")
-      marker = map.getMarker(dataId)
-      return false unless marker
-
-      coordinate = marker.getGeometry().getCoordinates()
-      map.showPopup(marker, coordinate)
-      return false
 
     # setup categorybar filter
     if $("#map-categorybar").length
@@ -241,15 +518,9 @@ class @Openlayers_Facility_Geolocation
             iconSrc = this.get("iconSrc")
             style = map.createMarkerStyle(iconSrc)
             this.setStyle(style)
-
-            dataId = this.get("markerId")
-            $('#map-sidebar .column[data-id="' + dataId + '"]').show()
           else
             style = new ol.style.Style({})
             this.setStyle(style)
-
-            dataId = this.get("markerId")
-            $('#map-sidebar .column[data-id="' + dataId + '"]').hide()
         return
 
       $("#map-categorybar .filter-all").on "click", ->
@@ -263,51 +534,10 @@ class @Openlayers_Facility_Geolocation
             iconSrc = this.get("iconSrc")
             style = map.createMarkerStyle(iconSrc)
             this.setStyle(style)
-
-            dataId = this.get("markerId")
-            $('#map-sidebar .column[data-id="' + dataId + '"]').show()
           else
             style = new ol.style.Style({})
             this.setStyle(style)
-
-            dataId = this.get("markerId")
-            $('#map-sidebar .column[data-id="' + dataId + '"]').hide()
         return
-
-    # setup category filter
-    $(".filters a").on "click", ->
-      if $(this).hasClass("clicked")
-        $(this).removeClass("clicked")
-      else
-        $(this).addClass("clicked")
-
-      dataIds = []
-      $(".filters a.clicked").each ->
-        dataIds.push parseInt($(this).attr("data-id"))
-
-      markers = map.getMarkers()
-      $.each markers, ->
-        visible = false
-        category = this.get("category")
-
-        $.each dataIds, ->
-          if $.inArray(parseInt(this), category) >= 0
-            visible = true
-            return false
-
-        dataId = this.get("markerId")
-        column = $('#map-sidebar .column[data-id="' + dataId + '"]')
-
-        map.popup.hide()
-        if visible
-          iconSrc = this.get("iconSrc")
-          style = map.createMarkerStyle(iconSrc)
-          this.setStyle(style)
-        else
-          style = new ol.style.Style({})
-          this.setStyle(style)
-
-      return false
 
     # setup location filter
     $(".filters .focus").on "change", ->

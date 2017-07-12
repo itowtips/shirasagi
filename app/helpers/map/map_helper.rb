@@ -19,6 +19,12 @@ module Map::MapHelper
     controller.stylesheet "/assets/js/openlayers/ol.css"
   end
 
+  def include_ol3_google_maps_api
+    controller.javascript "/assets/js/ol3-google-maps/ol3gm.js"
+    #controller.javascript "/assets/js/ol3-google-maps/ol3gm-debug.js"
+    controller.stylesheet "/assets/js/ol3-google-maps/ol3gm.css"
+  end
+
   def render_map(selector, opts = {})
     map_setting = opts[:site].map_setting rescue {}
 
@@ -125,28 +131,36 @@ module Map::MapHelper
     markers = opts[:markers]
     loc = opts[:loc]
     radius = opts[:radius]
+    layer = opts[:layer]
 
     s = []
     if api == "openlayers"
+      include_googlemaps_api(opts)
       include_openlayers_api
+      include_ol3_google_maps_api
 
-      s << 'var opts = {'
+      s << 'window.opts = {'
       s << '  readonly: true,'
       s << '  center:' + center.to_json + ',' if center.present?
       s << '  markers: ' + markers.to_json + ',' if markers.present?
       s << '  layers: ' + SS.config.map.layers.to_json + ','
       s << '  loc: ' + loc.to_json + ',' if loc.present?
       s << '  radius: ' + radius.to_json + ',' if radius.present?
+      s << '  defaultLayer: ' + layer.to_json + ',' if layer.present?
       s << '};'
       s << 'Openlayers_Facility_Geolocation.render("' + selector + '", opts);'
+      #s << 'window.onload = function() {'
+      #s << '  Openlayers_Facility_Geolocation.render("' + selector + '", opts);'
+      #s << '}'
     else
       include_googlemaps_api(opts)
 
-      s << 'Map.center = ' + center.reverse.to_json + ';' if center.present?
+      s << 'Geolocation_Map.center = ' + center.reverse.to_json + ';' if center.present?
       s << 'var opts = {'
       s << '  markers: ' + markers.to_json + ',' if markers.present?
       s << '  loc: ' + loc.to_json + ',' if loc.present?
       s << '  radius: ' + radius.to_json + ',' if radius.present?
+      s << '  defaultLayer: ' + layer.to_json + ',' if layer.present?
       s << '};'
       s << 'Facility_Geolocation.render("' + selector + '", opts);'
     end

@@ -10,6 +10,7 @@ class Facility::Agents::Nodes::SearchWithGeolocationController < ApplicationCont
       @lat = params[:lat]
       @radius = params[:r].to_f
       @radius = 1.0 if @radius <= 0.05 || @radius > 100
+      @layer = params[:layer]
 
       return unless @lat =~ /\d+(\.\d+)?/
       return unless @lon =~ /\d+(\.\d+)?/
