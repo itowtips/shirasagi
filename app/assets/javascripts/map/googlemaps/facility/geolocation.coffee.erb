@@ -195,13 +195,14 @@ class @Facility_Geolocation
     map.fitBounds(outer_circle.getBounds())
     map.addListener 'zoom_changed', ->
       zoom = map.getZoom()
-      if zoom >= 18
+      if zoom >= 14
         fillOpacity = 0.0
-      else if zoom <= 10
+      else if zoom <= 6
         fillOpacity = 0.16
       else
-        fillOpacity = (18 - zoom) * 0.02
+        fillOpacity = (14 - zoom) * 0.02
       outer_circle.setOptions({fillOpacity: fillOpacity})
+      console.log(zoom, fillOpacity)
 
   @render :(selector, opts = {})->
     markers = opts["markers"]
