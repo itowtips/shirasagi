@@ -70,6 +70,7 @@
     <th>所在地</th>
     <th>SSID</th>
     <th>中心からの距離</th>
+    <th>経路案内(Googleで表示)</th>
   </tr>
   </thead>
   <tbody>
@@ -84,6 +85,13 @@
         <% else %>
           <%= "#{(marker[:distance] * 1000).round}m" %>
         <% end %>
+      </td>
+      <td>
+        <%
+          url = "http://maps.google.com/maps?daddr=#{marker[:address]}"
+          url = "http://maps.google.com/maps?daddr=#{marker[:loc]["lat"]},#{marker[:loc]["lng"]}" if marker[:loc].present?
+        %>
+        <a href="<%= url %>" target="_blank">経路案内(Googleで表示)</a></p>
       </td>
     </tr>
     <% end %>
