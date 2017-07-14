@@ -250,7 +250,7 @@ module Map::MapHelper
     h = []
     loc = points.first["loc"] rescue nil
     url = "http://maps.google.com/maps?daddr=#{item.address}"
-    url = "http://maps.google.com/maps?daddr=#{loc.values.join(",")}" if loc
+    url = "http://maps.google.com/maps?daddr=#{loc["lat"]},#{loc["lng"]}" if loc.present?
 
     image_pages = item.image_pages.and_public.order_by(order: 1).to_a
     image_page = image_pages.select { |page| page.image.present? }.first
