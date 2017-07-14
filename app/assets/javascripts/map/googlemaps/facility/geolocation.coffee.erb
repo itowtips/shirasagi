@@ -46,7 +46,7 @@ class @Geolocation_Map
         x = coord.x % tilesPerGlobe
         if (x < 0)
           x = tilesPerGlobe + x
-        return "http://tile.openstreetmap.org/" + zoom + "/" + x + "/" + coord.y + ".png"
+        return "http://tile.openstreetmap.jp/" + zoom + "/" + x + "/" + coord.y + ".png"
       isPng: true
       tileSize: new google.maps.Size(256, 256),
       name: "オープンストリートマップ",
