@@ -23,8 +23,8 @@ class @Geolocation_Map
 
   @load: (selector, opts = {}) ->
     mapTypeId = opts["mapTypeId"]
-    unless mapTypeId == "OSM" || mapTypeId == "roadmap"
-      mapTypeId = "OSM"
+    unless mapTypeId == "OSM" || mapTypeId == google.maps.MapTypeId.ROADMAP
+      mapTypeId = google.maps.MapTypeId.ROADMAP
 
     mapOptions = {
       center: new google.maps.LatLng(@center[0], @center[1]),
@@ -33,7 +33,7 @@ class @Geolocation_Map
       streetViewControl: false
       #mapTypeControl: true
       mapTypeControlOptions:{
-        mapTypeIds:[ "OSM", google.maps.MapTypeId.ROADMAP ]
+        mapTypeIds:[ google.maps.MapTypeId.ROADMAP, "OSM" ]
         position: google.maps.ControlPosition.LEFT_TOP
         style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
       }
