@@ -23,7 +23,7 @@ class @Geolocation_Map
 
   @load: (selector, opts = {}) ->
     mapTypeId = opts["mapTypeId"]
-    unless mapTypeId == "OSM" || mapTypeId == google.maps.MapTypeId.ROADMAP
+    unless mapTypeId == "GSI" || mapTypeId == google.maps.MapTypeId.ROADMAP
       mapTypeId = google.maps.MapTypeId.ROADMAP
 
     mapOptions = {
@@ -33,25 +33,39 @@ class @Geolocation_Map
       streetViewControl: false
       #mapTypeControl: true
       mapTypeControlOptions:{
-        mapTypeIds:[ google.maps.MapTypeId.ROADMAP, "OSM" ]
+        mapTypeIds:[ google.maps.MapTypeId.ROADMAP, "GSI" ]
         position: google.maps.ControlPosition.LEFT_TOP
         style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
       }
     }
 
     @map = new google.maps.Map($(selector).get(0), mapOptions)
-    @map.mapTypes.set("OSM", new google.maps.ImageMapType({
-      getTileUrl: (coord, zoom) ->
-        tilesPerGlobe = 1 << zoom
-        x = coord.x % tilesPerGlobe
-        if (x < 0)
-          x = tilesPerGlobe + x
-        return "http://tile.openstreetmap.jp/" + zoom + "/" + x + "/" + coord.y + ".png"
-      isPng: true
+    #@map.mapTypes.set("OSM", new google.maps.ImageMapType({
+    #  getTileUrl: (coord, zoom) ->
+    #    tilesPerGlobe = 1 << zoom
+    #    x = coord.x % tilesPerGlobe
+    #    if (x < 0)
+    #      x = tilesPerGlobe + x
+    #    return "http://tile.openstreetmap.jp/" + zoom + "/" + x + "/" + coord.y + ".png"
+    #  isPng: true
+    #  tileSize: new google.maps.Size(256, 256),
+    #  name: "オープンストリートマップ",
+    #  maxZoom: 18
+    #}))
+    @map.mapTypes.set("GSI", {
+      name: "国土地理院地図",
       tileSize: new google.maps.Size(256, 256),
-      name: "オープンストリートマップ",
-      maxZoom: 18
-    }))
+      isPng: true
+      maxZoom: 18,
+      getTile: (tileCoord, zoom, ownerDocument) ->
+        img = ownerDocument.createElement("img");
+        img.style.width = "256px";
+        img.style.height = "256px";
+        x = (tileCoord.x % Math.pow(2, zoom)).toString();
+        y = tileCoord.y.toString();
+        img.src = "http://cyberjapandata.gsi.go.jp/xyz/std/" + zoom + "/" + x + "/" + y + ".png";
+        return img
+    })
 
     google.maps.event.addListenerOnce(@map,'idle', () ->
       this.mapTypes.roadmap.name = 'グーグルマップ'

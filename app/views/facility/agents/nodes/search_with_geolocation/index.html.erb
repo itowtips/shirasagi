@@ -17,7 +17,7 @@
     <% if @cur_site.map_setting[:api] == "openlayers" %>
     <div class="layer">
       <label>レイヤー
-        <%= select_tag :loc, options_for_select([["オープンストリートマップ", "OSM"], ["グーグルマップ", "GOOGLE"]], @layer), class: "switch-layer" %>
+        <%= select_tag :loc, options_for_select([["国土地理院地図", "GIS"], ["グーグルマップ", "GOOGLE"]], @layer), class: "switch-layer" %>
       </label>
     </div>
     <% end %>
