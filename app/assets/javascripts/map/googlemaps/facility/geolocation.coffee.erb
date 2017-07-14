@@ -149,7 +149,7 @@ class @Facility_Geolocation
     outer_circle = new google.maps.Circle(
       center: new google.maps.LatLng(lat, lon)
       fillColor: '#ff6432'
-      fillOpacity: 0.15
+      fillOpacity: 0.16
       map: map
       radius: outer_radius
       strokeColor: '#ff6432'
@@ -157,8 +157,6 @@ class @Facility_Geolocation
       strokeWeight: 1
       clickable: false
     )
-    circles = []
-    circles.push outer_circle
     for inner_radius in [1000, 3000, 5000, 10000, 30000, 50000]
       if (outer_radius - inner_radius) <= 0
         break
@@ -173,7 +171,6 @@ class @Facility_Geolocation
         strokeWeight: 1
         clickable: false
       )
-      circles.push(inner_circle)
     marker = new google.maps.Marker(
       position: new google.maps.LatLng(lat, lon)
       zIndex: 9999
@@ -183,12 +180,14 @@ class @Facility_Geolocation
 
     map.fitBounds(outer_circle.getBounds())
     map.addListener 'zoom_changed', ->
-      if map.getZoom() >= 18
+      zoom = map.getZoom()
+      if zoom >= 18
         fillOpacity = 0.0
+      else if zoom <= 10
+        fillOpacity = 0.16
       else
-        fillOpacity = 0.15
-      for circle in circles
-        circle.setOptions({fillOpacity: fillOpacity})
+        fillOpacity = (18 - zoom) * 0.02
+      outer_circle.setOptions({fillOpacity: fillOpacity})
 
   @render :(selector, opts = {})->
     markers = opts["markers"]
