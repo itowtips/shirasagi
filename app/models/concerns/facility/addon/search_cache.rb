@@ -21,8 +21,9 @@ module Facility::Addon
       category_ids = categories.map(&:id)
       image_id = categories.map(&:image_id).first
       image_url = SS::File.find(image_id).url rescue nil
+      points = maps.first.map_points rescue nil
 
-      marker_info = render_marker_info(self)
+      marker_info = render_marker_info_include_directions(self, points)
       map_points = maps.each do |map|
         map.map_points.each do |point|
           point[:id] = id
