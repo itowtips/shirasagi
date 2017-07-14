@@ -33,23 +33,23 @@ class Facility::PagesController < ApplicationController
       raise "403" unless @item.allowed?(:read, @cur_user)
       action = @cur_node.allowed?(:edit, @cur_user, site: @cur_site) ? "edit_" : ""
 
-      @maps = map_pages
-      @maps.each do |map|
-        points = []
-        map.map_points.each_with_index do |point, i|
-          points.push point
-
-          image_ids = @item.categories.pluck(:image_id)
-          points[i][:image] = SS::File.in(id: image_ids).first.try(:url)
-        end
-        map.map_points = points
-
-        if @merged_map
-          @merged_map.map_points += map.map_points
-        else
-          @merged_map = map
-        end
-      end
+      #@maps = map_pages
+      #@maps.each do |map|
+      #  points = []
+      #  map.map_points.each_with_index do |point, i|
+      #    points.push point
+      #
+      #    image_ids = @item.categories.pluck(:image_id)
+      #    points[i][:image] = SS::File.in(id: image_ids).first.try(:url)
+      #  end
+      #  map.map_points = points
+      #
+      #  if @merged_map
+      #    @merged_map.map_points += map.map_points
+      #  else
+      #    @merged_map = map
+      #  end
+      #end
 
       pages = image_pages.map do |page|
         [

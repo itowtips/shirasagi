@@ -60,7 +60,13 @@ $(window).on("load", function() {
   </div>
 <% end %>
 
-<% if @merged_map.present? %>
-  <% @cur_page = @merged_map %>
-  <%= render file: "map/agents/addons/page/view/index" %>
+<% if @cur_node.map_points.present? %>
+  <%= render_facility_map "#map-canvas", markers: @cur_node.map_points, site: @cur_site %>
+  <section class="map-page">
+    <header>
+      <h2><%= t("map.map") %></h2>
+    </header>
+    <div id="map-canvas" style="width: 100%; height: 400px;"></div>
+  </section>
+
 <% end %>

@@ -1,0 +1,132 @@
+class @Facility_Map
+  @map        = null
+  @form       = null
+  @center     = [36.204824, 138.252924]
+  @zoom       = 5
+  @markers    = null
+  @openedInfo = null
+  @resized    = null
+  @autoResize  = true
+
+  @attachMessage: (id) ->
+    google.maps.event.addListener Facility_Map.markers[id]["marker"], 'click', (event) ->
+      if(Facility_Map.openedInfo)
+        Facility_Map.openedInfo.close()
+      if Facility_Map.markers[id]["window"]
+        Facility_Map.markers[id]["window"].open(Facility_Map.markers[id]["marker"].getMap(), Facility_Map.markers[id]["marker"])
+      Facility_Map.openedInfo = Facility_Map.markers[id]["window"]
+    google.maps.event.addListener Facility_Map.markers[id]["window"], 'closeclick', (event) ->
+      Facility_Map.openedInfo = null
+
+  @setForm: (form) ->
+    @form = form
+
+  @load: (selector, opts = {}) ->
+    mapTypeId = opts["mapTypeId"]
+    unless mapTypeId == "OSM" || mapTypeId == google.maps.MapTypeId.ROADMAP
+      mapTypeId = google.maps.MapTypeId.ROADMAP
+
+    mapOptions = {
+      center: new google.maps.LatLng(@center[0], @center[1]),
+      zoom: @zoom
+      mapTypeId: mapTypeId
+      streetViewControl: false
+      #mapTypeControl: true
+      mapTypeControlOptions:{
+        mapTypeIds:[ google.maps.MapTypeId.ROADMAP, "OSM" ]
+        position: google.maps.ControlPosition.LEFT_TOP
+        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+      }
+    }
+
+    @map = new google.maps.Map($(selector).get(0), mapOptions)
+    @map.mapTypes.set("OSM", new google.maps.ImageMapType({
+      getTileUrl: (coord, zoom) ->
+        tilesPerGlobe = 1 << zoom
+        x = coord.x % tilesPerGlobe
+        if (x < 0)
+          x = tilesPerGlobe + x
+        return "http://tile.openstreetmap.jp/" + zoom + "/" + x + "/" + coord.y + ".png"
+      isPng: true
+      tileSize: new google.maps.Size(256, 256),
+      name: "オープンストリートマップ",
+      maxZoom: 18
+    }))
+
+    google.maps.event.addListenerOnce(@map,'idle', () ->
+      this.mapTypes.roadmap.name = 'グーグルマップ'
+      this.setOptions(mapTypeControl: true)
+    )
+    window.map = @map
+    return
+
+  @resize: ->
+    google.maps.event.trigger(@map, "resize")
+    if !@resized
+      @map.setCenter new google.maps.LatLng(@center[0], @center[1])
+      @form.renderMarkers() if @form
+    @resized = true
+
+  @renderMarkers: ->
+    @form.renderMarkers() if @form
+
+  @renderEvents: ->
+    @form.renderEvents() if @form
+
+  @setMarkers: (markers) ->
+    Facility_Map.markers = markers
+    markerBounds = new google.maps.LatLngBounds()
+
+    $.each Facility_Map.markers, (id, value) ->
+      if value["image"]
+        Facility_Map.markers[id]["marker"] = new google.maps.Marker(
+          position: new google.maps.LatLng(value["loc"]['lat'], value["loc"]['lng']),
+          icon: value["image"],
+          map: Facility_Map.map
+        )
+      else
+        Facility_Map.markers[id]["marker"] = new google.maps.Marker(
+          position: new google.maps.LatLng(value["loc"]['lat'], value["loc"]['lng']),
+          map: Facility_Map.map
+        )
+
+      markerBounds.extend(new google.maps.LatLng(value["loc"]['lat'], value["loc"]['lng']))
+
+      if value["html"]
+        marker_html = value["html"]
+        Facility_Map.markers[id]["window"] = new google.maps.InfoWindow(
+          content: marker_html
+        )
+        Facility_Map.attachMessage(id)
+      else if value["name"] || value["text"]
+        name = value["name"]
+        text = value["text"]
+        marker_html = '<div class="marker-info">'
+        if name && name != ""
+            marker_html += '<p>' + name + '</p>'
+          if text && text != ""
+            $.each text.split(/[\r\n]+/), ->
+              if this.match(/^https?:\/\//)
+                marker_html += '<p><a href="' + this + '">' + this + '</a></p>'
+              else
+                marker_html += '<p>' + this + '</p>'
+
+        marker_html += '</div>'
+        Facility_Map.markers[id]["window"] = new google.maps.InfoWindow(
+          content: marker_html
+        )
+        Facility_Map.attachMessage(id)
+      else
+        #
+      return
+
+    if @autoResize && !$.isEmptyObject(Facility_Map.markers)
+      zoomChangeBoundsListener = google.maps.event.addListener Facility_Map.map, 'bounds_changed', (event) ->
+        if this.getZoom() > 13 && this.initialZoom == true
+          this.setZoom(13)
+          this.initialZoom = false
+        google.maps.event.removeListener(zoomChangeBoundsListener)
+
+      Facility_Map.map.initialZoom = true
+      Facility_Map.map.fitBounds(markerBounds)
+    return

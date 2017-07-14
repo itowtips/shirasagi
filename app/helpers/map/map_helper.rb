@@ -123,6 +123,35 @@ module Map::MapHelper
     jquery { s.join("\n").html_safe }
   end
 
+  def render_facility_map(selector, opts = {})
+    map_setting = opts[:site].map_setting rescue {}
+
+    api = opts[:api] || map_setting[:api] || SS.config.map.api
+    #center = opts[:center]
+    markers = opts[:markers]
+
+    if api == "openlayers"
+      include_openlayers_api
+
+      s = []
+      s << 'var canvas = $("' + selector + '")[0];'
+      s << 'var opts = {'
+      s << '  readonly: true,'
+      s << '  markers: ' + markers.to_json + ',' if markers.present?
+      s << '  layers: ' + SS.config.map.layers.to_json + ','
+      s << '};'
+      s << 'var map = new Openlayers_Map(canvas, opts);'
+    else
+      include_googlemaps_api(opts)
+
+      s = []
+      s << 'Facility_Map.load("' + selector + '");'
+      s << 'Facility_Map.setMarkers(' + markers.to_json + ');' if markers.present?
+    end
+
+    jquery { s.join("\n").html_safe }
+  end
+
   def render_facility_geolocation(selector, opts = {})
     map_setting = opts[:site].map_setting rescue {}
 
@@ -219,7 +248,6 @@ module Map::MapHelper
 
   def render_marker_info_include_directions(item, points)
     h = []
-    dump points
     loc = points.first["loc"] rescue nil
     url = "http://maps.google.com/maps?daddr=#{item.address}"
     url = "http://maps.google.com/maps?daddr=#{loc.values.join(",")}" if loc
