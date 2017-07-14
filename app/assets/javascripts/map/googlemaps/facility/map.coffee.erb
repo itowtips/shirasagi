@@ -23,7 +23,7 @@ class @Facility_Map
 
   @load: (selector, opts = {}) ->
     mapTypeId = opts["mapTypeId"]
-    unless mapTypeId == "OSM" || mapTypeId == google.maps.MapTypeId.ROADMAP
+    unless mapTypeId == "GSI" || mapTypeId == google.maps.MapTypeId.ROADMAP
       mapTypeId = google.maps.MapTypeId.ROADMAP
 
     mapOptions = {
@@ -46,12 +46,12 @@ class @Facility_Map
       isPng: true
       maxZoom: 18,
       getTile: (tileCoord, zoom, ownerDocument) ->
-        img = ownerDocument.createElement("img");
-        img.style.width = "256px";
-        img.style.height = "256px";
-        x = (tileCoord.x % Math.pow(2, zoom)).toString();
-        y = tileCoord.y.toString();
-        img.src = "http://cyberjapandata.gsi.go.jp/xyz/std/" + zoom + "/" + x + "/" + y + ".png";
+        img = ownerDocument.createElement("img")
+        img.style.width = "256px"
+        img.style.height = "256px"
+        x = (tileCoord.x % Math.pow(2, zoom)).toString()
+        y = tileCoord.y.toString()
+        img.src = "http://cyberjapandata.gsi.go.jp/xyz/pale/" + zoom + "/" + x + "/" + y + ".png"
         return img
     })
 

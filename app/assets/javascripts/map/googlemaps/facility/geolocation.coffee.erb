@@ -58,12 +58,12 @@ class @Geolocation_Map
       isPng: true
       maxZoom: 18,
       getTile: (tileCoord, zoom, ownerDocument) ->
-        img = ownerDocument.createElement("img");
-        img.style.width = "256px";
-        img.style.height = "256px";
-        x = (tileCoord.x % Math.pow(2, zoom)).toString();
-        y = tileCoord.y.toString();
-        img.src = "http://cyberjapandata.gsi.go.jp/xyz/std/" + zoom + "/" + x + "/" + y + ".png";
+        img = ownerDocument.createElement("img")
+        img.style.width = "256px"
+        img.style.height = "256px"
+        x = (tileCoord.x % Math.pow(2, zoom)).toString()
+        y = tileCoord.y.toString()
+        img.src = "http://cyberjapandata.gsi.go.jp/xyz/pale/" + zoom + "/" + x + "/" + y + ".png"
         return img
     })
 
@@ -202,7 +202,6 @@ class @Facility_Geolocation
       else
         fillOpacity = (14 - zoom) * 0.02
       outer_circle.setOptions({fillOpacity: fillOpacity})
-      console.log(zoom, fillOpacity)
 
   @render :(selector, opts = {})->
     markers = opts["markers"]
