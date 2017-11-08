@@ -1,0 +1,6 @@
+<nav class="nav-menu">
+  <% if params[:action] =~ /index/ %>
+    <%= link_to t('ss.links.new'), action: :new %>
+    <%= link_to t('ss.links.back_to_index'), gws_discussion_topics_path %>
+  <% end %>
+</nav>

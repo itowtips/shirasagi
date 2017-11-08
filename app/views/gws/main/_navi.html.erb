@@ -64,6 +64,8 @@
     <h2><%= link_to t('modules.gws/circular'), gws_circular_posts_path, class: 'icon-write' %></h2>
   <% end %>
 
+  <h2><%= link_to t('modules.gws/discussion'), gws_discussion_topics_path %></h2>
+
   <% if @cur_site.menu_monitor_visible? %>
     <% if Gws::Monitor::Post.allowed?(:read, @cur_user, site: @cur_site) %>
       <h2><%= link_to t('modules.gws/monitor'), gws_monitor_topics_path %></h2>

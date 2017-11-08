@@ -1,0 +1,6 @@
+<% @index_title = proc do |item| %>
+  <% title = item.try(:name) || item.try(:title) || item.try(:filename) || "##{item.id}" %>
+  <%= link_to title,  gws_discussion_topic_comments_path(topic_id: item.id), class: "title" %>
+<% end %>
+
+<%= render file: 'gws/crud/index' %>
