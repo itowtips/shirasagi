@@ -1,8 +1,24 @@
 // gws-discussion
 
+.gws-discussion-topic {
+  font-size: 180%;
+  font-weight: bold;
+  padding-bottom: 10px;
+  padding-left: 10px;
+}
 .gws-discussion-thread {
   float: left;
   width: calc(100% - 350px);
+  min-height: 400px;
+  .addon-body .no {
+    margin-bottom: 10px;
+  }
+  .addon-body .markdown-body {
+    margin-bottom: 10px;
+  }
+  .addon-body .updated {
+    padding: 0 7px;
+  }
 }
 .gws-discussion-navi {
   float: right;

@@ -14,6 +14,8 @@ class Gws::Discussion::Topic
 
   after_validation :set_descendants_updated_with_released, if: -> { released.present? && released_changed? }
 
+  validates :text, presence: true
+
   # indexing to elasticsearch via companion object
   around_save ::Gws::Elasticsearch::Indexer::BoardTopicJob.callback
   around_destroy ::Gws::Elasticsearch::Indexer::BoardTopicJob.callback

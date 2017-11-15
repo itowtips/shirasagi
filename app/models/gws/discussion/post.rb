@@ -11,6 +11,8 @@ class Gws::Discussion::Post
 
   belongs_to :main_topic, class_name: "Gws::Discussion::Post", inverse_of: :main_post
 
+  validates :text, presence: true
+
   # indexing to elasticsearch via companion object
   around_save ::Gws::Elasticsearch::Indexer::BoardPostJob.callback
   around_destroy ::Gws::Elasticsearch::Indexer::BoardPostJob.callback

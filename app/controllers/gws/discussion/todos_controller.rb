@@ -4,44 +4,68 @@ class Gws::Discussion::TodosController < ApplicationController
   include Gws::Schedule::PlanFilter
 
   model Gws::Schedule::Todo
-  helper Gws::Schedule::TodoHelper
 
-  before_action :set_item, only: [
-      :show, :edit, :update, :delete, :destroy,
-      :disable, :finish, :revert
-  ]
-
-  before_action :set_selected_items, only: [
-      :destroy_all, :disable_all,
-      :finish_all, :revert_all
-  ]
+  before_action :set_topic
 
   private
 
+  def set_topic
+    @topic = Gws::Discussion::Topic.find(params[:topic_id])
+  end
+
   def set_crumbs
+    set_topic
     @crumbs << [t('modules.gws/discussion'), gws_discussion_main_path]
-    @crumbs << [t('modules.addons.gws/discussion/todo'), gws_discussion_topic_todos_path]
+    @crumbs << [@topic.name, gws_discussion_topic_comments_path(topic_id: @topic.id)]
+    @crumbs << ["スケジュール", gws_discussion_topic_todos_path(topic_id: @topic.id)]
   end
 
   def pre_params
-    super.keep_if {|key| %i(facility_ids).exclude?(key)}
+    @skip_default_group = true
+    {
+      start_at: params[:start] || Time.zone.now.strftime('%Y/%m/%d %H:00'),
+      member_ids: params[:member_ids].presence || [@cur_user.id],
+    }
+  end
+
+  def fix_params
+    { cur_user: @cur_user, cur_site: @cur_site, discussion_topic: @topic }
   end
 
   public
 
   def index
-    @items = @model.site(@cur_site).
+    @items = []
+  end
+
+  def events
+    @start_at = params[:s][:start].to_date
+    @end_at = params[:s][:end].to_date
+
+    @todos = Gws::Schedule::Todo.
+        site(@cur_site).
+        discussion_topic(@topic).
         allow(:read, @cur_user, site: @cur_site).
         active().
-        search(params[:s]).
-        page(params[:page]).per(50)
+        search(start: @start_at, end: @end_at).
+        map do |todo|
+          result = todo.calendar_format(@cur_user, @cur_site)
+          result[:restUrl] = gws_discussion_topic_todos_path(site: @cur_site.id)
+          result
+        end
+
+    @holidays = HolidayJapan.between(@start_at, @end_at).map do |date, name|
+      { className: 'fc-holiday', title: "  #{name}", start: date, allDay: true, editable: false, noPopup: true }
+    end
+
+    @items = @todos + @holidays
   end
 
   def create
     @item = @model.new get_params
     raise "403" unless @item.allowed?(:edit, @cur_user, site: @cur_site)
 
-    render_create @item.save, location: redirection_url
+    render_create @item.save, location: { action: :index }
   end
 
   def update
@@ -49,7 +73,7 @@ class Gws::Discussion::TodosController < ApplicationController
     @item.in_updated = params[:_updated] if @item.respond_to?(:in_updated)
     raise "403" unless @item.allowed?(:edit, @cur_user, site: @cur_site)
 
-    render_update @item.update, location: redirection_url
+    render_update @item.update, location: { action: :index }
   end
 
   def disable

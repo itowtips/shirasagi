@@ -18,8 +18,6 @@ module Gws::Discussion::Postable
     field :name, type: String
     field :descendants_updated, type: DateTime
 
-    validates :descendants_updated, datetime: true
-
     belongs_to :topic, class_name: "Gws::Discussion::Post", inverse_of: :descendants
     belongs_to :parent, class_name: "Gws::Discussion::Post", inverse_of: :children
 

@@ -1,12 +1,17 @@
 <% main_topic = (topic.main_topic ? topic.main_topic : topic) %>
 <div class="addon-view">
-  <div class="addon-head"><h2><%= topic.name %></h2></div>
+  <div class="addon-head">
+    <h2><%= link_to topic.name, gws_discussion_topic_comment_path(id: topic.id) %></h2>
+  </div>
   <div class="addon-body">
     <dl class="see">
       <dd class="wide">
-        <span class="no"><%= 1 %></span>
+        <!-- <div class="no"><%= 1 %></div> -->
         <div class="markdown-body">
           <%= main_topic.html %>
+        </div>
+        <div class="datetime updated">
+          <%= topic.updated.strftime("%Y/%m/%d %H:%M") %>
         </div>
         <% if main_topic.files.present? %>
         <div class="files">
@@ -22,35 +27,42 @@
     </dl>
   </div>
 
-  <% children_size = topic.children.size %>
-  <% comments = topic.children.limit(5).reverse.to_a %>
+  <% children = topic.children %>
+  <% children_size = children.size %>
+  <% if limit > 0 %>
+    <% comments = topic.children.limit(limit).reverse.to_a %>
+  <% else %>
+    <% comments = topic.children.reverse.to_a %>
+  <% end %>
   <% offset = children_size - comments.size %>
   <% if children_size > comments.size %>
     <div style="background: #f2f2f2; border: 1px solid #d0d0d0; border-left: hidden; border-right: hidden;">...</div>
   <% end %>
 
   <% comments.each_with_index do |comment, i| %>
-      <div class="addon-body">
-        <dl class="see">
-          <dd class="wide">
-            <span class="no"><%= offset + i + 2 %></span>
-            <div class="markdown-body">
-              <%= comment.html %>
+    <div class="addon-body">
+      <dl class="see">
+        <dd class="wide">
+          <!-- <div class="no"><%= offset + i + 2 %></div> -->
+          <div class="markdown-body">
+            <%= comment.html %>
+          </div>
+          <div class="datetime updated">
+            <%= comment.updated.strftime("%Y/%m/%d %H:%M") %>
+          </div>
+          <% if comment.files.present? %>
+            <div class="files">
+              <% comment.files.each do |file| %>
+                <span id="file-<%= file.id %>">
+                  <img src="/assets/img/gws/ic-file.png" alt="" />
+                  <%= link_to file.humanized_name, file.url, class: "icon-#{file.extname}", target: '_blank' %>
+                </span>
+              <% end %>
             </div>
-
-            <% if comment.files.present? %>
-              <div class="files">
-                <% comment.files.each do |file| %>
-                  <span id="file-<%= file.id %>">
-                    <img src="/assets/img/gws/ic-file.png" alt="" />
-                    <%= link_to file.humanized_name, file.url, class: "icon-#{file.extname}", target: '_blank' %>
-                  </span>
-                <% end %>
-              </div>
-            <% end %>
-          </dd>
-        </dl>
-      </div>
+          <% end %>
+        </dd>
+      </dl>
+    </div>
   <% end %>
 
   <div class="addon-body">
