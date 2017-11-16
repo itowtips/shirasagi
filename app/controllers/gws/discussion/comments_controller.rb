@@ -23,7 +23,11 @@ class Gws::Discussion::CommentsController < ApplicationController
     @parent = @item || @topic
   end
 
-  def set_todos
+  def set_items
+    @items = @topic.children.reorder(created: 1).
+      #  search(params[:s]).
+      page(params[:page]).per(10)
+
     @todos = Gws::Schedule::Todo.
       site(@cur_site).
       discussion_topic(@topic).
@@ -38,27 +42,27 @@ class Gws::Discussion::CommentsController < ApplicationController
   public
 
   def index
-    @items = @topic.children.reorder(created: 1).
-      #  search(params[:s]).
-      page(params[:page]).per(10)
-
-    set_todos
+    set_items
   end
 
   def create
+    set_items
+
     @item = @model.new get_params
     raise "403" unless @item.allowed?(:edit, @cur_user, site: @cur_site)
 
     location = { action: :index }
-    render_create @item.save, location: location
+    render_create @item.save, location: location, render: { file: :index }
   end
 
   def reply
-    @comment = @model.new get_params
-    @comment.name = @parent.name
-    raise "403" unless @comment.allowed?(:edit, @cur_user, site: @cur_site)
+    set_items
+
+    @new_comment = @model.new get_params
+    @new_comment.name = @parent.name
+    raise "403" unless @new_comment.allowed?(:edit, @cur_user, site: @cur_site)
 
     location = params[:redirection] ? params[:redirection] : { action: :index }
-    render_create @comment.save, location: location, render: { file: :index }
+    render_create @new_comment.save, location: location, render: { file: :index }
   end
 end

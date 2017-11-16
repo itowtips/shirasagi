@@ -34,6 +34,8 @@ class Gws::Discussion::TopicsController < ApplicationController
       @main_post.parent_id = @item.id
       @main_post.main_topic_id = @item.id
       @main_post.name = "メインスレッド"
+      @main_post.text = @item.text
+      @main_post.text_type = @item.text_type
       #@main_post.file_ids = @item.files.map do |file|
       #  f = SS::File.new(model: @main_post.model_name.i18n_key)
       #  f.in_file = Fs::UploadedFile.create_from_file(file.path)
