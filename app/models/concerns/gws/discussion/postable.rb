@@ -33,7 +33,7 @@ module Gws::Discussion::Postable
     permit_params :name
 
     before_validation :set_depth
-    before_validation :set_forum_setting
+    #before_validation :set_forum_setting
 
     validates :name, presence: true, length: { maximum: 80 }
 
@@ -101,21 +101,22 @@ module Gws::Discussion::Postable
     post
   end
 
-  def save_descendants_setting
-    children.each do |post|
-      if post.children.present?
-        post.save_descendants_readable_setting
-      else
-        post.set(
-          readable_group_ids: readable_group_ids,
-          readable_member_ids: readable_member_ids,
-          readable_custom_group_ids: readable_custom_group_ids,
-          group_ids: group_ids,
-          user_ids: user_ids
-        )
-      end
-    end
-  end
+  #def save_descendants_setting
+  #  children.each do |post|
+  #    if post.children.present?
+  #      post.save_descendants_setting
+  #    else
+  #      post.set(
+  #        readable_group_ids: readable_group_ids,
+  #        readable_member_ids: readable_member_ids,
+  #        readable_custom_group_ids: readable_custom_group_ids,
+  #        state: state,
+  #        group_ids: group_ids,
+  #        user_ids: user_ids
+  #      )
+  #    end
+  #  end
+  #end
 
   private
 
@@ -123,14 +124,14 @@ module Gws::Discussion::Postable
     self.depth = parent ? parent.depth + 1 : 1
   end
 
-  def set_forum_setting
-    return unless forum
-    self.readable_group_ids = forum.readable_group_ids
-    self.readable_member_ids = forum.readable_member_ids
-    self.readable_custom_group_ids = forum.readable_custom_group_ids
-    self.group_ids = forum.group_ids
-    self.user_ids = forum.user_ids
-  end
+  #def set_forum_setting
+  #  return unless forum
+  #  self.readable_group_ids = forum.readable_group_ids
+  #  self.readable_member_ids = forum.readable_member_ids
+  #  self.readable_custom_group_ids = forum.readable_custom_group_ids
+  #  self.group_ids = forum.group_ids
+  #  self.user_ids = forum.user_ids
+  #end
 
   def set_descendants_updated
     self.descendants_updated = updated

@@ -15,8 +15,6 @@ class Gws::Discussion::TodosController < ApplicationController
 
   def set_crumbs
     @crumbs << [t('modules.gws/discussion'), gws_discussion_main_path]
-    #@crumbs << [@topic.name, gws_discussion_topic_comments_path(topic_id: @topic.id)]
-    #@crumbs << ["スケジュール", gws_discussion_topic_todos_path(topic_id: @topic.id)]
   end
 
   def pre_params
@@ -43,16 +41,16 @@ class Gws::Discussion::TodosController < ApplicationController
     @end_at = params[:s][:end].to_date
 
     @todos = Gws::Schedule::Todo.
-        site(@cur_site).
-        discussion_forum(@forum).
-        allow(:read, @cur_user, site: @cur_site).
-        active().
-        search(start: @start_at, end: @end_at).
-        map do |todo|
-          result = todo.calendar_format(@cur_user, @cur_site)
-          result[:restUrl] = gws_discussion_forum_todos_path(site: @cur_site.id)
-          result
-        end
+      site(@cur_site).
+      discussion_forum(@forum).
+      allow(:read, @cur_user, site: @cur_site).
+      active().
+      search(start: @start_at, end: @end_at).
+      map do |todo|
+        result = todo.calendar_format(@cur_user, @cur_site)
+        result[:restUrl] = gws_discussion_forum_todos_path(site: @cur_site.id)
+        result
+      end
 
     @holidays = HolidayJapan.between(@start_at, @end_at).map do |date, name|
       { className: 'fc-holiday', title: "  #{name}", start: date, allDay: true, editable: false, noPopup: true }

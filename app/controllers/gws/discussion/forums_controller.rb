@@ -17,9 +17,15 @@ class Gws::Discussion::ForumsController < ApplicationController
   public
 
   def index
-    @items = @model.site(@cur_site).topic.
-      allow(:read, @cur_user, site: @cur_site).
-      search(params[:s]).
+    @items = @model.site(@cur_site).topic
+
+    if params[:s] && params[:s][:state] == "closed"
+      @items = @items.and_closed.allow(:read, @cur_user, site: @cur_site)
+    else
+      @items = @items.and_public.readable(@cur_user, @cur_site, include_role: true)
+    end
+
+    @items.search(params[:s]).
       page(params[:page]).per(50)
   end
 
@@ -32,6 +38,8 @@ class Gws::Discussion::ForumsController < ApplicationController
   end
 
   def copy
+    raise "403" unless @model.allowed?(:edit, @cur_user, site: @cur_site)
+
     set_item
     if request.get?
       prefix = I18n.t("workflow.cloned_name_prefix")

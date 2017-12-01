@@ -16,6 +16,14 @@ class Gws::Discussion::CommentsController < ApplicationController
 
   def set_forum
     @forum = Gws::Discussion::Forum.find(params[:forum_id])
+
+    if @forum.state == "closed"
+      permitted = @forum.allowed?(:read, @cur_user, site: @cur_site)
+    else
+      permitted = @forum.readable?(@cur_user, site: @cur_site)
+    end
+
+    raise "403" unless permitted
   end
 
   def set_topic
@@ -51,8 +59,6 @@ class Gws::Discussion::CommentsController < ApplicationController
     @comment.parent_id = @topic.id
     @comment.forum_id = @forum.id
     @comment.name = @topic.name
-
-    raise "403" unless @comment.allowed?(:edit, @cur_user, site: @cur_site)
     render_create @comment.save, location: { action: :index }, render: { file: :index }
   end
 end

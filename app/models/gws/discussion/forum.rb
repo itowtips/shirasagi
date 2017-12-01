@@ -11,7 +11,7 @@ class Gws::Discussion::Forum
 
   readable_setting_include_custom_groups
 
-  after_save :save_descendants_setting
+  #after_save :save_descendants_setting
 
   validates :text, presence: true
 
@@ -29,7 +29,9 @@ class Gws::Discussion::Forum
     main_topic.contributor_id = contributor_id
     main_topic.contributor_name = contributor_name
 
-    main_topic.user_id = user_id
+    main_topic.user_ids = user_ids
+    main_topic.custom_group_ids = custom_group_ids
+    main_topic.group_ids = group_ids
     main_topic.site_id = site_id
 
     main_topic.save

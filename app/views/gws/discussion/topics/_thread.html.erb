@@ -99,14 +99,19 @@ $('a.ajax-box').data('on-select', function($item) {
             <%= comment.updated.strftime("%Y/%m/%d %H:%M") %>
           </div>
           <div class="menu">
-            <%= link_to "編集する", edit_gws_discussion_forum_topic_comment_path(forum_id: @forum.id, topic_id: topic.id, id: comment.id), class: 'btn primary' %>
-            <%= link_to "削除する", delete_gws_discussion_forum_topic_comment_path(forum_id: @forum.id, topic_id: topic.id, id: comment.id), class: 'btn primary' %>
+            <% if comment.allowed?(:edit, @cur_user, site: @cur_site) %>
+              <%= link_to "編集する", edit_gws_discussion_forum_topic_comment_path(forum_id: @forum.id, topic_id: topic.id, id: comment.id), class: 'btn primary' %>
+            <% end %>
+            <% if comment.allowed?(:delete, @cur_user, site: @cur_site) %>
+              <%= link_to "削除する", delete_gws_discussion_forum_topic_comment_path(forum_id: @forum.id, topic_id: topic.id, id: comment.id), class: 'btn primary' %>
+            <% end %>
           </div>
         </dd>
       </dl>
     </div>
   <% end %>
 
+  <% if @model.allowed?(:edit, @cur_user, site: @cur_site) %>
   <div class="addon-body">
     <% if @comment && @comment.parent_id == topic.id %>
       <%= error_messages_for :comment %>
@@ -168,9 +173,13 @@ $('a.ajax-box').data('on-select', function($item) {
       <% end %>
     </div>
 
+    <!-- user_ids -->
+    <%= hidden_field_tag "item[user_ids][]", @cur_user.id %>
+
     <!-- menu -->
     <div class="menu">
       <%= f.submit "返信する", class: 'btn primary' %>
     </div>
   </div>
+  <% end %>
 </div>

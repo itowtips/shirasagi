@@ -4,14 +4,14 @@ class Gws::Discussion::Topic
   include Gws::Addon::Contributor
   include SS::Addon::Markdown
   include Gws::Addon::File
-  include Gws::Addon::Discussion::Release
-  include Gws::Addon::Discussion::ReadableSetting
+  #include Gws::Addon::Discussion::Release
+  #include Gws::Addon::Discussion::ReadableSetting
   include Gws::Addon::Discussion::GroupPermission
   include Gws::Addon::History
 
-  readable_setting_include_custom_groups
+  #readable_setting_include_custom_groups
 
-  after_save :save_descendants_setting
+  #after_save :save_descendants_setting
 
   validates :text, presence: true
 
