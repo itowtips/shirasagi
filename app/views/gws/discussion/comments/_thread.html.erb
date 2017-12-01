@@ -39,9 +39,9 @@ $('a.ajax-box').data('on-select', function($item) {
     <dl class="see">
       <dd class="wide">
         <div class="contributor">
+          <span class="no"><%= "1." %></span>
           <%= topic.contributor_name %>
         </div>
-        <!-- <div class="no"><%= 1 %></div> -->
         <div class="markdown-body">
           <%= topic.html %>
         </div>
@@ -79,9 +79,9 @@ $('a.ajax-box').data('on-select', function($item) {
         <dl class="see">
           <dd class="wide">
             <div class="contributor">
+              <span class="no"><%= "#{offset + i + 2}." %></span>
               <%= comment.contributor_name %>
             </div>
-            <!-- <div class="no"><%= offset + i + 2 %></div> -->
             <div class="markdown-body">
               <%= comment.html %>
             </div>

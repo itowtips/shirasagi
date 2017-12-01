@@ -2,6 +2,7 @@ class Gws::Discussion::TopicsController < ApplicationController
   include Gws::BaseFilter
   include Gws::CrudFilter
 
+  helper Gws::Schedule::PlanHelper
   model Gws::Discussion::Topic
 
   before_action :set_forum
@@ -37,17 +38,26 @@ class Gws::Discussion::TopicsController < ApplicationController
       site(@cur_site).
       discussion_forum(@forum).
       allow(:read, @cur_user, site: @cur_site).
-      active()
+      where(todo_state: 'unfinished').
+      active().
+      limit(10)
 
     @recent_items = @forum.children.
       where(:descendants_updated.gt => (Time.zone.now - @cur_site.discussion_new_days.day)).
-      reorder(descendants_updated: -1)
+      reorder(descendants_updated: -1).
+      limit(10)
   end
 
   public
 
   def index
     set_items
+  end
+
+  def all
+    @items = @forum.children.reorder(created: 1).
+      search(params[:s]).
+      page(params[:page]).per(50)
   end
 
   def comments

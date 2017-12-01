@@ -17,10 +17,7 @@ SS::Application.routes.draw do
   concern :todos do
     get :finish, on: :member
     get :revert, on: :member
-    post :finish_all, on: :collection
-    post :revert_all, on: :collection
     get :disable, on: :member
-    post :disable_all, on: :collection
   end
 
   concern :copy do
@@ -33,13 +30,13 @@ SS::Application.routes.draw do
 
     resources :forums, concerns: [:deletion, :copy] do
       resources :topics, concerns: [:deletion, :copy] do
-        #get :comments, on: :member
+        get :all, on: :collection
         put :reply, on: :member
         resources :comments, controller: '/gws/discussion/comments', concerns: [:deletion] do
           put :reply, on: :collection
         end
       end
-      resources :todos, concerns: [:plans, :todos]
+      resources :todos, concerns: [:plans, :todos, :copy]
     end
   end
 end

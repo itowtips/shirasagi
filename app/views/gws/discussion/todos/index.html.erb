@@ -1,13 +1,4 @@
 <%
-  calendar_options = {
-      tapMenu: true,
-      restUrl: url_for(action: :index),
-      eventSources: [{ url: "#{url_for(action: :events, format: :json)}?#{search_query}" }]
-  }
-  if @cur_site.schedule_drag_drop_denied?
-    calendar_options[:eventStartEditable] = false
-  end
-
   init_options = params[:calendar] || {}
 %>
 <%= jquery do %>
@@ -17,6 +8,7 @@ var calendar_options = {
   eventSources: [{ url: "<%= "#{url_for(action: :events, format: :json)}?#{search_query}" %>" }],
   eventStartEditable: <%= !@cur_site.schedule_drag_drop_denied? %>,
   header: { right: "withTodo month basicWeek agendaDay listMonth" },
+  customButtons: { withTodo: false }
 }
 Gws_Schedule_Calendar.render('#calendar', calendar_options, <%== init_options.to_json %>);
 $('.fc-withTodo-button').click();
@@ -24,10 +16,7 @@ $('.fc-withTodo-button').click();
 
 <section class="main-box gws-schedule-box">
   <header>
-    <h2>
-      <%= @forum.name %>
-      <%= link_to "TODOを作成", { action: :new }, { class: 'add-plan' } %>
-    </h2>
+    <h2><%= @forum.name %></h2>
     <nav>
       <%= render file: '_search' %>
     </nav>

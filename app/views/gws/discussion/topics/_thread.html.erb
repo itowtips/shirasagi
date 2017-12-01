@@ -39,9 +39,9 @@ $('a.ajax-box').data('on-select', function($item) {
     <dl class="see">
       <dd class="wide">
         <div class="contributor">
+          <span class="no"><%= "1." %></span>
           <%= topic.contributor_name %>
         </div>
-        <!-- <div class="no"><%= 1 %></div> -->
         <div class="markdown-body">
           <%= topic.html %>
         </div>
@@ -71,7 +71,7 @@ $('a.ajax-box').data('on-select', function($item) {
   <% end %>
   <% offset = children_size - comments.size %>
   <% if children_size > comments.size %>
-    <div style="background: #f2f2f2; border: 1px solid #d0d0d0; border-left: hidden; border-right: hidden;">...</div>
+    <div style="background: #f2f2f2; padding-bottom: 12px; border-left: hidden; border-right: hidden;"></div>
   <% end %>
 
   <% comments.each_with_index do |comment, i| %>
@@ -79,9 +79,9 @@ $('a.ajax-box').data('on-select', function($item) {
       <dl class="see">
         <dd class="wide">
           <div class="contributor">
+            <span class="no"><%= "#{offset + i + 2}." %></span>
             <%= comment.contributor_name %>
           </div>
-          <!-- <div class="no"><%= offset + i + 2 %></div> -->
           <div class="markdown-body">
             <%= comment.html %>
           </div>

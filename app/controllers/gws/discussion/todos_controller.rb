@@ -5,6 +5,7 @@ class Gws::Discussion::TodosController < ApplicationController
 
   model Gws::Schedule::Todo
 
+  before_action :set_item, only: [ :show, :edit, :update, :delete, :destroy, :disable, :finish, :revert ]
   before_action :set_forum
 
   private
@@ -36,6 +37,17 @@ class Gws::Discussion::TodosController < ApplicationController
     @items = []
   end
 
+  def print
+    @items = Gws::Schedule::Todo.
+        site(@cur_site).
+        discussion_forum(@forum).
+        allow(:read, @cur_user, site: @cur_site).
+        active().
+        search(params[:s])
+
+    render layout: 'ss/print'
+  end
+
   def events
     @start_at = params[:s][:start].to_date
     @end_at = params[:s][:end].to_date
@@ -45,7 +57,7 @@ class Gws::Discussion::TodosController < ApplicationController
       discussion_forum(@forum).
       allow(:read, @cur_user, site: @cur_site).
       active().
-      search(start: @start_at, end: @end_at).
+      search(params[:s]).
       map do |todo|
         result = todo.calendar_format(@cur_user, @cur_site)
         result[:restUrl] = gws_discussion_forum_todos_path(site: @cur_site.id)
@@ -87,17 +99,5 @@ class Gws::Discussion::TodosController < ApplicationController
   def revert
     raise '403' unless @item.allowed?(:edit, @cur_user, site: @cur_site)
     render_update @item.update(todo_state: 'unfinished')
-  end
-
-  def finish_all
-    raise '403' unless @items.allowed?(:edit, @cur_user, site: @cur_site)
-    @items.update_all(todo_state: 'finished')
-    render_destroy_all(false)
-  end
-
-  def revert_all
-    raise '403' unless @items.allowed?(:edit, @cur_user, site: @cur_site)
-    @items.update_all(todo_state: 'unfinished')
-    render_destroy_all(false)
   end
 end
