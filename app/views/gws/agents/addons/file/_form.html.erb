@@ -15,6 +15,10 @@ $ ->
 
 <% end %>
 
+<%= jquery do %>
+  SS_Addon_TempFile.renderDrop($("#addon-gws-agents-addons-file .addon-body"), <%= @cur_user.id %>);
+<% end %>
+
 <dl class="see gws-addon-file">
   <dd class="wide">
     <%= f.hidden_field "file_ids[]", value: "" %>
