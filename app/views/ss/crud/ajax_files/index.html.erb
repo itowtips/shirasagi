@@ -1,19 +1,10 @@
 <%= jquery do %>
-
 SS.ajaxForm("form.user-file", {
   success: function(data) {
     $("#cboxLoadedContent").load("<%= url_for(action: :index) %>", function() {
       if (!Array.isArray(data) || data.length == 0) return;
-
       $.each(data, function(index, file) {
-        var url = $(".user-files .select[data-id='" + file._id + "']").attr('href');
-        if (!url) return true;
-        $.ajax({
-          url: url,
-          success: function(data) {
-            $("#selected-files").append(data);
-          }
-        });
+        onUpload(index, file);
       });
       $.colorbox.close();
     });
@@ -21,9 +12,11 @@ SS.ajaxForm("form.user-file", {
 });
 
 var onSelect;
+var onUpload;
 var $element = $.colorbox.element();
 if ($element) {
   onSelect = $element.data('on-select');
+  onUpload = $element.data('on-upload');
 }
 
 if (onSelect) {
@@ -39,6 +32,18 @@ if (onSelect) {
       $.colorbox.close();
     }
   });
+}
+if (!onUpload) {
+  onUpload = function(index, file) {
+    var url = $(".user-files .select[data-id='" + file._id + "']").attr('href');
+    if (!url) return true;
+    $.ajax({
+      url: url,
+      success: function(data) {
+        $("#selected-files").append(data);
+      }
+    });
+  };
 }
 
 SS.ajaxDelete(".user-files .delete");
