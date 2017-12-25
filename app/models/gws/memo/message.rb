@@ -72,7 +72,11 @@ class Gws::Memo::Message
   }
 
   scope :folder, ->(folder, user) {
-    where("paths.#{user.id}" => /^#{Regexp.escape(folder.path)}$/)
+    if folder.sent_box?
+      where(user_id: user.id)
+    else
+      where("paths.#{user.id}" => /^#{Regexp.escape(folder.path)}$/)
+    end
   }
 
   scope :unseen, ->(user_id) {
