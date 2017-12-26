@@ -29,9 +29,9 @@ class Gws::Memo::MessagesController < ApplicationController
   def set_crumbs
     set_cur_folder
     @crumbs << [@cur_site.menu_memo_label || t('mongoid.models.gws/memo/message'), gws_memo_messages_path ]
-    if @cur_folder.folder_path != 'INBOX'
+    if @cur_folder.path != 'INBOX'
       @cur_folder.ancestor_or_self.each do |folder|
-        @crumbs << [folder.current_name, gws_memo_messages_path(folder: folder.folder_path)]
+        @crumbs << [folder.current_name, gws_memo_messages_path(folder: folder.path)]
       end
     end
   end
@@ -43,8 +43,8 @@ class Gws::Memo::MessagesController < ApplicationController
   end
 
   def set_cur_folder
-    if params[:folder] =~ /INBOX|INBOX.Trash|INBOX.Draft|INBOX.Sent|REDIRECT/
-      @cur_folder = Gws::Memo::Folder.static_items(@cur_user, @cur_site).find{ |dir| dir.folder_path == params[:folder] }
+    if params[:folder] =~ /^(INBOX|INBOX.Trash|INBOX.Draft|INBOX.Sent|REDIRECT)$/
+      @cur_folder = Gws::Memo::Folder.static_items(@cur_user, @cur_site).find{ |dir| dir.path == params[:folder] }
     else
       @cur_folder = Gws::Memo::Folder.user(@cur_user).find_by(_id: params[:folder])
     end
@@ -59,10 +59,6 @@ class Gws::Memo::MessagesController < ApplicationController
     @model.site(@cur_site).
       allow(:read, @cur_user, site: @cur_site, folder: params[:folder]).
       unfiltered(@cur_user).each{ |message| message.apply_filters(@cur_user).update }
-  end
-
-  def from_folder
-    (params[:commit] == I18n.t('ss.buttons.draft_save')) ? 'INBOX.Draft' : 'INBOX.Sent'
   end
 
   def redirect_to_appropriate_folder
@@ -178,7 +174,8 @@ class Gws::Memo::MessagesController < ApplicationController
   def move_all
     @items.each do |item|
       raise '403' unless (@cur_user.id == item.user_id || item.member?(@cur_user))
-      item.move(@cur_user, params[:path]).update
+      dst = Gws::Memo::Folder.user(@cur_user).find(params[:path])
+      item.move(@cur_user, dst.path).update
     end
     render_destroy_all(false)
   end

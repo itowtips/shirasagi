@@ -16,9 +16,11 @@ class Gws::Memo::Folder
 
   permit_params :name, :order, :path
 
-  validates :name, presence: true, uniqueness: { scope: [:site_id, :user_id] }, length: {maximum: 80}
+  validates :name, presence: true, uniqueness: { scope: [:site_id, :user_id] }, length: { maximum: 80 }
+  #validates :path, presence: true, uniqueness: { scope: [:site_id, :user_id] }, length: { maximum: 80 }
   validates :order, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 999_999, allow_blank: true }
   validate :validate_parent_name
+  #validate :validate_path
 
   default_scope ->{ order_by order: 1 }
 
@@ -44,6 +46,12 @@ class Gws::Memo::Folder
     end
   end
 
+  #def validate_path
+  #  if path =~ /^(INBOX|INBOX.Trash|INBOX.Draft|INBOX.Sent|REDIRECT)$/
+  #    errors.add :path, :invalid
+  #  end
+  #end
+
   def validate_destroy
     errors.add :base, :included_memo if messages.count > 0
     errors.add :base, :used_folder if filters.count > 0
@@ -59,14 +67,6 @@ class Gws::Memo::Folder
 
   def current_name
     File.basename(name)
-  end
-
-  def folder_path
-    id == 0 ? path : id.to_s
-  end
-
-  def direction
-    %w(INBOX.Sent INBOX.Draft).include?(folder_path) ? 'from' : 'to'
   end
 
   def messages

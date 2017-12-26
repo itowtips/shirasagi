@@ -10,12 +10,14 @@
     </thead>
     <tbody>
     <% @folders.each do |item| %>
-      <% droppable = %W(INBOX.Sent INBOX.Draft #{params[:folder]}).exclude?(item.folder_path) %>
-      <tr class="folder <%= 'droppable' if droppable %> <%= 'current' if item.folder_path == params[:folder] %>">
+      <% droppable = %W(INBOX.Sent INBOX.Draft #{params[:folder]}).exclude?(item.path) %>
+      <tr class="folder <%= 'droppable' if droppable %> <%= 'current' if item.path == params[:folder] %>">
         <td class="<%= item.unseen? ? 'unseen' : 'seen' %>">
-          <%= link_to item.name,
-                      gws_memo_messages_path(folder: item.folder_path ),
-                      {class: 'field title', 'data-path': item.folder_path } %>
+          <% if item.path %>
+            <%= link_to item.name, gws_memo_messages_path(folder: item.path), { 'class' => 'field title', 'data-path' =>  item.path } %>
+          <% else %>
+            <%= link_to item.name, gws_memo_messages_path(folder: item.id), { 'class' => 'field title', 'data-path' =>  item.id } %>
+          <% end %>
           <% if item.unseen? %>
             <span>(<%= item.unseens.count %>)</span>
           <% end %>

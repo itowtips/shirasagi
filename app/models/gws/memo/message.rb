@@ -27,10 +27,6 @@ class Gws::Memo::Message
   field :star, type: Hash, default: {}
   field :filtered, type: Hash, default: {}
   field :state, type: String, default: 'public'
-
-  #belongs_to :from, class_name: "Gws::User"
-  #embeds_ids :to, class_name: "Gws::User"
-
   field :path, type: Hash, default: {}
   field :send_date, type: DateTime
 
@@ -168,9 +164,7 @@ class Gws::Memo::Message
   end
 
   def signature_options
-    Gws::Memo::Signature.site(cur_site).allow(:read, cur_user, site: cur_site).map do |c|
-      [c.name, c.text]
-    end
+    Gws::Memo::Signature.user(cur_user).map { |c| [c.name, c.text] }
   end
 
   def set_seen(user)

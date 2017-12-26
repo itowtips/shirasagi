@@ -51,7 +51,7 @@ module Gws::Model
       }
 
       scope :folder, ->(folder) {
-        where("#{folder.direction}.#{folder.user_id}" => folder.folder_path)
+        where("#{folder.direction}.#{folder.user_id}" => folder.path)
       }
 
       scope :unseen, ->(user_id) {

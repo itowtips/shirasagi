@@ -43,7 +43,7 @@
         </button>
         <ul class="dropdown-menu">
           <% @folders.select { |g| %W(INBOX.Sent INBOX.Draft #{params[:folder]}).exclude?(g.path) }.each do |item| %>
-            <li><a href="#" data-path="<%= item.folder_path %>"><%= item.name %></a></li>
+            <li><a href="#" data-path="<%= item.path %>"><%= item.name %></a></li>
           <% end %>
         </ul>
       </div>
