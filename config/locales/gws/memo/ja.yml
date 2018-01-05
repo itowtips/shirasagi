@@ -1,6 +1,8 @@
 ja:
   gws/memo:
     setting: メッセージ設定
+    navi:
+      category: カテゴリー
   gws/memo/message:
     folder: フォルダー
     child_folder: 子フォルダー
@@ -72,6 +74,7 @@ ja:
       gws/memo/signature: 署名
       gws/memo/forward: メール転送
       gws/memo/group_setting: メッセージ設定
+      gws/memo/category: カテゴリー
     errors:
       models:
         gws/memo/message:

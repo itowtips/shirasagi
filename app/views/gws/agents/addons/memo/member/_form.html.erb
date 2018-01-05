@@ -1,6 +1,10 @@
 <%= jquery do %>
   //SS_AddonTabs.hide(".gws-addon-member");
   $('.sortable-index tbody').sortable();
+  $('.cc-bcc-label').click(function() {
+    $('.cc-bcc').animate({ height: 'toggle' }, 'fast');
+    return false;
+  });
 <% end %>
 
 <div class="gws-addon-member">
@@ -28,7 +32,11 @@
     </dd>
   </dl>
 
-  <dl class="see">
+  <% if cc_blank = @item.cc_members.blank? && @item.bcc_members.blank? %>
+    <a class="cc-bcc-label" href="#">[ <%= t 'webmail.links.show_cc_bcc' %> ]</a>
+  <% end %>
+
+  <dl class="see gws-memo-form-address cc-bcc" <%== cc_blank ? 'style="display: none;"' : '' %>>
     <dt><%= @model.t :cc_member_ids %><%= @model.tt :cc_member_ids %></dt>
     <dd>
       <%= f.hidden_field "cc_member_ids[]", value: "", class: "hidden-ids" %>
@@ -52,7 +60,7 @@
     </dd>
   </dl>
 
-  <dl class="see">
+  <dl class="see gws-memo-form-address cc-bcc" <%== cc_blank ? 'style="display: none;"' : '' %>>
     <dt><%= @model.t :bcc_member_ids %><%= @model.tt :bcc_member_ids %></dt>
     <dd>
       <%= f.hidden_field "bcc_member_ids[]", value: "", class: "hidden-ids" %>

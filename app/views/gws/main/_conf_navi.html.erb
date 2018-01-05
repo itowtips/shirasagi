@@ -70,6 +70,13 @@
 </nav>
 
 <nav class="mod-navi">
+  <h2><%= t('modules.gws/memo') %></h2>
+  <% if Gws::Memo::Message.allowed?(:read, @cur_user, site: @cur_site) %>
+    <h3><%= link_to t('gws/memo.navi.category'), gws_memo_categories_path %></h3>
+  <% end %>
+</nav>
+
+<nav class="mod-navi">
   <h2><%= t('modules.gws/facility') %></h2>
   <% if Gws::Facility::Item.allowed?(:read, @cur_user, site: @cur_site) %>
     <h3><%= link_to t('gws/facility.navi.item'), gws_facility_items_path %></h3>

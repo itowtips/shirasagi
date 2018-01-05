@@ -31,6 +31,7 @@ SS::Application.routes.draw do
     end
 
     resources :comments, path: ':message_id/comments', only: [:create, :destroy]
+    resources :categories, concerns: [:deletion]
 
     namespace "apis" do
       get "personal_addresses" => "personal_addresses#index"
