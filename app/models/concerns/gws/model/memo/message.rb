@@ -6,7 +6,7 @@ module Gws::Model
     included do
       store_in collection: "gws_memo_messages"
 
-      attr_accessor :signature, :attachments, :field, :cur_site, :cur_user, :in_path
+      attr_accessor :signature, :attachments, :field, :cur_site, :cur_user, :in_path, :in_request_mdn
 
       field :subject, type: String
       field :text, type: String, default: ''
@@ -20,7 +20,9 @@ module Gws::Model
       field :path, type: Hash, default: {}
       field :send_date, type: DateTime
 
-      permit_params :subject, :text, :html, :format, :in_path
+      embeds_ids :request_mdn, class_name: "Gws::User"
+
+      permit_params :subject, :text, :html, :format, :in_path, :in_request_mdn
 
       default_scope -> { order_by(send_date: -1, updated: -1) }
 
@@ -29,6 +31,7 @@ module Gws::Model
 
       validate :validate_attached_file_size
       validate :validate_message
+      validate :validate_request_mdn
 
       scope :search, ->(params) {
         criteria = where({})
@@ -209,6 +212,11 @@ module Gws::Model
       elsif self.html.blank? && self.format == "html"
         errors.add(:base, :input_message)
       end
+    end
+
+    def validate_request_mdn
+      return if self.in_request_mdn != "1"
+      self.request_mdn_ids = self.member_ids
     end
 
     def reminder_date
