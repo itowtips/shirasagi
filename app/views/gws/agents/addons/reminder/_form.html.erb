@@ -1,12 +1,32 @@
+<%= jquery do %>
+  var toggleConditions = function() {
+    if ($("#addon-basic #item_allday").prop('checked')) {
+      $(".remider-conditions .allday").show();
+    }
+    else {
+      $(".remider-conditions .allday").hide();
+    }
+  };
+  var sort = new SS_SortableForm('.remider-conditions', { limit: 10, onInsert: toggleConditions });
+  sort.renderItems(<%== @item.reminder_conditions(@cur_user).to_json %>);
+  $("#addon-basic #item_allday").on("click", toggleConditions);
+  toggleConditions();
+<% end %>
+
 <dl class="see gws-addon-reminder">
   <dt>
     <%= @model.t :reminder_date %><%= @model.tt :reminder_date %>
   </dt>
   <dd>
-    <%= f.text_field :in_reminder_date, value: tryb { @item.in_reminder_date.strftime("%Y/%m/%d %H:%M") }, class: "datetime js-datetime" %>
-    <label style="margin-left: 10px; vertical-align: middle;">
-      <%= f.check_box :in_reminder_state, {}, 'disabled', 'enabled' %>
-      <%= t 'gws.options.reminder_state.disable' %>
-    </label>
+    <table class="remider-conditions">
+      <tbody>
+      <tr data-base="true">
+        <td><%= select_tag 'item[in_reminder_conditions][][state]', options_for_select(@item.reminder_state_options), id: nil %></td>
+        <td><%= number_field_tag 'item[in_reminder_conditions][][interval]', nil, id: nil %></td>
+        <td><%= select_tag 'item[in_reminder_conditions][][interval_type]', options_for_select(@item.reminder_interval_type_options), id: nil %></td>
+        <td class="allday"><%= select_tag 'item[in_reminder_conditions][][base_time]', options_for_select(@item.reminder_base_time_options), id: nil %></td>
+      </tr>
+      </tbody>
+    </table>
   </dd>
 </dl>

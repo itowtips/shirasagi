@@ -1,0 +1,9 @@
+<% url = instance_exec(&@item.url_lazy) %>
+<% if url %>
+<%= jquery do %>location.href = "<%= url %>";<% end %>
+<% else %>
+予定は存在しません。変更されたか削除されています。
+
+
+<% end %>
+

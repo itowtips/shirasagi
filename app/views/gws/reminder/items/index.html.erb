@@ -16,14 +16,7 @@
       <label class="check"><input type="checkbox" name="ids[]" value="<%= item.id %>" /></label>
       <div class="info">
         <% if item.unread? %><span class="gws-reminder-updated-flag"></span><% end %>
-
-        <% url = instance_exec(&item.url_lazy) %>
-        <% if url %>
-          <%= link_to item.name, url, class: "title" %>
-        <% else %>
-          <%= item.name %>
-        <% end %>
-
+        <%= link_to item.name, { action: :redirect, id: item.id }, class: "title" %>
         <div class="meta">
           <span class="id">#<%= item.id %></span>
           <% if item.date.present? %>
@@ -42,6 +35,8 @@
           <% end %>
         </div>
       </div>
+
+      <%= item.notifications.map { |n| n.notify_at.strftime("%Y/%m/%d %H:%M") } %>
 
       <div class="links">
         <img class="updated" src="/assets/img/ic-check.png" alt="" style="display: none; vertical-align: middle; margin: 0px 4px" />

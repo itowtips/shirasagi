@@ -8,8 +8,8 @@ class Gws::Schedule::Todo
   include Gws::Schedule::Planable
   include Gws::Schedule::Cloneable
   include Gws::Schedule::CalendarFormat
-  include Gws::Addon::Schedule::Repeat
   include Gws::Addon::Reminder
+  include Gws::Addon::Schedule::Repeat
   include Gws::Addon::Discussion::Todo
   include SS::Addon::Markdown
   include Gws::Addon::File

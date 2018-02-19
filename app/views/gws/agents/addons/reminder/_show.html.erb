@@ -1,21 +1,45 @@
 <%= jquery do %>
   //$(".addon-views").prepend($(".gws-addon-reminder").closest(".addon-view"));
-  Gws_Reminder.renderAddon({ url: "<%= gws_apis_reminders_path %>" });
+  //Gws_Reminder.renderAddon({ url: "<%= gws_apis_reminders_path %>" });
+
+  var sort = new SS_SortableForm('.remider-conditions', { limit: 10 });
+  sort.renderItems(<%== @item.reminder_conditions(@cur_user).to_json %>);
+
+  SS.ajaxForm("#ajax-form", {
+    success: function(data) {
+      sort.resetItems();
+      sort.renderItems(data["reminder_conditions"]);
+      SS.notice('<%= t('gws.reminder.notification.created') %>');
+    }
+  });
 <% end %>
+
+<%= form_for :item, url: gws_apis_reminders_path, html: { id: "ajax-form", multipart: true, autocomplete: :off } do |f| %>
 
 <dl class="see gws-addon-reminder">
   <dt>
     <%= hidden_field_tag "item_name", @item.reference_name %>
     <%= hidden_field_tag "item_model", @item.reference_model %>
     <%= hidden_field_tag "item_id", @item.id %>
-    <span class="gws-addon-reminder-label">
-      <%= @item.reminder(@cur_user) ? t("gws.reminder.states.entry") : t("gws.reminder.states.empty") %>
-    </span>
+    <span class="gws-addon-reminder-label"><%= @item.t :reminder_date %></span>
     <%= @model.tt :reminder_date %>
   </dt>
   <dd>
-    <%= text_field_tag "item_date", tryb { @item.in_reminder_date.strftime("%Y/%m/%d %H:%M") }, class: "datetime js-datetime" %>
+    <table class="remider-conditions">
+      <tbody>
+      <tr data-base="true">
+        <td><%= select_tag 'item[in_reminder_conditions][][state]', options_for_select(@item.reminder_state_options), id: nil %></td>
+        <td><%= number_field_tag 'item[in_reminder_conditions][][interval]', nil, id: nil %></td>
+        <td><%= select_tag 'item[in_reminder_conditions][][interval_type]', options_for_select(@item.reminder_interval_type_options), id: nil %></td>
+        <td class="allday" <%== (@item.allday == "allday") ? '' : 'style="display: none;"' %>>
+          <%= select_tag 'item[in_reminder_conditions][][base_time]', options_for_select(@item.reminder_base_time_options), id: nil %>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
     <%= button_tag t("gws.buttons.register"), id: "gws-addon-reminder-set", class: :btn %>
-    <%= button_tag t("gws.buttons.unset"), id: "gws-addon-reminder-unset", class: :btn %>
   </dd>
 </dl>
+
+<% end %>

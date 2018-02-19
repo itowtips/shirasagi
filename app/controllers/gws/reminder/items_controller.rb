@@ -28,4 +28,9 @@ class Gws::Reminder::ItemsController < ApplicationController
       search(params[:s]).
       page(params[:page]).per(50)
   end
+
+  def redirect
+    set_item
+    raise "404" if @item.user_id != @cur_user.id
+  end
 end

@@ -5,10 +5,7 @@ class Gws::Reminder
   include SS::UserPermission
 
   seqid :id
-  field :name, type: String
-  field :model, type: String
-  field :date, type: DateTime
-  field :item_id, type: String
+
   field :read_at, type: DateTime
   field :updated_fields, type: Array
   field :updated_user_id, type: Integer
@@ -16,6 +13,12 @@ class Gws::Reminder
   field :updated_user_name, type: String
   field :updated_date, type: DateTime
   embeds_many :notifications, class_name: "Gws::Reminder::Notification"
+
+  field :name, type: String
+  field :model, type: String
+  field :date, type: DateTime
+  field :item_id, type: String
+  belongs_to :repeat_plan, class_name: "Gws::Schedule::RepeatPlan"
 
   permit_params :name, :model, :date, :item_id
 
