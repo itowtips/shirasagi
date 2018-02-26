@@ -18,6 +18,9 @@ ja:
       notification:
         subject: "[リマインダー] %{model} - %{name}"
         created: 登録しました。
+        notfound: 予定は存在しません。変更されたか削除されています。
+        similar_name_items: よく似た件名の予定
+        similar_repeat_items: よく似た繰り返し予定
     history:
       mode:
         create: 登録
@@ -88,7 +91,7 @@ ja:
       back_to_portal: ポータルへ戻る
       restore_reminder: 元に戻す
     buttons:
-      register: 登録
+      register: リマインダーを登録
       unset: 解除
       add_item: 新しい要素を追加
     confirm:

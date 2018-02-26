@@ -2,6 +2,8 @@ class Gws::Reminder::ItemsController < ApplicationController
   include Gws::BaseFilter
   include Gws::CrudFilter
 
+  helper Gws::Schedule::PlanHelper
+
   model Gws::Reminder
   navi_view "gws/reminder/main/navi"
   before_action :set_mode

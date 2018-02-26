@@ -1,0 +1,30 @@
+// Reminder
+.gws-reminder-updated-flag {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  @include border-radius(8px);
+  background: $orange;
+  color: $white;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.1;
+  &:after {
+    content: "!";
+  }
+}
+.gws-list-item--deleted {
+  .title {
+    color: #888;
+  }
+}
+
+.gws-reminder-notfound {
+  h2 {
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  .notice {
+    padding: 10px 0px 20px 10px;
+  }
+}

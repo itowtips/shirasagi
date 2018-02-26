@@ -19,24 +19,18 @@
         <%= link_to item.name, { action: :redirect, id: item.id }, class: "title" %>
         <div class="meta">
           <span class="id">#<%= item.id %></span>
-          <% if item.date.present? %>
-            <span class="datetime"><%= tryb { item.date.strftime("%Y/%m/%d %H:%M") } %></span>
-          <% end %>
-          <span class="label"><%= item.updated? ? t('gws.history.mode.update') : t('gws.history.mode.create') %></span>
-          <% if item.updated_user_name.present? %>
-            <span class="user"><%= item.updated_user_name %></span>
-          <% end %>
-          <% if item.updated_date.present? %>
-            <span class="datetime"><%= item.updated_date.strftime("%Y/%m/%d %H:%M") %></span>
-          <% end %>
-          <% if item.updated_field_names.present? %>
-            <span class="label"><%= item.t :updated_fields %></span>
-            <span class="fields"><%= truncate item.updated_field_names.join(', '), length: 30 %></span>
+
+          <% if item.start_at.present? %>
+            <span class="datetime">
+              <%= term(item) %>
+            </span>
+          <% else %>
+            <span class="datetime">
+              <%= tryb { item.date.strftime("%Y/%m/%d %H:%M") } %>
+            </span>
           <% end %>
         </div>
       </div>
-
-      <%= item.notifications.map { |n| n.notify_at.strftime("%Y/%m/%d %H:%M") } %>
 
       <div class="links">
         <img class="updated" src="/assets/img/ic-check.png" alt="" style="display: none; vertical-align: middle; margin: 0px 4px" />

@@ -13,6 +13,7 @@ module Gws::Addon
       validate :validate_in_reminder_conditions
       after_save :save_reminders, if: -> { in_reminder_conditions }
       after_save :update_reminders, if: -> { in_reminder_conditions.nil? }
+      after_save :purge_reminders
       #after_destroy :destroy_reminders
     end
 
@@ -85,15 +86,15 @@ module Gws::Addon
 
     def reminder_base_time_options
       [
-          [ "午前 8:00", "8:00" ],
-          [ "午前 8:30", "8:30" ],
-          [ "午前 9:00", "9:00" ],
-          [ "午前 9:30", "9:30" ],
-          [ "午前 10:00", "10:00" ],
-          [ "午前 10:30", "10:30" ],
-          [ "午前 11:00", "11:00" ],
-          [ "午前 11:30", "11:30" ],
-          [ "午前 12:00", "12:00" ],
+        [ "午前 8:00", "8:00" ],
+        [ "午前 8:30", "8:30" ],
+        [ "午前 9:00", "9:00" ],
+        [ "午前 9:30", "9:30" ],
+        [ "午前 10:00", "10:00" ],
+        [ "午前 10:30", "10:30" ],
+        [ "午前 11:00", "11:00" ],
+        [ "午前 11:30", "11:30" ],
+        [ "午前 12:00", "12:00" ],
       ]
     end
 
@@ -107,7 +108,8 @@ module Gws::Addon
           cond.delete("base_time")
         end
 
-        cond["notify_at"] = base_at - (cond["interval"].to_i.send(cond["interval_type"]))
+        cond["interval"] = cond["interval"].to_i
+        cond["notify_at"] = base_at - (cond["interval"].send(cond["interval_type"]))
         cond
       end
       self.in_reminder_conditions = in_reminder_conditions.uniq { |cond| cond["notify_at"] }
@@ -144,7 +146,12 @@ module Gws::Addon
       }
       reminder = Gws::Reminder.where(cond).first || Gws::Reminder.new(cond)
       reminder.name = reference_name
+
       reminder.date = start_at
+      reminder.start_at = start_at
+      reminder.end_at = end_at
+      reminder.allday = allday
+
       reminder.repeat_plan_id = repeat_plan_id
 
       # destroy old notifications
@@ -158,9 +165,16 @@ module Gws::Addon
         notification.interval = cond["interval"]
         notification.interval_type = cond["interval_type"]
         notification.base_time = cond["base_time"]
+
+        if notification.notify_at < Time.zone.now
+          notification.delivered_at = Time.zone.now
+        end
       end
 
       reminder.save!
+
+      reminder.reload
+      reminder.destroy if reminder.notifications.blank?
     end
 
     def update_reminders
@@ -177,7 +191,12 @@ module Gws::Addon
       return unless reminder
 
       reminder.name = reference_name
+
       reminder.date = start_at
+      reminder.start_at = start_at
+      reminder.end_at = end_at
+      reminder.allday = allday
+
       reminder.repeat_plan_id = repeat_plan_id
 
       reminder.notifications.each do |notification|
@@ -188,9 +207,33 @@ module Gws::Addon
         end
 
         notification.notify_at = base_at - (notification.interval.send(notification.interval_type))
+        if notification.notify_at < Time.zone.now
+          notification.delivered_at = Time.zone.now
+        end
       end
 
       reminder.save!
+
+      reminder.reload
+      reminder.destroy if reminder.notifications.blank?
+    end
+
+    def purge_reminders
+      return if new_record?
+      return if @db_changes.blank?
+      return if @cur_user.blank?
+
+      if @db_changes["start_at"] || @db_changes["allday"]
+        # remove other users item_id
+        cond = {
+          site_id: site_id,
+          model: reference_model,
+          item_id: id
+        }
+        Gws::Reminder.where(cond).ne(user_id: @cur_user.id).each do |item|
+          item.unset(:item_id)
+        end
+      end
     end
 
 =begin

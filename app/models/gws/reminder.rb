@@ -17,6 +17,9 @@ class Gws::Reminder
   field :name, type: String
   field :model, type: String
   field :date, type: DateTime
+  field :start_at, type: DateTime
+  field :end_at, type: DateTime
+  field :allday, type: String
   field :item_id, type: String
   belongs_to :repeat_plan, class_name: "Gws::Schedule::RepeatPlan"
 
@@ -48,6 +51,14 @@ class Gws::Reminder
 
   def item
     @item ||= model.camelize.constantize.where(id: item_id).first
+  end
+
+  def similar_name_items
+    model.camelize.constantize.where(name: /#{Regexp.escape(name)}/)
+  end
+
+  def similar_repeat_items
+    model.camelize.constantize.where(repeat_plan_id: repeat_plan_id)
   end
 
   def url_lazy

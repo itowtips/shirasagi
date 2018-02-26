@@ -39,7 +39,12 @@ class Gws::Apis::RemindersController < ApplicationController
     }
     reminder = Gws::Reminder.where(cond).first || Gws::Reminder.new(cond)
     reminder.name = item.reference_name
+
     reminder.date = item.start_at
+    reminder.start_at = item.start_at
+    reminder.end_at = item.end_at
+    reminder.allday = item.allday
+
     reminder.repeat_plan_id = item.repeat_plan_id
 
     # destroy old notifications
@@ -55,7 +60,8 @@ class Gws::Apis::RemindersController < ApplicationController
         cond.delete("base_time")
       end
 
-      cond["notify_at"] = base_at - (cond["interval"].to_i.send(cond["interval_type"]))
+      cond["interval"] = cond["interval"].to_i
+      cond["notify_at"] = base_at - (cond["interval"].send(cond["interval_type"]))
       cond
     end
     conditions = conditions.uniq { |cond| cond["notify_at"] }
@@ -70,10 +76,18 @@ class Gws::Apis::RemindersController < ApplicationController
       notification.interval = cond["interval"]
       notification.interval_type = cond["interval_type"]
       notification.base_time = cond["base_time"]
+
+      if notification.notify_at < Time.zone.now
+        notification.delivered_at = Time.zone.now
+      end
     end
 
     reminder.save!
-    render json: { reminder_conditions: reminder.notifications, notice: I18n.t("gws.reminder.states.entry") }
+
+    reminder.reload
+    reminder.destroy if reminder.notifications.blank?
+
+    render json: { reminder_conditions: (reminder.destroyed? ? [] : reminder.notifications), notice: I18n.t("gws.reminder.states.entry") }
   end
 
   def destroy
