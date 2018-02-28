@@ -5,7 +5,7 @@ class Gws::Schedule::GroupPlansController < ApplicationController
   include Gws::Memo::NotificationFilter
 
   before_action :set_group
-  before_action :set_items
+  before_action :set_users, only: [:index, :print]
 
   private
 
@@ -20,8 +20,8 @@ class Gws::Schedule::GroupPlansController < ApplicationController
     @crumbs << [@group.trailing_name, action: :index]
   end
 
-  def set_items
-    @items = @group.users.active.order_by_title(@cur_site).compact
+  def set_users
+    @users = @group.users.active.order_by_title(@cur_site).compact
   end
 
   public

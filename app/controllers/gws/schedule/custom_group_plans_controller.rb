@@ -5,6 +5,7 @@ class Gws::Schedule::CustomGroupPlansController < ApplicationController
   include Gws::Memo::NotificationFilter
 
   before_action :set_group
+  before_action :set_users, only: [:index, :print]
 
   private
 
@@ -18,9 +19,12 @@ class Gws::Schedule::CustomGroupPlansController < ApplicationController
     @crumbs << [@group.name, action: :index]
   end
 
+  def set_users
+    @users = @group.sorted_members
+  end
+
   public
 
   def index
-    @items = @group.sorted_members
   end
 end
