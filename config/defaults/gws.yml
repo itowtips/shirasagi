@@ -60,11 +60,14 @@ production: &production
 
   chorg:
     models:
+      - "Gws::Attendance::TimeCard"
       - "Gws::Board::Category"
       - "Gws::Board::Post"
+      - "Gws::Bookmark"
       - "Gws::Circular::Category"
       - "Gws::Circular::Post"
       - "Gws::CustomGroup"
+      - "Gws::Discussion::Base"
       - "Gws::Facility::Category"
       - "Gws::Facility::Item"
       - "Gws::Faq::Category"
@@ -73,6 +76,7 @@ production: &production
       - "Gws::Memo::Comment"
       - "Gws::Memo::Filter"
       - "Gws::Memo::Folder"
+      - "Gws::Memo::Forward"
       - "Gws::Memo::Message"
       - "Gws::Monitor::Category"
       - "Gws::Monitor::Post"

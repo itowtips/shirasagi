@@ -117,9 +117,13 @@ class Gws::UserCsv::Importer
   end
 
   def set_title(item)
+    title_ids = item.titles.reject { |m| m.group_id == cur_site.id }.map(&:id)
     value = row_value('title_ids')
-    title = Gws::UserTitle.site(cur_site).where(name: value).first if value.present?
-    item.in_title_id = title ? title.id : ''
+    if value.present?
+      title = Gws::UserTitle.site(cur_site).where(name: value).first
+      title_ids << title.id if title.present?
+    end
+    item.title_ids = title_ids
   end
 
   def set_type(item)
@@ -145,18 +149,53 @@ class Gws::UserCsv::Importer
 
   def set_group_ids(item)
     value = row_value('groups')
-    if value.present?
-      groups = SS::Group.in(name: value.split(/\n/))
-    else
-      groups = SS::Group.none
+    if value.blank?
+      item.group_ids = []
+      return
     end
+
+    conds = []
+    value.split(/\r?\n/).each do |name_with_code|
+      name, code = split_name_and_code(name_with_code)
+      if code.present?
+        conds << { code: code }
+      else
+        conds << { name: name }
+      end
+    end
+
+    groups = SS::Group.where('$and' => [{ '$or' => conds }])
     item.group_ids = groups.pluck(:id)
   end
 
+  def split_name_and_code(str)
+    return if str.blank?
+
+    str.strip!
+    # str has only name part
+    return str if !str.end_with?(')')
+
+    paren_pos = str.rindex('(')
+    return str if !paren_pos
+
+    name = str[0..paren_pos-1] if paren_pos > 0
+    name ||= ''
+    code = str[paren_pos+1..-2]
+
+    [ name, code ]
+  end
+
   def set_main_group_ids(item)
-    value = row_value('gws_main_group_ids')
-    group = SS::Group.where(name: value).first if value.present?
-    item.in_gws_main_group_id = group ? group.id : ''
+    name, code = split_name_and_code(row_value('gws_main_group_ids'))
+    if code.present?
+      group = SS::Group.where(code: code).first
+    elsif name.present?
+      group = SS::Group.where(name: name).first
+    end
+
+    group_ids = item.gws_main_group_ids
+    group_ids[@cur_site.id.to_s] = group.present? ? group.id : nil
+    item.gws_main_group_ids = group_ids.select { |k, v| v.present? }
   end
 
   def set_switch_user_id(item)
@@ -175,8 +214,7 @@ class Gws::UserCsv::Importer
     else
       add_role_ids = []
     end
-    site_role_ids = Gws::Role.site(cur_site).pluck(:id)
-    item.gws_role_ids = item.gws_role_ids - site_role_ids + add_role_ids
+    item.gws_role_ids = add_role_ids
   end
 
   def save_item(item)

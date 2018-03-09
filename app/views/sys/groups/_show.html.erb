@@ -1,14 +1,17 @@
 <dl class="see">
   <dt><%= @model.t :name %></dt>
-  <dd><%= @item.send :name %></dd>
+  <dd><%= @item.name %></dd>
+
+  <dt><%= @model.t :code %></dt>
+  <dd><%= @item.code %></dd>
 
   <% if @item.domains.present? %>
   <dt><%= @model.t :domains %></dt>
-  <dd><%= @item.send :domains %></dd>
+  <dd><%= @item.domains %></dd>
   <% end %>
 
   <dt><%= @model.t :order %></dt>
-  <dd><%= @item.send :order %></dd>
+  <dd><%= @item.order %></dd>
 
   <% if @item.activation_date.present? %>
   <dt><%= @model.t :activation_date %></dt>

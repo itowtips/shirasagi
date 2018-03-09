@@ -1,6 +1,6 @@
 class Gws::Chorg::Changeset
 
-  GROUP_ATTRIBUTES = %w(name order ldap_dn).freeze
+  GROUP_ATTRIBUTES = %w(name code order ldap_dn).freeze
 
   include Chorg::Model::Changeset
   include Gws::SitePermission

@@ -397,6 +397,7 @@ ja:
         expiration_date: 有効期限（終了）
       ss/model/group:
         name: グループ名
+        code: コード
         order: 表示順
         activation_date: 有効期限（開始）
         expiration_date: 有効期限（終了）
@@ -598,6 +599,8 @@ ja:
     ss/model/group:
       name:
         - グループの名称を入力します。
+      code:
+        - グループのコードを入力します。
       order:
         - 一覧画面での表示順を指定します。
         - 数字が小さいほど一覧ページの上位にリンクが表示されます。

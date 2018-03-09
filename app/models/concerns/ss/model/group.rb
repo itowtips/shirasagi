@@ -15,15 +15,18 @@ module SS::Model::Group
 
     seqid :id
     field :name, type: String
+    field :code, type: String
     field :order, type: Integer
     field :activation_date, type: DateTime
     field :expiration_date, type: DateTime
     field :domains, type: SS::Extensions::Words
-    permit_params :name, :order, :activation_date, :expiration_date, :domains
+    permit_params :name, :code, :order, :activation_date, :expiration_date, :domains
 
     default_scope -> { order_by(order: 1, name: 1) }
 
     validates :name, presence: true, uniqueness: true, length: { maximum: 80 }
+    validates :code, length: { maximum: 40 }
+    validates :code, uniqueness: true, if: ->{ code.present? }
     validates :domains, domain: true
     validates :order, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 999_999, allow_blank: true }
     validates :activation_date, datetime: true
@@ -67,8 +70,24 @@ module SS::Model::Group
     name.split("/")[1..-1].join(' ')
   end
 
+  def name_with_code
+    if code.present?
+      "#{name}(#{code})"
+    else
+      name
+    end
+  end
+
   def trailing_name
     @trailing_name ||= name.split("/")[depth..-1].join("/")
+  end
+
+  def trailing_name_with_code
+    if code.present?
+      "#{trailing_name}(#{code})"
+    else
+      trailing_name
+    end
   end
 
   def root

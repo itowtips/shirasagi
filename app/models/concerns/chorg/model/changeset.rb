@@ -94,7 +94,7 @@ module Chorg::Model::Changeset
 
   def set_source_names
     return if sources.blank?
-    copy = sources.to_a.each { |s| s['name'] ||= Cms::Group.where(id: s['id']).first.name }
+    copy = sources.to_a.each { |s| s['name'] ||= Cms::Group.where(id: s['id']).first.name_with_code }
     self.sources = copy
   end
 end

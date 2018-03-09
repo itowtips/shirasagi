@@ -10,11 +10,11 @@ class Gws::UserCsv::Exporter
   class << self
     def csv_basic_headers
       headers = %w(
-      id name kana uid organization_uid email password tel tel_ext title_ids type
-      account_start_date account_expiration_date initial_password_warning session_lifetime
-      organization_id groups gws_main_group_ids switch_user_id remark
-      ldap_dn gws_roles
-    )
+        id name kana uid organization_uid email password tel tel_ext title_ids type
+        account_start_date account_expiration_date initial_password_warning session_lifetime
+        organization_id groups gws_main_group_ids switch_user_id remark
+        ldap_dn gws_roles
+      )
       headers.map! { |k| Gws::User.t(k) }
     end
 
@@ -87,7 +87,7 @@ class Gws::UserCsv::Exporter
     terms << I18n.t("ss.options.state.#{item.initial_password_warning.present? ? 'enabled' : 'disabled'}")
     terms << item.session_lifetime
     terms << (item.organization ? item.organization.name : nil)
-    terms << item.groups.map(&:name).join("\n")
+    terms << item_groups(item)
     terms << main_group.try(:name)
     terms << (switch_user ? "#{switch_user.id},#{switch_user.name}" : nil)
     terms << item.remark
@@ -117,6 +117,16 @@ class Gws::UserCsv::Exporter
     end
 
     terms
+  end
+
+  def item_groups(item)
+    item.groups.pluck(:code, :name).map do |code, name|
+      if code.present?
+        "#{name}(#{code})"
+      else
+        name
+      end
+    end.join("\n")
   end
 
   def encode_sjis(str)

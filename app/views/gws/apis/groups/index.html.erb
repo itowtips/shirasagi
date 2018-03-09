@@ -23,7 +23,7 @@
   <tbody class="items">
     <% @items.each do |item| %>
       <% depth   = @search_params ? "" : %( data-depth=#{item.depth}) %>
-      <% name    = @search_params ? item.name : item.trailing_name %>
+      <% name    = @search_params ? item.name_with_code : item.trailing_name_with_code %>
       <tr data-id="<%= item.id %>" class="list-item"<%= depth %>>
         <% if @multi %>
         <td class="checkbox">
