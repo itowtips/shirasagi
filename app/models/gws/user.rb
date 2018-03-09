@@ -5,6 +5,7 @@ class Gws::User
   include Gws::Addon::User::PublicDuty
   include Gws::Addon::User::CustomForm
   include Gws::Addon::Role
+  include Gws::Addon::ReadableSetting
   include SS::Addon::UserGroupHistory
   include Gws::Addon::History
 
