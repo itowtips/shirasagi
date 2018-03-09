@@ -11,14 +11,6 @@
   });
 <% end %>
 
-<% if @cur_user.gws_role_permissions["edit_other_gws_monitor_posts_#{@cur_site.id}"].to_i > 0 %>
-<nav class="nav-management-menu hide-mb">
-  <%= link_to gws_monitor_management_main_path do %>
-    <i class="material-icons md-20">&#xE8B8;</i><%= t("ss.management") %>
-  <% end %>
-</nav>
-<% end %>
-
 <nav class="nav-menu">
   <% if params[:action] =~ /index/ %>
     <% if @model.allowed?(:edit, @cur_user, site: @cur_site) %>
@@ -39,12 +31,12 @@
       <% end %>
       <% if @item.closed? %>
         <%= link_to t('gws/monitor.links.open'), { action: :open, id: @item }, class: 'close-topic', 'data-confirm' => t('gws/monitor.confirm.open')  %>
-      <% else %>
+      <% elsif @item.public? %>
         <%= link_to t('gws/monitor.links.closed'), { action: :close, id: @item }, class: 'close-topic', 'data-confirm' => t('gws/monitor.confirm.close')  %>
       <% end %>
     <% end %>
     <% if @item.allowed?(:delete, @cur_user, site: @cur_site) %>
-      <%= link_to t('gws/monitor.links.disable'), action: :disable, id: @item %>
+      <%= link_to t('ss.links.delete'), action: :soft_delete, id: @item %>
     <% end %>
     <%= link_to(t('gws/monitor.links.export_csv'), { action: :download }, class: 'export_csv') %>
     <%= link_to(t('gws/monitor.links.file_download'), { action: :file_download }, class: 'file_download') %>

@@ -172,6 +172,7 @@ li.webmail-accounts {
 .webmail-mails {
   .list-item {
     padding: 5px 8px;
+    display: block;
   }
   .list-item-head {
     font-weight: bold;
@@ -393,6 +394,10 @@ li.webmail-accounts {
   .body-content {
     clear: both;
     margin-top: 15px;
+  }
+  .template-options {
+    margin-top: 10px;
+    float: left;
   }
   .header-options {
     margin-top: 10px;

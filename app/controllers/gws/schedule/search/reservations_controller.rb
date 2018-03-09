@@ -3,6 +3,8 @@ class Gws::Schedule::Search::ReservationsController < ApplicationController
 
   model Gws::Schedule::PlanSearch
 
+  navi_view "gws/schedule/main/navi"
+
   private
 
   def fix_params
@@ -22,8 +24,6 @@ class Gws::Schedule::Search::ReservationsController < ApplicationController
 
   def index
     @s = get_params
-
-    Rails.logger.debug("@s=#{@s}")
 
     @time_search = Gws::Schedule::PlanSearch.new(@s)
     @time_search.valid?

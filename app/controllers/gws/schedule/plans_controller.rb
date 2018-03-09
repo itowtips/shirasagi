@@ -6,6 +6,8 @@ class Gws::Schedule::PlansController < ApplicationController
 
   before_action :set_download_url, only: :index
 
+  navi_view "gws/schedule/main/navi"
+
   private
 
   def set_crumbs
@@ -22,15 +24,15 @@ class Gws::Schedule::PlansController < ApplicationController
   def index
     return render if params[:format] != 'json'
 
-    @items = Gws::Schedule::Plan.site(@cur_site).
-      member(@cur_user).
-      search(params[:s])
+    # @items = Gws::Schedule::Plan.site(@cur_site).
+    #   member(@cur_user).
+    #   search(params[:s])
   end
 
   def events
-    @items = Gws::Schedule::Plan.site(@cur_site).
-      member(@cur_user).
-      search(params[:s])
+    # @items = Gws::Schedule::Plan.site(@cur_site).without_deleted.
+    #   member(@cur_user).
+    #   search(params[:s])
 
     @todos = Gws::Schedule::Todo.site(@cur_site).without_deleted.
       member(@cur_user).
@@ -38,9 +40,9 @@ class Gws::Schedule::PlansController < ApplicationController
   end
 
   def download
-    @items = Gws::Schedule::Plan.site(@cur_site).
-      member(@cur_user).
-      search(params[:s])
+    # @items = Gws::Schedule::Plan.site(@cur_site).
+    #   member(@cur_user).
+    #   search(params[:s])
 
     filename = "gws_schedule_plans_#{Time.zone.now.to_i}.csv"
     response.status = 200

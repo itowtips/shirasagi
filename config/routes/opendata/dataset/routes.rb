@@ -7,13 +7,20 @@ SS::Application.routes.draw do
     delete action: :destroy_all, on: :collection
   end
 
+  concern :copy do
+    get :copy, on: :member
+    put :copy, on: :member
+  end
+
   content "opendata" do
+    get "dataset_download_reports" => "dataset/download_reports#index", as: :dataset_download_reports
+    get "dataset_download_reports/download" => "dataset/download_reports#download", as: :dataset_download_reports_download
     resources :crawls, concerns: :deletion, module: :dataset
     resources :dataset_categories, concerns: :deletion, module: :dataset
     resources :dataset_groups, concerns: :deletion, module: :dataset do
       get "search" => "dataset_groups/search#index", on: :collection
     end
-    resources :datasets, concerns: :deletion, module: :dataset do
+    resources :datasets, concerns: [:deletion, :copy], module: :dataset do
       get "search" => "datasets/search#index", on: :collection
       get :check_for_update, on: :member
       resources :resources, concerns: :deletion do
@@ -81,6 +88,8 @@ SS::Application.routes.draw do
     match "search_dataset_group/(index.:format)" => "public#index", cell: "nodes/dataset/search_dataset_group",
       via: [:get, :post]
     match "search_dataset/(index.:format)" => "public#index", cell: "nodes/dataset/search_dataset", via: [:get, :post]
+    get "search_dataset/tags" => "public#index_tags", cell: "nodes/dataset/search_dataset"
+    get "search_dataset/search" => "public#search", cell: "nodes/dataset/search_dataset"
     get "search_dataset/rss.xml" => "public#rss", cell: "nodes/dataset/search_dataset"
   end
 

@@ -8,6 +8,8 @@ class Gws::Workflow::FilesController < ApplicationController
   before_action :set_cur_form, only: %i[new create]
   before_action :set_search_params
 
+  navi_view "gws/workflow/main/navi"
+
   private
 
   def set_crumbs
@@ -54,7 +56,7 @@ class Gws::Workflow::FilesController < ApplicationController
   public
 
   def index
-    @items = @model.site(@cur_site).
+    @items = @model.site(@cur_site).without_deleted.
       search(@s).
       page(params[:page]).per(50)
   end

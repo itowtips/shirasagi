@@ -3,10 +3,11 @@ class Gws::SharedAddress::Management::AddressesController < ApplicationControlle
   include Gws::CrudFilter
 
   model Gws::SharedAddress::Address
-  navi_view "gws/shared_address/management/navi"
 
   before_action :set_address_group
   before_action :set_group_navi, only: [:index]
+
+  navi_view "gws/shared_address/main/navi"
 
   private
 
@@ -39,6 +40,7 @@ class Gws::SharedAddress::Management::AddressesController < ApplicationControlle
 
     @items = @model.site(@cur_site).
       allow(:read, @cur_user, site: @cur_site).
+      without_deleted.
       search(s_params).
       page(params[:page]).per(50)
   end

@@ -1,5 +1,8 @@
 ja:
   gws/shared_address:
+    navi:
+      address: アドレス設定
+      group: グループ設定
 
   modules:
     gws/shared_address: 共有アドレス帳
@@ -11,6 +14,8 @@ ja:
     edit_private_gws_shared_address_addresses: アドレス帳の編集（所有）
     delete_other_gws_shared_address_addresses: アドレス帳の削除（全て）
     delete_private_gws_shared_address_addresses: アドレス帳の削除（所有）
+    trash_other_gws_shared_address_addresses: アドレス帳ゴミ箱の管理（全て）
+    trash_private_gws_shared_address_addresses: アドレス帳ゴミ箱の管理（所有）
     read_other_gws_shared_address_groups: グループの閲覧（全て）
     read_private_gws_shared_address_groups: グループの閲覧（所有）
     edit_other_gws_shared_address_groups: グループの編集（全て）
@@ -35,3 +40,7 @@ ja:
         - グループ名を入力します。
       order:
         - 並び順を入力します。
+
+  job:
+    models:
+      gws/shared_address/trash_purge_job: 共有アドレス/ゴミ箱の掃除

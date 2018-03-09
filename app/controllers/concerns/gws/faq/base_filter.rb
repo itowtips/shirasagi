@@ -8,10 +8,12 @@ module Gws::Faq::BaseFilter
     before_action :set_crumbs
   end
 
+  ALLOWED_MODES = %w(readable editable trash).freeze
+
   private
 
   def set_mode
-    @mode = %w(editable).include?(params[:mode]) ? params[:mode] : 'readable'
+    @mode = ALLOWED_MODES.include?(params[:mode]) ? params[:mode] : 'readable'
   end
 
   def set_category
@@ -28,7 +30,7 @@ module Gws::Faq::BaseFilter
   end
 
   def set_crumbs
-    @crumbs << [t("modules.gws/faq"), gws_faq_topics_path(mode: '-', category: '-')]
+    @crumbs << [@cur_site.menu_faq_label || t("modules.gws/faq"), gws_faq_topics_path(mode: '-', category: '-')]
     @crumbs << [t("ss.navi.#{@mode}"), gws_faq_topics_path(category: '-')]
     @crumbs << [@category.name, gws_faq_topics_path] if @category.present?
   end

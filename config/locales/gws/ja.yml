@@ -8,15 +8,10 @@ ja:
     user_setting: ポータル設定
     organization_addresses: 組織アドレス帳
     question_management: 質問管理
+    default_contrast: 既定のコントラスト
     roles:
       admin: 管理者
       user: 一般ユーザー
-    reminder:
-      states:
-        entry: 登録済み
-        empty: 未登録
-      notification:
-        subject: "[リマインダー] %{model} - %{name}"
     history:
       mode:
         create: 登録
@@ -55,14 +50,6 @@ ja:
     options:
       severity:
         high: 重要なお知らせ
-      reminder_state:
-        enable: 登録する
-        disable: 登録しない
-      reminder/notification:
-        '-1': 通知しない
-        '10': 10分前
-        '30': 30分前
-        '60': 1時間前
       input_type:
         text_field: テキストボックス
         text_area: テキストエリア
@@ -85,9 +72,7 @@ ja:
 
     links:
       back_to_portal: ポータルへ戻る
-      restore_reminder: 元に戻す
     buttons:
-      register: 登録
       unset: 解除
       add_item: 新しい要素を追加
     confirm:
@@ -97,6 +82,7 @@ ja:
       delay_download_with_message: |-
         ファイル数が多い、またはファイル容量が大きいためバックグランドでファイルを準備します。
         ダウンロードの準備ができましたらメッセージでお知らせします。
+      contrast_changed: 'コントラストを「%{name}」に変更しました。'
     errors:
       allowed_domains_only_root: はルートグループにのみ設定できます。
 
@@ -134,16 +120,15 @@ ja:
     edit_private_gws_links: リンク集の編集（所有）
     delete_other_gws_links: リンク集の削除（全て）
     delete_private_gws_links: リンク集の削除（所有）
+    edit_gws_contrasts: コントラストの管理
 
   modules:
     gws: 標準機能
-    gws/reminder: リマインダー
     addons:
       gws/role: 権限/ロール
       gws/group_permission: 管理権限
       gws/file: ファイル
       gws/release: 公開設定
-      gws/reminder: リマインダー設定
       gws/history: 変更履歴
       gws/share/history: 変更履歴
       gws/readable_setting: 閲覧権限
@@ -181,12 +166,17 @@ ja:
       gws/notice: お知らせ
       gws/link: リンク集
       gws/share: 共有ファイル
-      gws/reminder: リマインダー
       gws/history: 操作履歴
       gws/history_archive_file: アーカイブ
       gws/user_setting: ユーザー設定
       gws/user_form: 拡張情報
       gws/user_form_data: 拡張データ
+      gws/contrast: コントラスト
+    errors:
+      models:
+        gws/contrast:
+          load_error: 読み込みに失敗しました。
+          no_contrasts: 定義がありません。
     attributes:
       gws/model/category:
         model: モデル
@@ -220,15 +210,6 @@ ja:
         severity: 種別
       gws/link:
         name: タイトル
-      gws/reminder:
-        name: タイトル
-        date: 日時
-        url: URL
-        updated_fields: 変更内容
-        updated_user_id: 更新者ID
-        updated_user_uid: 更新者UID
-        updated_user_name: 更新者
-        updated_date: 更新日
       gws/history:
         session_id: セッションID
         request_id: リクエストID
@@ -273,10 +254,6 @@ ja:
         in_file: ファイル
       gws/addon/file:
         file_ids: ファイル
-      gws/addon/reminder:
-        reminder_url: リマインダーURL
-        reminder_name: リマインダー名
-        reminder_date: リマインダー日時
       gws/addon/role:
         gws_role_ids: ロール
       gws/addon/permission:
@@ -320,6 +297,8 @@ ja:
         menu_portal_state: ポータルの表示
         menu_schedule_label: スケジュールの表示
         menu_schedule_state: スケジュールの表示
+        menu_todo_label: ToDoの表示
+        menu_todo_state: ToDoの表示
         menu_reminder_label: リマインダーの表示
         menu_reminder_state: リマインダーの表示
         menu_attendance_label: 出退勤の表示
@@ -330,8 +309,10 @@ ja:
         menu_memo_state: メッセージの表示
         menu_board_label: 掲示板の表示
         menu_board_state: 掲示板の表示
-        menu_question_label: 質問管理の表示
-        menu_question_state: 質問管理の表示
+        menu_faq_label: よくある質問の表示
+        menu_faq_state: よくある質問の表示
+        menu_question_label: Ｑ＆Ａの表示
+        menu_question_state: Ｑ＆Ａの表示
         menu_workflow_label: ワークフローの表示
         menu_workflow_state: ワークフローの表示
         menu_report_label: レポートの表示
@@ -354,6 +335,8 @@ ja:
         menu_elasticsearch_state: 全文検索の表示
         menu_discussion_label: 電子会議室
         menu_discussion_state: 電子会議室
+        menu_contrast_label: コントラスト
+        menu_contrast_state: コントラスト
       gws/addon/system/log_setting:
         log_save_days: ログ保持日数
         log_main_severity: 標準機能のログ
@@ -423,15 +406,14 @@ ja:
         message_notification: メッセージ通知
         email_notification: メール通知
         notification_noticed: 通知日時
+      gws/contrast:
+        name: 名前
+        order: 並び順
+        status: ステータス
+        text_color: 文字色
+        color: 背景色
 
   tooltip:
-    gws/addon/reminder:
-      reminder_date:
-        - リマインダー日時を登録または解除することができます。
-        -
-        - リマインダー日時を登録する場合、日時を入力後、「登録」ボタンをクリックします。
-        -
-        - リマインダー日時を解除する場合、「解除」ボタンをクリックします。
     gws/model/category:
       name:
         - 種別名を入力します。
@@ -539,6 +521,18 @@ ja:
         - 通知した日時を表示しています。
         - 通知日時をクリアすることで、再度、通知が送信されるようになります。
         - お知らせを編集後、再度、通知を送りたい場合、クリアしてください。
+    gws/contrast:
+      name:
+        - 名前を入力します。
+      order:
+        - 並び順を入力します。
+        - 数字が小さいほど上位に表示されます。
+      state:
+        - 公開、非公開を選択します。
+      text_color:
+        - 文字色を選択します。
+      color:
+        - 背景色を選択します。
 
   activemodel:
     models:
@@ -549,6 +543,4 @@ ja:
 
   job:
     models:
-      gws/reminder/notification_job: リマインダー通知
       gws/history_archive_job: 操作履歴アーカイブ作成
-

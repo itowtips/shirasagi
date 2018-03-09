@@ -6,6 +6,8 @@ class Gws::Schedule::FacilitiesController < ApplicationController
   before_action :set_category, only: [:index, :print]
   before_action :set_items, only: [:index, :print]
 
+  navi_view "gws/schedule/main/navi"
+
   private
 
   def facility_category_criteria
@@ -65,6 +67,7 @@ class Gws::Schedule::FacilitiesController < ApplicationController
   public
 
   def index
+    # show facilities
   end
 
   def print

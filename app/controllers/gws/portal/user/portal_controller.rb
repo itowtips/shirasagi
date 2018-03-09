@@ -7,14 +7,17 @@ class Gws::Portal::User::PortalController < ApplicationController
 
   before_action :set_portal_setting
 
+  navi_view "gws/portal/main/navi"
+
   private
 
   def set_crumbs
     set_portal_setting
-    if @portal_user == @cur_user
-      @crumbs << [t("modules.gws/portal"), gws_portal_user_path(user: @portal_user)]
+
+    if request.path =~ /^#{Regexp.quote(gws_portal_path)}\/?$/
+      @crumbs << [t("modules.gws/portal"), "#{gws_portal_path}/"]
     else
-      @crumbs << [t("gws/portal.user_portal"), gws_portal_setting_users_path]
+      #@crumbs << [t("gws/portal.user_portal"), gws_portal_setting_users_path]
       @crumbs << [@portal_user.name, gws_portal_user_path(user: @portal_user)]
     end
   end

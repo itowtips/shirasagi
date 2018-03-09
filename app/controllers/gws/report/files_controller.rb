@@ -10,6 +10,8 @@ class Gws::Report::FilesController < ApplicationController
   before_action :set_search_params
   before_action :redirect_to_appropriate_state, only: %i[show]
 
+  navi_view "gws/report/main/navi"
+
   private
 
   def set_crumbs
@@ -54,7 +56,7 @@ class Gws::Report::FilesController < ApplicationController
 
   def set_items
     set_search_params
-    @items ||= @model.site(@cur_site).search(@s)
+    @items ||= @model.site(@cur_site).search(@s).without_deleted
   end
 
   def set_item

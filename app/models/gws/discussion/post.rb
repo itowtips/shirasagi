@@ -8,6 +8,7 @@ class Gws::Discussion::Post
   #include Gws::Addon::Discussion::Release
   #include Gws::Addon::Member
   include Gws::Addon::GroupPermission
+  include Gws::Addon::Discussion::Quota
   include Gws::Addon::History
 
   set_permission_name "gws_discussion_posts"
@@ -22,7 +23,7 @@ class Gws::Discussion::Post
     notify_member_ids = f.discussion_member_ids - [user.id]
     return if notify_member_ids.blank?
 
-    item = Gws::Memo::Message.new
+    item = Gws::Memo::Notice.new
     item.cur_site = site
     item.cur_user = user
     item.member_ids = notify_member_ids

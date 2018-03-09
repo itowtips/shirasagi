@@ -7,6 +7,8 @@ class Gws::Schedule::CustomGroupPlansController < ApplicationController
   before_action :set_group
   before_action :set_users, only: [:index, :print]
 
+  navi_view "gws/schedule/main/navi"
+
   private
 
   def set_group
@@ -25,8 +27,16 @@ class Gws::Schedule::CustomGroupPlansController < ApplicationController
     end
   end
 
+  def set_items
+    @items ||= begin
+      Gws::Schedule::Plan.site(@cur_site).without_deleted.
+        search(params[:s])
+    end
+  end
+
   public
 
   def index
+    # show custom groups
   end
 end

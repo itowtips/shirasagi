@@ -15,6 +15,7 @@ module Gws::Facility::UsageFilter
   private
 
   def set_crumbs
+    @crumbs << [@cur_site.menu_schedule_label || t('modules.gws/schedule'), gws_schedule_main_path]
     @crumbs << [t('gws/facility.navi.usage'), { action: :index }]
   end
 
@@ -94,7 +95,7 @@ module Gws::Facility::UsageFilter
   end
 
   def aggregate
-    criteria = Gws::Schedule::Plan.site(@cur_site)
+    criteria = Gws::Schedule::Plan.site(@cur_site).without_deleted
     criteria = criteria.in(facility_ids: @items.pluck(:id))
     criteria = criteria.gte(start_at: @target_time).lt(start_at: @target_time + target_range)
 

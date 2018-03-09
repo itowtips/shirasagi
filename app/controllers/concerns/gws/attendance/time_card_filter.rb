@@ -47,7 +47,9 @@ module Gws::Attendance::TimeCardFilter
 
   def hour_options
     start_hour = @cur_site.attendance_time_changed_minute / 60
-    (start_hour..24).map { |h| [ "#{h}時", h ] } + (1..(start_hour - 1)).map { |h| [ "#{h + 24}時", h ] }
+    first_part = (start_hour..24).map { |h| [ "#{h}時", h ] }
+    last_part = (1..(start_hour - 1)).map { |h| h + 24 }.map { |h| [ "#{h}時", h ] }
+    first_part + last_part
   end
 
   def minute_options
@@ -72,8 +74,9 @@ module Gws::Attendance::TimeCardFilter
     @cell = @model.new params.require(:cell).permit(@model.permitted_fields).merge(fix_params)
     result = false
     if @cell.valid?
-      @item.histories.create(date: @cur_date, field_name: params[:type], action: 'modify', reason: @cell.in_reason)
-      @record.send("#{params[:type]}=", @cell.calc_time(@cur_date))
+      time = @cell.calc_time(@cur_date)
+      @item.histories.create(date: @cur_date, field_name: params[:type], action: 'modify', time: time, reason: @cell.in_reason)
+      @record.send("#{params[:type]}=", time)
       result = @record.save
     end
 

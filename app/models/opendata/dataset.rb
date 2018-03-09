@@ -16,6 +16,7 @@ class Opendata::Dataset
   include Workflow::MemberPermission
   include Opendata::DatasetSearchable
   include Opendata::DatasetTemplateVariables
+  include Opendata::DatasetCopy
 
   set_permission_name "opendata_datasets"
 
@@ -42,7 +43,7 @@ class Opendata::Dataset
   field :tags, type: SS::Extensions::Words
   field :downloaded, type: Integer
 
-  has_many :points, primary_key: :dataset_id, class_name: "Opendata::DatasetPoint",
+  has_many :points, foreign_key: :dataset_id, class_name: "Opendata::DatasetPoint",
     dependent: :destroy
   has_many :apps, foreign_key: :dataset_ids, class_name: "Opendata::App"
   has_many :ideas, foreign_key: :dataset_ids, class_name: "Opendata::Idea"
@@ -143,6 +144,20 @@ class Opendata::Dataset
 
     def get_tag(tag_name)
       Opendata::Common.get_tag(self, tag_name)
+    end
+
+    def tag_options
+      pipes = []
+      pipes << { "$match" => { "route" => "opendata/dataset" } }
+      pipes << { "$unwind" => "$tags" }
+      pipes << { "$group" => { "_id" => "$tags", "count" => { "$sum" => 1 } } }
+      options = self.collection.aggregate(pipes).map do |data|
+        tag = data["_id"]
+        ["#{tag}(#{data['count']})", tag]
+      end
+      options = options.take(Opendata::Common.options_limit)
+      options << [I18n.t('ss.links.more'), I18n.t('ss.links.more')] if options.count > Opendata::Common.options_limit
+      options
     end
 
     def format_options

@@ -6,13 +6,15 @@ class Gws::Memo::MessagesController < ApplicationController
 
   before_action :deny_with_auth
 
-  before_action :apply_filters, only: [:index], if: -> { params[:folder] == 'INBOX' }
-  before_action :set_item, only: [:show, :edit, :update, :send_mdn, :ignore_mdn, :trash, :delete, :destroy, :toggle_star]
+  before_action :set_item, only: [:show, :edit, :update, :send_mdn, :ignore_mdn, :print, :trash, :delete, :destroy, :toggle_star]
   #before_action :redirect_to_appropriate_folder, only: [:show], if: -> { params[:folder] == 'REDIRECT' }
   before_action :set_selected_items, only: [:trash_all, :destroy_all, :set_seen_all, :unset_seen_all,
                                             :set_star_all, :unset_star_all, :move_all]
-  before_action :set_folders, only: [:index]
+  before_action :set_folders, only: [:index, :recent]
   before_action :set_cur_folder, only: [:index]
+  before_action :apply_filters, only: [:index], if: -> { params[:folder] == 'INBOX' }
+
+  navi_view "gws/memo/messages/navi"
 
   private
 
@@ -53,7 +55,7 @@ class Gws::Memo::MessagesController < ApplicationController
   end
 
   def apply_filters
-    @model.site(@cur_site).unfiltered(@cur_user).each do |message|
+    @model.site(@cur_site).folder(@cur_folder, @cur_user).unfiltered(@cur_user).each do |message|
       message.apply_filters(@cur_user, @cur_site)
     end
   end
@@ -92,10 +94,22 @@ class Gws::Memo::MessagesController < ApplicationController
   public
 
   def index
+    @sort_hash = @cur_user.memo_message_sort_hash(@cur_folder, params[:sort], params[:order])
     @items = @model.folder(@cur_folder, @cur_user).
       site(@cur_site).
       search(params[:s]).
+      reorder(@sort_hash).
       page(params[:page]).per(50)
+  end
+
+  def recent
+    @cur_folder = @folders.select { |folder| folder.folder_path == "INBOX" }.first
+    @items = @model.folder(@cur_folder, @cur_user).
+      site(@cur_site).
+      search(params[:s]).
+      limit(5)
+
+    render :recent, layout: false
   end
 
   def new
@@ -107,6 +121,7 @@ class Gws::Memo::MessagesController < ApplicationController
     @item = @model.new get_params
     if params['commit'] == t('gws/memo/message.commit_params_check')
       @item.state = "public"
+      @item.in_validate_presence_member = true
       notice = t("ss.notice.sent")
     else
       @item.state = "closed"
@@ -138,6 +153,7 @@ class Gws::Memo::MessagesController < ApplicationController
     @item.in_updated = params[:_updated] if @item.respond_to?(:in_updated)
     if params['commit'] == t('gws/memo/message.commit_params_check')
       @item.state = "public"
+      @item.in_validate_presence_member = true
       notice = t("ss.notice.sent")
     else
       @item.state = "closed"
@@ -157,7 +173,7 @@ class Gws::Memo::MessagesController < ApplicationController
   end
 
   def destroy
-    render_destroy @item.destroy_from_folder(@cur_user, @cur_folder)
+    render_destroy @item.destroy_from_folder(@cur_user, @cur_folder, unsend: params[:unsend]), notice: t("ss.notice.deleted")
   end
 
   def destroy_all
@@ -191,7 +207,9 @@ class Gws::Memo::MessagesController < ApplicationController
     item_reply = @model.site(@cur_site).find(params[:id])
 
     @item.to_member_ids = [item_reply.user_id] + item_reply.to_member_ids - [@cur_user.id]
+    @item.to_shared_address_group_ids = item_reply.to_shared_address_groups.readable(@cur_user, site: @cur_site).pluck(:id)
     @item.cc_member_ids = item_reply.cc_member_ids
+    @item.cc_shared_address_group_ids = item_reply.cc_shared_address_groups.readable(@cur_user, site: @cur_site).pluck(:id)
     @item.subject = "Re: #{item_reply.subject}"
 
     @item.new_memo
@@ -202,32 +220,51 @@ class Gws::Memo::MessagesController < ApplicationController
   def forward
     @item = @model.new pre_params.merge(fix_params)
     item_forward = @model.site(@cur_site).find(params[:id])
-    @item.member_ids = []
+    @item.subject = "Fwd: #{item_forward.display_subject}"
 
     @item.new_memo
     @item.text += "\n\n"
     @item.text += item_forward.text.to_s.gsub(/^/m, '> ')
+    @item.ref_file_ids = item_forward.file_ids
+  end
+
+  def ref
+    @item = @model.new pre_params.merge(fix_params)
+    @ref = @model.site(@cur_site).find(params[:id]) rescue nil
+
+    @item.new_memo(@ref)
+    @item.ref_file_ids = @ref.file_ids
+    render :new
   end
 
   def send_mdn
-    @item.request_mdn_ids = @item.request_mdn_ids - [@cur_user.id]
-    @item.update
-
     item_mdn = @model.new fix_params
-    item_mdn.to_member_ids = [@item.user_id]
+    item_mdn.in_to_members = [@item.user_id]
     item_mdn.subject = I18n.t("gws/memo/message.mdn.subject", subject: @item.subject)
-    item_mdn.text = I18n.t("gws/memo/message.mdn.confirmed", name: @cur_user.long_name, date: Time.zone.now.strftime("%Y/%m/%d %H:%M"))
+    date = Time.zone.now.strftime("%Y/%m/%d %H:%M")
+    item_mdn.text = I18n.t("gws/memo/message.mdn.confirmed", name: @cur_user.long_name, date: date)
     item_mdn.format = "text"
     item_mdn.state = "public"
-    item_mdn.save
+    item_mdn.in_validate_presence_member = true
+    result = item_mdn.save
 
-    render_change :send_mdn, redirect: { action: :show }
+    if result
+      @item.request_mdn_ids = @item.request_mdn_ids - [@cur_user.id]
+      @item.update
+    else
+      @item.errors[:base] += item_mdn.errors.full_messages
+    end
+
+    render_change result, :send_mdn, redirect: { action: :show }
   end
 
   def ignore_mdn
     @item.request_mdn_ids = @item.request_mdn_ids - [@cur_user.id]
-    @item.update
-    render_change :ignore_mdn, redirect: { action: :show }
+    render_change @item.update, :ignore_mdn, redirect: { action: :show }
+  end
+
+  def print
+    render :print, layout: 'ss/print'
   end
 
   def trash
@@ -286,12 +323,19 @@ class Gws::Memo::MessagesController < ApplicationController
     render_destroy_all(false)
   end
 
-  def render_change(action, opts = {})
+  def render_change(result, action, opts = {})
     location = params[:redirect].presence || opts[:redirect] || { action: :index }
 
-    respond_to do |format|
-      format.html { redirect_to location, notice: t("gws/memo/message.notice.#{action}") }
-      format.json { render json: { action: params[:action], notice: t("gws/memo/message.notice.#{action}") } }
+    if result
+      respond_to do |format|
+        format.html { redirect_to location, notice: t("gws/memo/message.notice.#{action}") }
+        format.json { render json: { action: params[:action], notice: t("gws/memo/message.notice.#{action}") } }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to location, notice: @item.errors.full_messages.join("\n") }
+        format.json { render json: @item.errors.full_messages, status: :unprocessable_entity, content_type: json_content_type }
+      end
     end
   end
 end
