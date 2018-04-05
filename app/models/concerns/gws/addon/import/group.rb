@@ -12,7 +12,7 @@ module Gws::Addon::Import
 
     module ClassMethods
       def csv_headers
-        %w(id name domains order ldap_dn activation_date expiration_date)
+        %w(id name code domains order ldap_dn activation_date expiration_date)
       end
 
       def to_csv
@@ -22,6 +22,7 @@ module Gws::Addon::Import
             line = []
             line << item.id
             line << item.name
+            line << item.code
             line << item.domains
             line << item.order
             line << item.ldap_dn
@@ -64,6 +65,7 @@ module Gws::Addon::Import
     def update_row(row, index)
       id              = row[t("id")].to_s.strip
       name            = row[t("name")].to_s.strip
+      code            = row[t("code")].to_s.strip
       domains         = row[t("domains")].to_s.strip
       order           = row[t("order")].to_s.strip
       ldap_dn         = row[t("ldap_dn")].to_s.strip
@@ -87,6 +89,7 @@ module Gws::Addon::Import
       end
 
       item.name            = name
+      item.code            = code
       item.order           = order
       item.domains         = domains
       item.ldap_dn         = ldap_dn
