@@ -1,0 +1,29 @@
+ja:
+  mail_page:
+    page: メール取込ページ
+
+  modules:
+    mail_page: メール取込
+
+  cms:
+    nodes:
+      mail_page/page: メール取込
+
+  cms_role:
+    read_other_mail_page_pages: メール取込ページの閲覧（全て）
+    read_private_mail_page_pages: メール取込ページの閲覧（所有）
+    edit_other_mail_page_pages: メール取込ページの編集（全て）
+    edit_private_mail_page_pages: メール取込ページの編集（所有）
+    delete_other_mail_page_pages: メール取込ページの削除（全て）
+    delete_private_mail_page_pages: メール取込ページの削除（所有）
+    release_other_mail_page_pages: ページの公開（全て）
+    release_private_mail_page_pages: ページの公開（所有）
+
+  mongoid:
+    models:
+      mail_page/page: メール取込ページ
+      mail_page/node/page: メール取込
+
+  job:
+    models:
+      mail_page/import_job: メール取込
