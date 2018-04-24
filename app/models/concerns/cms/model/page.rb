@@ -160,4 +160,10 @@ module Cms::Model::Page
 
     ret.join("\n").html_safe
   end
+
+  def validate_name
+    maximum = SS.config.cms.page_name_maximum.to_i
+    return if maximum <= 0
+    errors.add(:name, :too_long, count: maximum) if name.size > maximum
+  end
 end

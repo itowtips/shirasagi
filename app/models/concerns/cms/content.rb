@@ -26,9 +26,10 @@ module Cms::Content
     permit_params :state, :name, :index_name, :filename, :basename, :order, :released, :route
 
     validates :state, presence: true
-    validates :name, presence: true, length: { maximum: 80 }
     validates :filename, uniqueness: { scope: :site_id }, length: { maximum: 200 }
     validates :released, datetime: true
+    validates :name, presence: true
+    validate :validate_name, if: -> { name }
 
     after_validation :set_released, if: -> { public? }
     before_validation :set_filename
@@ -217,5 +218,9 @@ module Cms::Content
 
     self.filename = filename.sub(/\..*$/, "") + fix_extname if fix_extname && basename.present?
     @basename = filename.sub(/.*\//, "") if @basename
+  end
+
+  def validate_name
+    errors.add(:name, :too_long, count: 80) if name.size > 80
   end
 end
