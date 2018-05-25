@@ -165,8 +165,8 @@ module Workflow::Approver
       end
       users = users.select(&:present?)
       users.each do |user|
-        errors.add :workflow_approvers, :not_read, name: user.name unless allowed?(:read, user, site: cur_site)
-        errors.add :workflow_approvers, :not_approve, name: user.name unless allowed?(:approve, user, site: cur_site)
+        errors.add :workflow_approvers, :not_read, name: user.name unless allowed?(:read, user, site: (cur_site || site))
+        errors.add :workflow_approvers, :not_approve, name: user.name unless allowed?(:approve, user, site: (cur_site|| site))
       end
     end
 
