@@ -1,11 +1,4 @@
-
-# Be sure to restart your server when you modify this file.
-#
-# This file contains migration options to ease your Rails 5.0 upgrade.
-#
-# Once upgraded flip defaults one by one to migrate to the new default.
-#
-# Read the Guide for Upgrading Ruby on Rails for more info on each option.
+## new_framework_defaults_5.rb
 
 # Enable per-form CSRF tokens. Previous versions had false.
 Rails.application.config.action_controller.per_form_csrf_tokens = false
@@ -22,3 +15,12 @@ ActiveSupport.to_time_preserves_timezone = false
 
 # Do not halt callback chains when a callback returns false. Previous versions had true.
 ActiveSupport.halt_callback_chains_on_return_false = true
+
+## new_framework_defaults_5_1.rb
+
+# Make `form_with` generate non-remote forms.
+Rails.application.config.action_view.form_with_generates_remote_forms = false
+
+# Unknown asset fallback will return the path passed in when the given
+# asset is not present in the asset pipeline.
+# Rails.application.config.assets.unknown_asset_fallback = false
