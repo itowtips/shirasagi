@@ -63,7 +63,7 @@ module SS
   module MobileRedirecting
     extend ActiveSupport::Concern
 
-    def redirect_to_with_shirasagi(options = {}, response_status = {})
+    def redirect_to_shirasagi(options = {}, response_status = {})
       super(options, response_status)
       if SS::MobileSupport.mobile?(request)
         save_location = self.location
