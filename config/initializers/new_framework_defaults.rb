@@ -1,5 +1,8 @@
 ## new_framework_defaults_5.rb
 
+# enable eager loading in production
+Rails.application.config.enable_dependency_loading = true
+
 # Enable per-form CSRF tokens. Previous versions had false.
 Rails.application.config.action_controller.per_form_csrf_tokens = false
 
