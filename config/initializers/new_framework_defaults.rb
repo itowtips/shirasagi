@@ -1,5 +1,3 @@
-## new_framework_defaults_5.rb
-
 # enable eager loading in production
 Rails.application.config.enable_dependency_loading = true
 
@@ -17,9 +15,7 @@ ActiveSupport.to_time_preserves_timezone = false
 #Rails.application.config.active_record.belongs_to_required_by_default = false
 
 # Do not halt callback chains when a callback returns false. Previous versions had true.
-ActiveSupport.halt_callback_chains_on_return_false = true
-
-## new_framework_defaults_5_1.rb
+# ActiveSupport.halt_callback_chains_on_return_false = true
 
 # Make `form_with` generate non-remote forms.
 Rails.application.config.action_view.form_with_generates_remote_forms = false
