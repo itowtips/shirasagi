@@ -27,8 +27,8 @@ describe Gws::Addon::System::MenuSetting, type: :model, dbscope: :example do
       end
 
       it do
-        expect(site.menu_portal_label).to be_blank
-        expect(site.menu_portal_label_translations.values.select(&:present?)).to be_blank
+        expect(site.menu_portal_label).to be_nil
+        expect(site.menu_portal_label_translations).to be_blank
       end
     end
 
@@ -41,14 +41,14 @@ describe Gws::Addon::System::MenuSetting, type: :model, dbscope: :example do
 
       it do
         expect(site.menu_portal_label).to be_nil
-        expect(site.menu_portal_label_translations.values.select(&:present?)).to be_blank
+        expect(site.menu_portal_label_translations).to be_blank
       end
     end
   end
 
   context 'with en (fallback locale)' do
     let(:labels) do
-      { 'en' => unique_id }
+      { 'en' => unique_id, 'ja' => '' }
     end
     let(:new_label) { unique_id }
 
@@ -135,9 +135,9 @@ describe Gws::Addon::System::MenuSetting, type: :model, dbscope: :example do
 
       site.reload
       # fallback to en
-      expect(site.menu_portal_label).to be_blank
+      expect(site.menu_portal_label).to be_nil
       expect(site.menu_portal_label_translations).to include('zh-TW' => labels['zh-TW'])
-      expect(site.menu_portal_label_translations).to have_key('ja')
+      expect(site.menu_portal_label_translations).not_to have_key('ja')
 
       # overwrite at locale 'ja'
       site.menu_portal_label = new_label
@@ -159,7 +159,7 @@ describe Gws::Addon::System::MenuSetting, type: :model, dbscope: :example do
       site.reload
       expect(site.menu_portal_label).to eq labels['zh-TW']
       expect(site.menu_portal_label_translations).to include('zh-TW' => labels['zh-TW'])
-      expect(site.menu_portal_label_translations).to have_key('ja')
+      expect(site.menu_portal_label_translations).not_to have_key('ja')
 
       # overwrite at locale 'en'
       site.menu_portal_label = new_label
@@ -169,7 +169,7 @@ describe Gws::Addon::System::MenuSetting, type: :model, dbscope: :example do
       expect(site.menu_portal_label).to eq new_label
       expect(site.menu_portal_label).not_to eq labels['zh-TW']
       expect(site.menu_portal_label_translations).to include('zh-TW' => new_label)
-      expect(site.menu_portal_label_translations).to have_key('ja')
+      expect(site.menu_portal_label_translations).not_to have_key('ja')
     end
   end
 end
