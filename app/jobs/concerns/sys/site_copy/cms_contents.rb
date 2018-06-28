@@ -52,7 +52,7 @@ module Sys::SiteCopy::CmsContents
     if array_field?(name, field)
       klass = metadata[:elem_class]
     else
-      klass = association.try(:class_name)
+      klass = association.options[:class_name]
     end
     klass = klass.constantize if klass.is_a?(String)
     klass
