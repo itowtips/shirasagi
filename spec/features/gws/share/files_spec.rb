@@ -35,7 +35,8 @@ describe "gws_share_files", type: :feature, dbscope: :example, tmpdir: true do
       ss_file
 
       visit new_path
-      click_on I18n.t("gws.apis.categories.index")
+      click_on "カテゴリーを選択する"
+      wait_for_cbox
       within "tbody.items" do
         click_on category.name
       end
@@ -51,9 +52,7 @@ describe "gws_share_files", type: :feature, dbscope: :example, tmpdir: true do
         find('input[type=submit]').click
       end
       expect(current_path).not_to eq new_path
-      within ".tree-navi" do
-        expect(page).to have_content(folder.name)
-      end
+      expect(page).to have_content(folder.name)
     end
 
     it "#show" do
