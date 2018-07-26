@@ -141,3 +141,10 @@ div.opendata-csv2rdf-settings-class-search {
     background-color: #eee;
   }
 }
+
+.list-items .list-item .meta .opendata-harvest {
+  background: #f25a38;
+  color: white;
+  padding: 2px;
+  @include border-radius(3px);
+}

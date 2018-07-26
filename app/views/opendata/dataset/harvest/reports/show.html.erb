@@ -1,0 +1,63 @@
+<table class="index">
+  <thead>
+    <tr>
+      <th style="width: 5%;">No</th>
+      <th style="width: 30%;"><%= Opendata::Dataset.t(:name) %></th>
+      <th style="width: 20%;"><%= Opendata::Dataset.t(:category_ids) %></th>
+      <th style="width: 20%;"><%= Opendata::Dataset.t(:estat_category_ids) %></th>
+      <th style="width: 10%;"><%= Opendata::Dataset.t(:area_ids) %></th>
+      <th style="width: 30%;"><%= Opendata::Resource.t(:filename) %></th>
+      <th style="width: 15%;"></th>
+      <th style="width: 5%;"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @item.datasets.order_by(order: 1).each_with_index do |dataset, idx| %>
+      <% resources = dataset.resources.order_by(order: 1).to_a %>
+      <% errors_style = dataset.errors.present? ? "style=\"background-color: #ffdada;\"" : "" %>
+
+      <% resource = resources.shift %>
+      <tr data-id="<% dataset.id %>" <%= errors_style %>>
+        <td rowspan="<%= resources.size + 1 %>"><%= idx + 1 %></td>
+        <td rowspan="<%= resources.size + 1 %>">
+          <%= link_to dataset.name, { action: :dataset, dataset_id: dataset.id } %>
+        </td>
+
+        <%
+          imported_dataset = dataset.imported_dataset
+          categories = ""
+          estat_categories = ""
+          areas = ""
+          if imported_dataset
+            categories = imported_dataset.categories.pluck(:name).join("\n")
+            estat_categories = imported_dataset.estat_categories.pluck(:name).join("\n")
+            areas = imported_dataset.areas.pluck(:name).join("\n")
+          end
+        %>
+
+        <td rowspan="<%= resources.size + 1 %>"><%=br categories %></td>
+        <td rowspan="<%= resources.size + 1 %>"><%=br estat_categories %></td>
+        <td rowspan="<%= resources.size + 1 %>"><%=br areas %></td>
+
+        <% if resource %>
+          <td><%= resource.filename %></td>
+          <td><%= number_to_human_size(resource.size) %></td>
+          <td><%= resource.format %></td>
+        <% else %>
+          <td></td>
+          <td></td>
+          <td></td>
+        <% end %>
+      </tr>
+
+      <% resources.each do |resource| %>
+        <tr <%= errors_style %>>
+          <td><%= resource.filename %></td>
+          <td><%= number_to_human_size(resource.size) %></td>
+          <td><%= resource.format %></td>
+        </tr>
+      <% end %>
+
+    <% end %>
+  </tbody>
+</table>

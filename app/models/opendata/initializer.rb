@@ -1,6 +1,7 @@
 module Opendata
   class Initializer
     Cms::Node.plugin "opendata/category"
+    Cms::Node.plugin "opendata/estat_category"
     Cms::Node.plugin "opendata/area"
     Cms::Node.plugin "opendata/dataset"
     Cms::Node.plugin "opendata/dataset_category"
@@ -86,5 +87,7 @@ module Opendata
     Cms::Role.permission :reroute_private_opendata_ideas
     Cms::Role.permission :revoke_other_opendata_ideas
     Cms::Role.permission :revoke_private_opendata_ideas
+
+    Cms::Role.permission :edit_other_opendata_harvests
   end
 end

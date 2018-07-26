@@ -38,7 +38,15 @@
     <li><%= link_to t("workflow.page.request"), opendata_datasets_request_path, class: "icon-node" %></li>
   </ul>
   <h3><%= link_to Opendata::DatasetDownloadReport.model_name.human, opendata_dataset_download_reports_path, class: "icon-node" %></h3>
-<% elsif @cur_node.route == "opendata/app" %>
+
+  <% if Opendata::Harvest.allowed?(:read, @cur_user, site: @cur_site, node: @cur_node) %>
+    <h3><%= link_to "ハーベスト", opendata_harvests_path, class: "icon-node" %></h3>
+  <% end %>
+  <% if Opendata::CkanExporter.allowed?(:read, @cur_user, site: @cur_site, node: @cur_node) %>
+    <h3><%= link_to "CKANエクスポート", opendata_ckan_exporters_path, class: "icon-node" %></h3>
+  <% end %>
+
+  <% elsif @cur_node.route == "opendata/app" %>
   <h3><span><%= t "workflow.pages" %></span></h3>
   <ul class="narrow-page">
     <li><%= link_to t("workflow.page.approve"), opendata_apps_approve_path, class: "icon-node" %></li>

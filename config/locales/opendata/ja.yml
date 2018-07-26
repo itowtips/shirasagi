@@ -185,6 +185,16 @@ ja:
       all_keywords: すべてのキーワードを含む
       any_keywords: いずれかのキーワードを含む
       any_conditions: すべてをOR条件で検索する
+    type_condition_options:
+      string: 文字列
+      regexp: 正規表現
+      ckan_group: CKANグループ
+      ckan_tag: CKANタグ
+      shirasagi_category: SHIRASAGI分野
+      shirasagi_area: SHIRASAGI地域
+    operator_condition_options:
+      match: 一致する
+      unmatch: 一致しない
     assoc_job:
       dataset_text: "%{name} の一覧は %{url} でも公開されているので、%{url} もご覧ください。"
       resource_text: "%{name} は %{now} 時点の情報を元に作成しています。"
@@ -260,6 +270,7 @@ ja:
     opendata: オープンデータ
     addons:
       opendata/category: 分野
+      opendata/estat_category: eStat分野
       opendata/category_setting: カテゴリ設定
       opendata/dataset_group: データセットグループ
       opendata/area: 地域
@@ -283,10 +294,16 @@ ja:
       opendata/list_node_setting: フォルダー設定
       opendata/cms_ref/page: ページ連携
       opendata/cms_ref/attachment_file: 添付ファイル連携
+      opendata/dataset_importer/license: データセットインポート
+      opendata/harvest/category_setting: 分野設定
+      opendata/harvest/estat_category_setting: eStat分野設定
+      opendata/harvest/area_setting: 地域設定
+      opendata/harvest/report: レポート
 
   cms:
     nodes:
       opendata/category: 分野
+      opendata/estat_category: eStat分野
       opendata/area: 地域
       opendata/dataset: データセット
       opendata/dataset_category: データセット分野
@@ -371,6 +388,7 @@ ja:
     reroute_private_opendata_ideas: アイデアの承認経路変更（所有）
     revoke_other_opendata_ideas: アイデアの承認申請取消（全て）
     revoke_private_opendata_ideas: アイデアの承認申請取消（所有）
+    edit_other_opendata_harvests: ハーベスト機能の利用
 
   mongoid:
     models:
@@ -416,6 +434,7 @@ ja:
         license: ライセンス
         tags: タグ
         category_ids: 分野
+        estat_category_ids: eStat分野
         dataset_group_ids: グループ
         area_ids: 地域
         resources: リソース
@@ -423,6 +442,7 @@ ja:
       opendata/resource:
         file_id: ファイル
         in_file: ファイル
+        source_url: リソースURL
         name: リソース名
         text: 説明
         format: フォーマット
@@ -489,6 +509,28 @@ ja:
         header_labels: タイトル
         class: RDFクラス
         column_types: 列設定
+      opendata/harvest:
+        name: 名前
+        source_url: URL
+        api_type: API
+        resource_size_limit_mb: 最大リソースサイズ
+        order: 並び順
+      opendata/harvest/category_setting:
+        id: ID
+        order: 並び順
+        category_name: 分野名
+        category_filename: 分野ファイル名
+        type: タイプ
+        value: 値
+        operator: 操作
+      opendata/harvest/estat_category_setting:
+        id: ID
+        order: 並び順
+        category_name: 分野名
+        category_filename: 分野ファイル名
+        type: タイプ
+        value: 値
+        operator: 操作
       opendata/addon/site_setting:
         dataset_workflow_route: データセット承認
         app_workflow_route: アプリ承認
@@ -526,6 +568,12 @@ ja:
         assoc_page_id: 連携ページ
         assoc_method: 連携確認方法
         assoc_filename: 連携ファイル
+      opendata/addon/harvest/category_setting:
+        default_category_ids: 既定の分野
+        default_estat_category_ids: 既定のeStat分野
+        category_settings: コンバート設定
+      opendata/addon/harvest/area_setting:
+        default_area_ids: 既定の地域
 
   activemodel:
     models:
@@ -557,6 +605,9 @@ ja:
         - 関連する単語を登録します。
         - カンマ、スペースで区切ることにより複数の単語を設定することができます。
     opendata/resource:
+      source_url:
+        - リソースが外部サイトに存在する場合、リソースのURLを入力します。
+        - この項目を設定した場合、リソースファイルを登録する必要はありません。
       format:
         - ファイルのフォーマットを半角英数の大文字で入力します。
         - 「 TTL 」を入力した場合はRDFサーバにデータが登録されます。

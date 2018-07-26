@@ -62,4 +62,12 @@ SS::Application.routes.draw do
     get "member/:member/apps/(:filename.:format)" => "public#apps", cell: "nodes/member"
     get "member/:member/ideas/(:filename.:format)" => "public#ideas", cell: "nodes/member"
   end
+
+  namespace "opendata", path: ".s:site/opendata" do
+    namespace "apis" do
+      get "categories" => "categories#index"
+      get "estat_categories" => "estat_categories#index"
+      get "areas" => "areas#index"
+    end
+  end
 end

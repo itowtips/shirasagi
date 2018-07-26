@@ -17,6 +17,17 @@ module Opendata::Node
     default_scope ->{ where(route: "opendata/category") }
   end
 
+  class EstatCategory
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "opendata/estat_category") }
+  end
+
   class Area
     include Cms::Model::Node
     include Cms::Addon::NodeSetting

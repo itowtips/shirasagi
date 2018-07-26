@@ -1,0 +1,54 @@
+<% @dataset = @item.imported_dataset %>
+
+<% if @dataset %>
+  <table class="see index history-backup">
+    <tbody>
+      <tr>
+        <th><%= @item.t :dataset %></th>
+        <td>
+          <%= link_to @dataset.name, @dataset.private_show_path, target: "_blank" %>
+          <%= number_to_human_size(@item.size) %>
+        </td>
+      </tr>
+      <tr>
+        <th><%= @item.t :resources %></th>
+        <td><%=br @item.resources.map { |resource| "#{resource.filename} #{number_to_human_size(resource.size)}" }.join("\n") %></td>
+      </tr>
+      <tr>
+        <th><%= @item.t :category_ids %></th>
+        <td><%= @dataset.categories.pluck(:name).join(", ") %></td>
+      </tr>
+      <tr>
+        <th><%= @item.t :area_ids %></th>
+        <td><%= @dataset.areas.pluck(:name).join(", ") %></td>
+      </tr>
+      <tr>
+        <th><%= @item.t :harvest_text_index %></th>
+        <td><%= @dataset.harvest_text_index  %></td>
+      </tr>
+      <tr>
+        <th><%= @item.t :harvest_ckan_groups %></th>
+        <td><%= @dataset.harvest_ckan_groups.join(", ") %></td>
+      </tr>
+      <tr>
+        <th><%= @item.t :harvest_ckan_tags %></th>
+        <td><%= @dataset.harvest_ckan_tags.join(", ") %></td>
+      </tr>
+      <tr>
+        <th><%= @item.t :harvest_shirasagi_categories %></th>
+        <td><%= @dataset.harvest_shirasagi_categories.join(", ") %></td>
+      </tr>
+      <tr>
+        <th><%= @item.t :harvest_shirasagi_areas %></th>
+        <td><%= @dataset.harvest_shirasagi_areas.join(", ") %></td>
+      </tr>
+
+      <tr>
+        <th><%= @item.t :imported_attributes %></th>
+        <td><pre><%= ::JSON.pretty_generate(@item.imported_attributes) %></pre></td>
+      </tr>
+    </tbody>
+  </table>
+<% else %>
+  データセットが見つかりません。
+<% end %>

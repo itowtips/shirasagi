@@ -51,11 +51,31 @@ SS::Application.routes.draw do
         get "file" => "url_resources#download"
         get "content" => "url_resources#content"
       end
-
     end
     resources :search_datasets, concerns: :deletion, module: :dataset
     resources :search_dataset_groups, concerns: :deletion, module: :dataset
-  end
+
+    resources :harvests, concerns: :deletion, module: "dataset" do
+      get :import, on: :member
+      put :import, on: :member
+
+      resources :category_settings, concerns: :deletion, path: 'c:category_id', defaults: { category_id: '-' }, module: "harvest" do
+        get :download, on: :collection
+        get :import, on: :collection
+        put :import, on: :collection
+      end
+      resources :estat_category_settings, concerns: :deletion, path: 'estat:category_id', defaults: { category_id: '-' }, module: "harvest" do
+        get :download, on: :collection
+        get :import, on: :collection
+        put :import, on: :collection
+      end
+      resources :reports, only: [:show, :destroy], concerns: :deletion, module: "harvest" do
+        get :dataset, on: :member
+        get :download, on: :member
+      end
+    end
+    resources :ckan_exporters, concerns: :deletion, module: "dataset"
+ end
 
   node "opendata" do
     get "dataset_category/" => "public#index", cell: "nodes/dataset/dataset_category"

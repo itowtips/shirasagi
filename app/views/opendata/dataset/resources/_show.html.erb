@@ -7,6 +7,11 @@
   </dd>
   <% end %>
 
+  <% if @item.source_url.present? %>
+    <dt><%= @model.t :source_url %></dt>
+    <dd><%= link_to @item.source_url, @item.source_url, target: "_blank" %></dd>
+  <% end %>
+
   <dt><%= @model.t :name %></dt>
   <dd><%= @item.send :name %></dd>
 

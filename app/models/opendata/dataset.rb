@@ -4,6 +4,7 @@ class Opendata::Dataset
   include Opendata::Addon::Resource
   include Opendata::Addon::UrlResource
   include Opendata::Addon::Category
+  include Opendata::Addon::EstatCategory
   include Opendata::Addon::Area
   include Opendata::Addon::DatasetGroup
   include Opendata::Reference::Member
@@ -12,6 +13,7 @@ class Opendata::Dataset
   include Cms::Addon::Release
   include Contact::Addon::Page
   include Cms::Addon::RelatedPage
+  include Opendata::Addon::Harvest::Dataset
   include Cms::Addon::GroupPermission
   include Workflow::MemberPermission
   include Opendata::DatasetSearchable
@@ -48,7 +50,7 @@ class Opendata::Dataset
   has_many :apps, foreign_key: :dataset_ids, class_name: "Opendata::App"
   has_many :ideas, foreign_key: :dataset_ids, class_name: "Opendata::Idea"
 
-  validates :text, presence: true
+  #validates :text, presence: true
 
   permit_params :text, :tags, tags: []
 

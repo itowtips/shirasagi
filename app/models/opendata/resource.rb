@@ -3,15 +3,18 @@ class Opendata::Resource
   include Opendata::Resource::Model
   include Opendata::Addon::RdfStore
   include Opendata::Addon::CmsRef::AttachmentFile
+  include Opendata::Addon::Harvest::Resource
 
   attr_accessor :workflow, :status
 
   embedded_in :dataset, class_name: "Opendata::Dataset", inverse_of: :resource
+  field :order, type: Integer, default: 0
 
-  permit_params :name, :text, :format, :license_id
+  permit_params :name, :text, :format, :license_id, :source_url
 
-  validates :in_file, presence: true, if: ->{ file_id.blank? }
+  validates :in_file, presence: true, if: ->{ file_id.blank? && source_url.blank? }
   validates :format, presence: true
+  validates :source_url, format: /\A#{URI::regexp(%w(https http))}$\z/, if: ->{ source_url.present? }
 
   before_validation :set_filename, if: ->{ in_file.present? }
   before_validation :validate_in_file, if: ->{ in_file.present? }
