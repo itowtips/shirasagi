@@ -54,6 +54,8 @@ gem 'ungarbled'
 gem 'rubyzip'
 gem 'thinreports'
 gem 'bootsnap'
+gem 'stackprof'
+gem 'more_optimized_resolver', git: 'https://github.com/amatsuda/more_optimized_resolver.git'
 
 # OAuth
 gem 'oauth2', git: 'https://github.com/oauth-xx/oauth2.git' #'~> 1.5.0'

@@ -20,12 +20,16 @@ class Cms::Agents::Tasks::PagesController < ApplicationController
     ids   = pages.pluck(:id)
     @task.total_count = ids.size
 
+    StackProf.run(mode: :wall, out: "tmp/stackprof/pages.dump") do
+
     ids.each do |id|
       @task.count
       page = Cms::Page.site(@site).and_public.where(id: id).first
       next unless page
       page.serve_static_relation_files = @attachments
       @task.log page.url if page.becomes_with_route.generate_file
+    end
+
     end
   end
 

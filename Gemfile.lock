@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/amatsuda/more_optimized_resolver.git
+  revision: 4092d9a0a83152395153e80bfd1af56ed4b18e7a
+  specs:
+    more_optimized_resolver (0.1.0)
+      actionview
+
+GIT
   remote: https://github.com/mongodb/mongoid.git
   revision: 1dde68026127460cbc263274e7eeab7afce412b5
   specs:
@@ -524,6 +531,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stackprof (0.2.12)
     sxp (1.0.1)
       rdf (>= 2.2, < 4.0)
     temple (0.8.0)
@@ -627,6 +635,7 @@ DEPENDENCIES
   mongoid!
   mongoid-grid_fs!
   mongoid-rspec!
+  more_optimized_resolver!
   net-ldap
   non-stupid-digest-assets
   oauth2!
@@ -664,6 +673,7 @@ DEPENDENCIES
   sparql
   sparql-client
   spring (~> 2.0.2)
+  stackprof
   therubyracer (~> 0.12.3)
   thinreports
   timecop
