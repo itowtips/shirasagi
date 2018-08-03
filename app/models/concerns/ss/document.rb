@@ -54,6 +54,10 @@ module SS::Document
     }
   end
 
+  def attributes_key
+    Digest::MD5.hexdigest(attributes.to_s)
+  end
+
   module ClassMethods
     def t(*args)
       human_attribute_name *args
