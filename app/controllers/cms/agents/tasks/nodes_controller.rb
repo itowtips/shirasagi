@@ -21,6 +21,8 @@ class Cms::Agents::Tasks::NodesController < ApplicationController
     nodes = nodes.where(filename: /^#{::Regexp.escape(@node.filename)}(\/|$)/) if @node
     ids   = nodes.pluck(:id)
 
+    StackProf.run(mode: :wall, out: "tmp/stackprof/nodes.dump") do
+
     ids.each do |id|
       node = Cms::Node.site(@site).and_public.where(id: id).first
       next unless node
@@ -39,6 +41,8 @@ class Cms::Agents::Tasks::NodesController < ApplicationController
       agent.invoke :generate
 
       #generate_node_pages node
+    end
+
     end
   end
 
