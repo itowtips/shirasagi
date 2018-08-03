@@ -4,4 +4,122 @@
 </header>
 <% end %>
 
-<%= render file: "cms/agents/pages/page/index" %>
+<%#= render file: "cms/agents/pages/page/index" %>
+
+<!-- Gravatar::Addon::Gravatar -->
+
+<% if !SS.config.gravatar.disable %>
+  <div class="gravatar">
+    <% email = @cur_page.email_for_gravatar %>
+    <% unless email.nil? %>
+      <div class="gravatar-icon">
+        <%= gravatar_image_tag email, size: SS.config.gravatar.image_size, default: SS.config.gravatar.default_image_path %>
+      </div>
+    <% end %>
+
+    <% if @cur_page.gravatar_screen_name.present? %>
+      <p class="gravatar-screen-name">
+        <%= @cur_page.gravatar_screen_name %>
+      </p>
+    <% end %>
+  </div>
+<% end %>
+
+<!-- Cms::Addon::Body -->
+
+<% if @cur_page.html.present? %>
+  <article class="body">
+    <%== @cur_page.html %>
+  </article>
+<% end %>
+
+<!-- Category::Addon::Category -->
+
+<% if @cur_page.categories.present? %>
+  <section class="categories">
+    <header><h2><%= @cur_page.t :categories %></h2></header>
+    <div class="nodes">
+      <ul>
+        <% @cur_page.categories.each do |item| %>
+          <li><%= link_to item.name, item.url %></li>
+        <% end %>
+      </ul>
+    </div>
+  </section>
+<% end %>
+
+<!-- Event::Addon::Body -->
+
+<dl class="see body">
+  <% if @cur_page.schedule.present? %>
+    <dt><%= @cur_page.class.t :schedule %></dt>
+    <dd><%=br @cur_page.schedule.to_s %></dd>
+  <% end %>
+
+  <% if @cur_page.venue.present? %>
+    <dt><%= @cur_page.class.t :venue %></dt>
+    <dd><%=br @cur_page.venue.to_s %></dd>
+  <% end %>
+
+  <% if @cur_page.content.present? %>
+    <dt><%= @cur_page.class.t :content %></dt>
+    <dd><%=br @cur_page.content.to_s %></dd>
+  <% end %>
+
+  <% if @cur_page.cost.present? %>
+    <dt><%= @cur_page.class.t :cost %></dt>
+    <dd><%=br @cur_page.cost.to_s %></dd>
+  <% end %>
+
+  <% if @cur_page.related_url.present? %>
+    <dt><%= @cur_page.class.t :related_url %></dt>
+    <dd><%= link_to(@cur_page.related_url, @cur_page.related_url, target: "_blank") if @cur_page.related_url.present? %></dd>
+  <% end %>
+
+  <% if @cur_page.contact.present? %>
+    <dt><%= @cur_page.class.t :contact %></dt>
+    <dd><%=br @cur_page.contact.to_s %></dd>
+  <% end %>
+</dl>
+
+<!-- Cms::Addon::AdditionalInfo -->
+
+<% @item = @cur_page || @cur_node %>
+<% if @item.additional_info.present? %>
+  <dl class="see additional-info">
+    <% @item.additional_info.each do |info| %>
+      <dt><%=br info[:field] %></dt>
+      <dd><%=br info[:value] %></dd>
+    <% end %>
+  </dl>
+<% end %>
+
+<!-- Map::Addon::Page -->
+
+<% if @cur_page.map_points.present? %>
+  <%= render_map "#map-canvas", markers: @cur_page.map_points, site: @cur_site %>
+  <section class="map-page">
+    <header>
+      <h2><%= t("map.map") %></h2>
+    </header>
+    <div id="map-canvas" style="width: 100%; height: 400px;"></div>
+  </section>
+<% end %>
+
+<!-- Cms::Addon::RelatedPage -->
+
+<% if @cur_page.related_pages.present? %>
+  <section class="related-pages">
+    <header><h2><%= @cur_page.t :related_pages %></h2></header>
+    <div class="pages">
+      <ul>
+        <% @cur_page.related_pages.order_by(@cur_page.related_page_sort_hash).each do |item| %>
+          <%= content_tag(:li, class: item.categories.pluck(:filename).map { |c| c.tr('/', '-') }.presence) do %>
+            <%= link_to item.name, item.url %>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </section>
+<% end %>
+

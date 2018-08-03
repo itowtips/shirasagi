@@ -1,1 +1,68 @@
-<%= render file: "cms/agents/pages/page/index" %>
+<%#= render file: "cms/agents/pages/page/index" %>
+
+<!-- Member::Addon::Photo::Body -->
+
+<% controller.javascript "/assets/js/jquery.colorbox.js" %>
+<% controller.stylesheet "/assets/css/colorbox/colorbox.css" %>
+
+<%= jquery do %>
+  $(window).on("load", function(){ $(".photo-body .ajax-box").colorbox(); });
+<% end %>
+
+<article class="photo-body">
+  <%= link_to @cur_page.image.url, alt: @cur_page.name,class: "ajax-box", onclick: "return false;" do %>
+    <%= image_tag @cur_page.image.thumb_url.sub(/\/thumb\//, "/thumb/detail/"), alt: @cur_page.name %>
+  <% end %>
+  <time class="released" datetime="<%= I18n.l @cur_page.date.to_date, format: :iso %>">
+    <%= I18n.l @cur_page.date.to_date, format: :long %>
+  </time>
+  <p class="contributor"><%= @cur_page.contributor %></p>
+  <div class="caption"><%=br @cur_page.caption %></div>
+
+  <%
+    license = @cur_page.parent.becomes_with_route.send("license_#{@cur_page.license_name}") rescue nil
+  %>
+  <% if license.present? %>
+    <div class="license"><%== license %></div>
+  <% end %>
+</article>
+
+<!-- Member::Addon::Photo::Category -->
+
+<section class="photo-categories">
+  <header><h2>タグ</h2></header>
+  <div class="nodes">
+    <ul>
+      <% @cur_page.photo_categories.order_by(order: 1).each do |item| %>
+        <li><%= link_to item.name, item.url %></li>
+      <% end %>
+    </ul>
+  </div>
+</section>
+
+<!-- Member::Addon::Photo::Location -->
+
+<section class="photo-locations">
+  <header><h2><%= t("member.view.location") %></h2></header>
+  <div class="nodes">
+    <ul>
+      <% @cur_page.photo_locations.order_by(order: 1).each do |item| %>
+        <li><%= link_to item.name, item.url %></li>
+      <% end %>
+    </ul>
+  </div>
+</section>
+
+<!-- Member::Addon::Photo::Map -->
+
+<% if @cur_page.map_points.present? %>
+
+<%= render_map "#map-canvas", markers: @cur_page.map_points, site: @cur_site %>
+
+<section class="map-page">
+  <header>
+    <h2><%= t("map.map") %></h2>
+  </header>
+  <div id="map-canvas" style="width: 100%; height: 400px;"></div>
+</section>
+<% end %>

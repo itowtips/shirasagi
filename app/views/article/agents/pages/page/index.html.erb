@@ -1,1 +1,131 @@
-<%= render file: "cms/agents/pages/page/index" %>
+<%#= render file: "cms/agents/pages/page/index" %>
+
+<!-- Gravatar::Addon::Gravatar -->
+
+<% if !SS.config.gravatar.disable %>
+<div class="gravatar">
+  <% email = @cur_page.email_for_gravatar %>
+  <% unless email.nil? %>
+    <div class="gravatar-icon">
+      <%= gravatar_image_tag email, size: SS.config.gravatar.image_size, default: SS.config.gravatar.default_image_path %>
+    </div>
+  <% end %>
+
+  <% if @cur_page.gravatar_screen_name.present? %>
+    <p class="gravatar-screen-name">
+      <%= @cur_page.gravatar_screen_name %>
+    </p>
+  <% end %>
+</div>
+<% end %>
+
+<!-- Cms::Addon::Body -->
+
+<% if @cur_page.html.present? %>
+  <article class="body">
+    <%== @cur_page.html %>
+  </article>
+<% end %>
+
+<!-- body part -->
+
+<!-- Cms::Addon::Form::Page -->
+
+<% if @cur_page.form.present? %>
+<%
+  html = @cur_page.form.html.to_s
+  html.gsub!(/\{\{(.+)\}\}/) do
+    name_or_id = $1.strip
+    column_value = @cur_page.column_values.
+      where('$or' => [ { id: name_or_id }, { name: name_or_id } ]).
+      order_by(order: 1, created: 1).
+      first
+    if column_value
+      column_value.to_html
+    end
+  end
+%>
+<%== html %>
+<% end %>
+
+<!-- Category::Addon::Category -->
+
+<% if @cur_page.categories.present? %>
+  <section class="categories">
+    <header><h2><%= @cur_page.t :categories %></h2></header>
+    <div class="nodes">
+      <ul>
+        <% @cur_page.categories.each do |item| %>
+          <li><%= link_to item.name, item.url %></li>
+        <% end %>
+      </ul>
+    </div>
+  </section>
+<% end %>
+
+<!-- Map::Addon::Page -->
+
+<% if @cur_page.map_points.present? %>
+  <%= render_map "#map-canvas", markers: @cur_page.map_points, site: @cur_site %>
+  <section class="map-page">
+    <header>
+      <h2><%= t("map.map") %></h2>
+    </header>
+    <div id="map-canvas" style="width: 100%; height: 400px;"></div>
+  </section>
+<% end %>
+
+<!-- Cms::Addon::RelatedPage -->
+
+<% if @cur_page.related_pages.present? %>
+  <section class="related-pages">
+    <header><h2><%= @cur_page.t :related_pages %></h2></header>
+    <div class="pages">
+      <ul>
+        <% @cur_page.related_pages.order_by(@cur_page.related_page_sort_hash).each do |item| %>
+          <%= content_tag(:li, class: item.categories.pluck(:filename).map { |c| c.tr('/', '-') }.presence) do %>
+            <%= link_to item.name, item.url %>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </section>
+<% end %>
+
+<!-- Contact::Addon::Page -->
+
+<% if @cur_page.contact_state == "show" && @cur_page.contact_present? %>
+  <footer class="contact">
+    <h2><%= t("contact.view.title") %></h2>
+    <% if @cur_page.contact_group %>
+      <p class="group"><%= @cur_page.contact_group.name.sub(/.*\//, "") %></p>
+    <% end %>
+    <% if @cur_page.contact_charge.present? %>
+      <p class="charge"><%= @cur_page.contact_charge %></p>
+    <% end %>
+    <% if @cur_page.contact_tel.present? %>
+      <dl class="tel">
+        <dt><%= "#{t("contact.view.tel")}:" %></dt>
+        <dd><a href="tel:<%= @cur_page.contact_tel.delete("-") %>"><%= @cur_page.contact_tel %></a></dd>
+      </dl>
+    <% end %>
+    <% if @cur_page.contact_fax.present? %>
+      <dl class="fax">
+        <dt><%= "#{t("contact.view.fax")}:" %></dt>
+        <dd><%= @cur_page.contact_fax %></dd>
+      </dl>
+    <% end %>
+    <% if @cur_page.contact_email.present? %>
+      <dl class="email">
+        <dt><%= "#{t("contact.view.email")}:" %></dt>
+        <dd><%= mail_to_entity @cur_page.contact_email %></dd>
+      </dl>
+    <% end %>
+    <% if @cur_page.contact_link_url.present? %>
+      <dl class="link">
+        <dt><%= "#{t("contact.view.link_url")}:" %></dt>
+        <dd><%= link_to @cur_page.contact_link, @cur_page.contact_link_url %></dd>
+      </dl>
+    <% end %>
+  </footer>
+<% end %>

@@ -1,1 +1,71 @@
-<%= render file: "cms/agents/pages/page/index" %>
+<%#= render file: "cms/agents/pages/page/index" %>
+
+<!-- Sitemap::Addon::Body -->
+
+<%
+
+  def node_class(path)
+    "node-" + path.to_s.sub(/\/$/, "").gsub(/[^\w-]+/, "-")
+  end
+
+  def page_class(path)
+    "page-" + path.to_s.sub(/\/$/, "/index").sub(/\.html$/, "").gsub(/[^\w-]+/, "-")
+  end
+
+%>
+<article class="sitemap-body">
+  <% @cur_page.sitemap_list.each do |node| %>
+    <<%= hx = "h" + (node[:depth] + 1).to_s %> class="<%= page_class node[:url] %>">
+    <%= link_to node[:name], node[:url] %>
+    </<%= hx %>>
+
+    <% if node[:pages] %>
+      <ul class="<%= node_class node[:url] %>">
+        <% node[:pages].each_with_index do |page, idx| %>
+          <% classes = [page_class(page[:url])] %>
+          <% classes << "last-child" if idx == node[:pages].size - 1 %>
+          <li class="<%= classes.join(' ') %>"><%= link_to page[:name], page[:url] %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+</article>
+
+<!-- Contact::Addon::Page -->
+
+  <% if @cur_page.contact_state == "show" && @cur_page.contact_present? %>
+  <footer class="contact">
+    <h2><%= t("contact.view.title") %></h2>
+    <% if @cur_page.contact_group %>
+      <p class="group"><%= @cur_page.contact_group.name.sub(/.*\//, "") %></p>
+    <% end %>
+    <% if @cur_page.contact_charge.present? %>
+      <p class="charge"><%= @cur_page.contact_charge %></p>
+    <% end %>
+    <% if @cur_page.contact_tel.present? %>
+      <dl class="tel">
+        <dt><%= "#{t("contact.view.tel")}:" %></dt>
+        <dd><a href="tel:<%= @cur_page.contact_tel.delete("-") %>"><%= @cur_page.contact_tel %></a></dd>
+      </dl>
+    <% end %>
+    <% if @cur_page.contact_fax.present? %>
+      <dl class="fax">
+        <dt><%= "#{t("contact.view.fax")}:" %></dt>
+        <dd><%= @cur_page.contact_fax %></dd>
+      </dl>
+    <% end %>
+    <% if @cur_page.contact_email.present? %>
+      <dl class="email">
+        <dt><%= "#{t("contact.view.email")}:" %></dt>
+        <dd><%= mail_to_entity @cur_page.contact_email %></dd>
+      </dl>
+    <% end %>
+    <% if @cur_page.contact_link_url.present? %>
+      <dl class="link">
+        <dt><%= "#{t("contact.view.link_url")}:" %></dt>
+        <dd><%= link_to @cur_page.contact_link, @cur_page.contact_link_url %></dd>
+      </dl>
+    <% end %>
+  </footer>
+<% end %>
+
