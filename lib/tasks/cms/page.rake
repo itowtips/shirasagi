@@ -20,11 +20,11 @@ namespace :cms do
   end
 
   task :generate_nodes => :environment do
-    with_node(Cms::Node::GenerateJob)
+    with_node(Cms::Node::GenerateJob, generate_key: ENV["@generate_key"])
   end
 
   task :generate_pages => :environment do
-    with_node(Cms::Page::GenerateJob, attachments: ENV["attachments"])
+    with_node(Cms::Page::GenerateJob, attachments: ENV["attachments"], generate_key: ENV["generate_key"])
   end
 
   task :update_pages => :environment do

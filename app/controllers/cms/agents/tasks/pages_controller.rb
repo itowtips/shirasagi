@@ -1,12 +1,13 @@
 class Cms::Agents::Tasks::PagesController < ApplicationController
   include Cms::PublicFilter::Page
 
-  before_action :set_attachments, only: :generate
+  before_action :set_arguments, only: :generate
   PER_BATCH = 100
 
   private
 
-  def set_attachments
+  def set_arguments
+    @generate_key = @generate_key.to_i
     @attachments = (@attachments == "1")
   end
 
@@ -15,7 +16,7 @@ class Cms::Agents::Tasks::PagesController < ApplicationController
   def generate
     @task.log "# #{@site.name}"
 
-    pages = Cms::Page.site(@site).and_public
+    pages = Cms::Page.site(@site).where(generate_key: @generate_key).and_public
     pages = pages.node(@node) if @node
     ids   = pages.pluck(:id)
     @task.total_count = ids.size
@@ -26,6 +27,9 @@ class Cms::Agents::Tasks::PagesController < ApplicationController
       @task.count
       page = Cms::Page.site(@site).and_public.where(id: id).first
       next unless page
+
+      puts("#{@generate_key} : page-#{id}")
+
       page.serve_static_relation_files = @attachments
       @task.log page.url if page.becomes_with_route.generate_file
     end

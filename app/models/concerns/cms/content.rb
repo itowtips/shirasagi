@@ -22,6 +22,7 @@ module Cms::Content
     field :released, type: DateTime
     field :first_released, type: DateTime
     field :md5, type: String
+    field :generate_key, type: Integer, default: 0
 
     permit_params :state, :name, :index_name, :filename, :basename, :order, :released, :route
 
@@ -31,6 +32,7 @@ module Cms::Content
     validates :released, datetime: true
 
     after_validation :set_released, if: -> { public? }
+    after_validation :set_generate_key, if: -> { public? }
     before_validation :set_filename
     before_validation :validate_filename
     after_validation :set_depth, if: ->{ filename.present? }
@@ -217,5 +219,9 @@ module Cms::Content
 
     self.filename = filename.sub(/\..*$/, "") + fix_extname if fix_extname && basename.present?
     @basename = filename.sub(/.*\//, "") if @basename
+  end
+
+  def set_generate_key
+    self.generate_key = (id % 3)
   end
 end
