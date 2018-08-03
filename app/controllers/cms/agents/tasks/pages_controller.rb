@@ -37,6 +37,28 @@ class Cms::Agents::Tasks::PagesController < ApplicationController
     end
   end
 
+  def generate_parallel
+    @task.log "# #{@site.name}"
+    pages = Cms::Page.site(@site).where(generate_key: @generate_key).and_public
+    pages = pages.node(@node) if @node
+    @task.total_count = pages.count
+
+    Parallel.map([0, 1, 2], in_threads: 3) do |key|
+      ids   = pages.where(generate_key: key).pluck(:id)
+
+      ids.each do |id|
+        @task.count
+        page = Cms::Page.site(@site).and_public.where(id: id).first
+        next unless page
+
+        puts("#{@generate_key} : page-#{id}")
+
+        page.serve_static_relation_files = @attachments
+        @task.log page.url if page.becomes_with_route.generate_file
+      end
+    end
+  end
+
   def update
     @task.log "# #{@site.name}"
 
