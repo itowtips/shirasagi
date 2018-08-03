@@ -44,6 +44,8 @@ module SS
 
     config.middleware.use Mongoid::QueryCache::Middleware
 
+    config.cache_store = :redis_store, "redis://localhost:6379/0/cache", { expires_in: 90.minutes }
+
     attr_reader :current_env
 
     def call(*args, &block)
