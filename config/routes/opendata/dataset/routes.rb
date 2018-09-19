@@ -55,26 +55,34 @@ SS::Application.routes.draw do
     resources :search_datasets, concerns: :deletion, module: :dataset
     resources :search_dataset_groups, concerns: :deletion, module: :dataset
 
-    resources :harvests, concerns: :deletion, module: "dataset" do
-      get :import, on: :member
-      put :import, on: :member
-
-      resources :category_settings, concerns: :deletion, path: 'c:category_id', defaults: { category_id: '-' }, module: "harvest" do
-        get :download, on: :collection
-        get :import, on: :collection
-        put :import, on: :collection
-      end
-      resources :estat_category_settings, concerns: :deletion, path: 'estat:category_id', defaults: { category_id: '-' }, module: "harvest" do
-        get :download, on: :collection
-        get :import, on: :collection
-        put :import, on: :collection
-      end
-      resources :reports, only: [:show, :destroy], concerns: :deletion, module: "harvest" do
-        get :dataset, on: :member
-        get :download, on: :member
+    scope module: :dataset do
+      namespace :harvest do
+        resources :importers, concerns: :deletion do
+          get :import, on: :member
+          put :import, on: :member
+          scope module: :importer do
+            resources :category_settings, concerns: :deletion, path: 'c:category_id', defaults: { category_id: '-' } do
+              get :download, on: :collection
+              get :import, on: :collection
+              put :import, on: :collection
+            end
+            resources :estat_category_settings, concerns: :deletion, path: 'estat:category_id', defaults: { category_id: '-' } do
+              get :download, on: :collection
+              get :import, on: :collection
+              put :import, on: :collection
+            end
+            resources :reports, only: [:show, :destroy], concerns: :deletion do
+              get :dataset, on: :member
+              get :download, on: :member
+            end
+          end
+        end
+        resources :exporters, concerns: :deletion do
+          get :export, on: :member
+          put :export, on: :member
+        end
       end
     end
-    resources :ckan_exporters, concerns: :deletion, module: "dataset"
  end
 
   node "opendata" do

@@ -8,7 +8,7 @@ module Opendata::Harvest::ShirasagiScrapingImporter
       reports.order_by(created: 1).first.destroy
     end
 
-    @report = Opendata::Harvest::Report.new(cur_site: site, harvest: self)
+    @report = Opendata::Harvest::Importer::Report.new(cur_site: site, importer: self)
     @report.save!
 
     package = ::Opendata::Harvest::ShirasagiScraper.new(source_url)
@@ -106,7 +106,7 @@ module Opendata::Harvest::ShirasagiScrapingImporter
     dataset.created ||= dataset.updated
     dataset.released ||= dataset.updated
 
-    dataset.harvest = self
+    dataset.harvest = harvest_importer
     dataset.harvest_host = source_host
     dataset.harvest_api_type = api_type
 
@@ -176,7 +176,7 @@ module Opendata::Harvest::ShirasagiScrapingImporter
 
     resource.file_id = ss_file.id
 
-    resource.harvest = self
+    resource.harvest = harvest_importer
     resource.harvest_host = source_host
     resource.harvest_api_type = api_type
 

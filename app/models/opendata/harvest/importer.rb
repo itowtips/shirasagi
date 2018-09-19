@@ -1,13 +1,13 @@
-class Opendata::Harvest
+class Opendata::Harvest::Importer
   include SS::Document
   include SS::Reference::User
   include SS::Reference::Site
   include Cms::Reference::Node
   include Opendata::Addon::Harvest::Importer
-  include Opendata::Addon::Harvest::CategorySetting
-  include Opendata::Addon::Harvest::EstatCategorySetting
-  include Opendata::Addon::Harvest::AreaSetting
-  include Opendata::Addon::Harvest::Report
+  include Opendata::Addon::Harvest::ImporterCategorySetting
+  include Opendata::Addon::Harvest::ImporterEstatCategorySetting
+  include Opendata::Addon::Harvest::ImporterAreaSetting
+  include Opendata::Addon::Harvest::ImporterReport
   include Cms::Addon::GroupPermission
   include ActiveSupport::NumberHelper
 
@@ -28,8 +28,8 @@ class Opendata::Harvest
   validates :source_url, presence: true
   validate :validate_host, if: -> { source_url.present? }
 
-  has_many :datasets, class_name: 'Opendata::Dataset', inverse_of: :harvest
-  has_many :reports, class_name: 'Opendata::Harvest::Report', dependent: :destroy, inverse_of: :harvest
+  has_many :datasets, class_name: 'Opendata::Dataset', inverse_of: :harvest_importer
+  has_many :reports, class_name: 'Opendata::Harvest::Importer::Report', dependent: :destroy, inverse_of: :importer
 
   permit_params :name, :source_url, :api_type, :order, :resource_size_limit_mb
 

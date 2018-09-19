@@ -1,4 +1,4 @@
-class Opendata::CkanExporter
+class Opendata::Harvest::Exporter
   include SS::Document
   include SS::Reference::User
   include SS::Reference::Site

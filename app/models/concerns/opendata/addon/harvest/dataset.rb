@@ -5,8 +5,8 @@ module Opendata::Addon::Harvest::Dataset
   included do
     field :uuid, type: String, default: nil
 
-    belongs_to :harvest, class_name: 'Opendata::Harvest'
-    #belongs_to :harvest_report, class_name: 'Opendata::Harvest::Report'
+    belongs_to :harvest_importer, class_name: 'Opendata::Harvest::Importer'
+    #belongs_to :harvest_importer_report, class_name: 'Opendata::Harvest::Importer::Report'
 
     field :harvest_imported, type: DateTime, default: nil
     field :harvest_imported_url, type: String, default: nil

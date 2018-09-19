@@ -1,8 +1,8 @@
 <nav class="nav-menu">
   <% if params[:action] =~ /download|import/ %>
-    <%= link_to t('ss.links.back'), opendata_harvest_path(id: @harvest.id), class: "back-to-index" %>
+    <%= link_to t('ss.links.back'), opendata_harvest_importer_path(id: @importer.id), class: "back-to-index" %>
   <% elsif params[:action] =~ /index/ %>
-    <%= link_to t('ss.links.back'), opendata_harvest_path(id: @harvest.id), class: "back-to-index" %>
+    <%= link_to t('ss.links.back'), opendata_harvest_importer_path(id: @importer.id), class: "back-to-index" %>
     <% if @model.allowed?(:edit, @cur_user, site: @cur_site, node: @cur_node) %>
       <%= link_to t('ss.links.new'), { action: :new }, class: :new %>
     <% end %>

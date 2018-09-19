@@ -1,18 +1,18 @@
-class Opendata::Dataset::Harvest::ReportsController < ApplicationController
+class Opendata::Dataset::Harvest::Importer::ReportsController < ApplicationController
   include Cms::BaseFilter
   include Cms::CrudFilter
 
-  model Opendata::Harvest::Report
+  model Opendata::Harvest::Importer::Report
 
   navi_view "opendata/main/navi"
 
   def destroy
     raise "403" unless @item.allowed?(:delete, @cur_user, site: @cur_site, node: @cur_node)
-    render_destroy @item.destroy, location: opendata_harvest_path(id: params[:harvest_id])
+    render_destroy @item.destroy, location: opendata_harvest_path(id: params[:importer_id])
   end
 
   def dataset
-    @item = Opendata::Harvest::ReportDataset.find(params[:dataset_id])
+    @item = Opendata::Harvest::Importer::ReportDataset.find(params[:dataset_id])
   end
 
   def download

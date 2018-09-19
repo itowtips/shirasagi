@@ -6,16 +6,16 @@
   <dt><%= "コンバート設定" %></dt>
   <dd>
       <span>
-      <%= link_to "ダウンロード", download_opendata_harvest_estat_category_settings_path(harvest_id: @item.id) %>
+      <%= link_to "ダウンロード", download_opendata_harvest_importer_estat_category_settings_path(importer_id: @item.id) %>
     </span>
     <span style="margin-left: 10px;">
-      <%= link_to "インポート", import_opendata_harvest_estat_category_settings_path(harvest_id: @item.id) %>
+      <%= link_to "インポート", import_opendata_harvest_importer_estat_category_settings_path(importer_id: @item.id) %>
     </span>
 
     <table class="index" style="margin-top: 10px;">
       <% Opendata::Node::EstatCategory.order_by(filename: 1).each do |cate| %>
         <tr>
-          <td><%= link_to cate.name, opendata_harvest_estat_category_settings_path(harvest_id: @item.id, category_id: cate.id) %></td>
+          <td><%= link_to cate.name, opendata_harvest_importer_estat_category_settings_path(importer_id: @item.id, category_id: cate.id) %></td>
           <td><%= cate.filename %></td>
           <td>
             <% count = @item.estat_category_settings.where(category_id: cate.id).count %>

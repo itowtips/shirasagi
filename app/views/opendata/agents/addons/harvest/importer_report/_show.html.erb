@@ -7,7 +7,7 @@
         <tr>
           <td>
             <%= link_to report.created.strftime("%Y/%m/%d %H:%M") + " (#{number_to_human_size(report.size)})",
-              opendata_harvest_report_path(harvest_id: @item.id, id: report.id) %>
+              opendata_harvest_importer_report_path(importer_id: @item.id, id: report.id) %>
           </td>
         </tr>
       <% end %>

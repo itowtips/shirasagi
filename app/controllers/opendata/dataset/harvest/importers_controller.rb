@@ -1,10 +1,10 @@
-class Opendata::Dataset::HarvestsController < ApplicationController
+class Opendata::Dataset::Harvest::ImportersController < ApplicationController
   include Cms::BaseFilter
   include Cms::CrudFilter
 
   helper Opendata::FormHelper
 
-  model Opendata::Harvest
+  model Opendata::Harvest::Importer
 
   navi_view "opendata/main/navi"
 
@@ -13,7 +13,7 @@ class Opendata::Dataset::HarvestsController < ApplicationController
   end
 
   def index
-    @items = Opendata::Harvest.site(@cur_site).node(@cur_node)
+    @items = Opendata::Harvest::Importer.site(@cur_site).node(@cur_node)
       .allow(:read, @cur_user, site: @cur_site)
   end
 

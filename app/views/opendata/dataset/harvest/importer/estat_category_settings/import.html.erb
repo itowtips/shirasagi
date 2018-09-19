@@ -15,6 +15,6 @@
 
   <footer class="send">
     <%= f.submit t("ss.import"), class: :save, onclick: "return confirm('既存の分野設定を破棄しCSVファイルにて上書きします。#{t("ss.confirm.import")}')" %>
-    <%= f.button t("ss.buttons.cancel"), class: 'btn-default', onclick: "location.href='#{opendata_harvest_path(id: @harvest.id)}'; return false;" %>
+    <%= f.button t("ss.buttons.cancel"), class: 'btn-default', onclick: "location.href='#{opendata_harvest_importer_path(id: @importer.id)}'; return false;" %>
   </footer>
 <% end %>

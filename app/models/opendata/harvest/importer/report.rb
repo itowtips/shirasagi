@@ -1,4 +1,4 @@
-class Opendata::Harvest
+class Opendata::Harvest::Importer
   class Report
     include SS::Document
     include SS::Reference::Site
@@ -8,8 +8,8 @@ class Opendata::Harvest
     set_permission_name "opendata_datasets"
 
     field :size, type: Integer, default: 0
-    belongs_to :harvest, class_name: 'Opendata::Harvest'
-    has_many :datasets, class_name: 'Opendata::Harvest::ReportDataset', dependent: :destroy, inverse_of: :report
+    belongs_to :importer, class_name: 'Opendata::Harvest::Importer'
+    has_many :datasets, class_name: 'Opendata::Harvest::Importer::ReportDataset', dependent: :destroy, inverse_of: :report
 
     before_validation :set_size
 
@@ -22,7 +22,7 @@ class Opendata::Harvest
     end
 
     def new_dataset
-      report_dataset = Opendata::Harvest::ReportDataset.new
+      report_dataset = Opendata::Harvest::Importer::ReportDataset.new
       report_dataset.report = self
       report_dataset
     end
@@ -31,8 +31,8 @@ class Opendata::Harvest
   class ReportDataset
     include SS::Document
 
-    belongs_to :report, class_name: 'Opendata::Harvest::Report'
-    embeds_many :resources, class_name: 'Opendata::Harvest::ReportResource'
+    belongs_to :report, class_name: 'Opendata::Harvest::Importer::Report'
+    embeds_many :resources, class_name: 'Opendata::Harvest::Importer::ReportResource'
 
     field :order, type: Integer
     field :url, type: String
@@ -74,7 +74,7 @@ class Opendata::Harvest
     end
 
     def new_resource
-      report_resource = ::Opendata::Harvest::ReportResource.new
+      report_resource = ::Opendata::Harvest::Importer::ReportResource.new
       report_resource.dataset = self
       report_resource
     end
@@ -88,7 +88,7 @@ class Opendata::Harvest
   class ReportResource
     include SS::Document
 
-    embedded_in :dataset, class_name: 'Opendata::Harvest::ReportDataset', inverse_of: :resources
+    embedded_in :dataset, class_name: 'Opendata::Harvest::Importer::ReportDataset', inverse_of: :resources
 
     field :order, type: Integer
     field :url, type: String

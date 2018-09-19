@@ -8,7 +8,7 @@ module Opendata::Harvest::CkanApiImporter
       reports.order_by(created: 1).first.destroy
     end
 
-    @report = Opendata::Harvest::Report.new(cur_site: site, harvest: self)
+    @report = Opendata::Harvest::Importer::Report.new(cur_site: site, importer: self)
     @report.save!
 
     package = ::Opendata::Harvest::CkanPackage.new(source_url)
@@ -109,7 +109,7 @@ module Opendata::Harvest::CkanApiImporter
     dataset.created ||= Time.zone.parse(attributes["metadata_created"])
     dataset.released ||= dataset.updated
 
-    dataset.harvest = self
+    dataset.harvest_importer = self
     dataset.harvest_host = source_host
     dataset.harvest_api_type = api_type
 
@@ -176,7 +176,7 @@ module Opendata::Harvest::CkanApiImporter
     resource.updated = dataset.updated
     resource.created ||= dataset.created
 
-    resource.harvest = self
+    resource.harvest_importer = self
     resource.harvest_host = source_host
     resource.harvest_api_type = api_type
 

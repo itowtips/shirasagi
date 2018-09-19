@@ -1,11 +1,11 @@
-class Opendata::Harvest::CategorySetting
+class ::Opendata::Harvest::Importer::CategorySetting
   include SS::Document
   include SS::Reference::User
   include SS::Reference::Site
   include Cms::SitePermission
   include ActiveSupport::NumberHelper
 
-  belongs_to :harvest, class_name: 'Opendata::Harvest'
+  belongs_to :importer, class_name: 'Opendata::Harvest::Importer'
 
   set_permission_name "other_opendata_harvests", :edit
 
@@ -169,7 +169,7 @@ class Opendata::Harvest::CategorySetting
         item.cur_site = cur_site
         item.cur_user = cur_user
         item.category = category
-        item.harvest = harvest
+        item.importer = importer
         item.order = order
         item.conditions = item.conditions + [{"type" => type, "value" => value, "operator" => operator}]
         id_given_items[id] = [item, old_idx.to_a + [idx]]
@@ -178,7 +178,7 @@ class Opendata::Harvest::CategorySetting
         item.cur_site = cur_site
         item.cur_user = cur_user
         item.category = category
-        item.harvest = harvest
+        item.importer = importer
         item.order = order
         item.conditions = [{"type" => type, "value" => value, "operator" => operator}]
         items << [item, idx]
@@ -197,7 +197,7 @@ class Opendata::Harvest::CategorySetting
 
     return false if errors.present?
 
-    self.class.where(harvest_id: harvest.id).destroy_all
+    self.class.where(importer_id: importer.id).destroy_all
     items.each { |item, idx| item.save! }
     id_given_items.values.each { |item, idx| item.save! }
     true

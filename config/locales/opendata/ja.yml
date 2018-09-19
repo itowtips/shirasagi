@@ -294,11 +294,10 @@ ja:
       opendata/list_node_setting: フォルダー設定
       opendata/cms_ref/page: ページ連携
       opendata/cms_ref/attachment_file: 添付ファイル連携
-      opendata/dataset_importer/license: データセットインポート
-      opendata/harvest/category_setting: 分野設定
-      opendata/harvest/estat_category_setting: eStat分野設定
-      opendata/harvest/area_setting: 地域設定
-      opendata/harvest/report: レポート
+      opendata/harvest/importer_category_setting: 分野設定
+      opendata/harvest/importer_estat_category_setting: eStat分野設定
+      opendata/harvest/importer_area_setting: 地域設定
+      opendata/harvest/importer_report: レポート
 
   cms:
     nodes:
@@ -509,13 +508,13 @@ ja:
         header_labels: タイトル
         class: RDFクラス
         column_types: 列設定
-      opendata/harvest:
+      opendata/harvest/importer:
         name: 名前
         source_url: URL
         api_type: API
         resource_size_limit_mb: 最大リソースサイズ
         order: 並び順
-      opendata/harvest/category_setting:
+      opendata/harvest/importer/category_setting:
         id: ID
         order: 並び順
         category_name: 分野名
@@ -523,7 +522,7 @@ ja:
         type: タイプ
         value: 値
         operator: 操作
-      opendata/harvest/estat_category_setting:
+      opendata/harvest/importer/estat_category_setting:
         id: ID
         order: 並び順
         category_name: 分野名
@@ -568,11 +567,13 @@ ja:
         assoc_page_id: 連携ページ
         assoc_method: 連携確認方法
         assoc_filename: 連携ファイル
-      opendata/addon/harvest/category_setting:
+      opendata/addon/harvest/importer_category_setting:
         default_category_ids: 既定の分野
+        category_settings: コンバート設定
+      opendata/addon/harvest/importer_estat_category_setting:
         default_estat_category_ids: 既定のeStat分野
         category_settings: コンバート設定
-      opendata/addon/harvest/area_setting:
+      opendata/addon/harvest/importer_area_setting:
         default_area_ids: 既定の地域
 
   activemodel:
