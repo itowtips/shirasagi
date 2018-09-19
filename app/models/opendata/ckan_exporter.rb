@@ -82,9 +82,9 @@ class Opendata::CkanExporter
           exported_datasets[dataset.uuid] = stored_dataset_id
 
           puts "update dataset #{dataset.name} #{dataset.uuid}"
-          result = package.package_update(
+          result = package.package_patch(
             stored_dataset_id,
-            dataset_create_params(dataset),
+            dataset_update_params(dataset),
             api_key
           )
 
@@ -102,7 +102,7 @@ class Opendata::CkanExporter
           exported_datasets[dataset.uuid] = stored_dataset_id
 
           # update dataset metadata_created, modified
-          result = package.package_update(
+          result = package.package_patch(
             stored_dataset_id,
             dataset_update_params(dataset),
             api_key
@@ -116,10 +116,9 @@ class Opendata::CkanExporter
               puts "update resource #{resource.name} #{resource.uuid}"
 
               stored_resource_id = stored_resources[resource.uuid]
-              p stored_resource_id
               exported_resources[resource.uuid] = stored_resource_id
 
-              result = package.resource_update(
+              result = package.resource_patch(
                 stored_resource_id,
                 resource_update_params(resource),
                 api_key,
@@ -142,7 +141,7 @@ class Opendata::CkanExporter
               exported_resources[resource.uuid] = stored_resource_id
 
               # update resource last_modified
-              result =package.resource_update(
+              result =package.resource_patch(
                 stored_resource_id,
                 resource_update_params(resource),
                 api_key
@@ -164,11 +163,13 @@ class Opendata::CkanExporter
   ensure
     # destroy unimported resourcse
     (stored_resources.values - exported_resources.values).each do |id|
+      puts "delete resource #{id}"
       package.resource_delete(id, api_key)
     end
 
     # destroy unimported datasets
     (stored_datasets.values - exported_datasets.values).each do |id|
+      puts "purge dataset #{id}"
       package.dataset_purge(id, api_key)
     end
 

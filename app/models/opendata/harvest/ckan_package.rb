@@ -50,6 +50,10 @@ class Opendata::Harvest::CkanPackage
     ::File.join(url, "api/action/package_update")
   end
 
+  def package_patch_url
+    ::File.join(url, "api/action/package_patch")
+  end
+
   def package_delete_url
     ::File.join(url, "api/action/package_delete")
   end
@@ -64,6 +68,10 @@ class Opendata::Harvest::CkanPackage
 
   def resource_update_url
     ::File.join(url, "api/action/resource_update")
+  end
+
+  def resource_patch_url
+    ::File.join(url, "api/action/resource_patch")
   end
 
   def resource_delete_url
@@ -121,6 +129,26 @@ class Opendata::Harvest::CkanPackage
     validate_result("package_update", result)
     result["result"]
   end
+
+  def package_patch(id, params, api_key)
+    params[:id] = id
+
+    conn = ::Faraday.new do |f|
+      f.request :url_encoded
+      f.adapter :net_http
+    end
+
+    res = conn.post package_patch_url do |req|
+      req.options.timeout = 10
+      req.headers['Authorization'] = api_key
+      req.body = params.to_json
+    end
+
+    result = ::JSON.parse(res.body)
+    validate_result("package_patch", result)
+    result["result"]
+  end
+
 
   # soft delete
   def package_delete(id, api_key)
@@ -214,6 +242,33 @@ class Opendata::Harvest::CkanPackage
 
     result = ::JSON.parse(res.body)
     validate_result("resource_update", result)
+    result["result"]
+  end
+
+  def resource_patch(id, params, api_key, file = nil)
+    params[:id] = id
+    params[:upload] = ::Faraday::UploadIO.new(file.path, file.content_type, file.filename) if file
+
+    if params[:upload]
+      request = :multipart
+    else
+      request = :url_encoded
+      params = params.to_json
+    end
+
+    conn = ::Faraday.new do |f|
+      f.request request
+      f.adapter :net_http
+    end
+
+    res = conn.post resource_patch_url do |req|
+      req.options.timeout = 10
+      req.headers['Authorization'] = api_key
+      req.body = params
+    end
+
+    result = ::JSON.parse(res.body)
+    validate_result("resource_patch", result)
     result["result"]
   end
 
