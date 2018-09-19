@@ -21,7 +21,7 @@ class Opendata::Dataset::Harvest::ImportersController < ApplicationController
     set_item
     return if request.get?
 
-    Opendata::HarvestDatasetsJob.bind(site_id: @cur_site, node_id: @cur_node).perform_later(@item.id)
+    Opendata::HarvestDatasetsJob.bind(site_id: @cur_site, node_id: @cur_node).perform_later(importer_id: @item.id)
     flash.now[:notice] = "インポート処理を開始しました。"
   end
 end

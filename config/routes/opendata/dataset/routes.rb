@@ -80,6 +80,10 @@ SS::Application.routes.draw do
         resources :exporters, concerns: :deletion do
           get :export, on: :member
           put :export, on: :member
+          scope module: :exporter do
+            resources :group_settings, concerns: :deletion
+            resources :owner_org_settings, concerns: :deletion
+          end
         end
       end
     end

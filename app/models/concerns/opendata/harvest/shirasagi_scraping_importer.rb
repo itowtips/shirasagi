@@ -90,7 +90,7 @@ module Opendata::Harvest::ShirasagiScrapingImporter
   end
 
   def create_dataset_from_shirasagi_scraper(attributes)
-    dataset = ::Opendata::Dataset.node(node).where(imported_url: attributes["url"]).first
+    dataset = ::Opendata::Dataset.node(node).where(harvest_imported_url: attributes["url"]).first
     dataset ||= ::Opendata::Dataset.new
 
     dataset.cur_site = site
@@ -106,7 +106,7 @@ module Opendata::Harvest::ShirasagiScrapingImporter
     dataset.created ||= dataset.updated
     dataset.released ||= dataset.updated
 
-    dataset.harvest = harvest_importer
+    dataset.harvest_importer = self
     dataset.harvest_host = source_host
     dataset.harvest_api_type = api_type
 
@@ -176,7 +176,7 @@ module Opendata::Harvest::ShirasagiScrapingImporter
 
     resource.file_id = ss_file.id
 
-    resource.harvest = harvest_importer
+    resource.harvest_importer = self
     resource.harvest_host = source_host
     resource.harvest_api_type = api_type
 
