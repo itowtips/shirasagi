@@ -30,9 +30,8 @@ module Opendata::Harvest::CkanApiImporter
 
         imported_dataset_ids << dataset.id
 
-        ckan_license_key = dataset_attributes["license_id"].to_s
-        license = ::Opendata::License.site(site).in(ckan_license_keys: ckan_license_key).first
-        put_log("could not found license #{ckan_license_key}") if license.nil?
+        license = get_license_from_uid(dataset_attributes["license_id"].to_s)
+        put_log("could not found license #{dataset_attributes["license_id"]}") if license.nil?
 
         # resources
         imported_resource_ids = []

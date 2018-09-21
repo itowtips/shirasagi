@@ -18,13 +18,12 @@ module Opendata::Addon::Harvest
       file
     end
 
-    def get_license_from_key(key)
-      @_license_from_key ||= {}
-      return @_license_from_key[key] if @_license_from_key[key]
+    def get_license_from_uid(uid)
+      @_license_from_uid ||= {}
+      return @_license_from_uid[uid] if @_license_from_uid[uid]
 
-      @_license_from_key[key] = ::Opendata::License.site(site).in(ckan_license_keys: key).first
-      put_log("could not found license #{key}") if @_license_from_key[key].nil?
-      @_license_from_key[key]
+      @_license_from_uid[uid] = ::Opendata::License.site(site).where(uid: uid).first
+      @_license_from_uid[uid]
     end
 
     def get_license_from_name(name)
@@ -32,7 +31,6 @@ module Opendata::Addon::Harvest
       return @_license_from_name[name] if @_license_from_name[name]
 
       @_license_from_name[name] = ::Opendata::License.site(site).where(name: name).first
-      put_log("could not found license #{name}") if @_license_from_name[name].nil?
       @_license_from_name[name]
     end
 

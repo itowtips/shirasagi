@@ -3,7 +3,7 @@ module Opendata::Addon::Harvest::License
   extend ActiveSupport::Concern
 
   included do
-    field :ckan_license_keys, type: SS::Extensions::Lines, default: []
-    permit_params :ckan_license_keys
+    field :uid, type: String, default: nil
+    permit_params :uid
   end
 end

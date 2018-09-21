@@ -112,6 +112,8 @@ module Opendata::Harvest::CkanApiExporter
   end
 
   def export
+    put_log "export to #{url} (Ckan API)"
+
     package = ::Opendata::Harvest::CkanPackage.new(url)
     exported_datasets = {}
     exported_resources = {}
@@ -119,26 +121,29 @@ module Opendata::Harvest::CkanApiExporter
     dataset_ids = Opendata::Dataset.where(filename: /^#{node.filename}\//, depth: node.depth + 1).
         and_public.pluck(:id)
 
-    dataset_ids.each do |dataset_id|
+    put_log "datasets #{dataset_ids.size}"
+
+    dataset_ids.each_with_index do |dataset_id, d_idx|
       dataset = Opendata::Dataset.find(dataset_id) rescue nil
       next unless dataset
 
       begin
         if stored_datasets[dataset.uuid]
+          put_log "#{d_idx} : update dataset #{dataset.name} #{dataset.uuid}"
 
           stored_dataset_id = stored_datasets[dataset.uuid]
           exported_datasets[dataset.uuid] = stored_dataset_id
 
-          puts "update dataset #{dataset.name} #{dataset.uuid}"
+          # patch dataset
           result = package.package_patch(
             stored_dataset_id,
             dataset_update_params(dataset),
             api_key
           )
+          sleep 1
 
         else
-
-          puts "create dataset #{dataset.name} #{dataset.uuid}"
+          put_log "#{d_idx} : create dataset #{dataset.name} #{dataset.uuid}"
           #result = package.dataset_purge(dataset.uuid, api_key)
 
           # create dataset
@@ -146,36 +151,32 @@ module Opendata::Harvest::CkanApiExporter
             dataset_create_params(dataset),
             api_key
           )
+          sleep 1
+
           stored_dataset_id = result["id"]
           exported_datasets[dataset.uuid] = stored_dataset_id
 
-          # update dataset metadata_created, modified
-          result = package.package_patch(
-            stored_dataset_id,
-            dataset_update_params(dataset),
-            api_key
-          )
         end
 
-        dataset.resources.each do |resource|
+        dataset.resources.each_with_index do |resource, r_idx|
           begin
             if stored_resources[resource.uuid]
-
-              puts "update resource #{resource.name} #{resource.uuid}"
+              put_log "#{d_idx}-#{r_idx} : update resource #{resource.name} #{resource.uuid}"
 
               stored_resource_id = stored_resources[resource.uuid]
               exported_resources[resource.uuid] = stored_resource_id
 
-              result = package.resource_patch(
+              # update resource
+              result = package.resource_update(
                 stored_resource_id,
                 resource_update_params(resource),
                 api_key,
                 resource.file
               )
+              sleep 1
 
             else
-
-              puts "create resource #{resource.name} #{resource.uuid}"
+              put_log "#{d_idx}-#{r_idx} : create resource #{resource.name} #{resource.uuid}"
 
               # create resource
               result = package.resource_create(
@@ -184,16 +185,10 @@ module Opendata::Harvest::CkanApiExporter
                 api_key,
                 resource.file
               )
+              sleep 1
 
               stored_resource_id = result["id"]
               exported_resources[resource.uuid] = stored_resource_id
-
-              # update resource last_modified
-              result =package.resource_patch(
-                stored_resource_id,
-                resource_update_params(resource),
-                api_key
-              )
 
             end
           rescue => e
@@ -211,14 +206,26 @@ module Opendata::Harvest::CkanApiExporter
   ensure
     # destroy unimported resourcse
     (stored_resources.values - exported_resources.values).each do |id|
-      puts "delete resource #{id}"
-      package.resource_delete(id, api_key)
+      put_log "delete resource #{id}"
+
+      begin
+        package.resource_delete(id, api_key)
+      rescue => e
+        message = "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}"
+        puts message
+      end
     end
 
     # destroy unimported datasets
     (stored_datasets.values - exported_datasets.values).each do |id|
-      puts "purge dataset #{id}"
-      package.dataset_purge(id, api_key)
+      put_log "purge dataset #{id}"
+
+      begin
+        package.dataset_purge(id, api_key)
+      rescue => e
+        message = "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}"
+        puts message
+      end
     end
 
     self.stored_resources = exported_resources
@@ -242,19 +249,32 @@ module Opendata::Harvest::CkanApiExporter
     groups
   end
 
+  def dataset_license_id(dataset)
+    license_ids = dataset.resources.map { |r| r.license.uid }.select(&:present?).uniq
+    return nil if license_ids.blank?
+
+    return license_ids[0] if license_ids.size == 1
+
+    put_log "ambiguous dataset license, ckan could not set license in resource"
+    nil
+  end
+
   def dataset_create_params(dataset)
     params = {
       name: dataset.uuid,
       title: dataset.name,
       notes: dataset.text,
       metadata_created: dataset.created.utc.strftime('%Y-%m-%d %H:%M:%S'), # not accepted
-      metadata_modified: dataset.updated.utc.strftime('%Y-%m-%d %H:%M:%S') # not accepted
+      metadata_modified: dataset.updated.utc.strftime('%Y-%m-%d %H:%M:%S'), # not accepted
     }
     owner_org = dataset_owner_org(dataset)
     groups = dataset_groups(dataset)
+    license_id = dataset_license_id(dataset)
 
     params[:owner_org] = owner_org if owner_org.present?
     params[:groups] = groups if groups.present?
+    params[:license_id] = license_id if license_id.present?
+
     params
   end
 
@@ -263,20 +283,23 @@ module Opendata::Harvest::CkanApiExporter
       name: dataset.uuid,
       title: dataset.name,
       notes: dataset.text,
-      metadata_created: dataset.created.utc.strftime('%Y-%m-%d %H:%M:%S'),
-      metadata_modified: dataset.updated.utc.strftime('%Y-%m-%d %H:%M:%S')
+      metadata_created: dataset.created.utc.strftime('%Y-%m-%d %H:%M:%S'), # not accepted
+      metadata_modified: dataset.updated.utc.strftime('%Y-%m-%d %H:%M:%S'), # not accepted
     }
     owner_org = dataset_owner_org(dataset)
     groups = dataset_groups(dataset)
+    license_id = dataset_license_id(dataset)
 
     params[:owner_org] = owner_org if owner_org.present?
     params[:groups] = groups if groups.present?
+    params[:license_id] = license_id if license_id.present?
+
     params
   end
 
   def resource_create_params(resource)
     params = {
-      name: resource.filename,
+      name: resource.name,
       url: (resource.file ? resource.file.filename : resource.source_url),
       description: resource.text,
       format: resource.format,
@@ -289,7 +312,7 @@ module Opendata::Harvest::CkanApiExporter
 
   def resource_update_params(resource)
     params = {
-      name: resource.filename,
+      name: resource.name,
       url: (resource.file ? resource.file.filename : resource.source_url),
       description: resource.text,
       format: resource.format,

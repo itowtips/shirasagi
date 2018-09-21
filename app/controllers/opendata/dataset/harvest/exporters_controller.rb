@@ -16,11 +16,11 @@ class Opendata::Dataset::Harvest::ExportersController < ApplicationController
     @items = @model.site(@cur_site).node(@cur_node).allow(:read, @cur_user, site: @cur_site)
   end
 
-  #def import
-  #  set_item
-  #  return if request.get?
-  #
-  #  Opendata::HarvestDatasetsJob.bind(site_id: @cur_site, node_id: @cur_node).perform_later(@item.id)
-  #  flash.now[:notice] = "インポート処理を開始しました。"
-  #end
+  def export
+    set_item
+    return if request.get?
+
+    Opendata::HarvestDatasetsJob.bind(site_id: @cur_site, node_id: @cur_node).perform_later(exporter_id: @item.id)
+    flash.now[:notice] = "エクポート処理を開始しました。"
+  end
 end

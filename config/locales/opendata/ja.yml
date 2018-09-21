@@ -298,6 +298,7 @@ ja:
       opendata/harvest/importer_estat_category_setting: eStat分野設定
       opendata/harvest/importer_area_setting: 地域設定
       opendata/harvest/importer_report: レポート
+      opendata/harvest/license: ハーベスト設定
 
   cms:
     nodes:
@@ -530,6 +531,11 @@ ja:
         type: タイプ
         value: 値
         operator: 操作
+      opendata/harvest/exporter:
+        name: 名前
+        url: URL
+        api_key: APIキー
+        order: 並び順
       opendata/addon/site_setting:
         dataset_workflow_route: データセット承認
         app_workflow_route: アプリ承認
@@ -575,6 +581,8 @@ ja:
         category_settings: コンバート設定
       opendata/addon/harvest/importer_area_setting:
         default_area_ids: 既定の地域
+      opendata/addon/harvest/license:
+        uid: ライセンスID
 
   activemodel:
     models:

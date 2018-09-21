@@ -213,7 +213,6 @@ class Opendata::Harvest::CkanPackage
     end
 
     res = conn.post dataset_purge_url do |req|
-      req.options.timeout = 10
       req.headers['Authorization'] = api_key
       req.body = params.to_json
     end
@@ -242,7 +241,6 @@ class Opendata::Harvest::CkanPackage
     end
 
     res = conn.post resource_create_url do |req|
-     req.options.timeout = 10
      req.headers['Authorization'] = api_key
      req.body = params
     end
@@ -269,7 +267,6 @@ class Opendata::Harvest::CkanPackage
     end
 
     res = conn.post resource_update_url do |req|
-      req.options.timeout = 10
       req.headers['Authorization'] = api_key
       req.body = params
     end
@@ -296,7 +293,6 @@ class Opendata::Harvest::CkanPackage
     end
 
     res = conn.post resource_patch_url do |req|
-      req.options.timeout = 10
       req.headers['Authorization'] = api_key
       req.body = params
     end
@@ -315,7 +311,6 @@ class Opendata::Harvest::CkanPackage
     end
 
     res = conn.post resource_delete_url do |req|
-      req.options.timeout = 10
       req.headers['Authorization'] = api_key
       req.body = params.to_json
     end
@@ -348,7 +343,6 @@ class Opendata::Harvest::CkanPackage
     end
 
     res = conn.post group_create_url do |req|
-      req.options.timeout = 10
       req.headers['Authorization'] = api_key
       req.body = params.to_json
     end
@@ -371,7 +365,6 @@ class Opendata::Harvest::CkanPackage
     end
 
     res = conn.post group_purge_url do |req|
-      req.options.timeout = 10
       req.headers['Authorization'] = api_key
       req.body = params.to_json
     end
@@ -404,7 +397,6 @@ class Opendata::Harvest::CkanPackage
     end
 
     res = conn.post organization_create_url do |req|
-      req.options.timeout = 10
       req.headers['Authorization'] = api_key
       req.body = params.to_json
     end
@@ -427,7 +419,6 @@ class Opendata::Harvest::CkanPackage
     end
 
     res = conn.post organization_purge_url do |req|
-      req.options.timeout = 10
       req.headers['Authorization'] = api_key
       req.body = params.to_json
     end
