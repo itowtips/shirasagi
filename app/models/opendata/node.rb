@@ -25,6 +25,7 @@ module Opendata::Node
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 
+    attr_accessor :count
     default_scope ->{ where(route: "opendata/estat_category") }
   end
 
@@ -46,6 +47,7 @@ module Opendata::Node
     include Cms::Addon::Meta
     include Opendata::Addon::DatasetPageSetting
     include Opendata::Addon::CategorySetting
+    include Opendata::Addon::EstatCategorySetting
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup

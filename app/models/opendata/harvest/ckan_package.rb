@@ -155,8 +155,6 @@ class Opendata::Harvest::CkanPackage
       req.body = params.to_json
     end
 
-    p params
-
     result = ::JSON.parse(res.body)
     validate_result("package_create", result)
     result["result"]

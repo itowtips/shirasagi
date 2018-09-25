@@ -26,9 +26,6 @@ module Opendata::Addon
     included do
       embeds_ids :st_categories, class_name: "Cms::Node"
       permit_params st_category_ids: []
-
-      embeds_ids :st_estat_categories, class_name: "Cms::Node"
-      permit_params st_estat_category_ids: []
     end
 
     def default_st_categories
@@ -49,6 +46,16 @@ module Opendata::Addon
         categories << parent
       end
       categories
+    end
+  end
+
+  module EstatCategorySetting
+    extend SS::Addon
+    extend ActiveSupport::Concern
+
+    included do
+      embeds_ids :st_estat_categories, class_name: "Cms::Node"
+      permit_params st_estat_category_ids: []
     end
 
     def default_st_estat_categories

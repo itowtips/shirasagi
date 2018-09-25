@@ -21,10 +21,15 @@ class Opendata::Agents::Nodes::Dataset::SearchDatasetController < ApplicationCon
     @cur_node.parent_dataset_node.st_categories.presence || @cur_node.parent_dataset_node.default_st_categories
   end
 
+  def st_estat_categories
+    @cur_node.parent_dataset_node.st_estat_categories.presence || @cur_node.parent_dataset_node.default_st_estat_categories
+  end
+
   public
 
   def index
     @cur_categories = st_categories.map { |cate| cate.children.and_public.sort(order: 1).to_a }.flatten
+    @cur_estat_categories = st_estat_categories.map { |cate| cate.children.and_public.sort(order: 1).to_a }.flatten
     @items = pages.page(params[:page]).per(@cur_node.limit || 20)
   end
 
@@ -37,6 +42,7 @@ class Opendata::Agents::Nodes::Dataset::SearchDatasetController < ApplicationCon
   def search
     @model = Opendata::Dataset
     @cur_categories = st_categories.map { |cate| cate.children.and_public.sort(order: 1).to_a }.flatten
+    @cur_estat_categories = st_estat_categories.map { |cate| cate.children.and_public.sort(order: 1).to_a }.flatten
   end
 
   def rss

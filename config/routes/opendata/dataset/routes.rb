@@ -101,6 +101,7 @@ SS::Application.routes.draw do
 
     get "dataset/(index.:format)" => "public#index", cell: "nodes/dataset/dataset"
     get "dataset/rss.xml" => "public#rss", cell: "nodes/dataset/dataset"
+    get "dataset/estat_categories" => "public#index_estat_categories", cell: "nodes/dataset/dataset"
     get "dataset/areas" => "public#index_areas", cell: "nodes/dataset/dataset"
     get "dataset/tags" => "public#index_tags", cell: "nodes/dataset/dataset"
     get "dataset/formats" => "public#index_formats", cell: "nodes/dataset/dataset"

@@ -16,7 +16,7 @@ class Opendata::HarvestDatasetsJob < Cms::ApplicationJob
 
       # Export Datasets into CKAN
       Opendata::Harvest::Exporter.site(site).each do |exporter|
-        importer.export
+        exporter.export
       end
 
     end

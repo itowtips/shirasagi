@@ -20,6 +20,7 @@ SS::Application.routes.draw do
   content "opendata" do
     get "/" => "main#index", as: :main
     resources :categories, concerns: :deletion
+    resources :estat_categories, concerns: :deletion
     resources :areas, concerns: :deletion
 
     resources :licenses, concerns: :deletion
@@ -35,6 +36,7 @@ SS::Application.routes.draw do
 
   node "opendata" do
     get "category/" => "public#index", cell: "nodes/category"
+    get "estat_category/" => "public#index", cell: "nodes/estat_category"
     get "area/" => "public#index", cell: "nodes/area"
 
     get "sparql/(*path)" => "public#index", cell: "nodes/sparql"

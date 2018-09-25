@@ -3,7 +3,7 @@ module Opendata::Dataset::DatasetFilter
 
   included do
     before_action :set_dataset_with_aggregation,
-      only: [:index_areas, :index_tags, :index_formats, :index_licenses]
+      only: [:index_estat_categories, :index_areas, :index_tags, :index_formats, :index_licenses]
   end
 
   private
@@ -11,6 +11,20 @@ module Opendata::Dataset::DatasetFilter
   def set_dataset_with_aggregation
     @cur_node.layout = nil
     @search_path     = view_context.method(:search_datasets_path)
+  end
+
+  def aggregate_estat_categories(limit)
+    counts = pages.aggregate_array(:estat_category_ids, limit: limit)
+    @estat_categories_popped = counts.popped?
+    counts = counts.map { |c| [c["id"], c["count"]] }.to_h
+
+    estat_categories = []
+    Opendata::Node::EstatCategory.site(@cur_site).and_public.order_by(order: 1).map do |item|
+      next unless counts[item.id]
+      item.count = counts[item.id]
+      estat_categories << item
+    end
+    estat_categories
   end
 
   def aggregate_areas(limit)
@@ -49,6 +63,11 @@ module Opendata::Dataset::DatasetFilter
   end
 
   public
+
+  def index_estat_categories
+    @estat_categories = aggregate_estat_categories(100)
+    render "opendata/agents/nodes/dataset/dataset/estat_categories", layout: "opendata/dataset_aggregation"
+  end
 
   def index_areas
     @areas = aggregate_areas(100)

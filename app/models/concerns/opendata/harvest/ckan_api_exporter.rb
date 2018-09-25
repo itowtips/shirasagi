@@ -16,6 +16,7 @@ module Opendata::Harvest::CkanApiExporter
 
       put_log "#{idx + 1} : dataset_purge #{name} #{id}"
       package.dataset_purge(id, api_key)
+      sleep 1
     end
 
     self.stored_datasets = {}
@@ -173,7 +174,7 @@ module Opendata::Harvest::CkanApiExporter
                 api_key,
                 resource.file
               )
-              sleep 1
+              sleep 2
 
             else
               put_log "#{d_idx}-#{r_idx} : create resource #{resource.name} #{resource.uuid}"
@@ -185,7 +186,7 @@ module Opendata::Harvest::CkanApiExporter
                 api_key,
                 resource.file
               )
-              sleep 1
+              sleep 2
 
               stored_resource_id = result["id"]
               exported_resources[resource.uuid] = stored_resource_id

@@ -64,9 +64,11 @@ ja:
       samples: "データ"
       rdf_property: RDF プロパティ
       category_ids: 分野
+      estat_category_ids: eStat分野
       group_ids: グループ
       group: 分類
       guest_user: ゲストユーザー
+      estat-category: e-Stat分野
       area: 地域
       tag: タグ
       license: ライセンス
@@ -271,7 +273,8 @@ ja:
     addons:
       opendata/category: 分野
       opendata/estat_category: eStat分野
-      opendata/category_setting: カテゴリ設定
+      opendata/category_setting: 分野設定
+      opendata/estat_category_setting: eStat分野設定
       opendata/dataset_group: データセットグループ
       opendata/area: 地域
       opendata/dataset_node: データセット
@@ -407,6 +410,8 @@ ja:
         category_ids: 分野
       opendata/addon/category_setting:
         st_category_ids: 分野
+      opendata/addon/estat_category_setting:
+        st_estat_category_ids: eStat分野
       opendata/addon/rdf_store:
         rdf_iri: グラフ名
         rdf_error: RDF登録エラー

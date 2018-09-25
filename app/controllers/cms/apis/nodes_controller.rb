@@ -15,6 +15,9 @@ class Cms::Apis::NodesController < ApplicationController
 
   def set_model_from_param
     model = params[:model].presence
+
+    dump(model)
+
     return if model.blank?
     return unless model.include?('::Node')
 
