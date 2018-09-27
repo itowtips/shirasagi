@@ -14,9 +14,10 @@ class Opendata::Harvest::Exporter::GroupSetting
 
   field :name, type: String
   field :ckan_id, type: String
+  field :ckan_name, type: String
   field :order, type: Integer, default: 0
 
-  permit_params :name, :ckan_id, :order
+  permit_params :name, :ckan_id, :ckan_name, :order
   permit_params category_ids: []
   permit_params estat_category_ids: []
 
@@ -24,6 +25,7 @@ class Opendata::Harvest::Exporter::GroupSetting
 
   validates :name, presence: true
   validates :ckan_id, presence: true
+  validates :ckan_name, presence: true
   validates :exporter, presence: true
 
   default_scope ->{ order_by order: 1 }

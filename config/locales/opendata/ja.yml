@@ -541,6 +541,13 @@ ja:
         url: URL
         api_key: APIキー
         order: 並び順
+      opendata/harvest/exporter/group_setting:
+        name: 名前
+        ckan_id: "CKAN ID"
+        ckan_name: "CKAN NAME"
+        order: 並び順
+        category_ids: 分野
+        estat_category_ids: eStat分野
       opendata/addon/site_setting:
         dataset_workflow_route: データセット承認
         app_workflow_route: アプリ承認
