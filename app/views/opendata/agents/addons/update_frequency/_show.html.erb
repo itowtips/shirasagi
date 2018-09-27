@@ -1,0 +1,10 @@
+<dl class="see mod-opendata_dataset_groups">
+  <dt><%= @model.t :update_frequency %></dt>
+  <dd><%= @item.update_frequency %></dd>
+
+  <dt><%= @model.t :update_plan_date %></dt>
+  <dd><%= tryb{ @item.update_plan_date.strftime("%Y/%m/%d") } %></dd>
+
+  <dt><%= @model.t :update_plan_date_mail_state %></dt>
+  <dd><%= @item.label :update_plan_date_mail_state %></dd>
+</dl>

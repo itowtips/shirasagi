@@ -302,6 +302,8 @@ ja:
       opendata/harvest/importer_area_setting: 地域設定
       opendata/harvest/importer_report: レポート
       opendata/harvest/license: ハーベスト設定
+      opendata/update_frequency: 更新頻度
+      opendata/node_area: "都道府県 市区町村"
 
   cms:
     nodes:
@@ -444,6 +446,8 @@ ja:
         area_ids: 地域
         resources: リソース
         downloaded: 合計ダウンロード数
+        api_state: API
+        last_updated: 最終更新日時
       opendata/resource:
         file_id: ファイル
         in_file: ファイル
@@ -595,6 +599,10 @@ ja:
         default_area_ids: 既定の地域
       opendata/addon/harvest/license:
         uid: ライセンスID
+      opendata/addon/update_frequency:
+        update_frequency: 更新頻度
+        update_plan_date: 更新予定日
+        update_plan_date_mail_state: 更新予定日のメール通知
 
   activemodel:
     models:

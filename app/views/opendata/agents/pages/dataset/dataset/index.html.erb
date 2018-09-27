@@ -176,14 +176,31 @@ categories = [
           <% end %>
         </div>
 
-        <dl class="author">
+        <dl class="cio-format author">
+          <dt><%= "No" %></dt>
+          <dd><%= sprintf("%010d", @cur_page.id) %></dd>
+
+          <dt><%= "API" %></dt>
+          <dd><%= "有" %></dd>
+
+          <dt><%= "都道府県コード" %></dt>
+          <dd><%= 00000 %></dd>
+
+          <dt><%= "市区町村コード" %></dt>
+          <dd><%= 00000 %></dd>
+
+          <% if @cur_page.update_frequency.present? %>
+          <dt><%= @cur_page.t :update_frequency %></dt>
+          <dd><%= @cur_page.update_frequency %></dd>
+          <% end %>
+
           <% if @cur_page.member_id.present? %>
             <dt><%= @cur_page.t :user_id %></dt>
             <dd>
               <% if @cur_page.member %>
-              <%= link_to @cur_page.member.name, "#{member_path}#{@cur_page.member.id}" %>
+                <%= link_to @cur_page.member.name, "#{member_path}#{@cur_page.member.id}" %>
               <% else %>
-              <%= I18n.t("opendata.labels.guest_user") %>
+                <%= I18n.t("opendata.labels.guest_user") %>
               <% end %>
             </dd>
           <% elsif @cur_page.contact_group %>
@@ -197,9 +214,13 @@ categories = [
           <dt><%= @cur_page.t :downloaded %></dt>
           <dd><%= @cur_page.downloaded.to_i %><%= I18n.t("opendata.labels.time")%></dd>
 
+          <dt><%= @cur_page.t :created %></dt>
+          <dd><%= tryb{@cur_page.created.strftime("%Y-%m-%d")} %><br /></dd>
+
           <dt><%= @cur_page.t :updated %></dt>
-          <dd><%= tryb{@cur_page.updated.strftime("%Y年%1m月%1d日 %1H時%1M分")} %><br /></dd>
+          <dd><%= tryb{@cur_page.updated.strftime("%Y-%m-%d")} %><br /></dd>
         </dl>
+
       </div>
     </div>
     <nav class="feed"></nav>
