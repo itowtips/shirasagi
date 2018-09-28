@@ -87,6 +87,20 @@ module Opendata::Addon
       embeds_ids :areas, class_name: "Opendata::Node::Area"
       permit_params area_ids: []
     end
+
+    def prefecture_codes
+      return [] if areas.blank?
+
+      names = areas.pluck(:name)
+      codes = SS::PrefectureCode.where(
+        { "$or" => [ { "prefecture" => { "$in" => names } }, { "city" => { "$in" => names } } ] }
+      )
+
+      pref = codes.select { |code| code.city.blank? }
+      city = codes.select { |code| code.city.present? }
+
+      [pref, city]
+    end
   end
 
   module DatasetGroup

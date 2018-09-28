@@ -176,6 +176,14 @@ categories = [
           <% end %>
         </div>
 
+        <%
+           pref, city = @cur_page.prefecture_codes
+           if city.present?
+             code = city.first
+           elsif pref.present?
+             code = pref.first
+           end
+        %>
         <dl class="cio-format author">
           <dt><%= "No" %></dt>
           <dd><%= sprintf("%010d", @cur_page.id) %></dd>
@@ -183,11 +191,20 @@ categories = [
           <dt><%= "API" %></dt>
           <dd><%= "有" %></dd>
 
-          <dt><%= "都道府県コード" %></dt>
-          <dd><%= 00000 %></dd>
+          <% if code && code.prefecture.present?  %>
+          <dt><%= code.t :prefecture %></dt>
+          <dd><%= code.prefecture %></dd>
+          <% end %>
 
-          <dt><%= "市区町村コード" %></dt>
-          <dd><%= 00000 %></dd>
+          <% if code && code.city.present?  %>
+          <dt><%= code.t :city %></dt>
+          <dd><%= code.city %></dd>
+          <% end %>
+
+          <% if code && code.city.present?  %>
+          <dt><%= code.t :code %></dt>
+          <dd><%= code.code %></dd>
+          <% end %>
 
           <% if @cur_page.update_frequency.present? %>
           <dt><%= @cur_page.t :update_frequency %></dt>
