@@ -1,9 +1,9 @@
 namespace :opendata do
 
-  task notify_dataset_update_plan: :environment do
+  task notify_dataset_plan: :environment do
     puts "Please input site: site=[www]" or exit if ENV['site'].blank?
     site = ::Cms::Site.where(host: ENV['site']).first
-    ::Opendata::NotifyUpdatePlanJob.bind(site_id: site.id).perform_now
+    ::Opendata::NotifyDatasetPlanJob.bind(site_id: site.id).perform_now
   end
 
   task harvest_datasets: :environment do

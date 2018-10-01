@@ -552,11 +552,11 @@ ja:
         town: 町名
         town_kana: 町名（カナ）
       ss/model/prefecture_code:
-        code: コード
-        prefecture: 都道府県
-        prefecture_kana: 都道府県（カナ）
-        city: 区市町村
-        city_kana: 区市町村（カナ）
+        code: 都道府県又は市区町村コード
+        prefecture: 都道府県名
+        prefecture_kana: 都道府県名（カナ）
+        city: 市区町村名
+        city_kana: 市区町村名（カナ）
       ss/thumb_file:
         original_id: 元画像ID
         image_size: 画像サイズ

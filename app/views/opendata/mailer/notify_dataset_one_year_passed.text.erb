@@ -1,5 +1,5 @@
 <% message.subject = @subject %>
-以下のデータセットが本日更新予定に設定されています。
+以下のデータセットの最終更新日が１年経過しています。
 
 <% @datasets.each do |dataset| %>
 - <%= dataset.name %> <%= ::File.join(@site.mypage_full_url, dataset.private_show_path) %>
