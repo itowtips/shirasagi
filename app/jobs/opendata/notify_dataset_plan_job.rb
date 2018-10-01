@@ -22,13 +22,5 @@ class Opendata::NotifyDatasetPlanJob < Cms::ApplicationJob
       datasets.each { |dataset| dataset.set(update_plan_date_mail_state: "disabled") }
       put_log("send notify update_plan mail #{datasets.size}")
     end
-
-    one_year_passed_datasets = Opendata::Dataset.site(site).
-      where("updated" => { "$lte" => Time.zone.now.advance(years: -1) }).order_by(updated: 1)
-
-    if one_year_passed_datasets.present?
-      Opendata::Mailer.notify_dataset_one_year_passed(site, one_year_passed_datasets).deliver_now
-      put_log("send notify one_year_passed mail #{one_year_passed_datasets.size}")
-    end
   end
 end

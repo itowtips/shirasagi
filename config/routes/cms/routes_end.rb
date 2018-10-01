@@ -215,6 +215,7 @@ SS::Application.routes.draw do
     resources :layouts, concerns: :deletion
     resources :archives, only: [:index]
     resources :photo_albums, only: [:index]
+    get "search_contents/:id" => "page_search_contents#show", as: "page_search_contents"
   end
 
   node "cms" do

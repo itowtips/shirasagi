@@ -28,12 +28,4 @@ class Opendata::Mailer < ActionMailer::Base
 
     mail from: site.sender_address, to: site.sender_address
   end
-
-  def notify_dataset_one_year_passed(site, datasets)
-    @subject = "更新日が１年経過したデータセット"
-    @datasets = datasets
-    @site = site
-
-    mail from: site.sender_address, to: site.sender_address
-  end
 end
