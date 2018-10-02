@@ -139,6 +139,7 @@ SS::Application.routes.draw do
     match "search_contents/pages" => "search_contents/pages#index", via: [:get, :post]
     match "search_contents/files" => "search_contents/files#index", via: [:get, :post]
     get "search_contents/:id" => "page_search_contents#show", as: "page_search_contents"
+    get "search_contents/:id/download" => "page_search_contents#download", as: "download_page_search_contents"
 
     resources :check_links_pages, only: [:show, :index]
     resources :check_links_nodes, only: [:show, :index]
@@ -216,6 +217,7 @@ SS::Application.routes.draw do
     resources :archives, only: [:index]
     resources :photo_albums, only: [:index]
     get "search_contents/:id" => "page_search_contents#show", as: "page_search_contents"
+    get "search_contents/:id/download" => "page_search_contents#download", as: "download_page_search_contents"
   end
 
   node "cms" do
