@@ -13,6 +13,15 @@ module Opendata::Harvest::CkanApiExporter
     list.each_with_index do |name, idx|
       dataset_attributes = package.package_show(name)
       id = dataset_attributes["id"]
+      resources = dataset_attributes["resources"]
+
+      resources.each_with_index do |resource_attributes, r_idx|
+        resource_id = resource_attributes["id"]
+
+        put_log "#{idx + 1}-#{r_idx + 1} : resource_delete #{resource_id}"
+        package.resource_delete(resource_id, api_key)
+        sleep 1
+      end
 
       put_log "#{idx + 1} : dataset_purge #{name} #{id}"
       package.dataset_purge(id, api_key)
@@ -53,6 +62,7 @@ module Opendata::Harvest::CkanApiExporter
       setting = Opendata::Harvest::Exporter::GroupSetting.new(exporter: self, cur_site: site)
       setting.name = attributes["title"]
       setting.ckan_id = attributes["id"]
+      setting.ckan_name = attributes["name"]
       setting.order = (idx + 1) * 10
       setting.category_ids = [c.id]
       setting.save!
@@ -68,6 +78,7 @@ module Opendata::Harvest::CkanApiExporter
       setting = Opendata::Harvest::Exporter::GroupSetting.new(exporter: self, cur_site: site)
       setting.name = attributes["title"]
       setting.ckan_id = attributes["id"]
+      setting.ckan_name = attributes["name"]
       setting.order = (idx + 1) * 10
       setting.estat_category_ids = [c.id]
       setting.save!
@@ -174,7 +185,7 @@ module Opendata::Harvest::CkanApiExporter
                 api_key,
                 resource.file
               )
-              sleep 2
+              sleep 1
 
             else
               put_log "#{d_idx}-#{r_idx} : create resource #{resource.name} #{resource.uuid}"
@@ -186,7 +197,7 @@ module Opendata::Harvest::CkanApiExporter
                 api_key,
                 resource.file
               )
-              sleep 2
+              sleep 1
 
               stored_resource_id = result["id"]
               exported_resources[resource.uuid] = stored_resource_id
