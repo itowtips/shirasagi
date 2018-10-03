@@ -17,19 +17,24 @@ module Opendata::Harvest::CkanApiExporter
 
       resources.each_with_index do |resource_attributes, r_idx|
         resource_id = resource_attributes["id"]
+        self.deleted_resources << resource_id
 
-        put_log "#{idx + 1}-#{r_idx + 1} : resource_delete #{resource_id}"
+        put_log "#{idx}-#{r_idx} : resource_delete #{resource_id}"
         package.resource_delete(resource_id, api_key)
         sleep 1
       end
 
-      put_log "#{idx + 1} : dataset_purge #{name} #{id}"
+      put_log "#{idx} : dataset_purge #{name} #{id}"
       package.dataset_purge(id, api_key)
       sleep 1
     end
 
-    self.stored_datasets = {}
-    self.stored_resources = {}
+    self.exported_datasets = {}
+    self.exported_resources = {}
+    self.exported_resource_revisions = {}
+
+    self.deleted_resources = []
+
     save!
   end
 
@@ -127,11 +132,12 @@ module Opendata::Harvest::CkanApiExporter
     put_log "export to #{url} (Ckan API)"
 
     package = ::Opendata::Harvest::CkanPackage.new(url)
-    exported_datasets = {}
-    exported_resources = {}
+
+    updated_datasets = {}
+    updated_resources = {}
 
     dataset_ids = Opendata::Dataset.where(filename: /^#{node.filename}\//, depth: node.depth + 1).
-        and_public.pluck(:id)
+      and_public.pluck(:id)
 
     put_log "datasets #{dataset_ids.size}"
 
@@ -140,20 +146,22 @@ module Opendata::Harvest::CkanApiExporter
       next unless dataset
 
       begin
-        if stored_datasets[dataset.uuid]
+
+        exported_dataset_id = exported_datasets[dataset.uuid]
+
+        if exported_dataset_id
           put_log "#{d_idx} : update dataset #{dataset.name} #{dataset.uuid}"
 
-          stored_dataset_id = stored_datasets[dataset.uuid]
-          exported_datasets[dataset.uuid] = stored_dataset_id
+          updated_dataset_id = exported_dataset_id
+          updated_datasets[dataset.uuid] = updated_dataset_id
 
           # patch dataset
           result = package.package_patch(
-            stored_dataset_id,
+            updated_dataset_id,
             dataset_update_params(dataset),
             api_key
           )
           sleep 1
-
         else
           put_log "#{d_idx} : create dataset #{dataset.name} #{dataset.uuid}"
           #result = package.dataset_purge(dataset.uuid, api_key)
@@ -165,43 +173,63 @@ module Opendata::Harvest::CkanApiExporter
           )
           sleep 1
 
-          stored_dataset_id = result["id"]
-          exported_datasets[dataset.uuid] = stored_dataset_id
-
+          updated_dataset_id = result["id"]
+          updated_datasets[dataset.uuid] = updated_dataset_id
         end
 
         dataset.resources.each_with_index do |resource, r_idx|
           begin
-            if stored_resources[resource.uuid]
-              put_log "#{d_idx}-#{r_idx} : update resource #{resource.name} #{resource.uuid}"
 
-              stored_resource_id = stored_resources[resource.uuid]
-              exported_resources[resource.uuid] = stored_resource_id
+            exported_resource = exported_resources[resource.uuid] || {}
+            exported_resource_id = exported_resource["id"]
+            ss_revision_id = exported_resource["ss_revision_id"] # shirasagi's revision_id
 
-              # update resource
-              result = package.resource_update(
-                stored_resource_id,
-                resource_update_params(resource),
-                api_key,
-                resource.file
-              )
-              sleep 1
+            if exported_resource_id
+
+              package.resource_show(exported_resource_id)
+
+              if resource.revision_id == ss_revision_id
+
+                put_log "#{d_idx}-#{r_idx} : same revision #{resource.name} #{resource.uuid}"
+                updated_resources[resource.uuid] = {
+                  "id" => exported_resource_id,
+                  "ss_revision_id" => resource.revision_id
+                }
+              else
+
+                put_log "#{d_idx}-#{r_idx} : update resource #{resource.name} #{resource.uuid}"
+
+                # update resource
+                result = package.resource_update(
+                  exported_resource_id,
+                  resource_update_params(resource),
+                  api_key,
+                  resource.file
+                )
+                sleep 1
+
+                updated_resources[resource.uuid] = {
+                  "id" => exported_resource_id,
+                  "ss_revision_id" => resource.revision_id
+                }
+              end
 
             else
               put_log "#{d_idx}-#{r_idx} : create resource #{resource.name} #{resource.uuid}"
 
               # create resource
               result = package.resource_create(
-                stored_dataset_id,
+                updated_dataset_id,
                 resource_create_params(resource),
                 api_key,
                 resource.file
               )
               sleep 1
 
-              stored_resource_id = result["id"]
-              exported_resources[resource.uuid] = stored_resource_id
-
+              updated_resources[resource.uuid] = {
+                "id" => result["id"],
+                "ss_revision_id" => resource.revision_id
+              }
             end
           rescue => e
             message = "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}"
@@ -217,8 +245,12 @@ module Opendata::Harvest::CkanApiExporter
 
   ensure
     # destroy unimported resourcse
-    (stored_resources.values - exported_resources.values).each do |id|
+    updated_resource_ids = updated_resources.values.map { |r| r["id"] }
+    exported_resource_ids = exported_resources.values.map { |r| r["id"] }
+
+    (exported_resource_ids - updated_resource_ids).each do |id|
       put_log "delete resource #{id}"
+      self.deleted_resources << id
 
       begin
         package.resource_delete(id, api_key)
@@ -229,7 +261,7 @@ module Opendata::Harvest::CkanApiExporter
     end
 
     # destroy unimported datasets
-    (stored_datasets.values - exported_datasets.values).each do |id|
+    (exported_datasets.values - updated_datasets.values).each do |id|
       put_log "purge dataset #{id}"
 
       begin
@@ -240,8 +272,8 @@ module Opendata::Harvest::CkanApiExporter
       end
     end
 
-    self.stored_resources = exported_resources
-    self.stored_datasets = exported_datasets
+    self.exported_resources = updated_resources
+    self.exported_datasets = updated_datasets
     save!
   end
 
@@ -315,9 +347,9 @@ module Opendata::Harvest::CkanApiExporter
       url: (resource.file ? resource.file.filename : resource.source_url),
       description: resource.text,
       format: resource.format,
-      created: resource.created.utc.strftime('%Y-%m-%d %H:%M:%S'),
-      last_modified: resource.updated.utc.strftime('%Y-%m-%d %H:%M:%S'), # not accepted
-      revision_id: resource.revision_id, # not accepted
+      #created: resource.created.utc.strftime('%Y-%m-%d %H:%M:%S'), # not accepted
+      #last_modified: resource.updated.utc.strftime('%Y-%m-%d %H:%M:%S'), # not accepted
+      #revision_id: resource.revision_id, # not accepted
     }
     params
   end
@@ -328,9 +360,9 @@ module Opendata::Harvest::CkanApiExporter
       url: (resource.file ? resource.file.filename : resource.source_url),
       description: resource.text,
       format: resource.format,
-      created: resource.created.utc.strftime('%Y-%m-%d %H:%M:%S'),
-      last_modified: resource.updated.utc.strftime('%Y-%m-%d %H:%M:%S'),
-      revision_id: resource.revision_id, # not accepted
+      #created: resource.created.utc.strftime('%Y-%m-%d %H:%M:%S'), # not accepted
+      #last_modified: resource.updated.utc.strftime('%Y-%m-%d %H:%M:%S'), # not accepted
+      #revision_id: resource.revision_id, # not accepted
     }
     params
   end

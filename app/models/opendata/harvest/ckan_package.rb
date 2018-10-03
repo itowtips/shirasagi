@@ -63,6 +63,14 @@ class Opendata::Harvest::CkanPackage
     ::File.join(url, "api/action/dataset_purge")
   end
 
+  def resource_show_url(id = nil)
+    if id
+      ::File.join(url, "api/action/resource_show") + "?id=#{id}"
+    else
+      ::File.join(url, "api/action/resource_show")
+    end
+  end
+
   def resource_create_url
     ::File.join(url, "api/action/resource_create")
   end
@@ -221,6 +229,13 @@ class Opendata::Harvest::CkanPackage
   end
 
   ## resource apis
+
+  def resource_show(id)
+    result = open(resource_show_url(id), read_timeout: 20).read
+    result = ::JSON.parse(result)
+    validate_result("resource_show", result)
+    result["result"]
+  end
 
   def resource_create(package_id, params, api_key, file = nil)
     params[:package_id] = package_id
@@ -425,27 +440,4 @@ class Opendata::Harvest::CkanPackage
     validate_result("organization_purge", result)
     result["result"]
   end
-
-=begin
-  def package_list_to_csv
-    list = package_list
-    CSV.generate do |data|
-      data << %w(title notes license_title resources groups organization url)
-
-      list.each do |id|
-        puts id
-        package = package_show(id)
-        line = []
-        line << package["title"]
-        line << package["notes"]
-        line << package["license_title"]
-        line << package["resources"].map { |resources| resources["name"] }.join("\n")
-        line << package["groups"].map { |resources| resources["title"] }.join("\n")
-        line << package.dig("organization", "title")
-        line << ::File.join(url, "/dataset/#{id}")
-        data << line
-      end
-    end
-  end
-=end
 end

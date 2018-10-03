@@ -21,6 +21,8 @@ module Opendata::Addon::Harvest::Resource
     before_validation :set_harvest_text_index, if: -> { harvest_imported.present? }
 
     validates :uuid, presence: true
+
+    before_save :set_revision_id
   end
 
   def set_harvest_text_index
@@ -40,5 +42,11 @@ module Opendata::Addon::Harvest::Resource
 
   def set_uuid
     self.uuid ||= SecureRandom.uuid
+  end
+
+  def set_revision_id
+    return true if !changed?
+    return true if !record_timestamps
+    self.revision_id = SecureRandom.uuid
   end
 end

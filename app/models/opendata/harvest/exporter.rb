@@ -18,8 +18,11 @@ class Opendata::Harvest::Exporter
 
   field :host, type: String
 
-  field :stored_datasets, type: Hash, default: {}
-  field :stored_resources, type: Hash, default: {}
+  field :exported_datasets, type: Hash, default: {}
+  field :exported_resources, type: Hash, default: {}
+  field :exported_resource_revisions, type: Hash, default: {}
+
+  field :deleted_resources, type: Array, default: []
 
   has_many :group_settings, class_name: 'Opendata::Harvest::Exporter::GroupSetting', dependent: :destroy, inverse_of: :exporter
   has_many :owner_org_settings, class_name: 'Opendata::Harvest::Exporter::OwnerOrgSetting', dependent: :destroy, inverse_of: :exporter
