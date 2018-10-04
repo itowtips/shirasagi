@@ -17,6 +17,7 @@ class Opendata::Resource
   validates :source_url, format: /\A#{URI::regexp(%w(https http))}$\z/, if: ->{ source_url.present? }
 
   before_validation :set_filename, if: ->{ in_file.present? }
+  before_validation :escape_source_url, if: ->{ source_url.present? }
   before_validation :validate_in_file, if: ->{ in_file.present? }
   before_validation :validate_in_tsv, if: ->{ in_tsv.present? }
   before_validation :set_format
@@ -39,6 +40,11 @@ class Opendata::Resource
   def set_filename
     self.filename = in_file.original_filename
     self.format = filename.sub(/.*\./, "").upcase if format.blank?
+  end
+
+  def escape_source_url
+    return if source_url.ascii_only?
+    self.source_url = ::Addressable::URI.escape(source_url)
   end
 
   def validate_in_file
