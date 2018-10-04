@@ -52,7 +52,9 @@ class Opendata::Resource
   end
 
   def set_format
-    self.format = format.upcase if format.present?
+    return if format.blank?
+
+    self.format = format.upcase
     self.rm_tsv = "1" if %(CSV TSV).index(format)
   end
 
