@@ -206,9 +206,9 @@ categories = [
           <dd><%= code.code %></dd>
           <% end %>
 
-          <% if @cur_page.update_frequency.present? %>
-          <dt><%= @cur_page.t :update_frequency %></dt>
-          <dd><%= @cur_page.update_frequency %></dd>
+          <% if @cur_page.update_plan.present? %>
+          <dt><%= @cur_page.t :update_plan %></dt>
+          <dd><%= @cur_page.update_plan %></dd>
           <% end %>
 
           <% if @cur_page.member_id.present? %>

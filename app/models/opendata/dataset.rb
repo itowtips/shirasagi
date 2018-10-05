@@ -7,7 +7,7 @@ class Opendata::Dataset
   include Opendata::Addon::EstatCategory
   include Opendata::Addon::Area
   include Opendata::Addon::DatasetGroup
-  include Opendata::Addon::UpdateFrequency
+  include Opendata::Addon::UpdatePlan
   include Opendata::Reference::Member
   include Opendata::Common
   include Opendata::Addon::CmsRef::Page

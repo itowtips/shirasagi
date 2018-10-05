@@ -197,6 +197,9 @@ ja:
     operator_condition_options:
       match: 一致する
       unmatch: 一致しない
+    update_plan_unit_options:
+      month: 毎月
+      year: 毎年
     assoc_job:
       dataset_text: "%{name} の一覧は %{url} でも公開されているので、%{url} もご覧ください。"
       resource_text: "%{name} は %{now} 時点の情報を元に作成しています。"
@@ -302,7 +305,7 @@ ja:
       opendata/harvest/importer_area_setting: 地域設定
       opendata/harvest/importer_report: レポート
       opendata/harvest/license: ハーベスト設定
-      opendata/update_frequency: 更新頻度
+      opendata/update_plan: 更新頻度
       opendata/node_area: "都道府県 市区町村"
 
   cms:
@@ -599,10 +602,10 @@ ja:
         default_area_ids: 既定の地域
       opendata/addon/harvest/license:
         uid: ライセンスID
-      opendata/addon/update_frequency:
-        update_frequency: 更新頻度
+      opendata/addon/update_plan:
+        update_plan: 更新頻度
         update_plan_date: 更新予定日
-        update_plan_date_mail_state: 更新予定日のメール通知
+        update_plan_mail_state: 更新予定日のメール通知
 
   activemodel:
     models:
@@ -702,6 +705,13 @@ ja:
         - 連携確認方法を選択します。
         - 自動を選択すると、CMS の記事との連携が自動で確認され、記事が削除されたり非公開になったりした場合、自動的にデータセットが非公開になります。また、リソースは自動的に記事の添付ファイルと連動するようになります。
         - 手動を選択すると、CMS の記事との連携が自動では確認されません。
+    opendata/addon/update_plan:
+      update_plan: 更新頻度を入力します。
+      update_plan_date:
+        - 更新予定日を入力します。
+        - 更新予定日のメール通知が有効の場合、メール通知されます。
+        - メール通知を有効にするには該当のタスクをサーバー設定する必要があります。
+      update_plan_mail_state: 更新予定日のメール通知を設定します。
 
   job:
     models:
