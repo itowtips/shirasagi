@@ -92,12 +92,8 @@ module Opendata::Addon
       return [] if areas.blank?
 
       names = areas.pluck(:name)
-      codes = SS::PrefectureCode.where(
-        { "$or" => [ { "prefecture" => { "$in" => names } }, { "city" => { "$in" => names } } ] }
-      )
-
-      pref = codes.select { |code| code.city.blank? }
-      city = codes.select { |code| code.city.present? }
+      pref = SS::PrefectureCode.in(prefecture: names).to_a.select { |pref| pref.city.blank? }
+      city = SS::PrefectureCode.in(city: names).to_a
 
       [pref, city]
     end

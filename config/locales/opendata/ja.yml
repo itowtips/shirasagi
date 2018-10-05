@@ -200,6 +200,9 @@ ja:
     update_plan_unit_options:
       month: 毎月
       year: 毎年
+    api_state_options:
+      enabled: 有
+      disabled: 無
     assoc_job:
       dataset_text: "%{name} の一覧は %{url} でも公開されているので、%{url} もご覧ください。"
       resource_text: "%{name} は %{now} 時点の情報を元に作成しています。"
@@ -449,6 +452,7 @@ ja:
         area_ids: 地域
         resources: リソース
         downloaded: 合計ダウンロード数
+        no: No
         api_state: API
         last_updated: 最終更新日時
       opendata/resource:

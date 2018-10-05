@@ -185,11 +185,11 @@ categories = [
            end
         %>
         <dl class="cio-format author">
-          <dt><%= "No" %></dt>
+          <dt><%= @cur_page.t :no %></dt>
           <dd><%= sprintf("%010d", @cur_page.id) %></dd>
 
-          <dt><%= "API" %></dt>
-          <dd><%= "有" %></dd>
+          <dt><%= @cur_page.t :api_state %></dt>
+          <dd><%= @cur_page.label :api_state %></dd>
 
           <% if code && code.prefecture.present?  %>
           <dt><%= code.t :prefecture %></dt>
@@ -201,7 +201,7 @@ categories = [
           <dd><%= code.city %></dd>
           <% end %>
 
-          <% if code && code.city.present?  %>
+          <% if code %>
           <dt><%= code.t :code %></dt>
           <dd><%= code.code %></dd>
           <% end %>

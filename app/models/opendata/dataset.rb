@@ -81,6 +81,16 @@ class Opendata::Dataset
     super
   end
 
+  def api_state
+    "enabled"
+  end
+
+  def api_state_options
+    %w(disabled enabled).map do |v|
+      [ I18n.t("opendata.api_state_options.#{v}"), v ]
+    end
+  end
+
   private
 
   def validate_filename
