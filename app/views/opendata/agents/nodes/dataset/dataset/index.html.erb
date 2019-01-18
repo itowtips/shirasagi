@@ -61,6 +61,17 @@ return $(".licenses a.more").colorbox({
   <% end %>
 </div>
 
+<% if @show_categories %>
+<article class="categories nodes">
+  <header><h1><%= I18n.t("opendata.labels.category") %></h1></header>
+  <%= render file: "opendata/agents/nodes/dataset/dataset/categories" %>
+  <% if @categories_popped %>
+    <nav><%= link_to t('ss.links.more'), "#{@node_url}categories/", class: "more" %></nav>
+  <% end %>
+</article>
+<% end %>
+
+<% if @show_estat_categories %>
 <article class="estat-categories nodes">
   <header><h1><%= I18n.t("opendata.labels.estat-category") %></h1></header>
   <%= render file: "opendata/agents/nodes/dataset/dataset/estat_categories" %>
@@ -68,6 +79,7 @@ return $(".licenses a.more").colorbox({
     <nav><%= link_to t('ss.links.more'), "#{@node_url}estat_categories/", class: "more" %></nav>
   <% end %>
 </article>
+<% end %>
 
 <article class="areas nodes">
   <header><h1><%= I18n.t("opendata.labels.area") %></h1></header>

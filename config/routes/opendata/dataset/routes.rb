@@ -116,6 +116,11 @@ SS::Application.routes.draw do
     # get "dataset_category/:name/formats" => "public#index_formats", cell: "nodes/dataset/dataset_category"
     # get "dataset_category/:name/licenses" => "public#index_licenses", cell: "nodes/dataset/dataset_category"
 
+    get "dataset_estat_category/" => "public#index", cell: "nodes/dataset/dataset_estat_category"
+    get "dataset_estat_category/rss.xml" => "public#rss", cell: "nodes/dataset/dataset_estat_category"
+    get "dataset_estat_category/:name/" => "public#index", cell: "nodes/dataset/dataset_estat_category"
+    get "dataset_estat_category/:name/rss.xml" => "public#rss", cell: "nodes/dataset/dataset_estat_category"
+
     get "dataset_area/" => "public#index", cell: "nodes/dataset/dataset_area"
     get "dataset_area/rss.xml" => "public#rss", cell: "nodes/dataset/dataset_area"
     get "dataset_area/*name/rss.xml" => "public#rss", cell: "nodes/dataset/dataset_area", name: /[^\.]+/

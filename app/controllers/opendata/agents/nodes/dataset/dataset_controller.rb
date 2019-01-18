@@ -69,6 +69,9 @@ class Opendata::Agents::Nodes::Dataset::DatasetController < ApplicationControlle
                  rss: @rss_path.call("sort" => options[1]) }
     end
 
+    @show_categories = false
+    @show_estat_categories = true
+
     max = 50
     @areas            = aggregate_areas(max)
     @estat_categories = aggregate_estat_categories(max)
