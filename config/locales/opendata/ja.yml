@@ -127,12 +127,12 @@ ja:
       samples: "データ"
       rdf_property: RDF プロパティ
       category_ids: 分野
-      estat_category_ids: eStat分野
+      estat_category_ids: 統計データ分野
       group_ids: グループ
       group: 分類
       guest_user: ゲストユーザー
       category: 分野
-      estat-category: e-Stat分野
+      estat-category: 統計データ分野
       area: 地域
       tag: タグ
       license: ライセンス
@@ -370,9 +370,9 @@ ja:
     opendata: オープンデータ
     addons:
       opendata/category: 分野
-      opendata/estat_category: eStat分野
+      opendata/estat_category: 統計データ分野
       opendata/category_setting: 分野設定
-      opendata/estat_category_setting: eStat分野設定
+      opendata/estat_category_setting: 統計データ分野設定
       opendata/dataset_group: データセットグループ
       opendata/area: 地域
       opendata/dataset_node: データセット
@@ -396,7 +396,7 @@ ja:
       opendata/cms_ref/page: ページ連携
       opendata/cms_ref/attachment_file: 添付ファイル連携
       opendata/harvest/importer_category_setting: 分野設定
-      opendata/harvest/importer_estat_category_setting: eStat分野設定
+      opendata/harvest/importer_estat_category_setting: 統計データ分野設定
       opendata/harvest/importer_area_setting: 地域設定
       opendata/harvest/importer_report: レポート
       opendata/harvest/edit_lock: ハーベスト
@@ -409,11 +409,11 @@ ja:
   cms:
     nodes:
       opendata/category: 分野
-      opendata/estat_category: eStat分野
+      opendata/estat_category: 統計データ分野
       opendata/area: 地域
       opendata/dataset: データセット
       opendata/dataset_category: データセット分野
-      opendata/dataset_estat_category: データセットeStat分野
+      opendata/dataset_estat_category: データセット統計データ分野
       opendata/dataset_area: データセット地域
       opendata/search_dataset_group: データセットグループ検索
       opendata/search_dataset: データセット検索
@@ -526,7 +526,7 @@ ja:
       opendata/addon/category_setting:
         st_category_ids: 分野
       opendata/addon/estat_category_setting:
-        st_estat_category_ids: eStat分野
+        st_estat_category_ids: 統計データ分野
       opendata/addon/rdf_store:
         rdf_iri: グラフ名
         rdf_error: RDF登録エラー
@@ -556,7 +556,7 @@ ja:
         license: ライセンス
         tags: タグ
         category_ids: 分野
-        estat_category_ids: eStat分野
+        estat_category_ids: 統計データ分野
         dataset_group_ids: グループ
         area_ids: 地域
         resources: リソース
@@ -674,7 +674,7 @@ ja:
         dataset_name: データセット名
         resouce_name: リソース名
         category_ids: 分野
-        estat_category_ids: eStat分野
+        estat_category_ids: 統計データ分野
         area_ids: 地域
       opendata/harvest/importer/report_dataset:
         imported: インポート
@@ -690,7 +690,7 @@ ja:
         ckan_name: "CKAN NAME"
         order: 並び順
         category_ids: 分野
-        estat_category_ids: eStat分野
+        estat_category_ids: 統計データ分野
       opendata/addon/site_setting:
         dataset_workflow_route: データセット承認
         app_workflow_route: アプリ承認
@@ -732,7 +732,7 @@ ja:
         default_category_ids: 既定の分野
         category_settings: コンバート設定
       opendata/addon/harvest/importer_estat_category_setting:
-        default_estat_category_ids: 既定のeStat分野
+        default_estat_category_ids: 既定の統計データ分野
         category_settings: コンバート設定
       opendata/addon/harvest/importer_area_setting:
         default_area_ids: 既定の地域
@@ -879,9 +879,9 @@ ja:
           #{dataset_count}　データセット件数が表示されます。
           #{dataset_tag_count}　データセットのタグ件数が表示されます。
           #{dataset_group_count}　データセットのグループ件数が表示されます。
-          #{estat_dataset_count}　eStat分野が設定されたデータセット件数が表示されます。
-          #{estat_dataset_tag_count}　eStat分野が設定されたデータセットのタグ件数が表示されます。
-          #{estat_dataset_group_count}　eStat分野が設定されたデータセットのグループ件数が表示されます。
+          #{estat_dataset_count}　統計データ分野が設定されたデータセット件数が表示されます。
+          #{estat_dataset_tag_count}　統計データ分野が設定されたデータセットのタグ件数が表示されます。
+          #{estat_dataset_group_count}　統計データ分野が設定されたデータセットのグループ件数が表示されます。
           #{app_count}　アプリ件数が表示されます。
           #{app_tag_count}　アプリのタグ件数が表示されます。
           #{idea_count}　アイデア件数が表示されます。
@@ -912,7 +912,7 @@ ja:
         - 既定の分野を設定します。
     opendata/addon/harvest/importer_estat_category_setting:
       default_estat_category_ids:
-        - 既定のeStat分野を設定します。
+        - 既定の統計データ分野を設定します。
     opendata/addon/harvest/importer_area_setting:
       default_area_ids:
         - 既定の地域を設定します。
