@@ -1,0 +1,525 @@
+this.Cms_Column_Form = (function () {
+  function Cms_Column_Form() {};
+
+  // ResultBox
+  function ResultBox() {
+    this.$el = null;
+    this.$elBody = null;
+    this.form = null;
+  }
+
+  ResultBox.prototype.init = function() {
+    if (this.$el) {
+      return this;
+    }
+
+    var $div = $("#errorSyntaxChecker");
+    if ($div[0]) {
+      this.$el = $div;
+      this.$elBody = $div.find(".errorExplanationBody");
+
+      return this.moveLast();
+    }
+
+    $div = $("<div/>", { id: 'errorSyntaxChecker', class: 'errorExplanation' });
+    $div.append("<h2>" + "<%= I18n.t('cms.syntax_check') %>" + "</h2>");
+
+    var $body = $("<div/>", { class: 'errorExplanationBody' });
+    $div.append($body);
+
+    this.$el = $div;
+    this.$elBody = $body;
+
+    return this.moveLast();
+  };
+
+  ResultBox.prototype.moveLast = function() {
+    $(Cms_Column_Form.addonSelector).append(this.$el);
+    return this;
+  };
+
+  ResultBox.prototype.showMessage = function(message) {
+    this.init();
+    this.$elBody.html(message);
+    this.moveLast();
+    return this;
+  }
+
+  ResultBox.prototype.showChecking = function() {
+    return this.showMessage(SS.loading);
+  };
+
+  ResultBox.prototype.showResult = function (errors) {
+    if (errors.length == 0) {
+      this.showMessage("<p>" + "<%= I18n.t('errors.template.no_errors') %>" + "</p>");
+      return;
+    }
+
+    this.init();
+
+    var ul = $("<ul/>");
+
+    this.appendMessage(ul, errors);
+
+    this.$elBody.html("")
+    this.$elBody.append("<p>" + "<%= I18n.t('errors.template.body') %>" + "</p>");
+    this.$elBody.append(ul);
+
+    this.moveLast();
+    SS_Tooltips.render(".detail");
+
+    $(window).trigger('resize');
+
+    return this;
+  };
+
+  ResultBox.prototype.appendMessage = function (ul, errors) {
+    var correct, detail, error, errors, i, key, li, message, results, listkey;
+
+    var id;
+
+    results = [];
+
+    $.each(errors, function(_, error) {
+
+      id = error["id"];
+
+      ul.append('<li class="code">');
+      ul.find('li:last').append('<code>' + error["code"] + '</code>');
+      ul.append('<ul>');
+      ul.find('> ul:last').append('<li>');
+
+      // append message
+      li = ul.find('> ul:last li:last');
+      message = $('<span class="message detail">' + error["msg"] + '</span>');
+      if (error["detail"]) {
+        detail = $('<ul>').appendTo(message);
+        $.each(error["detail"], function () {
+          detail.append("<li>" + this + "</li>");
+          detail.hide();
+        });
+      }
+      li.append(message);
+
+      // append correct
+      if (error["correct"]) {
+        correct = $('<a href="#" class="correct">' + "<%= I18n.t('cms.auto_correct.link') %>" + '</a>');
+        correct.on("click", { error: error }, function (e) {
+          alert("this");
+          var html;
+          //if (e.data.error["opts"]) {
+          //  html = e.data.error["correct"](e.data.error["ele"], e.data.error["opts"]);
+          //} else {
+          //  html = e.data.error["correct"](e.data.error["ele"]);
+          //}
+          //Syntax_Checker.resultBox.form.setEditorHtml(html, { "listkey": e.data.error["listkey"] });
+          //$(Syntax_Checker.resultBox.form.addonSelector).find("button.syntax-check").trigger("click");
+          return false;
+        });
+        li.append(correct)
+      }
+    });
+
+    return;
+
+    for (key in errorHash) {
+      errors = errorHash[key];
+
+      results.push((function () {
+        var j, len, results1;
+        results1 = [];
+        for (i = j = 0, len = errors.length; j < len; i = ++j) {
+          error = errors[i];
+          ul.find('li:last code').text(error["code"]);
+          ul.find('> ul:last').append('<li>');
+          li = ul.find('> ul:last li:last');
+          message = $('<span class="message detail">' + error["msg"] + '</span>');
+          if (error["detail"]) {
+            detail = $('<ul>').appendTo(message);
+            $.each(error["detail"], function () {
+              detail.append("<li>" + this + "</li>");
+              return detail.hide();
+            });
+          }
+          li.append(message);
+          if (error["correct"] && error["ele"]) {
+            correct = $('<a href="#" class="correct">' + "<%= I18n.t('cms.auto_correct.link') %>" + '</a>');
+            correct.on("click", {
+              error: error
+            }, function (e) {
+              var html;
+              if (e.data.error["opts"]) {
+                html = e.data.error["correct"](e.data.error["ele"], e.data.error["opts"]);
+              } else {
+                html = e.data.error["correct"](e.data.error["ele"]);
+              }
+              Syntax_Checker.resultBox.form.setEditorHtml(html, { "listkey": e.data.error["listkey"] });
+              $(Syntax_Checker.resultBox.form.addonSelector).find("button.syntax-check").trigger("click");
+              return false;
+            });
+            results1.push(li.append(correct));
+          } else {
+            results1.push(void 0);
+          }
+        }
+        return results1;
+      })());
+    }
+    return results;
+  };
+
+  Cms_Column_Form.syntaxChecks = {};
+  Cms_Column_Form.syntaxCheckResultBox = new ResultBox();
+  Cms_Column_Form.addonSelector = "#addon-cms-agents-addons-form-page .addon-body";
+
+  Cms_Column_Form.render = function (options) {
+    this.options = options;
+
+    var syntax = options["syntax"];
+
+    // handle Syntax_Checker
+    {
+      var asyncCheck = function () {
+        var defer = $.Deferred();
+
+        //try {
+          var contents;
+          var errors;
+
+          contents = Cms_Column_Form.getSyntaxCheckContents();
+          errors = Syntax_Checker.check(contents);
+
+          Cms_Column_Form.syntaxCheckResultBox.init();
+          Cms_Column_Form.syntaxCheckResultBox.showResult(errors);
+
+          //Syntax_Checker.check(content, options);
+        //} catch (e) {
+        //  Syntax_Checker.resultBox.showMessage("<p>" + e + "</p>");
+        //}
+
+        return defer.promise();
+      };
+
+      $(document).on("click", syntax, function () {
+        var button = this;
+        //button.disabled = true;
+
+        var complete = function () {
+          //button.disabled = false;
+        };
+
+        asyncCheck().done(complete).fail(complete);
+      });
+
+    }
+  };
+
+  Cms_Column_Form.addSyntaxCheck = function (id, options) {
+    options = options || {};
+
+    var type = options["type"] || "html";
+    var getContent = options["getContent"];
+    var setContent = options["setContent"];
+
+    this.syntaxChecks[id] = {
+      type: type,
+      getContent: getContent,
+      setContent: setContent
+    };
+  };
+
+  Cms_Column_Form.getSyntaxCheckContents = function () {
+    var contents = {};
+
+    $.each(Cms_Column_Form.syntaxChecks, function(id, check) {
+      contents[id] = { content: check["getContent"](), type: check["type"] };
+    });
+
+    return contents;
+  };
+
+  return Cms_Column_Form;
+})();
+
+this.Syntax_Checker = (function () {
+  function Syntax_Checker() {};
+
+  Syntax_Checker.errors = {};
+  Syntax_Checker.errorCount = 0;
+
+  Syntax_Checker.check = function (contents) {
+    Syntax_Checker.reset();
+
+    $.each(contents, function(id, content) {
+      Syntax_Checker.checkText(id, content);
+    });
+
+    return Syntax_Checker.errors;
+  };
+
+  Syntax_Checker.reset = function () {
+    this.errors = [];
+  };
+
+  Syntax_Checker.checkText =  function (id, content) {
+    Syntax_Checker.checkMultibyteCharacter(id, content);
+    //Syntax_Checker.checkKanaCharacter(id, content);
+    //Syntax_Checker.checkDateFormat(id, content);
+    //Syntax_Checker.checkReplaceWords(id, content);
+  }
+
+  // javascript syntax check
+
+  Syntax_Checker.message = {
+    notSetImgAlt: "<%= I18n.t('errors.messages.set_img_alt') %>",
+    notSetAppletAlt: "<%= I18n.t('errors.messages.set_applet_alt') %>",
+    notSetAreaAlt: "<%= I18n.t('errors.messages.set_area_alt') %>",
+    invalidImgScheme: "<%= I18n.t('errors.messages.invalid_img_scheme') %>",
+    notSetTableCaption: "<%= I18n.t('errors.messages.set_table_caption') %>",
+    notSetThScope: "<%= I18n.t('errors.messages.set_th_scope') %>",
+    invalidOrderOfH: "<%= I18n.t('errors.messages.invalid_order_of_h') %>",
+    invalidMultibyteCharacter: "<%= I18n.t('errors.messages.invalid_multibyte_character') %>",
+    invalidKanaCharacter: "<%= I18n.t('errors.messages.invalid_kana_character') %>",
+    invalidDateFormat: "<%= I18n.t('errors.messages.invalid_date_format') %>",
+    invalidAdjacentA: "<%= I18n.t('errors.messages.invalid_adjacent_a') %>",
+    checkInterwordSpace: "<%= I18n.t('errors.messages.check_interword_space') %>",
+    checkLinkText: "<%= I18n.t('errors.messages.check_link_text') %>",
+    checkObjectText: "<%= I18n.t('errors.messages.check_object_text') %>",
+    checkEmbeddedMedia: "<%= I18n.t('errors.messages.check_embedded_media') %>",
+    replaceWord: "<%= I18n.t('errors.messages.replace_word') %>"
+  };
+  Syntax_Checker.detail = {
+    notSetImgAlt: <%= I18n.t('errors.messages.syntax_check_detail.set_img_alt').to_json %>,
+    notSetAppletAlt: <%= I18n.t('errors.messages.syntax_check_detail.set_applet_alt').to_json %>,
+    notSetAreaAlt: <%= I18n.t('errors.messages.syntax_check_detail.set_area_alt').to_json %>,
+    invalidImgScheme: <%= I18n.t('errors.messages.syntax_check_detail.invalid_img_scheme').to_json %>,
+    notSetTableCaption: <%= I18n.t('errors.messages.syntax_check_detail.set_table_caption').to_json %>,
+    notSetThScope: <%= I18n.t('errors.messages.syntax_check_detail.set_th_scope').to_json %>,
+    invalidOrderOfH: <%= I18n.t('errors.messages.syntax_check_detail.invalid_order_of_h').to_json %>,
+    invalidMultibyteCharacter: <%= I18n.t('errors.messages.syntax_check_detail.invalid_multibyte_character').to_json %>,
+    invalidKanaCharacter: <%= I18n.t('errors.messages.syntax_check_detail.invalid_kana_character').to_json %>,
+    invalidDateFormat: <%= I18n.t('errors.messages.syntax_check_detail.invalid_date_format').to_json %>,
+    invalidAdjacentA: <%= I18n.t('errors.messages.syntax_check_detail.invalid_adjacent_a').to_json %>,
+    checkInterwordSpace: <%= I18n.t('errors.messages.syntax_check_detail.check_interword_space').to_json %>,
+    checkLinkText: <%= I18n.t('errors.messages.syntax_check_detail.check_link_text').to_json %>,
+    checkObjectText: <%= I18n.t('errors.messages.syntax_check_detail.check_object_text').to_json %>,
+    checkEmbeddedMedia: <%= I18n.t('errors.messages.syntax_check_detail.check_embedded_media').to_json %>
+  };
+  Syntax_Checker.mediaExtensions = [
+    "aac", "aif", "aiff", "au", "avi", "flac", "flv", "mid",
+    "midi", "mp3", "m4a", "mp4", "mpg", "mpeg", "oga", "ogg",
+    "tta", "vdo", "wav", "wma", "wmv"
+  ];
+
+  // MultibyteCharacter
+  Syntax_Checker.checkMultibyteCharacter = function (id, content) {
+    var type = content["type"];
+    var content = content["content"];
+    var html;
+
+    if (type == "html") {
+      html = content;
+    }
+    else {
+      html = "<div>" + content + "</div>";
+    }
+
+    var chars = [];
+    $(html).find(":not(iframe)").addBack().contents().filter(function () {
+      return this.nodeType === 3;
+    }).each(function () {
+      var c;
+      c = this.textContent.match(/[Ａ-Ｚａ-ｚ０-９]/g);
+      if (c) {
+        return chars.push(c);
+      }
+    });
+    if (!$.isEmptyObject(chars)) {
+      Syntax_Checker.errors.push(
+        {
+          id: id,
+          code: chars.join(","),
+          ele: html,
+          correct: Syntax_Checker.correctMultibyteCharacter,
+          msg: Syntax_Checker.message["invalidMultibyteCharacter"],
+          detail: Syntax_Checker.detail["invalidMultibyteCharacter"]
+        }
+      );
+    }
+  };
+  Syntax_Checker.correctMultibyteCharacter = function (html) {
+    var ret;
+    ret = $(html);
+    ret.find(":not(iframe)").addBack().contents().filter(function () {
+      return this.nodeType === 3;
+    }).each(function () {
+      var text;
+      text = this.textContent.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (c) {
+        return String.fromCharCode(c.charCodeAt(0) - 0xFEE0);
+      });
+      return this.textContent = text;
+    });
+    return ret.html();
+  };
+
+  // MultibyteCharacter
+  Syntax_Checker.checkKanaCharacter = function (html, opts) {
+    var c, errors, listkey;
+
+    opts = opts || {};
+    listkey = opts["listkey"];
+
+    c = html.match(/[｡-ﾟ]/g);
+    if (!$.isEmptyObject(c)) {
+      errors = [
+        {
+          code: c.join(","),
+          msg: Syntax_Checker.message["invalidKanaCharacter"],
+          detail: Syntax_Checker.detail["invalidKanaCharacter"],
+          ele: html,
+          correct: Syntax_Checker.correctKanaCharacter,
+          listkey: listkey
+        }
+      ];
+      return Syntax_Checker.pushError(errors);
+    }
+  };
+  Syntax_Checker.correctKanaCharacter = function (html) {
+    var full, half, i, j, kanaMap, len, ret, v;
+    half = "｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ".split("");
+    full = "。「」、・ヲァィゥェォャュョッーアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン゛゜".split("");
+    kanaMap = {};
+    for (i = j = 0, len = half.length; j < len; i = ++j) {
+      v = half[i];
+      kanaMap[v] = full[i];
+    }
+    ret = $(html);
+    ret.find(":not(iframe)").addBack().contents().filter(function () {
+      return this.nodeType === 3;
+    }).each(function () {
+      var text;
+      text = this.textContent.replace(/[｡-ﾟ]/g, function (c) {
+        return kanaMap[c];
+      });
+      return this.textContent = text;
+    });
+    return ret.html();
+  };
+
+  // ReplaceWords
+  Syntax_Checker.checkReplaceWords = function (html, opts) {
+    var c, errors, k, results, v, words, listkey;
+    words = Syntax_Checker.config["replace_words"];
+
+    opts = opts || {};
+    listkey = opts["listkey"];
+
+    if (!words) {
+      return;
+    }
+    results = [];
+    for (k in words) {
+      v = words[k];
+      c = html.match(RegExp("" + k.replace(/([.?*+$\[\]\/\\(){}|\-])/g, '\\$1'), "g"));
+      if (!$.isEmptyObject(c)) {
+        errors = [
+          {
+            code: c[0],
+            msg: Syntax_Checker.message["replaceWord"] + ("「" + k + "」→「" + v + "」"),
+            ele: html,
+            correct: Syntax_Checker.correctReplaceWords,
+            listkey: listkey,
+            opts: {
+              key: k,
+              value: v
+            }
+          }
+        ];
+        results.push(Syntax_Checker.pushError(errors));
+      } else {
+        results.push(void 0);
+      }
+    }
+    return results;
+  };
+  Syntax_Checker.correctReplaceWords = function (html, opts) {
+    var key, ret, value;
+    if (opts == null) {
+      opts = {};
+    }
+    key = opts["key"];
+    value = opts["value"];
+    if (!(key || value)) {
+      return;
+    }
+    ret = $(html);
+    ret.find(":not(iframe)").addBack().contents().filter(function () {
+      return this.nodeType === 3;
+    }).each(function () {
+      var text;
+      text = this.textContent.replace(RegExp("" + key.replace(/([.?*+$\[\]\/\\(){}|\-])/g, '\\$1'), "g"), function (c) {
+        return value;
+      });
+      return this.textContent = text;
+    });
+    return ret.html();
+  };
+
+  // DateFormat
+  Syntax_Checker.checkDateFormat = function (html, opts) {
+    var dates, errors, listkey;
+
+    opts = opts || {};
+    listkey = opts["listkey"];
+
+    dates = [];
+    $(html).find(":not(iframe)").addBack().contents().filter(function () {
+      return this.nodeType === 3;
+    }).each(function () {
+      var d;
+      d = this.textContent.match(/\d{4}[\.\-\/]\d{1,2}[\.\-\/]\d{1,2}/g);
+      if (d) {
+        return dates.push(d);
+      }
+    });
+    if ($.isEmptyObject(dates)) {
+      return;
+    }
+    dates = $.grep(dates, function (date) {
+      return Syntax_Checker.isValidDate(new Date(date));
+    });
+    if (!$.isEmptyObject(dates)) {
+      errors = [
+        {
+          code: dates.join(","),
+          msg: Syntax_Checker.message["invalidDateFormat"],
+          detail: Syntax_Checker.detail["invalidDateFormat"],
+          ele: html,
+          correct: Syntax_Checker.correctDateFormat,
+          listkey: listkey
+        }
+      ];
+      return Syntax_Checker.pushError(errors);
+    }
+  };
+  Syntax_Checker.correctDateFormat = function (html) {
+    var ret;
+    ret = $(html);
+    ret.find(":not(iframe)").addBack().contents().filter(function () {
+      return this.nodeType === 3;
+    }).each(function () {
+      var text;
+      text = this.textContent.replace(/(\d{4})[\.\-\/](\d{1,2})[\.\-\/](\d{1,2})/g, function (date, y, m, d) {
+        if (Syntax_Checker.isValidDate(new Date([y, m, d].join("/")))) {
+          return y + "<%= I18n.t('datetime.prompts.year') %>" + m + "<%= I18n.t('datetime.prompts.month') %>" + d + "<%= I18n.t('datetime.prompts.day') %>";
+        } else {
+          return date;
+        }
+      });
+      return this.textContent = text;
+    });
+    return ret.html();
+  };
+
+  return Syntax_Checker;
+})();

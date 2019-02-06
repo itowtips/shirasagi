@@ -2,15 +2,12 @@
 <% controller ||= false %>
 <% name = "#{f.object_name}[][in_wrap][value]" %>
 
-<% if @inplace_syntax_check %>
-<%= javascript_tag do %>
-Cms_Inplace_Form.getContent = function () {
-  return $('[name="<%= name %>"]').val();
-};
-Cms_Inplace_Form.setContent = function (content) {
-  $('[name="<%= name %>"]').val(content);
-};
-<% end %>
+<%= jquery do %>
+Cms_Column_Form.addSyntaxCheck("abc", {
+  type: "text",
+  getContent: function () { return $('[name="<%= name %>"]').val(); },
+  setContent: function (content) { return $('[name="<%= name %>"]').val(content); },
+});
 <% end %>
 
 <%= render 'cms/agents/columns/main/base', f: f, column: column, value: value, controller: controller do %>
