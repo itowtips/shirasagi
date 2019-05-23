@@ -4,6 +4,9 @@ class SS::Migration20190320000000
     ::Rails.application.eager_load!
 
     conds = [{ :owner_item_id.exists => false }, { owner_item_id: 0 }]
+
+    count = 0
+
     all_ids = SS::File.unscoped.where("$and" => [{ "$or" =>  conds}]).pluck(:id).sort
     all_ids.each_slice(20) do |ids|
       SS::File.unscoped.in(id: ids).to_a.each do |file|
