@@ -11,6 +11,10 @@ class Facility::Image
 
   default_scope ->{ where(route: "facility/image") }
 
+  def translatable?
+    false
+  end
+
   private
 
   def serve_static_file?

@@ -35,6 +35,10 @@ class Ads::Banner
     url.sub(".html", ".html.count")
   end
 
+  def translatable?
+    false
+  end
+
   private
 
   def validate_link_url

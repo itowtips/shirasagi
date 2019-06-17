@@ -10,6 +10,10 @@ class Facility::Map
 
   default_scope ->{ where(route: "facility/map") }
 
+  def translatable?
+    false
+  end
+
   private
 
   def serve_static_file?

@@ -1,0 +1,15 @@
+# translate
+
+production: &production
+  microsoft_translator_text_api:
+    key: ""
+    url: 'https://api.cognitive.microsofttranslator.com/translate?api-version=3.0'
+    request_size_limit: 5000
+    request_text_array_limit: 100
+    request_interval: 0.2
+
+test:
+  <<: *production
+
+development:
+  <<: *production
