@@ -102,7 +102,7 @@ group :development, :test do
   gem 'guard-rubocop', '~> 1.1.0'
   gem 'poltergeist', require: false
   gem 'selenium-webdriver', require: false
-  gem 'chromedriver-helper'
+  gem 'webdrivers'
   gem 'pry-rails'
   gem 'pry-doc'
   gem 'pry-byebug'
@@ -125,5 +125,5 @@ group :development do
 end
 
 group :test do
-  gem 'webmock', '~> 3.0.1'
+  gem 'webmock'
 end
