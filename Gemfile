@@ -59,6 +59,8 @@ gem 'addressable', require: 'addressable/uri'
 gem 'roo'
 #gem 'roo-xls', git: "https://github.com/roo-rb/roo-xls.git"
 gem 'liquid'
+gem 'rails_12factor', group: :production
+gem 'get_process_mem', git: "https://github.com/schneems/get_process_mem.git"
 
 # OAuth
 gem 'oauth2', git: 'https://github.com/oauth-xx/oauth2.git' #'~> 1.5.0'

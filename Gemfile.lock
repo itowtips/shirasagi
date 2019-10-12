@@ -44,6 +44,13 @@ GIT
       rack (>= 1.2, < 3)
 
 GIT
+  remote: https://github.com/schneems/get_process_mem.git
+  revision: 254d1a25cdc949ff7ef41f038a419eb2576bcef0
+  specs:
+    get_process_mem (0.2.4)
+      ffi (~> 1.0)
+
+GIT
   remote: https://github.com/zquestz/omniauth-google-oauth2.git
   revision: 340e36c9b9cdde47656563bb8dd139a37646cb28
   specs:
@@ -190,7 +197,6 @@ GEM
     fuubar (2.3.1)
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
-    get_process_mem (0.2.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     guard (2.15.0)
@@ -397,8 +403,13 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
+    rails_12factor (0.0.3)
+      rails_serve_static_assets
+      rails_stdout_logging
     rails_autolink (1.1.6)
       rails (> 3.1)
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
     railties (5.2.3)
       actionpack (= 5.2.3)
       activesupport (= 5.2.3)
@@ -623,6 +634,7 @@ DEPENDENCIES
   fast_blank
   fullcalendar.io-rails (~> 2.6.0)
   fuubar
+  get_process_mem!
   guard
   guard-brakeman
   guard-rspec (~> 4.3.1)
@@ -666,6 +678,7 @@ DEPENDENCIES
   pry-stack_explorer
   rails (~> 5.2.0)
   rails-controller-testing
+  rails_12factor
   rails_autolink
   rdf-rdfxml
   rdf-turtle
