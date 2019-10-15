@@ -25,6 +25,9 @@ class Article::PagesController < ApplicationController
 
   public
 
+  def index
+  end
+
   def download_all
     if request.get?
       return
