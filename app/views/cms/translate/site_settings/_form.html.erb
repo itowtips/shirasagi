@@ -1,0 +1,13 @@
+<dl class="see">
+  <dt><%= @model.t :translate_source_language_code %><%= @model.tt :translate_source_language_code %></dt>
+  <dd><%= f.text_field :translate_source_language_code %></dd>
+
+  <dt><%= @model.t :translate_target_language_codes %><%= @model.tt :translate_target_language_codes %></dt>
+  <dd><%= f.text_area :translate_target_language_codes %></dd>
+
+  <dt><%= @model.t :translate_request_count %><%= @model.tt :translate_request_count %></dt>
+  <dd><%= f.number_field :translate_request_count %></dd>
+
+  <dt><%= @model.t :translate_request_word_count %><%= @model.tt :translate_request_word_count %></dt>
+  <dd><%= f.number_field :translate_request_word_count %></dd>
+</dl>

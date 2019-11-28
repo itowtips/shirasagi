@@ -28,6 +28,7 @@
 
 $(function () {
   SS_Kana.render();
+  SS_Translate.render();
   SS_Font.render();
   SS_AdobeReader.render();
   SS_Mobile.render();
@@ -102,6 +103,37 @@ this.SS_Kana = (function () {
   };
 
   return SS_Kana;
+
+})();
+
+this.SS_Translate = (function () {
+  function SS_Translate() {
+  }
+
+  SS_Translate.dir = "translate";
+
+  SS_Translate.siteUrl = "/";
+
+  SS_Translate.translateUrl = "/translate/";
+
+  SS_Translate.url = function (url, bool) {
+    if (bool == null) {
+      bool = null;
+    }
+    if (bool === null) {
+      bool = $("body").data("translate");
+    }
+    if (bool) {
+      url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" + this.siteUrl), "$1" + this.translateUrl);
+    } else {
+      url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" + this.translateUrl), "$1" + this.siteUrl);
+    }
+    return url;
+  };
+
+  SS_Translate.render = function () {};
+
+  return SS_Translate;
 
 })();
 

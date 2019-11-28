@@ -1,0 +1,4 @@
+ja:
+  translate:
+    main: 自動翻訳
+    ignore_character: '0123456789-'
