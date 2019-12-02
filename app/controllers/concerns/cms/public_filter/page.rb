@@ -23,9 +23,7 @@ module Cms::PublicFilter::Page
     agent.render spec[:action]
   end
 
-  public
-
-  def generate_page(page)
+  def render_page_html(page)
     @cur_site      = page.site
     @cur_path      = page.url
     @cur_main_path = @cur_path.sub(@cur_site.url, "/")
@@ -55,6 +53,13 @@ module Cms::PublicFilter::Page
       html = response.body
     end
 
+    html
+  end
+
+  public
+
+  def generate_page(page)
+    html = render_page_html(page)
     write_file page, html
   end
 end

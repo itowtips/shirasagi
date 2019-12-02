@@ -2,3 +2,9 @@ ja:
   translate:
     main: 自動翻訳
     ignore_character: '0123456789-'
+
+  mongoid:
+    attributes:
+      translate/text_cache:
+        original_text: 翻訳前テキスト
+        text: 翻訳後テキスト

@@ -116,15 +116,12 @@ this.SS_Translate = (function () {
 
   SS_Translate.translateUrl = "/translate/";
 
-  SS_Translate.url = function (url, bool) {
-    if (bool == null) {
-      bool = null;
+  SS_Translate.url = function (url, target) {
+    if (target != false) {
+      target = $("body").data("translate");
     }
-    if (bool === null) {
-      bool = $("body").data("translate");
-    }
-    if (bool) {
-      url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" + this.siteUrl), "$1" + this.translateUrl);
+    if (target) {
+      url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" + this.siteUrl), "$1" + this.translateUrl + target + "/");
     } else {
       url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" + this.translateUrl), "$1" + this.siteUrl);
     }

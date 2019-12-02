@@ -10,15 +10,13 @@
       <tr style="background: #f2f2f2;">
         <th><%= @model.t :original_text %></th>
         <th><%= @model.t :text %></th>
-        <th><%= @model.t :source %></th>
-        <th><%= @model.t :target %></th>
-        <th><%= @model.t :updated %></th>
+        <th style="width: 120px;"></th>
+        <th style="width: 150px;"><%= @model.t :updated %></th>
       </tr>
       <% @items.each do |item| %>
         <tr style="background: #ffffff;">
           <td><%= item.original_text %></td>
           <td><%= item.text %></td>
-          <td><%= item.source %></td>
           <td><%= item.target %></td>
           <td><%= item.updated.strftime('%Y/%m/%d %H:%M') %></td>
         </tr>

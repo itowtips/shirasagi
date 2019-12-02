@@ -1,9 +1,12 @@
 <dl class="see">
-  <dt><%= @model.t :translate_source_language_code %></dt>
-  <dd><%= @item.translate_source_language_code %></dd>
+  <dt><%= @model.t :translate_state %></dt>
+  <dd><%= @item.label :translate_state %></dd>
 
-  <dt><%= @model.t :translate_target_language_codes %></dt>
-  <dd><%=br @item.translate_target_language_codes %></dd>
+  <dt><%= @model.t :translate_source %></dt>
+  <dd><%= @item.translate_source %></dd>
+
+  <dt><%= @model.t :translate_targets %></dt>
+  <dd><%=br @item.translate_targets %></dd>
 
   <dt><%= @model.t :translate_request_count %></dt>
   <dd><%= @item.translate_request_count %></dd>

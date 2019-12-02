@@ -1,8 +1,7 @@
 class Translate::Mock
   class << self
-    def translate(contents, from, to)
-      dump(contents)
-      contents.map { |content| "[tr:" + content + "]" }
+    def translate(contents, source, target)
+      contents.map { |content| "[#{target}:" + content + "]" }
     end
   end
 end

@@ -41,8 +41,22 @@ class Translate::RequestBuffer
   end
 
   def find_cache(text, key)
-    cond = { site_id: @site.id, original_text: text, api: "mock", source: @source, target: @target }
-    item = Translate::TextCache.find_or_create_by(cond)
+    api = "mock"
+    hexdigest = Digest::MD5.hexdigest("#{api}_#{@source}_#{@target}_#{text}")
+    cond = { site_id: @site.id, hexdigest: hexdigest }
+    item = Translate::TextCache.where(cond).first
+
+    if item.nil?
+      item = Translate::TextCache.new(cond)
+      item.api = api
+      item.source = @source
+      item.target = @target
+      item.original_text = text
+      item.save!
+    elsif item.original_text != text
+      raise "translate : not unique hexdigest #{hexdigest}"
+    end
+
     item.key = key
     item
   end
@@ -81,7 +95,7 @@ class Translate::RequestBuffer
 
     requests.each do |contents|
       texts = contents.map { |cache| cache.original_text }
-      translated = @api.translate(texts, "ja", "en")
+      translated = @api.translate(texts, source, target)
       @request_count += 1
       @request_word_count += texts.map(&:size).sum
       sleep @interval

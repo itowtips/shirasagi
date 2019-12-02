@@ -666,8 +666,9 @@ ja:
         elasticsearch_hosts: 全文検索サーバー
         elasticsearch_deny: 除外パス
       ss/addon/translate/site_setting:
-        translate_source_language_code: 元言語コード
-        translate_target_language_codes: 翻訳言語コード
+        translate_state: ステータス
+        translate_source: 元言語コード
+        translate_targets: 翻訳言語コード
         translate_request_count: リクエスト数
         translate_request_word_count: リクエスト文字数
       ss/addon/site_usage:
