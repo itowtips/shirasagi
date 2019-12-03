@@ -7,4 +7,6 @@ ja:
     attributes:
       translate/text_cache:
         original_text: 翻訳前テキスト
-        text: 翻訳後テキスト
+        text: 翻訳先テキスト
+        source: 翻訳前言語コード
+        target: 翻訳先言語コード
