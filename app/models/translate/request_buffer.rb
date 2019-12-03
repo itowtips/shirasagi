@@ -5,22 +5,32 @@ class Translate::RequestBuffer
 
   def initialize(site, source, target, opts = {})
     @site = site
-    @api = Translate::MicrosoftTranslator.new(site)
     @source = source
     @target = target
 
-    @array_size_limit = SS.config.translate.mock_api["array_size_limit"]
-    @text_size_limit = SS.config.translate.mock_api["text_size_limit"]
-    @contents_size_limit = SS.config.translate.mock_api["contents_size_limit"]
-    @interval = SS.config.translate.mock_api["interval"]
+    initialize_api
+    reset_result
+    reset_buffer
 
     @array_size_limit = opts[:array_size_limit] if opts[:array_size_limit]
     @text_size_limit = opts[:text_size_limit] if opts[:text_size_limit]
     @contents_size_limit = opts[:contents_size_limit] if opts[:contents_size_limit]
     @interval = opts[:interval] if opts[:interval]
+  end
 
-    reset_result
-    reset_buffer
+  def initialize_api
+    case @site.translate_api
+    when "microsoft_translator_text"
+      @api = Translate::MicrosoftTranslator.new(@site)
+    when "mock"
+      @api = Translate::MockTranslator.new(@site)
+    end
+
+    config = SS.config.translate[@site.translate_api]
+    @array_size_limit = config["array_size_limit"]
+    @text_size_limit = config["text_size_limit"]
+    @contents_size_limit = config["contents_size_limit"]
+    @interval = config["interval"]
   end
 
   def reset_buffer
@@ -42,13 +52,14 @@ class Translate::RequestBuffer
 
   def find_cache(text, key)
     api = @site.translate_api
-    hexdigest = Digest::MD5.hexdigest("#{api}_#{@source}_#{@target}_#{text}")
+    hexdigest = Translate::TextCache.hexdigest(api, @source, @target, text)
     cond = { site_id: @site.id, hexdigest: hexdigest }
     item = Translate::TextCache.where(cond).first
 
     if item.nil?
       item = Translate::TextCache.new(cond)
       item.api = api
+      item.update_state = "auto"
       item.source = @source
       item.target = @target
       item.original_text = text

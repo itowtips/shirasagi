@@ -2,11 +2,18 @@ ja:
   translate:
     main: 自動翻訳
     ignore_character: '0123456789-'
+    lang: 言語コード
 
     options:
       api:
         mock: "開発用API"
         microsoft_translator_text: "Microsoft Translator Text"
+
+    notice:
+      not_set_api: "翻訳APIが設定されていません。"
+
+    errors:
+      duplicate_hexdigest: '%{original_text}（%{source} から %{target} への翻訳） は既に登録されています。'
 
   mongoid:
     attributes:

@@ -6,8 +6,8 @@ class Translate::MicrosoftTranslator
   def initialize(site, opts = {})
     @site = site
 
-    @key = SS.config.translate.microsoft_translator_text_api["key"]
-    @url = SS.config.translate.microsoft_translator_text_api["url"]
+    @key = SS.config.translate.microsoft_translator_text["key"]
+    @url = SS.config.translate.microsoft_translator_text["url"]
 
     if @site.translate_microsoft_api_key.present?
       @key = @site.translate_microsoft_api_key

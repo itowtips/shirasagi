@@ -78,6 +78,7 @@ class Translate::Convertor
       html.delete!("</html>", "")
     else
       html = doc.to_s
+      html.sub!(/(<html.*?)lang="#{@source}"/, "\\1lang=\"#{@target}\"")
       html.sub!(/<body( |>)/m, '<body data-translate="' + @target + '"\\1')
     end
 

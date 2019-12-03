@@ -21,10 +21,18 @@ module SS::Addon
       permit_params :translate_api
       permit_params :translate_microsoft_api_key
 
+      validate :validate_translate_targets, if: -> { translate_targets.present? }
+    end
+
+    def validate_translate_targets
+      self.translate_targets = translate_targets.select(&:present?).map(&:strip)
     end
 
     def translate_state_options
-      I18n.t("ss.options.state").map { |k, v| [v, k] }
+      [
+        [I18n.t("ss.options.state.enabled"), "enabled"],
+        [I18n.t("ss.options.state.disabled"), "disabled"],
+      ]
     end
 
     def translate_api_options
