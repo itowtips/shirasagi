@@ -10,18 +10,25 @@ module SS::Addon
       field :translate_request_count, type: Integer, default: 0
       field :translate_request_word_count, type: Integer, default: 0
 
+      field :translate_api, type: String
+      field :translate_microsoft_translator_text_api_key, type: String
+
       permit_params :translate_request_count
       permit_params :translate_request_word_count
       permit_params :translate_state
       permit_params :translate_source
       permit_params :translate_targets
+      permit_params :translate_api
+      permit_params :translate_microsoft_translator_text_api_key
+
     end
 
     def translate_state_options
-      [
-        [I18n.t("ss.options.state.enabled"), "enabled"],
-        [I18n.t("ss.options.state.disabled"), "disabled"],
-      ]
+      I18n.t("ss.options.state").map { |k, v| [v, k] }
+    end
+
+    def translate_api_options
+      I18n.t("translate.options.api").map { |k, v| [v, k] }
     end
 
     def translate_enabled?

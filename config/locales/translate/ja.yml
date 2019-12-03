@@ -3,6 +3,11 @@ ja:
     main: 自動翻訳
     ignore_character: '0123456789-'
 
+    options:
+      api:
+        mock: "開発用API"
+        microsoft_translator_text: "Microsoft Translator Text"
+
   mongoid:
     attributes:
       translate/text_cache:

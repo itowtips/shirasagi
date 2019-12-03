@@ -15,6 +15,18 @@
     <% end %>
   </div>
 
+  <div class="addon-views">
+    <%
+      addon_options = {}
+      addon_options[:id] = "addon-basic"
+      addon_options[:head] = "API"
+    %>
+    <% buf = render file: "_form_api", locals: { f: f, addon: addon_options } %>
+    <%= render "ss/crud/addon", addon: addon_options do %>
+      <%= buf %>
+    <% end %>
+  </div>
+
   <footer class="send">
     <% if @crud_buttons %>
       <% @crud_buttons.call f %>
