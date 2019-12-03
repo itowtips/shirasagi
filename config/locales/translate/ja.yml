@@ -15,3 +15,5 @@ ja:
         text: 翻訳先テキスト
         source: 翻訳前言語コード
         target: 翻訳先言語コード
+      translate/compressor:
+        css: CSSセレクタ

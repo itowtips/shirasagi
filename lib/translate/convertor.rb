@@ -27,16 +27,27 @@ class Translate::Convertor
 
     doc = Nokogiri.parse(html)
 
+    # compress
+    ::Translate::Compressor.site(@site).each do |compressor|
+      doc.css(compressor.css).each do |node|
+        text = node.text
+        node.children.each(&:remove)
+        node.add_child(Nokogiri::XML::Text.new(text, doc))
+      end
+    end
+
     # links
+    regexp = /^#{@site.url}(?!#{@location}\/)(?!fs\/)/
+    location = "#{@site.url}#{@location}/"
     doc.css('body a,body form').each do |node|
       href = node.attributes["href"]
       action = node.attributes["action"]
 
       if href.present?
-        node.attributes["href"].value = href.value.gsub(/^#{@site.url}(?!#{@location}\/)(?!fs\/)/, "#{@site.url}#{@location}/")
+        node.attributes["href"].value = href.value.gsub(regexp, location)
       end
       if action.present?
-        node.attributes["action"].value = action.value.gsub(/^#{@site.url}(?!#{@location}\/)(?!fs\/)/, "#{@site.url}#{@location}/")
+        node.attributes["action"].value = action.value.gsub(regexp, location)
       end
     end
 
