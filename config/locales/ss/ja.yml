@@ -672,7 +672,7 @@ ja:
         translate_request_count: APIリクエスト数
         translate_request_word_count: APIリクエスト文字数
         translate_api: API
-        translate_microsoft_translator_text_api_key: "サブスクリプション キー"
+        translate_microsoft_api_key: "サブスクリプション キー"
       ss/addon/site_usage:
         usage_node_count: フォルダー数
         usage_page_count: ページ数

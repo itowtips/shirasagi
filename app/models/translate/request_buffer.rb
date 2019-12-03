@@ -5,7 +5,7 @@ class Translate::RequestBuffer
 
   def initialize(site, source, target, opts = {})
     @site = site
-    @api = Translate::Mock
+    @api = Translate::MicrosoftTranslator.new(site)
     @source = source
     @target = target
 
@@ -41,7 +41,7 @@ class Translate::RequestBuffer
   end
 
   def find_cache(text, key)
-    api = "mock"
+    api = @site.translate_api
     hexdigest = Digest::MD5.hexdigest("#{api}_#{@source}_#{@target}_#{text}")
     cond = { site_id: @site.id, hexdigest: hexdigest }
     item = Translate::TextCache.where(cond).first

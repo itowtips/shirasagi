@@ -11,7 +11,7 @@ module SS::Addon
       field :translate_request_word_count, type: Integer, default: 0
 
       field :translate_api, type: String
-      field :translate_microsoft_translator_text_api_key, type: String
+      field :translate_microsoft_api_key, type: String
 
       permit_params :translate_request_count
       permit_params :translate_request_word_count
@@ -19,7 +19,7 @@ module SS::Addon
       permit_params :translate_source
       permit_params :translate_targets
       permit_params :translate_api
-      permit_params :translate_microsoft_translator_text_api_key
+      permit_params :translate_microsoft_api_key
 
     end
 
