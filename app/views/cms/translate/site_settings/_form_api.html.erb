@@ -1,13 +1,34 @@
-<dl class="see">
+<%= jquery do %>
+var chageApi = function(ele) {
+  var val = $(ele).val();
+  $(".translate-api .api").hide();
+  if (val) {
+    $(".translate-api ." + val).show();
+  }
+};
+$(".translate-api .select-api").on("change", function(){ chageApi(this) });
+chageApi($(".translate-api .select-api"));
+<% end %>
+
+<dl class="see translate-api">
   <dt><%= @model.t :translate_api %></dt>
-  <dd><%= f.select :translate_api, @item.translate_api_options, include_blank: true %></dd>
+  <dd><%= f.select :translate_api, @item.translate_api_options, { include_blank: true }, { class: "select-api" } %></dd>
 
-  <dt><%= @model.t :translate_microsoft_api_key %></dt>
-  <dd><%= f.text_field :translate_microsoft_api_key %></dd>
+  <dt class="api mock"><%= @model.t :translate_mock_api_request_count %><%= @model.tt :translate_mock_request_count %></dt>
+  <dd class="api mock"><%= f.number_field :translate_mock_api_request_count %></dd>
 
-  <dt><%= @model.t :translate_request_count %><%= @model.tt :translate_request_count %></dt>
-  <dd><%= f.number_field :translate_request_count %></dd>
+  <dt class="api mock"><%= @model.t :translate_mock_api_request_word_count %><%= @model.tt :translate_mock_request_word_count %></dt>
+  <dd class="api mock"><%= f.number_field :translate_mock_api_request_word_count %></dd>
 
-  <dt><%= @model.t :translate_request_word_count %><%= @model.tt :translate_request_word_count %></dt>
-  <dd><%= f.number_field :translate_request_word_count %></dd>
+  <dt class="api microsoft_translator_text"><%= @model.t :translate_microsoft_api_key %></dt>
+  <dd class="api microsoft_translator_text"><%= f.text_field :translate_microsoft_api_key %></dd>
+
+  <dt class="api microsoft_translator_text"><%= @model.t :translate_microsoft_api_request_count %><%= @model.tt :translate_microsoft_api_request_count %></dt>
+  <dd class="api microsoft_translator_text"><%= f.number_field :translate_microsoft_api_request_count %></dd>
+
+  <dt class="api microsoft_translator_text"><%= @model.t :translate_microsoft_api_request_word_count %><%= @model.tt :translate_microsoft_api_request_word_count %></dt>
+  <dd class="api microsoft_translator_text"><%= f.number_field :translate_microsoft_api_request_word_count %></dd>
+
+  <dt class="api microsoft_translator_text"><%= @model.t :translate_microsoft_api_request_metered_usage %><%= @model.tt :translate_microsoft_api_request_metered_usage %></dt>
+  <dd class="api microsoft_translator_text"><%= f.number_field :translate_microsoft_api_request_metered_usage %></dd>
 </dl>

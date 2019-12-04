@@ -7,19 +7,32 @@ module SS::Addon
       field :translate_state, type: String, default: "disabled"
       field :translate_source, type: String, default: "ja"
       field :translate_targets, type: SS::Extensions::Lines, default: []
-      field :translate_request_count, type: Integer, default: 0
-      field :translate_request_word_count, type: Integer, default: 0
-
       field :translate_api, type: String
-      field :translate_microsoft_api_key, type: String
 
-      permit_params :translate_request_count
-      permit_params :translate_request_word_count
+      # mock
+      field :translate_mock_api_request_count, type: Integer, default: 0
+      field :translate_mock_api_request_word_count, type: Integer, default: 0
+      field :translate_mock_api_request_metered_usage, type: Integer, default: 0
+
+      # microsoft api
+      field :translate_microsoft_api_key, type: String
+      field :translate_microsoft_api_request_count, type: Integer, default: 0
+      field :translate_microsoft_api_request_word_count, type: Integer, default: 0
+      field :translate_microsoft_api_request_metered_usage, type: Integer, default: 0
+
       permit_params :translate_state
       permit_params :translate_source
       permit_params :translate_targets
       permit_params :translate_api
+
+      permit_params :translate_mock_api_request_count
+      permit_params :translate_mock_api_request_word_count
+      permit_params :translate_mock_api_request_metered_usage
+
       permit_params :translate_microsoft_api_key
+      permit_params :translate_microsoft_api_request_count
+      permit_params :translate_microsoft_api_request_word_count
+      permit_params :translate_microsoft_api_request_metered_usage
 
       validate :validate_translate_targets, if: -> { translate_targets.present? }
     end

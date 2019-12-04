@@ -21,9 +21,9 @@ class Translate::RequestBuffer
   def initialize_api
     case @site.translate_api
     when "microsoft_translator_text"
-      @api = Translate::MicrosoftTranslator.new(@site)
+      @api = Translate::Api::MicrosoftTranslator.new(@site)
     when "mock"
-      @api = Translate::MockTranslator.new(@site)
+      @api = Translate::Api::MockTranslator.new(@site)
     end
 
     config = SS.config.translate[@site.translate_api]
@@ -106,9 +106,7 @@ class Translate::RequestBuffer
 
     requests.each do |contents|
       texts = contents.map { |cache| cache.original_text }
-      translated = @api.translate(texts, source, target)
-      @request_count += 1
-      @request_word_count += texts.map(&:size).sum
+      translated = @api.translate(texts, source, target, site: @site)
       sleep @interval
 
       contents.each_with_index do |cache, i|
@@ -117,8 +115,6 @@ class Translate::RequestBuffer
       end
     end
 
-    @site.translate_request_count += @request_count
-    @site.translate_request_word_count += @request_word_count
     @site.update!
 
     @caches.each do |cache|
