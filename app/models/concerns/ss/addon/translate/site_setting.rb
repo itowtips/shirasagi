@@ -70,5 +70,17 @@ module SS::Addon
     def translate_path(target)
       ::File.join(path, "translate", target)
     end
+
+    def translate_location
+      @translate_location ||= SS.config.translate.location
+    end
+
+    def translate_path
+      ::File.join(url, translate_location)
+    end
+
+    def translate_url
+      ::File.join(url, translate_location, "/")
+    end
   end
 end

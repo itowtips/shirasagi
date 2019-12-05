@@ -1,4 +1,16 @@
 <dl class="see">
-  <dt><%= @model.t :css %></dt>
-  <dd><%= @item.css %></dd>
+  <dt><%= @model.t :name %></dt>
+  <dd><%= @item.name %></dd>
+
+  <dt><%= @model.t :selector %></dt>
+  <dd><%= @item.selector %></dd>
+
+  <dt><%= @model.t :source %></dt>
+  <dd><%= @item.source %></dd>
+
+  <dt><%= @model.t :target %></dt>
+  <dd><%= @item.target %></dd>
+
+  <dt><%= @model.t :html %></dt>
+  <dd><%= f.text_area :html, class: :html %></dd>
 </dl>

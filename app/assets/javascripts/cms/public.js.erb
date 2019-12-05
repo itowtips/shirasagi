@@ -56,19 +56,23 @@ this.SS_Kana = (function () {
   SS_Kana.kanaUrl = "<%= SS.config.kana.location %>" + "/";
 
   SS_Kana.render = function () {
-    var bind, url;
+    var bind, url, html;
     if (SS.config["site_url"] && SS.config["kana_url"]) {
       SS_Kana.siteUrl = SS.config["site_url"];
       SS_Kana.kanaUrl = SS.config["kana_url"];
     }
     if ($("body").data("kana")) {
       url = SS_Kana.url(location.pathname, false);
+      url = SS_Translate.url(url);
       bind = 'onclick="location.href=\'' + url + '\'; return false"';
-      return $("#ss-kana").html("<a class=\"off\" href=\"#" + url + "\" " + bind + "><%= I18n.t 'cms.links.ruby_off' %></a>");
+      html = $("#ss-kana").html();
+      return $("#ss-kana").html("<a class=\"off\" href=\"#" + url + "\" " + bind + ">" + html + "</a>");
     } else {
-      url = SS_Kana.url(location.pathname, true);
+      url = SS_Translate.url(location.pathname, false)
+      url = SS_Kana.url(url, true);
       bind = 'onclick="location.href=\'' + url + '\'; return false"';
-      return $("#ss-kana").html("<a class=\"on\" href=\"#" + url + "\" " + bind + "><%= I18n.t 'cms.links.ruby_on' %></a>");
+      html = $("#ss-kana").html();
+      return $("#ss-kana").html("<a class=\"on\" href=\"#" + url + "\" " + bind + ">"  + html + "</a>");
     }
   };
 
@@ -110,20 +114,23 @@ this.SS_Translate = (function () {
   function SS_Translate() {
   }
 
-  SS_Translate.dir = "translate";
+  SS_Translate.dir = "<%= SS.config.translate.location %>";
 
   SS_Translate.siteUrl = "/";
 
-  SS_Translate.translateUrl = "/translate/";
+  SS_Translate.translateUrl = "<%= SS.config.translate.location %>" + "/";
 
-  SS_Translate.url = function (url, target) {
-    if (target != false) {
-      target = $("body").data("translate");
+  SS_Translate.url = function (url, bool) {
+    var target = $("body").data("translate");
+    var targetUrl = this.translateUrl + target + "/";
+
+    if (bool == null) {
+      bool = target
     }
-    if (target) {
-      url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" + this.siteUrl), "$1" + this.translateUrl + target + "/");
+    if (bool) {
+      url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" + this.siteUrl), "$1" + targetUrl);
     } else {
-      url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" + this.translateUrl), "$1" + this.siteUrl);
+      url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" +targetUrl), "$1" + this.siteUrl);
     }
     return url;
   };

@@ -282,6 +282,7 @@ module Cms::PublicFilter::Layout
 
       @javascript_config["site_url"] = @cur_site.url
       @javascript_config["kana_url"] = @cur_site.kana_url
+      @javascript_config["translate_url"] = @cur_site.translate_url
 
       conf = Cms::ThemeTemplate.to_config(site: @cur_site, preview_path: preview_path?)
       @javascript_config.merge!(conf)

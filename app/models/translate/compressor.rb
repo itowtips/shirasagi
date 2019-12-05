@@ -7,22 +7,27 @@ class Translate::Compressor
 
   set_permission_name "cms_tools", :use
 
-  field :css, type: String
-  permit_params :css
+  field :name, type: String
+  field :selector, type: String
+  field :source, type: String
+  field :target, type: String
+  field :html, type: String
 
-  validates :css, presence: true
-  validate :validate_css, if: ->{ css.present? }
+  permit_params :name
+  permit_params :selector
+  permit_params :source
+  permit_params :target
+  permit_params :html
+
+  validates :selector, presence: true
+  validate :validate_selector, if: ->{ selector.present? }
 
   default_scope -> { order_by(updated: -1) }
 
-  def name
-    css
-  end
-
   def validate_css
-    Nokogiri.parse("<html></html>").css(css)
+    Nokogiri.parse("<html></html>").css(selector)
   rescue
-    self.errors.add :css, :invalid
+    self.errors.add :selector, :invalid
   end
 
   class << self
