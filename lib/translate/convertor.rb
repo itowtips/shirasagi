@@ -40,14 +40,14 @@ class Translate::Convertor
     regexp = /^#{@site.url}(?!#{@location}\/)(?!fs\/)/
     location = "#{@site.url}#{@location}/"
     doc.css('body a,body form').each do |node|
-      href = node.attributes["href"]
-      action = node.attributes["action"]
+      href = node.attributes["href"].try(:value)
+      action = node.attributes["action"].try(:value)
 
-      if href.present?
-        node.attributes["href"].value = href.value.gsub(regexp, location)
+      if href.present? && href =~ /(\.html|\/)$/
+        node.attributes["href"].value = href.gsub(regexp, location)
       end
       if action.present?
-        node.attributes["action"].value = action.value.gsub(regexp, location)
+        node.attributes["action"].value = action.gsub(regexp, location)
       end
     end
 
