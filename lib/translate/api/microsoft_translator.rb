@@ -86,9 +86,9 @@ class Translate::Api::MicrosoftTranslator
 
     site = opts[:site]
     if site
-      site.translate_microsoft_api_request_count += @count
+      site.translate_microsoft_api_request_count += 1
       site.translate_microsoft_api_request_metered_usage += @metered_usage
-      site.translate_microsoft_api_request_word_count += 1
+      site.translate_microsoft_api_request_word_count += @count
     end
 
     translated

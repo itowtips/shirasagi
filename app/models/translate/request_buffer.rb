@@ -22,6 +22,8 @@ class Translate::RequestBuffer
     case @site.translate_api
     when "microsoft_translator_text"
       @api = Translate::Api::MicrosoftTranslator.new(@site)
+    when "google_translation"
+      @api = Translate::Api::GoogleTranslator.new(@site)
     when "mock"
       @api = Translate::Api::MockTranslator.new(@site)
     end

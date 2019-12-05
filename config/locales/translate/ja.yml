@@ -8,6 +8,7 @@ ja:
       api:
         mock: "開発用API"
         microsoft_translator_text: "Microsoft Translator Text"
+        google_translation: "Google Translation API"
 
     notice:
       not_set_api: "翻訳APIが設定されていません。"
@@ -18,6 +19,7 @@ ja:
   mongoid:
     attributes:
       translate/text_cache:
+        api: API
         original_text: 翻訳前テキスト
         text: 翻訳先テキスト
         source: 翻訳前言語コード

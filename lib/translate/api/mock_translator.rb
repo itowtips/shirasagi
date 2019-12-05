@@ -21,8 +21,8 @@ class Translate::Api::MockTranslator
 
     site = opts[:site]
     if site
-      site.translate_mock_api_request_count += @count
-      site.translate_mock_api_request_word_count += 1
+      site.translate_mock_api_request_count += 1
+      site.translate_mock_api_request_word_count += @count
     end
 
     translated

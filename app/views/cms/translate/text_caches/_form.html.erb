@@ -1,4 +1,10 @@
 <dl class="see">
+  <dt><%= @model.t :api %></dt>
+  <dd>
+    <%= @cur_site.label :translate_api %>
+    <%= f.hidden_field :api, value: @cur_site.translate_api %>
+  </dd>
+
   <dt><%= @model.t :original_text %></dt>
   <dd><%= f.text_field :original_text %></dd>
 

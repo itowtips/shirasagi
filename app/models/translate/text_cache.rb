@@ -49,6 +49,10 @@ class Translate::TextCache
     end
   end
 
+  def api_options
+    I18n.t("translate.options.api").map { |k, v| [v, k] }
+  end
+
   class << self
     def hexdigest(api, source, target, original_text)
       Digest::MD5.hexdigest("#{api}_#{source}_#{target}_#{original_text}")

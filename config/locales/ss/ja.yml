@@ -669,13 +669,17 @@ ja:
         translate_state: ステータス
         translate_source: 元言語コード
         translate_targets: 翻訳言語コード
+        translate_api: API
         translate_mock_api_request_count: APIリクエスト数
         translate_mock_api_request_word_count: APIリクエスト文字数
+        translate_microsoft_api_key: "サブスクリプション キー"
         translate_microsoft_api_request_count: APIリクエスト数
         translate_microsoft_api_request_word_count: APIリクエスト文字数
         translate_microsoft_api_request_metered_usage: "x-metered-usage"
-        translate_api: API
-        translate_microsoft_api_key: "サブスクリプション キー"
+        translate_google_api_project_id: プロジェクトID
+        translate_google_api_credential_file_id: サービスアカウント秘密鍵
+        translate_google_api_request_count: APIリクエスト数
+        translate_google_api_request_word_count: APIリクエスト文字数
       ss/addon/site_usage:
         usage_node_count: フォルダー数
         usage_page_count: ページ数
