@@ -151,8 +151,6 @@ this.SS = (function () {
     ref = SS_Kana.url(location.pathname, false);
     ref = SS_Translate.url(location.pathname, false);
 
-    console.log(url);
-
     elem.append(" " + SS.loading);
     return $.ajax({
       type: "GET",
