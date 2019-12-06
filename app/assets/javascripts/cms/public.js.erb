@@ -151,18 +151,16 @@ this.SS_Theme = (function () {
       return;
     }
     theme = SS.config["theme"];
-    $("#ss-theme").html("");
     css = "";
     for (cls in theme) {
       v = theme[cls];
-      a = $('<a href="#" class="' + cls + '">' + v["name"] + '</a>');
       if (v["css_path"]) {
         $('head').append('<link rel="alternate stylesheet" type="text/css" title="' + v["name"] + '" href="' + v["css_path"] + '" class="ss-theme ' + cls + '" disabled />');
       }
       if (v["font_color"] && v["background_color"]) {
         css += SS_Theme.cssTemplate(cls, v["font_color"], v["background_color"]) + "\n";
       }
-      a.on("click", function (e) {
+      $("#ss-theme a." + cls).on("click", function (e) {
         cls = $(this).attr("class");
         Cookies.set("ss-theme", cls, {
           expires: 7,
@@ -171,7 +169,6 @@ this.SS_Theme = (function () {
         SS_Theme.switchTheme(cls);
         return false;
       });
-      $("#ss-theme").append(a);
     }
     style = $('<style type="text/css" class="ss-theme">' + css + '</style>');
     $("head").append(style);

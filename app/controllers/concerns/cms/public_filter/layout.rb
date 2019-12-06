@@ -102,6 +102,7 @@ module Cms::PublicFilter::Layout
       response.body = %(#{notice_html}#{response.body})
     end
 
+    html = render_theme(html)
     html = render_template_variables(html)
     html.sub!(/(\{\{ yield \}\}|<\/ yield \/>)/) do
       body = []
@@ -228,6 +229,13 @@ module Cms::PublicFilter::Layout
       html << "</div>"
     end
     html.join
+  end
+
+  def render_theme(html)
+    template = Cms::ThemeTemplate.template(@cur_site)
+    html.gsub(/(<.+? id="ss-theme".*?>)(.*?)(<\/.+?>)/) do
+      "#{$1}#{template}#{$3}"
+    end
   end
 
   def date_convert(date, format = nil, datetime = nil)
