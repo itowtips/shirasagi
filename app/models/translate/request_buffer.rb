@@ -56,17 +56,15 @@ class Translate::RequestBuffer
     api = @site.translate_api
     hexdigest = Translate::TextCache.hexdigest(api, @source, @target, text)
     cond = { site_id: @site.id, hexdigest: hexdigest }
-    item = Translate::TextCache.where(cond).first
-
-    if item.nil?
-      item = Translate::TextCache.new(cond)
+    item = Translate::TextCache.find_or_create_by(cond) do |item|
       item.api = api
       item.update_state = "auto"
       item.source = @source
       item.target = @target
       item.original_text = text
-      item.save!
-    elsif item.original_text != text
+    end
+
+    if item.original_text != text
       raise "translate : not unique hexdigest #{hexdigest}"
     end
 
