@@ -27,7 +27,7 @@ class Translate::Api::GoogleTranslator
     @count = contents.map(&:size).sum
 
     response = @client.translate_text(contents, target_language, @parent, source_language_code: source_language)
-    translated = response.translations.map { |translation| translation.translated_text }
+    translated = response.translations.map { |translation| ::CGI.unescapeHTML(translation.translated_text) }
 
     site = opts[:site]
     if site

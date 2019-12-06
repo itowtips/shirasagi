@@ -75,7 +75,7 @@ class Translate::Api::MicrosoftTranslator
 
       if response.code == "200"
         put_response :info, response
-        translated = json.map { |item| item["translations"][0]["text"] }
+        translated = json.map { |item| ::CGI.unescapeHTML(item["translations"][0]["text"]) }
       else
         put_log :error, "MicrosoftTranslatorText Api : #{response.code} error"
         put_response :error, response
