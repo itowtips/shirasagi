@@ -27,15 +27,6 @@ class Translate::Convertor
 
     doc = Nokogiri.parse(html)
 
-    # compress
-    ::Translate::Compressor.site(@site).each do |compressor|
-      doc.css(compressor.css).each do |node|
-        text = node.text
-        node.children.each(&:remove)
-        node.add_child(Nokogiri::XML::Text.new(text, doc))
-      end
-    end
-
     # links
     regexp = /^#{@site.url}(?!#{@location}\/)(?!fs\/)/
     location = "#{@site.url}#{@location}/"
@@ -51,15 +42,33 @@ class Translate::Convertor
       end
     end
 
+    # notranslate
+    doc.search('//*[contains(@class, \'notranslate\')]/descendant::*').each do |node|
+      node.instance_variable_set(:@notranslate, true)
+    end
+    doc.search('//*[contains(@class, \'notranslate\')]/descendant::text()').each do |node|
+      node.instance_variable_set(:@notranslate, true)
+    end
+
+    # exstract translate text
     nodes = []
     doc.search('//text()').each do |node|
       next if node.node_type != 3
       next if node.blank?
+      next if node.instance_variable_get(:@notranslate)
 
       text = node.content.gsub(/[[:space:]]+/, " ").strip
       next if !translatable?(text)
 
       node.content = text
+      nodes << node
+    end
+    doc.search('//input[@type=\'submit\'][@value]').each do |node|
+      value = node.attributes["value"]
+
+      next if value.blank?
+      next if node.instance_variable_get(:@notranslate)
+
       nodes << node
     end
 
@@ -80,6 +89,7 @@ class Translate::Convertor
       html = doc.to_s
       html.sub!(/(<html.*?)lang="#{@source}"/, "\\1lang=\"#{@target}\"")
       html.sub!(/<body( |>)/m, '<body data-translate="' + @target + '"\\1')
+      html.sub!(/<\/head>/, '<meta name="google" value="notranslate">' + "</head>")
     end
 
     html

@@ -120,22 +120,38 @@ this.SS_Translate = (function () {
 
   SS_Translate.translateUrl = "<%= SS.config.translate.location %>" + "/";
 
-  SS_Translate.url = function (url, bool) {
-    var target = $("body").data("translate");
-    var targetUrl = this.translateUrl + target + "/";
-
-    if (bool == null) {
-      bool = target
-    }
-    if (bool) {
+  SS_Translate.url = function (url, target) {
+    if (target) {
+      var targetUrl = this.translateUrl + target + "/";
       url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" + this.siteUrl), "$1" + targetUrl);
     } else {
-      url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" +targetUrl), "$1" + this.siteUrl);
+      var targetUrl = this.translateUrl + $("body").data("translate") + "/";
+      url = url.replace(RegExp("^(\\/\\.s\\d+?\\/preview\\d*)?" + targetUrl), "$1" + this.siteUrl);
     }
     return url;
   };
 
-  SS_Translate.render = function () {};
+  SS_Translate.render = function () {
+    var lang = $("body").data("translate");
+    var select = $('#ss-translate select[name="lang"]');
+    if (lang) {
+      select.find('option:nth-child(1)').hide();
+      select.val(lang);
+    } else {
+      select.find('option:nth-child(2)').hide();
+    }
+    select.on("change", function () {
+      var target = $(this).val();
+      if (target) {
+        url = SS_Translate.url(location.pathname, false)
+        url = SS_Translate.url(url, target)
+        location.href = url;
+      } else {
+        url = SS_Translate.url(location.pathname, false)
+        location.href = url;
+      }
+    });
+  };
 
   return SS_Translate;
 

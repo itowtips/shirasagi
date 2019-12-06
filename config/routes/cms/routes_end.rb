@@ -130,7 +130,6 @@ Rails.application.routes.draw do
     namespace "translate" do
       get "/" => redirect { |p, req| "#{req.path}/text_caches" }, as: :main
       resources :text_caches, concerns: :deletion
-      resources :compressors, concerns: :deletion
       resource :site_setting
     end
 

@@ -82,5 +82,23 @@ module SS::Addon
     def translate_url
       ::File.join(url, translate_location, "/")
     end
+
+    def translate_tool_template
+      return if translate_targets.blank?
+
+      h = '<select name="lang" class="notranslate">'
+      h += '<option value="">' + I18n.t("translate.views.select_lang") + '</option>'
+      h += '<option value="">' + I18n.t("translate.views.show_original") + '</option>'
+      h += translate_targets.map do |target|
+        label = lang_codes[target] ? lang_codes[target] : target
+        '<option value="' + target + '">' + label + '</option>'
+      end.join
+      h += '</select>'
+      h
+    end
+
+    def lang_codes
+      @lang_codes ||= SS.config.translate.lang_codes
+    end
   end
 end

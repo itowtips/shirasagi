@@ -53,6 +53,10 @@ class Translate::TextCache
     I18n.t("translate.options.api").map { |k, v| [v, k] }
   end
 
+  def update_state_options
+    I18n.t("translate.options.update_state").map { |k, v| [v, k] }
+  end
+
   class << self
     def hexdigest(api, source, target, original_text)
       Digest::MD5.hexdigest("#{api}_#{source}_#{target}_#{original_text}")
@@ -67,6 +71,9 @@ class Translate::TextCache
       end
       if params[:target].present?
         criteria = criteria.where(target: params[:target])
+      end
+      if params[:update_state].present?
+        criteria = criteria.where(update_state: params[:update_state])
       end
       criteria
     end
