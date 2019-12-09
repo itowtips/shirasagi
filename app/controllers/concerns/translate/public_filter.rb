@@ -8,6 +8,7 @@ module Translate::PublicFilter
   private
 
   def set_request_path_with_translat
+    return if !@cur_site.translate_enabled?
     return if @cur_main_path !~ /^#{@cur_site.translate_url}.+?\//
 
     main_path = @cur_main_path.sub(/^#{@cur_site.translate_url}(.+?)\//, "/")

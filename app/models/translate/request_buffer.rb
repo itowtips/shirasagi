@@ -106,13 +106,22 @@ class Translate::RequestBuffer
 
     requests.each do |contents|
       texts = contents.map { |cache| cache.original_text }
-      translated = @api.translate(texts, source, target, site: @site)
-      sleep @interval
+      translated = texts
+      error = false
+
+      begin
+        translated = @api.translate(texts, source, target, site: @site)
+      rescue => e
+        Rails.logger.error("#{@site.label(:translate_api)} : #{e.class} (#{e.message})")
+        error = true
+      end
 
       contents.each_with_index do |cache, i|
         cache.text = translated[i]
-        cache.save!
+        cache.save! if !error
       end
+
+      sleep @interval
     end
 
     @site.update!

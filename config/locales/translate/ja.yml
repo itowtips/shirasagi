@@ -21,6 +21,7 @@ ja:
 
     notice:
       not_set_api: "翻訳APIが設定されていません。"
+      api_request_count: "※実際のリクエスト数および課金文字数については、各APIの管理コンソールを確認してください。"
 
     errors:
       duplicate_hexdigest: '%{original_text}（%{source} から %{target} への翻訳） は既に登録されています。'

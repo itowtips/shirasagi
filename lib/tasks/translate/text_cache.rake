@@ -16,6 +16,8 @@ namespace :translate do
 
     # pages
     puts "# pages"
+    count = 0
+
     pages = Cms::Page.site(@site).and_public
     ids = pages.pluck(:id)
     ids.each_with_index do |id, idx|
@@ -24,16 +26,21 @@ namespace :translate do
 
       targets.each do |target|
         next if !Fs.exists?(page.path)
+
         puts "#{idx + 1} #{target} : #{page.name} #{page.path.sub(@site.path, "")}"
+        count += 1
 
         html = Fs.read(page.path)
         converter = Translate::Convertor.new(@site, @site.translate_source, target)
         converter.convert(html)
       end
     end
+    puts "translated #{count} pages"
 
     # nodes
     puts "# nodes"
+    count = 0
+
     nodes = Cms::Node.site(@site).and_public
     ids = nodes.pluck(:id)
     ids.each_with_index do |id, idx|
@@ -53,6 +60,7 @@ namespace :translate do
       Dir.glob(paths).each do |path|
         targets.each do |target|
           puts "#{idx + 1} #{target} : #{node.name} #{path.sub(@site.path, "")}"
+          count += 1
 
           html = Fs.read(path)
           converter = Translate::Convertor.new(@site, @site.translate_source, target)
@@ -60,5 +68,6 @@ namespace :translate do
         end
       end
     end
+    puts "translated #{count} nodes"
   end
 end
