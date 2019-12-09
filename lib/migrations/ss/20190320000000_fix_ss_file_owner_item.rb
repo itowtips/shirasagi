@@ -7,10 +7,14 @@ class SS::Migration20190320000000
     # load all models
     ::Rails.application.eager_load!
 
+    count = 1
     conds = [{ :owner_item_id.exists => false }, { owner_item_id: 0 }]
     all_ids = SS::File.unscoped.where("$and" => [{ "$or" =>  conds}]).pluck(:id).sort
     all_ids.each_slice(20) do |ids|
       SS::File.unscoped.in(id: ids).to_a.each do |file|
+        puts "#{count} / #{all_ids.size}"
+        count += 1
+
         file = file.becomes_with_model
         next if file.is_a?(SS::ThumbFile) || file.try(:thumb?)
         next if !file.respond_to?(:owner_item)
@@ -25,9 +29,13 @@ class SS::Migration20190320000000
           file.site = owner_item.site
         end
 
-        unless file.save
-          STDERR.puts "ファイル #{file.name}(#{file.id};#{file.model}) でエラーが発生しました。"
-          STDERR.puts file.errors.full_messages.join("\n")
+        begin
+          unless file.save
+            STDERR.puts "ファイル #{file.name}(#{file.id};#{file.model}) でエラーが発生しました。"
+            STDERR.puts file.errors.full_messages.join("\n")
+          end
+        rescue => e
+          Rails.logger.error("#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}")
         end
       end
     end
