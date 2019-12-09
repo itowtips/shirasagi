@@ -3,7 +3,6 @@ module Cms::Model::Page
   extend SS::Translation
   include Cms::Content
   include Cms::Reference::Layout
-  include ::Translate::Page
 
   included do
     class_variable_set(:@@_show_path, nil)
@@ -64,7 +63,6 @@ module Cms::Model::Page
     run_callbacks :remove_file do
       Fs.rm_rf path
       Cms::PageRelease.close(self)
-      remove_translated_files
     end
   end
 
@@ -80,7 +78,6 @@ module Cms::Model::Page
       Fs.mkdir_p dst_dir unless Fs.exists?(dst_dir)
       Fs.mv src, dst if Fs.exists?(src)
       Cms::PageRelease.close(self, @db_changes['filename'][0])
-      rename_translated_files
     end
   end
 
