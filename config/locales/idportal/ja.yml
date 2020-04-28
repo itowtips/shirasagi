@@ -1,0 +1,7 @@
+ja:
+  modules:
+    idportal: IDポータル
+
+  cms:
+    nodes:
+      idportal/page: ID関連文献リスト

@@ -350,6 +350,7 @@ GEM
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
+    mysql2 (0.5.3)
     naught (1.1.0)
     nenv (0.3.0)
     net-http-persistent (3.0.0)
@@ -695,6 +696,7 @@ DEPENDENCIES
   mongoid!
   mongoid-grid_fs!
   mongoid-rspec!
+  mysql2
   net-ldap
   non-stupid-digest-assets
   oauth2!
