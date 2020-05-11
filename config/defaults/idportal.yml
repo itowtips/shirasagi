@@ -1,0 +1,14 @@
+# idportal
+
+production: &production
+  mysql:
+    host: "localhost"
+    username: "root"
+    password: ""
+    database: "idbst1"
+
+test:
+  <<: *production
+
+development:
+  <<: *production

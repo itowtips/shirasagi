@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   node "idportal" do
     get "page/(index.:format)" => "public#index", cell: "nodes/page"
+    get "page/result.html" => "public#index", cell: "nodes/page"
     get "page/rss.xml" => "public#rss", cell: "nodes/page", format: "xml"
   end
 
