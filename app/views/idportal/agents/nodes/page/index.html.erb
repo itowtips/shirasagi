@@ -1,3 +1,5 @@
+<%== @cur_node.upper_html if @cur_node.upper_html.present? %>
+
 <div class="subs">
 <%==
   @subs.map do |row|
@@ -33,6 +35,8 @@ $("#id-list .title").on("click", function(){
 });
 <% end %>
 
+<% if @res.present? %>
+
 <ul id="id-list">
   <% @res.each do |row| %>
     <li>
@@ -51,3 +55,11 @@ $("#id-list .title").on("click", function(){
     </li>
   <% end %>
 </ul>
+
+<% else %>
+
+<%== @cur_node.substitute_html %>
+
+<% end %>
+
+<%== @cur_node.lower_html if @cur_node.lower_html.present? %>

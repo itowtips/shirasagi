@@ -9,7 +9,7 @@ module Idportal::Node
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
-    include Cms::Addon::EditorSetting
+    include Idportal::Addon::PageList
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 

@@ -1,6 +1,8 @@
 ja:
   modules:
     idportal: IDポータル
+    addons:
+      idportal/page_list: リスト表示
 
   cms:
     nodes:
