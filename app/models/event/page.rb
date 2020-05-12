@@ -5,6 +5,7 @@ class Event::Page
   include Workflow::Addon::Branch
   include Workflow::Addon::Approver
   include Cms::Addon::Meta
+  include Cms::Addon::RedirectLink
   include Cms::Addon::SnsPoster
   include Gravatar::Addon::Gravatar
   include Cms::Addon::Body
