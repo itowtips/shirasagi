@@ -1970,7 +1970,7 @@ ja:
 
     cms/addon/redirect_link:
       redirect_link:
-        - リンクURLを入力します。
+        - ページを別URLにリダイレクトする際に入力します。
 
   all_content:
     page_id: ページID
