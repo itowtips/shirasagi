@@ -1,0 +1,36 @@
+<h2><%= t("idportal.views.id_search_results") %></h2>
+<div><%= "#{t("idportal.views.search_result")} #{@res.count}#{t("ss.units.count")}: #{@keywords.join(", ")}" %></div>
+
+<%=jquery do %>
+$("#id-list .title").on("click", function(){
+  $(this).next(".abstract").toggle("slow");
+});
+<% end %>
+
+<ul id="id-list">
+  <% @res.each do |row| %>
+    <li>
+      <% if row["URL"].present? && ::File.extname(row["URL"]) =~ /^\.(pdf|doc|docx|xls|xlsx|ppt|pptx|gif|png)$/i %>
+        <%= link_to t("idportal.views.link"), row["URL"], target: "_blank", class: "link-btn" %>
+      <% end %>
+
+      <% 1.upto(15) do |n| %>
+        <% break if row["c#{n}"].blank? %>
+        <% _, l = row["c#{n}"].split(",") %>
+        <%= link_to t("idportal.views.link"), l, target: "_blank", class: "link-btn" %>
+      <% end %>
+
+      <span class="title"><%== row["title"] %></span>
+      <div class="abstract" style="display: none;"><%= (row["abstract"].presence || t("idportal.views.empty_abstract")) %></div>
+    </li>
+  <% end %>
+</ul>
+
+<h2><%= t("idportal.views.page_search_results") %></h2>
+<div><%= "#{t("idportal.views.search_result")} #{@items.count}#{t("ss.units.count")}: #{@keywords.join(", ")}" %></div>
+
+<div class="cms-pages pages">
+  <%= render_page_list %>
+</div>
+
+<%= paginate @items if @items.try(:current_page) %>

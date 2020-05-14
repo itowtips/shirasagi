@@ -1,4 +1,15 @@
 ja:
+  idportal:
+    views:
+      link: リンク
+      search_result: 検索結果
+      id_search_results: 文献検索結果
+      page_search_results: 記事検索結果
+      empty_abstract: 詳細はありません。
+      year: 年度
+      all_years: すべての年度
+      id_pages: に属する文献一覧
+
   modules:
     idportal: IDポータル
     addons:
@@ -7,3 +18,6 @@ ja:
   cms:
     nodes:
       idportal/page: ID関連文献リスト
+      idportal/search: 文献・ページ検索
+    parts:
+      idportal/search: 文献・ページ検索

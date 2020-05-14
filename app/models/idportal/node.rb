@@ -15,4 +15,15 @@ module Idportal::Node
 
     default_scope ->{ where(route: "idportal/page") }
   end
+
+  class Search
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Cms::Addon::PageList
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "idportal/search") }
+  end
 end

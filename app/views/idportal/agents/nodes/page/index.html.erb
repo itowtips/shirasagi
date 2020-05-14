@@ -14,19 +14,19 @@
   years = @res_years.map do |year, res|
     next if res.blank?
     cls = (@cur_year.to_i == year) ? "current" : ""
-    link_to("#{year}年度", "#{@cur_node.url}result.html?#{ { skw: @cur_skw, year: year }.to_query }", class: cls)
+    link_to("#{year}#{t("idportal.views.year")}", "#{@cur_node.url}result.html?#{ { skw: @cur_skw, year: year }.to_query }", class: cls)
   end
 
   cls = @cur_year.blank? ? "current" : ""
-  years << link_to("すべての年度", "#{@cur_node.url}result.html?#{ { skw: @cur_skw, year: nil }.to_query }", class: cls)
+  years << link_to(t("idportal.views.all_years"), "#{@cur_node.url}result.html?#{ { skw: @cur_skw, year: nil }.to_query }", class: cls)
 %>
 <%== years.join(" / ") %>
 </div>
 
 <% if @cur_year.present? %>
-  <h2><%= "#{@cur_skw_label}[#{@cur_year}] に属する文献一覧 (#{@res.count}件)" %></h2>
+  <h2><%= "#{@cur_skw_label}[#{@cur_year}#{t("idportal.views.year")}] #{t("idportal.views.id_pages")} (#{@res.count}#{t("ss.units.count")})" %></h2>
 <% else %>
-  <h2><%= "#{@cur_skw_label}に属する文献一覧 (#{@res.count}件)" %></h2>
+  <h2><%= "#{@cur_skw_label}#{t("idportal.views.id_pages")} (#{@res.count}#{t("ss.units.count")})" %></h2>
 <% end %>
 
 <%=jquery do %>
@@ -41,17 +41,17 @@ $("#id-list .title").on("click", function(){
   <% @res.each do |row| %>
     <li>
       <% if row["URL"].present? && ::File.extname(row["URL"]) =~ /^\.(pdf|doc|docx|xls|xlsx|ppt|pptx|gif|png)$/i %>
-        <%= link_to "リンク", row["URL"], target: "_blank", class: "link-btn" %>
+        <%= link_to t("idportal.views.link"), row["URL"], target: "_blank", class: "link-btn" %>
       <% end %>
 
       <% 1.upto(15) do |n| %>
         <% break if row["c#{n}"].blank? %>
         <% _, l = row["c#{n}"].split(",") %>
-        <%= link_to "リンク", l, target: "_blank", class: "link-btn" %>
+        <%= link_to t("idportal.views.link"), l, target: "_blank", class: "link-btn" %>
       <% end %>
 
       <span class="title"><%== row["title"] %></span>
-      <div class="abstract" style="display: none;"><%= (row["abstract"].presence || "詳細はありません。") %></div>
+      <div class="abstract" style="display: none;"><%= (row["abstract"].presence || t("idportal.views.empty_abstract")) %></div>
     </li>
   <% end %>
 </ul>

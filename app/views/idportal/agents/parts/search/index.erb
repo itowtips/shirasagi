@@ -1,0 +1,8 @@
+<%
+  @s = OpenStruct.new params[:s]
+  @url = @cur_part.parent.try(:url)
+%>
+<%= form_for :s, url: @url, html: { method: :get } do |f| %>
+  <%= f.text_field :keyword, placeholder: "サイト内検索", class: "text", id: "search-box" %>
+  <input type="submit" value="<%= t('ss.buttons.search') %>" class="btn" />
+<% end %>

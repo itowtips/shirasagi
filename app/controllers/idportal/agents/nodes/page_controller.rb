@@ -2,9 +2,7 @@ class Idportal::Agents::Nodes::PageController < ApplicationController
   include Cms::NodeFilter::View
 
   def set_mysql_client
-    conf = SS.config.idportal[:mysql]
-    @client = Mysql2::Client.new(host: conf["host"], username: conf["username"], password: conf["password"])
-    @client.select_db(conf["database"])
+    @client = Idportal::Db.client
   end
 
   def set_subs
