@@ -2918,6 +2918,10 @@ form .CodeMirror {
     margin-top: 15px;
   }
 }
+#marker-popup .content {
+  overflow: scroll;
+  max-height: 200px;
+}
 
 // -------------------------------------------------------------------------------------------------
 // addon cms/opendata_ref/resource

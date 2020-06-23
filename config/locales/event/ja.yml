@@ -12,6 +12,7 @@ ja:
     filter_all: 全て
     date_range_delimiter: ～
     keyword: キーワード
+    count: 件
     dates:
       setting: 開催期間
       start_date: 開始
@@ -51,6 +52,7 @@ ja:
       event_display:
         list: リスト形式
         table: 表形式
+        map: 地図形式
         list_only: リスト形式のみ
         table_only: 表形式のみ
       ical_refresh_method:
@@ -87,6 +89,7 @@ ja:
       event/ical_import: ical取り込み
       event/ical_link: iCal情報
       event/facility: 施設
+      event/search/page_list: リスト表示
 
   cms:
     nodes:
@@ -132,6 +135,8 @@ ja:
         event_dates: イベント日
         event_deadline: 申込締切
         schedule: 日時
+        facilities: 開催施設
+        facility_ids: 開催施設
         venue: 開催場所
         content: 内容
         cost: 費用
@@ -187,6 +192,10 @@ ja:
     event/addon/body:
       schedule:
         - イベントの日時をテキスト形式で入力します。
+      facility_ids:
+        - イベントに関係する施設を設定します。
+        - 施設の座標が公開画面のイベントページの地図に表示されます。
+        - 地図を設定してる場合は、地図の座標が公開画面のイベントページの地図に表示されます。
       venue:
         - イベントの開催場所を入力します。
       related_url:
