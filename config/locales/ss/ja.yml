@@ -741,6 +741,8 @@ ja:
         close_date: 公開終了日時(予約)
       ss/addon/inquiry_setting:
         inquiry_form_id: お問い合わせフォーム
+      ss/lockable:
+        lock_until: ロック期限日時
 
   tooltip:
     ss/model/user:
