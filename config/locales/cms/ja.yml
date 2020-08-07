@@ -193,6 +193,7 @@ ja:
       ruby_on: ふりがなをつける
       ruby_off: ふりがなをはずす
       back_to_contents: コンテンツへ戻る
+      michecker: miChecker で確認する
     move_page:
       confirm: 確認
       message: '"%{source}"へのリンクが含まれるページ'
@@ -345,6 +346,24 @@ ja:
       cms/youtube: YouTube埋め込み
       cms/free: 自由入力
       cms/table: 表
+    cms/michecker:
+      start: miChecker を実行し結果を確認する
+      loading: プレビューをロード中です
+      accessibility: アクセシビリティ検証
+      lowvision: 視覚化
+    cms/michecker/report:
+      type: 種別
+      all: すべての項目
+      error: 問題あり
+      warning: 問題の可能性大
+      caution: 要判断箇所
+      notice: 手動確認
+      download: CSVダウンロード
+      display_column: 表示列
+    cms/michecker/task:
+      start: miChecker による検証を開始します。
+      success: miChecker による検証が完了しました。
+      failed: miChecker による検証が失敗しました。
 
   cms_role:
     edit_cms_sites: サイトの管理
@@ -531,6 +550,7 @@ ja:
       cms/column/youtube: YouTube埋め込み
       cms/column/free: 自由入力
       cms/column/table: 表
+      cms/michecker_task: miCheckerタスク
     errors:
       models:
         cms/model/node:
@@ -916,6 +936,31 @@ ja:
         value: テキスト
       cms/column/value/table:
         value: 表
+
+  activemodel:
+    attributes:
+      cms/michecker/base:
+        severity: 重度指数
+        severityStr: 重度指数名
+        description: 内容
+        evaluationItem_tableDataMetrics0: 知覚可能
+        evaluationItem_tableDataMetrics1: 操作可能
+        evaluationItem_tableDataMetrics2: 理解可能
+        evaluationItem_tableDataMetrics3: 堅牢
+        evaluationItem_tableDataGuideline0: WCAG 2.0
+        evaluationItem_tableDataGuideline1: Section508
+        evaluationItem_tableDataGuideline2: JIS
+        evaluationItem_tableDataTechniques: 達成方法
+      cms/michecker/accessibility:
+        highlightTargetPaths: 指摘箇所
+      cms/michecker/low_vision:
+        iconTooltip: 種類
+        severityLV: 深刻度
+        foreground: 前景色
+        background: 背景色
+        x: X座標
+        y: Y座標
+        area: 面積
 
   errors:
     messages:
@@ -2017,3 +2062,4 @@ ja:
       cms/import_files_job: ページ/フォルダー取り込み
       cms/role/import_job: 権限インポート
       cms/all_contents_import_job: 全コンテンツ一括設定
+      cms/michecker_job: miChecker
