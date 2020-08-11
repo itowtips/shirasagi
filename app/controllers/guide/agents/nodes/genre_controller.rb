@@ -3,8 +3,7 @@ class Guide::Agents::Nodes::GenreController < ApplicationController
   helper Cms::ListHelper
 
   def index
-    @items = Guide::Node::Guide.site(@cur_site).and_public.
-      where(@cur_node.condition_hash).
+    @items = Guide::Node::Guide.public_list(site: @cur_site, node: @cur_node, date: @cur_date).
       order_by(@cur_node.sort_hash).
       page(params[:page]).
       per(@cur_node.limit)
