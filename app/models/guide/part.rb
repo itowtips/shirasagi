@@ -22,7 +22,7 @@ class Guide::Part
 
     default_scope ->{ where(route: "guide/node") }
 
-    def condition_hash(opts = {})
+    def condition_hash
       h = super
       if genres.present?
         { "$and" => [ h, { :genre_ids.in => genre_ids } ] }

@@ -44,7 +44,7 @@ class Guide::Node
 
     default_scope ->{ where(route: "guide/genre") }
 
-    def condition_hash(opts = {})
+    def condition_hash
       h = super
       h['$or'] << { :genre_ids.in => [id] }
       h
