@@ -204,10 +204,11 @@ module ApplicationHelper
 
   def liquid_registers
     registers = {
+      controller: controller,
       cur_site: @cur_site,
-      preview: @preview,
       cur_path: @cur_path,
       cur_main_path: @cur_main_path,
+      preview: @preview,
       mobile: false
     }
 

@@ -24,6 +24,10 @@ class Cms::Column::Value::SpotMap < Cms::Column::Value::Base
 
     helpers = ::Tourism::Agents::Pages::PageController.helpers
     helpers.instance_variable_set :@cur_site, site
+    helpers.instance_variable_set :@_options, options
+    def helpers.controller
+      @_options[:controller]
+    end
 
     merged_map = nil
     map_pages.each do |map|
@@ -45,8 +49,24 @@ class Cms::Column::Value::SpotMap < Cms::Column::Value::Base
     end
 
     h = []
-    #h << helpers.render_map("#map-canvas", markers: merged_map.map_points, site: site, map: { zoom: merged_map.map_zoom_level })
+    h << helpers.render_map("#map-canvas", markers: merged_map.map_points, site: site, map: { zoom: merged_map.map_zoom_level })
     h << '<div id="map-canvas" style="width: 100%; height: 400px;"></div>'
     h.join("\n")
+  rescue => e
+    Rails.logger.error("#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}")
+    ""
+  end
+
+  private
+
+  def render_html_for_liquid(context)
+    return to_default_html if @liquid_context
+
+    @liquid_context = context
+    begin
+      to_html(preview: context.registers[:preview], controller: context.registers[:controller])
+    ensure
+      @liquid_context = nil
+    end
   end
 end
