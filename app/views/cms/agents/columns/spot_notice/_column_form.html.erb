@@ -1,0 +1,12 @@
+<% value ||= nil %>
+<% controller ||= false %>
+
+<%= render 'cms/agents/columns/main/base', f: f, column: column, value: value, controller: controller do |id| %>
+  <div>施設のお知らせ一覧が表示されます。</div>
+<% end %>
+
+<% if @inplace_mode %>
+  <%= jquery do %>
+    $(".ss-ajax-in-iframe footer.send").hide();
+  <% end %>
+<% end %>

@@ -1,0 +1,25 @@
+<dl class="see mod-tourism-facility">
+  <dt><%= @model.t :facility_id %><%= @model.tt :facility_id %></dt>
+  <dd>
+    <%= f.hidden_field "facility_id", value: "", class: "hidden-ids" %>
+    <%= link_to t("event.apis.facilities.index"), cms_apis_nodes_path(model: 'Facility::Node::Page', single: 1), class: "ajax-box" %>
+  </dd>
+  <dd>
+    <table class="index ajax-selected">
+      <thead>
+        <tr>
+          <th class="name"><%= @model.t :name %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @item.facility %>
+          <tr data-id="<%= @item.facility_id %>">
+            <td><%= f.hidden_field "facility_id", value: @item.facility_id %> <%= @item.facility.name %></td>
+            <td><%= link_to t("ss.buttons.delete"), "#", class: "deselect btn" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>

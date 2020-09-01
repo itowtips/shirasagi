@@ -1,6 +1,14 @@
 class Facility::Agents::Nodes::PageController < ApplicationController
   include Cms::NodeFilter::View
 
+  before_action :redirect_to_tourism_page
+
+  def redirect_to_tourism_page
+    @tourism_page = ::Tourism::Page.site(@cur_site).in(facility_id: @cur_node.id).first
+    return if @tourism_page.blank?
+  #  redirect_to @tourism_page.url
+  end
+
   def map_pages
     Facility::Map.site(@cur_site).and_public.
       where(filename: /^#{::Regexp.escape(@cur_node.filename)}\//, depth: @cur_node.depth + 1).order_by(order: 1)

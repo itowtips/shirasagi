@@ -1,0 +1,71 @@
+ja:
+  tourism:
+    page: 観光スポット
+    notice: お知らせ
+    apis:
+      pages:
+        index: 観光スポットを選択する
+        search: 観光スポットを検索
+        select: 観光スポットを設定する
+
+  modules:
+    tourism: 観光スポット
+    addons:
+      tourism/facility: 施設
+      tourism/page_setting: 観光スポット
+      tourism/map_list: リスト表示
+
+  cms:
+    nodes:
+      tourism/page: 観光スポットリスト
+      tourism/notice: お知らせリスト
+      tourism/map: 観光マップ
+
+  mongoid:
+    models:
+      tourism/page: 観光スポット
+      tourism/notice: お知らせ
+      tourism/node/page: 観光スポットリスト
+      tourism/node/notice: お知らせリスト
+    attributes:
+      tourism/addon/facility:
+        facility_id: 施設
+      tourism/addon/page_setting:
+        tourism_page_ids: 観光スポット
+
+  cms_role:
+    read_other_tourism_pages: 観光スポットの閲覧（全て）
+    read_private_tourism_pages: 観光スポットの閲覧（所有）
+    edit_other_tourism_pages: 観光スポットの編集（全て）
+    edit_private_tourism_pages: 観光スポットの編集（所有）
+    delete_other_tourism_pages: 観光スポットの削除（全て）
+    delete_private_tourism_pages: 観光スポットの削除（所有）
+    unlock_other_tourism_pages: 観光スポットのロック解除（全て）
+    release_other_tourism_pages: 観光スポットの公開（全て）
+    release_private_tourism_pages: 観光スポットの公開（所有）
+    approve_other_tourism_pages: 観光スポットの承認（全て）
+    approve_private_tourism_pages: 観光スポットの承認（所有）
+    reroute_other_tourism_pages: 観光スポットの承認経路変更（全て）
+    reroute_private_tourism_pages: 観光スポットの承認経路変更（所有）
+    revoke_other_tourism_pages: 観光スポットの承認申請取消（全て）
+    revoke_private_tourism_pages: 観光スポットの承認申請取消（所有）
+    read_other_tourism_notices: お知らせの閲覧（全て）
+    read_private_tourism_notices: お知らせの閲覧（所有）
+    edit_other_tourism_notices: お知らせの編集（全て）
+    edit_private_tourism_notices: お知らせの編集（所有）
+    delete_other_tourism_notices: お知らせの削除（全て）
+    delete_private_tourism_notices: お知らせの削除（所有）
+    unlock_other_tourism_notices: お知らせのロック解除（全て）
+    release_other_tourism_notices: お知らせの公開（全て）
+    release_private_tourism_notices: お知らせの公開（所有）
+    approve_other_tourism_notices: お知らせの承認（全て）
+    approve_private_tourism_notices: お知らせの承認（所有）
+    reroute_other_tourism_notices: お知らせの承認経路変更（全て）
+    reroute_private_tourism_notices: お知らせの承認経路変更（所有）
+    revoke_other_tourism_notices: お知らせの承認申請取消（全て）
+    revoke_private_tourism_notices: お知らせの承認申請取消（所有）
+
+  tooltip:
+    tourism/addon/facility:
+      facility_id:
+        - 施設を設定します。

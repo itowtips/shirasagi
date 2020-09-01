@@ -28,6 +28,8 @@ module Cms
     Cms::Column.plugin 'cms/youtube'
     Cms::Column.plugin 'cms/free'
     Cms::Column.plugin 'cms/table'
+    Cms::Column.plugin 'cms/spot_notice'
+    Cms::Column.plugin 'cms/spot_map'
 
     Cms::Role.permission :edit_cms_sites
     Cms::Role.permission :edit_cms_groups

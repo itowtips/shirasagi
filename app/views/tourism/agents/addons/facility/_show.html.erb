@@ -1,0 +1,12 @@
+<dl class="see mod-tourism-facility">
+  <dt><%= @model.t :facility_id %><%= @model.tt :facility_id %></dt>
+  <dd>
+    <% if @item.facility %>
+      <% if @item.allowed?(:read, @cur_user, site: @cur_site, node: @cur_node) %>
+        <%= link_to @item.facility.name, facility_page_path(id: @item.facility) %>
+      <% else %>
+        <%= @item.facility.name %>
+      <% end %>
+    <% end %>
+  </dd>
+</dl>

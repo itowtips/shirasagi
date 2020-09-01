@@ -1,0 +1,13 @@
+<dl class="see mod-tourism-page_setting">
+  <dt><%= @model.t :tourism_page_ids %><%= @model.tt :tourism_page_ids %></dt>
+  <dd>
+    <table class="index">
+      <% @item.ordered_tourism_pages.each_with_index do |item, i| %>
+        <tr>
+          <td style="width: 10px;"><%= i + 1 %></td>
+          <td><%= item.name %></td>
+        </tr>
+      <% end %>
+    </table>
+  </dd>
+</dl>

@@ -346,6 +346,8 @@ ja:
       cms/youtube: YouTube埋め込み
       cms/free: 自由入力
       cms/table: 表
+      cms/spot_notice: 観光スポットお知らせ
+      cms/spot_map: 観光スポット地図
     cms/michecker:
       start: miChecker を実行し結果を確認する
       loading: プレビューをロード中です

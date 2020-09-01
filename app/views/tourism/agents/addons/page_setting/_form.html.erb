@@ -1,0 +1,29 @@
+<%= jquery do %>
+  $('.sortable-index tbody').sortable();
+<% end %>
+
+<dl class="see mod-tourism-page_setting">
+  <dt><%= @model.t :tourism_page_ids %><%= @model.tt :tourism_page_ids %></dt>
+  <dd>
+    <%= f.hidden_field "tourism_page_ids[]", value: "", class: "hidden-ids" %>
+    <%= link_to t("tourism.apis.pages.index"), tourism_apis_pages_path, class: "ajax-box" %>
+  </dd>
+  <dd>
+    <table class="index ajax-selected sortable-index">
+      <thead>
+      <tr>
+        <th class="name"><%= Tourism::Page.t(:name) %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @item.ordered_tourism_pages.each do |item| %>
+        <tr data-id="<%= item.id %>">
+          <td><%= f.hidden_field "tourism_page_ids[]", value: item.id %> <%= item.name %></td>
+          <td><%= link_to t("ss.buttons.delete"), "#", class: "deselect btn" %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>
