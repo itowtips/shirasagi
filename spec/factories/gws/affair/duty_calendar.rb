@@ -3,5 +3,6 @@ FactoryBot.define do
     cur_site { gws_site }
     cur_user { gws_user }
     name { unique_id }
+    holiday_type { "system" }
   end
 end
