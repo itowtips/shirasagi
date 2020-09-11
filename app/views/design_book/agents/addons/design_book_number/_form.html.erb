@@ -1,3 +1,5 @@
+<% return if @item.respond_to?(:basename) %>
+
 <dl class="see mod-design-book-number">
   <dt><%= @model.t :design_book_number %><%= @model.tt :design_book_number %></dt>
   <dd><%= f.text_field :design_book_number, maxlength: 10 %></dd>

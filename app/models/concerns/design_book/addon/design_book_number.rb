@@ -18,5 +18,10 @@ module DesignBook::Addon
         end
       end
     end
+
+    def set_filename
+      self.basename = design_book_number
+      super
+    end
   end
 end
