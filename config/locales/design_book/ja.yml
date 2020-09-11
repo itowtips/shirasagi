@@ -1,0 +1,30 @@
+ja:
+  design_book:
+    page: 設計図書
+
+  cms:
+    nodes:
+      design_book/page: 設計図書
+    parts:
+      design_book/search: ページ検索
+
+  modules:
+    design_book: 設計図書
+    addons:
+      design_book/design_book_number: 設計図書番号
+
+  mongoid:
+    models:
+      design_book/page: ページ
+    attributes:
+      design_book/addon/design_book_number:
+        design_book_number: 設計図書番号
+    errors:
+      models:
+        design_book/addon/design_book_number:
+          not_found_design_book_number: "設計図書番号「%{number}」が見つかりません。"
+
+  tooltip:
+    design_book/addon/design_book_number:
+      design_book_number:
+        - 設計図書番号を10桁の数字で入力します。

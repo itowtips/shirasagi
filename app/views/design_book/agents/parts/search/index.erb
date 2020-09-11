@@ -1,0 +1,10 @@
+<%= form_for(:item, url: @cur_part.search_url, method: "get", html: { class: 'design-book-search' }) do %>
+  <fieldset class="design-book-number">
+    <label for="search_design_book_number"><%= DesignBook::Page.t(:design_book_number) %></label>
+    <%= text_field_tag :search_design_book_number, @design_book_number, maxlength: 10 %>
+  </fieldset>
+
+  <footer class="send">
+    <%= submit_tag t('event.submit.search'), name: nil %>
+  </footer>
+<% end %>
