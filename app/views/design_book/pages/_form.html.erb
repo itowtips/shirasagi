@@ -6,7 +6,7 @@
   <dd><%= f.text_field :index_name %></dd>
 
   <dt><%= @model.t :design_book_number %><%= @model.tt :design_book_number %></dt>
-  <dd><%= f.text_field :design_book_number, maxlength: 10 %></dd>
+  <dd><%= f.text_field :design_book_number, maxlength: 10, style: "width: 200px;" %></dd>
 
   <dt><%= @model.t :layout_id %><%= @model.tt :layout_id %></dt>
   <dd><%= f.select :layout_id, ancestral_layouts(@item.parent, @item.layout), include_blank: " " %></dd>

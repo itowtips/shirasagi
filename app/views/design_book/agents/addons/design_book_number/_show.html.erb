@@ -1,3 +1,5 @@
+<% return if @item.respond_to?(:basename) %>
+
 <dl class="see mod-design-book-number">
   <dt><%= @model.t :design_book_number %></dt>
   <dd><%= @item.send :design_book_number %></dd>

@@ -28,3 +28,4 @@ ja:
     design_book/addon/design_book_number:
       design_book_number:
         - 設計図書番号を10桁の数字で入力します。
+        - 設計図書番号はファイル名に使用されます。
