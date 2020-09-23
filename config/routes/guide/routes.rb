@@ -7,41 +7,30 @@ Rails.application.routes.draw do
     delete :destroy_all, on: :collection, path: ''
   end
 
-  concern :download do
-    get :download, on: :collection
-  end
-
-  concern :import do
-    get :import, on: :collection
-    post :import, on: :collection
-  end
-
   namespace "guide", path: ".s:site/guide" do
     namespace "apis" do
-      get "questions" => "questions#index"
-      get "procedures" => "procedures#index"
+      scope ":nid/:id" do
+        get "questions" => "questions#index"
+        get "procedures" => "procedures#index"
+      end
     end
   end
 
   content "guide" do
-    get "/" => redirect { |p, req| "#{req.path}/nodes" }, as: :main
-    resources :nodes, concerns: :deletion
-    resources :genres, concerns: :deletion
-    resources :guides, concerns: :deletion
+    get "/" => redirect { |p, req| "#{req.path}/questions" }, as: :main
+    resources :guides, only: [:index]
     resources :questions, concerns: :deletion
-    resources :procedures, concerns: [:deletion, :download, :import]
+    resources :procedures, concerns: :deletion
+    resources :diagram, only: [:index]
   end
 
   node "guide" do
-    get "node(index.:format)" => "public#index", cell: "nodes/node"
-    get "genre(index.:format)" => "public#index", cell: "nodes/genre"
     get "guide(index.:format)" => "public#index", cell: "nodes/guide"
-    match "guide/guide(.:format)" => "public#guide", via: [:get, :post], cell: "nodes/guide"
-    match "guide/result(.:format)" => "public#result", via: [:get, :post], cell: "nodes/guide"
-    match "guide/answer(.:format)" => "public#answer", via: [:get, :post], cell: "nodes/guide"
-  end
+    get "guide/dialog(.:format)" => "public#dialog", cell: "nodes/guide"
 
-  part "guide" do
-    get "node(index.:format)" => "public#index", cell: "parts/node"
+    get "guide/result/" => "public#result", cell: "nodes/guide"
+    get "guide/result/:condition" => "public#result", cell: "nodes/guide"
+    get "guide/answer/" => "public#answer", cell: "nodes/guide"
+    get "guide/answer/:condition" => "public#answer", cell: "nodes/guide"
   end
 end

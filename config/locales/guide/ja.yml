@@ -3,7 +3,6 @@ ja:
     guide: 目的別ガイド
     question: 質問
     procedure: 手続き
-    procedures_needed: "%{count}件の手続きが必要です。"
     apis:
       questions:
         index: 質問項目を選択する
@@ -14,37 +13,46 @@ ja:
         search: 手続きを検索
         select: 手続きを設定する
     links:
-      applicable: 該当する
+      applicable: はい
       back_to_first: 最初に戻る
+      back_to_before: 一つ前に戻る
       back_to_index: 一覧に戻る
       next: 次へ
-      not_applicable: 該当しない
+      not_applicable: いいえ
       revise_and_resubmit: 修正して再投稿
-      show_answer: 回答を確認・修正する
+      show_answer: 回答を確認する
+      show_result: 手続きを確認する
       start_guide: ガイドを開始する
+    views:
+      procedures_needed: "%{count}件の手続きが必要です。"
+      procedures_others: "そのほか下記に該当する方は、それぞれの窓口にお問い合わせください"
+    options:
+      question_type:
+        yes_no: 'はい・いいえ'
+        choices: '選択肢'
+      check_type:
+        multiple: 複数選択（チェックボックス）
+        single: 一択（ラジオボタン）
 
   cms_role:
-    read_other_guide_procedures: 目的別ガイドの閲覧(全て)
-    read_private_guide_procedures: 目的別ガイドの閲覧(所有)
-    edit_other_guide_procedures: 目的別ガイドの編集(全て)
-    edit_private_guide_procedures: 目的別ガイドの編集(所有)
-    delete_other_guide_procedures: 目的別ガイドの削除(全て)
-    delete_private_guide_procedures: 目的別ガイドの削除(所有)
-    import_other_guide_procedures: 目的別ガイドのインポート(全て)
-    import_private_guide_procedures: 目的別ガイドのインポート(所有)
+    read_guide_questions: 質問の閲覧
+    edit_guide_questions: 質問の編集
+    delete_guide_questions: 質問の削除
+    read_guide_procedures: 手続きの閲覧
+    edit_guide_procedures: 手続きの編集
+    delete_guide_procedures: 手続きの削除
 
   modules:
     guide: 目的別ガイド
     addons:
       guide/question: 質問
       guide/procedure: 手続き
+      guide/procedure_setting: 手続き設定
       guide/genre: ジャンル
       guide/guide_list: リスト表示
 
   cms:
     nodes:
-      guide/node: 目的別ガイドリスト
-      guide/genre: ジャンル
       guide/guide: 目的別ガイド
     parts:
       guide/node: 目的別ガイドリスト
@@ -71,16 +79,17 @@ ja:
         order: 並び順
       guide/question:
         name: タイトル
-        question: 質問
         select_options: 選択肢
         order: 並び順
+        question_type: 質問の形式
+        check_type: 選択肢の形式
       guide/addon/genre:
         genre_ids: ジャンル
       guide/addon/question:
         column_ids: 質問項目
         question_ids: 質問
-      guide/addon/procedure:
-        procedure_ids: 手続き
+      guide/addon/procedure_setting:
+        procedure_ids: その他の手続き
       guide/addon/guide_list:
         guide_index_html: ガイド開始画面 HTML
         guide_html: ガイド画面 HTML
@@ -91,6 +100,8 @@ ja:
         loop_liquid: 結果画面 ループHTML
         no_items_display_state: 結果画面 手続き未検出時表示
         substitute_html: 結果画面 代替HTML
+      guide/diagram/edge:
+        value: 選択肢の質問
 
   tooltip:
     guide/question:

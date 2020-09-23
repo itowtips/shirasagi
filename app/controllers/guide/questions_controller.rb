@@ -12,6 +12,15 @@ class Guide::QuestionsController < ApplicationController
   end
 
   def fix_params
-    { cur_site: @cur_site }
+    { cur_site: @cur_site, cur_node: @cur_node }
+  end
+
+  public
+
+  def index
+    @items = @model.site(@cur_site).
+      node(@cur_node).
+      search(params[:s]).
+      allow(:read, @cur_user, site: @cur_site)
   end
 end

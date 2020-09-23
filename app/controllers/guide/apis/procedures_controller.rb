@@ -5,11 +5,14 @@ class Guide::Apis::ProceduresController < ApplicationController
 
   def index
     @multi = params[:single].blank?
+    @node = Cms::Node.find(params[:nid])
+    @id = params[:id].to_i
 
     @items = @model.site(@cur_site).
-      allow(:read, @cur_user, site: @cur_site, node: @cur_node).
+      node(@node).
+      ne(id: @id).
+      allow(:read, @cur_user, site: @cur_site).
       search(params[:s]).
-      order_by(order: 1, name: 1).
       page(params[:page]).per(50)
   end
 end
