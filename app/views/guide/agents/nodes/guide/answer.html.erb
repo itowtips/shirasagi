@@ -3,7 +3,7 @@
   <div class="guide-nodes nodes">
     <div class="your-answers">あなたの回答</div>
     <ul>
-      <% @diagram.question_path.each_with_index do |question, no| %>
+      <% @diagram.questions.each_with_index do |question, no| %>
         <% answer = @answers[no].to_a %>
 
         <% if question.question_type == "choices" %>
