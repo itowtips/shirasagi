@@ -25,61 +25,41 @@ module Guide::ListHelper
     ih.join("\n").freeze
   end
 
-  def render_procedure_list(&block)
-    cur_item = @cur_part || @cur_node
-    @items ||= @procedures
-    if @items.blank? && cur_item.try(:no_items_display_state) == 'hide'
-      return cur_item.substitute_html.to_s.html_safe
-    end
-    cur_item.cur_date = @cur_date
-
-    if cur_item.loop_format_shirasagi?
-      render_list_with_shirasagi(cur_item, default_procedure_loop_html, &block)
+  def render_procedure_list(items)
+    @cur_node.cur_date = @cur_date
+    if @cur_node.loop_format_shirasagi?
+      render_list_with_shirasagi(items)
     else
-      source = cur_item.loop_liquid.presence || default_procedure_loop_liquid
-      assigns = { "procedures" => @items.to_a }
+      source = @cur_node.loop_liquid.presence || default_procedure_loop_liquid
+      assigns = { "procedures" => items.to_a }
       render_list_with_liquid(source, assigns)
     end
   end
 
   private
 
-  def render_list_with_shirasagi(cur_item, default_loop_html, &block)
+  def render_list_with_shirasagi(items)
     h = []
 
-    h << cur_item.upper_html.html_safe if cur_item.upper_html.present?
-    if block_given?
-      h << capture(&block)
+    if @cur_node.loop_setting.present?
+      loop_html = @cur_node.loop_setting.html
+    elsif @cur_node.loop_html.present?
+      loop_html = @cur_node.loop_html
     else
-      h << cur_item.substitute_html.to_s.html_safe if @items.blank?
-      if cur_item.loop_setting.present?
-        loop_html = cur_item.loop_setting.html
-      elsif cur_item.loop_html.present?
-        loop_html = cur_item.loop_html
-      else
-        loop_html = default_loop_html
-      end
-
-      @items.each do |item|
-        ih = cur_item.render_loop_html(item, html: loop_html)
-        h << ih
-      end
+      loop_html = default_procedure_loop_html
     end
-    h << cur_item.lower_html.html_safe if cur_item.lower_html.present?
+
+    items.each do |item|
+      ih = @cur_node.render_loop_html(item, html: loop_html)
+      h << ih
+    end
 
     h.join("\n").html_safe
   end
 
   def render_list_with_liquid(source, assigns)
     template = ::Cms.parse_liquid(source, liquid_registers)
-
-    if @cur_part
-      assigns["part"] = @cur_part
-    end
-    if @cur_node
-      assigns["node"] = @cur_node
-    end
-
+    assigns["node"] = @cur_node
     template.render(assigns).html_safe
   end
 end
