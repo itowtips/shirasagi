@@ -9,15 +9,16 @@ SS_SearchUI.modal({
 });
 <% end %>
 
-<div class="tabs">
-  <%= link_to guide_apis_procedures_path, class: "ajax-box ajax-in-box" do %>
-    <span class="tab-name"><%= "手続き" %></span>
-  <% end %>
-  <%= link_to guide_apis_questions_path, class: "current", onclick: "return false;" do %>
-    <span class="tab-name"><%= "質問" %></span>
-  <% end %>
-</div>
 <div id="questions-modal">
+  <div class="cms-guide-tabs">
+    <%= link_to guide_apis_procedures_path, class: "ajax-box ajax-in-box" do %>
+      <span class="tab-name"><%= "手続き" %></span>
+    <% end %>
+    <%= link_to guide_apis_questions_path, class: "current", onclick: "return false;" do %>
+      <span class="tab-name"><%= "質問" %></span>
+    <% end %>
+  </div>
+
   <div class="search-ui-form">
     <% url = @multi ? { action: :index } : { action: :index, single: 1 } %>
     <%= form_for :s, url: url, html: { method: "GET", class: :search } do |f| %>
