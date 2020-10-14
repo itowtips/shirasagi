@@ -4,7 +4,7 @@ class Cms::Member
   include ::Member::Addon::AdditionalAttributes
   include ::Ezine::Addon::AdditionalAttributes
   include Ezine::Addon::Subscription
-  include Translate::Addon::Lang::Member
+  include ::Translate::Addon::Lang::Member
 
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i.freeze
 
