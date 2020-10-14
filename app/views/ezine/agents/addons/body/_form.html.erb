@@ -20,6 +20,7 @@
     html = html.replace(/&lt;|&#60;/g, '\<');
     html = html.replace(/&gt;|&#62;/g, '\>');
     html = html.replace(/&nbsp;|&#160;/g, ' ');
+    return html;
   };
 <% end %>
 
@@ -34,4 +35,50 @@
 
   <dt><%= @model.t :text %></dt>
   <dd><%= f.text_area :text, class: "ezine-page-text monospace", style: "height:400px;" %></dd>
+
+  <% if @cur_site.translate_enabled? %>
+    <%= jquery do %>
+      $("button.translate-text").click(function(){
+        if ((typeof tinymce) != "undefined") {
+          <% @cur_site.translate_targets.each do |target| %>
+            if ($(".ss-translations-form-<%= target.id %>:visible").length) {
+              Translate_Convertor.convert('<%= translate_apis_convertors_path %>', tinymce.get("item_html").getContent(), '<%= @cur_site.translate_source.id %>', '<%= target.id %>', function(body) {
+                if (body) {
+                  tinymce.get("item_i18n_html_translations_<%= target.code %>").setContent(body);
+                }
+              });
+              Translate_Convertor.convert('<%= translate_apis_convertors_path %>', $("#item_text").val(), '<%= @cur_site.translate_source.id %>', '<%= target.id %>', function(body) {
+                if (body) {
+                  $("#item_i18n_text_translations_<%= target.code %>").val(body);
+                }
+              });
+            }
+          <% end %>
+        } else if (typeof CKEDITOR != "undefined") {
+          <% @cur_site.translate_targets.each do |target| %>
+            if ($(".ss-translations-form-<%= target.id %>:visible").length) {
+              Translate_Convertor.convert('<%= translate_apis_convertors_path %>', CKEDITOR.instances["item_html"].getData(), '<%= @cur_site.translate_source.id %>', '<%= target.id %>', function(body) {
+                if (body) {
+                  CKEDITOR.instances["item_i18n_html_translations_<%= target.code %>"].setData(body);
+                }
+              });
+              Translate_Convertor.convert('<%= translate_apis_convertors_path %>', $("#item_text").val(), '<%= @cur_site.translate_source.id %>', '<%= target.id %>', function(body) {
+                if (body) {
+                  $("#item_i18n_text_translations_<%= target.code %>").val(body);
+                }
+              });
+            }
+          <% end %>
+        }
+      });
+    <% end %>
+
+    <% @cur_site.translate_targets.each do |target| %>
+      <dt class="ss-translations-field-<%= target.id %>"><%= @model.t :i18n_html %><%= @model.tt :i18n_html %></dt>
+      <dd class="ss-translations-field-<%= target.id %>"><%= text_area_tag "#{f.object_name}[i18n_html_translations][#{target.code}]", @item.i18n_html_translations[target.code], class: "ezine-page-html", style: "height:400px;" %></dd>
+
+      <dt class="ss-translations-field-<%= target.id %>"><%= @model.t :i18n_text %><%= @model.tt :i18n_text %></dt>
+      <dd class="ss-translations-field-<%= target.id %>"><%= text_area_tag "#{f.object_name}[i18n_text_translations][#{target.code}]", @item.i18n_text_translations[target.code], class: "monospace", style: "height:400px;" %></dd>
+    <% end %>
+  <% end %>
 </dl>

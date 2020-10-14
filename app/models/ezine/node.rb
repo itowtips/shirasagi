@@ -37,6 +37,7 @@ module Ezine::Node
     include Ezine::Addon::Signature
     include Ezine::Addon::SenderAddress
     include Ezine::Addon::SubscriptionConstraint
+    include Translate::Addon::Lang::Node
     include Cms::Addon::PageList
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
@@ -95,5 +96,17 @@ module Ezine::Node
     include History::Addon::Backup
 
     default_scope ->{ where(route: "ezine/category_node") }
+  end
+
+  class Lang
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Cms::Addon::NodeList
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "ezine/lang") }
   end
 end

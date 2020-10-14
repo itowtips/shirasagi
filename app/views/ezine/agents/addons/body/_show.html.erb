@@ -1,9 +1,10 @@
+<%= html_editor ".mod-ezine-page-html", height: "400px", readonly: true %>
+
 <dl class="see mod-ezine-page-body">
   <dt><%= @model.t :html %></dt>
   <dd>
     <% if @item.send(:html).present? %>
-    <%= html_editor "#mod-ezine-page-body", height: "400px", readonly: true %>
-    <%= text_area_tag "mod-ezine-page-body", @item.html, style: "height: 400px;" %>
+    <%= text_area_tag "mod-ezine-page-body", @item.html, class: 'mod-ezine-page-html', style: "height: 400px;" %>
     <% end %>
   </dd>
 
@@ -13,4 +14,17 @@
     <%= text_area_tag "mod-ezine-page-body", @item.text, class: "monospace", style: "height: 400px;" %>
     <% end %>
   </dd>
+
+  <% if @cur_site.translate_enabled? %>
+    <% @cur_site.translate_targets.each do |target| %>
+      <dt class="ss-translations-field-<%= target.id %>"><%= @model.t :i18n_html %></dt>
+      <dd class="ss-translations-field-<%= target.id %>">
+        <%= text_area_tag "mod-ezine-i18n-html-#{target.code}", @item.i18n_html_translations[target.code], class: 'mod-ezine-page-html', style: "height: 400px;" %>
+      </dd>
+      <dt class="ss-translations-field-<%= target.id %>"><%= @model.t :i18n_text %></dt>
+      <dd class="ss-translations-field-<%= target.id %>">
+        <%= text_area_tag "mod-ezine-i18n-text-#{target.code}", @item.i18n_text_translations[target.code], style: "height: 400px;" %>
+      </dd>
+    <% end %>
+  <% end %>
 </dl>

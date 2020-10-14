@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       get :members, module: :member_page, controller: :members, action: :index, on: :collection
     end
     resources :category_nodes, concerns: :deletion
+    resources :langs, concerns: :deletion
   end
 
   node "ezine" do
@@ -50,11 +51,15 @@ Rails.application.routes.draw do
     get "backnumber/(index.:format)" => "public#index", cell: "nodes/backnumber"
 
     get "member_page/(index.:format)" => "public#index", cell: "nodes/member_page"
+    get "member_page/:lang/(index.:format)" => "public#index", cell: "nodes/member_page"
 
     get "category_node/(index.:format)" => "public#index", cell: "nodes/category_node"
+
+    get "lang/(index.:format)" => "public#index", cell: "nodes/lang"
   end
 
   page "ezine" do
     get "page/:filename.:format" => "public#index", cell: "pages/page"
+    get "page/:lang/:filename.:format" => "public#index", cell: "pages/page"
   end
 end

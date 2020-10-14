@@ -1,0 +1,41 @@
+<% return if !@cur_site.translate_enabled? %>
+
+<%= jquery do %>
+  <% @cur_site.translate_targets.each do |target| %>
+    $("#translate-form .ss-translations-tab-<%= target.id %>").on('click', function(e) {
+      $("#translate-form .cms-tabs").hide();
+      $("#translate-form .addon-view").hide();
+      $("#translate-form .ss-translations-form-<%= target.id %>").show();
+      e.preventDefault();
+      return false;
+    });
+    $("#translate-form .ss-translations-tab-<%= target.id %>").hide();
+    $("#translate-form .ss-translations-form-<%= target.id %> dl").append($(".ss-translations-field-<%= target.id %>"));
+  <% end %>
+  $("#translate-form").insertAfter($("#addon-translate-agents-addons-lang-node"));
+  $("#addon-translate-agents-addons-lang-node").hide();
+  $("#translate-form .cms-tabs").hide();
+  $("#translate-form .addon-view").hide();
+  <% @cur_site.translate_targets.each do |target| %>
+    $("#translate-form .ss-translations-tab-<%= target.id %>").show();
+  <% end %>
+  <% @cur_site.translate_targets.each do |target| %>
+    $("#translate-form .ss-translations-form-<%= target.id %>").show();
+    <% break %>
+  <% end %>
+<% end %>
+
+<span id="translate-form">
+  <% @cur_site.translate_targets.each do |target| %>
+    <div class="cms-tabs ss-translations-form-<%= target.id %>">
+      <% @cur_site.translate_targets.each do |tab| %>
+        <%= link_to({ anchor: "translate-form-#{tab.id}" }, class: "ss-translations-tab-#{tab.id} #{'current' if tab.id == target.id}") do %>
+          <span class="tab-name"><%= tab.name %></span>
+        <% end %>
+      <% end %>
+    </div>
+    <%= render "ss/crud/addon", addon: { id: "translate-form-#{target.id}", head: target.name, toggle: true, class: "ss-translations-form-#{target.id}" } do %>
+      <dl class="see"></dl>
+    <% end %>
+  <% end %>
+</span>

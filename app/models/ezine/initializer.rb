@@ -4,5 +4,6 @@ module Ezine
     Cms::Node.plugin "ezine/backnumber"
     Cms::Node.plugin "ezine/member_page"
     Cms::Node.plugin "ezine/category_node"
+    Cms::Node.plugin "ezine/lang"
   end
 end

@@ -1,0 +1,11 @@
+<% return if !@cur_site.translate_enabled? || @item.translate_targets.blank? %>
+
+<dl class="column">
+  <dt><%= I18n.t 'translate.lang' %></dt>
+  <dd>
+    <%=br @item.translate_targets.map(&:label).join("\n") %>
+    <% @item.translate_target_ids.each do |id| %>
+      <%= f.hidden_field "translate_target_ids[]", value: id %>
+    <% end %>
+  </dd>
+</dl>

@@ -1,5 +1,30 @@
 <div class="ezine-pages pages">
-<%= render_page_list %>
+  <%=
+    render_page_list do
+      cur_item = @cur_node
+      h = []
+      @items.each do |item|
+        if @lang.present?
+          item.name = item.i18n_name_translations[@lang.code] || item.name
+        end
+        if cur_item.loop_setting.present?
+          ih = item.render_template(cur_item.loop_setting.html, self)
+        elsif cur_item.loop_html.present?
+          ih = cur_item.render_loop_html(item)
+        else
+          ih = []
+          ih << '<article class="blog thumb">'
+          ih << '  <img class="thumb" src="#{img.src}">'
+          ih << '  <header><h2><a href="'+ (@lang.present? && @cur_site.translate_target_ids.include?(@lang.id) ? item.url.sub(item.basename, "#{@lang.code}/#{item.basename}") : item.url) + '">' + item.name + '</a></h2></header>'
+          ih << '  <div class="description">#{description}</div>'
+          ih << '</article>'
+          ih = cur_item.render_loop_html(item, html: ih.join("\n"))
+        end
+        h << ih.gsub('#{current}', current_url?(item.url).to_s)
+      end
+      h.join("\n").html_safe
+    end
+  %>
 </div>
 
 <%= paginate @items if @items.try(:current_page) %>

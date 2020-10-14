@@ -2,3 +2,17 @@
   <dt><%= I18n.t 'member.view.mail_subscription' %></dt>
   <dd><%= @item.subscriptions.map { |mag| mag.name }.join(", ") %></dd>
 </dl>
+
+<dl class="colum live">
+  <dt><%= @item.class.t :live %></dt>
+  <dd>
+    <%= @item.live.select(&:present?).collect{ |v| I18n.t("ezine.options.live.#{v}") }.join(",") %>
+  </dd>
+</dl>
+
+<dl class="colum ages">
+  <dt><%= @item.class.t :ages %></dt>
+  <dd>
+    <%= @item.ages.select(&:present?).collect{ |v| I18n.t("ezine.options.ages.#{v}") }.join(",") %>
+  </dd>
+</dl>

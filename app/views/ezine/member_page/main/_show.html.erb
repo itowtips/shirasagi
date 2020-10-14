@@ -1,0 +1,47 @@
+<dl class="see">
+  <dt><%= @model.t :name %></dt>
+  <dd><%= @item.send :name %></dd>
+
+  <% if @cur_site.translate_enabled? %>
+    <% @cur_site.translate_targets.each do |target| %>
+      <dt class="ss-translations-field-<%= target.id %>"><%= @model.t :i18n_name %></dt>
+      <dd class="ss-translations-field-<%= target.id %>"><%= @item.i18n_name_translations[target.code] %></dd>
+    <% end %>
+  <% end %>
+
+  <dt><%= @model.t :index_name %></dt>
+  <dd><%= @item.send :index_name %></dd>
+
+  <dt><%= @model.t :basename %></dt>
+  <dd><%= @item.send :basename %></dd>
+  <dd>
+    <%= @item.public? ? link_to(@item.full_url, @item.full_url, target: "_blank") : @item.full_url %>
+    (
+    <% if @cur_site.mobile_enabled? %>
+      <%= link_to t("cms.preview_pc_page"), cms_preview_path(path: @item.preview_path), target: "_blank" %>
+      |
+      <%= link_to t("cms.preview_mobile_page"), cms_mobile_preview_path(path: @item.preview_path), target: :_blank %>
+    <% else %>
+      <%= link_to t("cms.preview_page"), cms_preview_path(path: @item.preview_path), target: "_blank" %>
+    <% end %>
+    )
+  </dd>
+
+  <% if @item.send(:layout_id).present? %>
+  <dt><%= @model.t :layout_id %></dt>
+  <dd><%= tryb{@item.layout.name} %></dd>
+  <% end %>
+
+  <% if @item.try(:form) %>
+    <dt><%= @model.t :form_id %></dt>
+    <dd><%= @item.form.name %></dd>
+  <% end %>
+
+  <% if @item.send(:body_layout_id).present? %>
+  <dt><%= @model.t :body_layout_id %></dt>
+  <dd><%= tryb{@item.body_layout.name} %></dd>
+  <% end %>
+
+  <dt><%= @model.t :order %></dt>
+  <dd><%= @item.send :order %></dd>
+</dl>

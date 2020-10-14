@@ -5,7 +5,12 @@ class Ezine::Agents::Nodes::MemberPageController < ApplicationController
   private
 
   def pages
-    Ezine::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date)
+    pages = Ezine::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date)
+    @lang = @cur_site.translate_targets.select{ |target| target.code == params[:lang] }.first || @cur_site.translate_source
+    if @lang.present?
+      pages = pages.where(translate_target_ids: @lang.id)
+    end
+    pages
   end
 
   public

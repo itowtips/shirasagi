@@ -35,6 +35,18 @@ ja:
       email_type:
         text: テキスト版
         html: HTML版
+      live:
+        all: すべて
+        city: 市内
+        outside_city: 市外
+      ages:
+        all: すべて
+        10s: 10代以下
+        20s: 20代
+        30s: 30代
+        40s: 40代
+        50s: 50代
+        60s: 60代以上
     state:
       enabled: 配信する
       disabled: 配信しない
@@ -51,6 +63,8 @@ ja:
       ezine/deliver_plan: 配信予約
       ezine/subscription: 購読
       ezine/subscription_constraint: 購読制約
+      ezine/additional_attributes: 追加情報
+      ezine/required_fields: 必須入力
 
   cms:
     nodes:
@@ -58,6 +72,7 @@ ja:
       ezine/backnumber: バックナンバー
       ezine/member_page: 会員向けメール配信
       ezine/category_node: カテゴリ
+      ezine/lang: 多言語メールマガジン一覧
 
   mongoid:
     models:
@@ -71,9 +86,12 @@ ja:
       ezine/addon/signature:
         signature_html: 署名（HTML版）
         signature_text: 署名（テキスト版）
+        i18n_signature_html: 署名（HTML版）
+        i18n_signature_text: 署名（テキスト版）
       ezine/addon/sender_address:
         sender_name: 送信者名
         sender_email: 送信メールアドレス
+        i18n_sender_name: 送信者名
       ezine/addon/reply:
         reply_upper_text: 上部確認テキスト
         reply_lower_text: 下部確認テキスト
@@ -82,9 +100,12 @@ ja:
         name: 記事タイトル
         test_delivered: テスト配信完了日時
         results: 配信開始日時
+        i18n_name: 記事タイトル
       ezine/addon/body:
         html: 本文（HTML版）
         text: 本文（テキスト版）
+        i18n_html: 本文（HTML版）
+        i18n_text: 本文（テキスト版）
       ezine/addon/deliver_plan:
         deliver_date: 配信予約日時
       ezine/member:
@@ -115,6 +136,12 @@ ja:
         subscription_ids: 購読メルマガ
       ezine/addon/subscription_constraint:
         subscription_constraint: 制約
+      ezine/addon/additional_attributes:
+        live: お住まい
+        ages: 年齢
+      ezine/addon/required_fields:
+        live_required: お住まい
+        ages_required: 年齢
 
   tooltip:
     ezine/addon/signature:
@@ -122,11 +149,17 @@ ja:
         - HTML版メールマガジンに記載する署名を入力します。
       signature_text:
         - テキスト版メールマガジンに記載する署名を入力します。
+      i18n_signature_html:
+        - HTML版メールマガジンに記載する署名を入力します。
+      i18n_signature_text:
+        - テキスト版メールマガジンに記載する署名を入力します。
     ezine/addon/sender_address:
       sender_name:
         - メールマガジンの送信者名を記載します。
       sender_email:
         - メールマガジンの送信者名に利用するメールアドレスを記載します。
+      i18n_sender_name:
+        - メールマガジンの送信者名を記載します。
     ezine/addon/reply:
       reply_upper_text:
         - 登録確認の自動返信メールの上部に記載するテキストを入力します。
@@ -138,6 +171,11 @@ ja:
       deliver_date:
         - 配信予約日時を設定します。
         - 指定した日時が来ると配信を行います。
+    ezine/addon/required_fields:
+      live_required:
+        - お住まいの入力を必須とする場合、「必須」を選択します。
+      ages_required:
+        - 年齢の入力を必須とする場合、「必須」を選択します。
 
   job:
     models:

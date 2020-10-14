@@ -1,0 +1,26 @@
+<dl class="see mod-ezine-additional-attributes">
+  <dt><%= @model.t :live %><%= @model.tt :live %></dt>
+  <dd>
+    <%= f.hidden_field "live[]", value: "" %>
+    <div class="parent">
+      <label class="parent"><%= f.check_box("live[]", {}, 'all') %> <%= I18n.t('ezine.options.live.all') %></label>
+      <div class="child">
+        <% @item.live_options.each do |text, val| %>
+          <label><%= f.check_box("live[]", {}, val) %> <%= text %></label>
+        <% end %>
+      </div>
+    </div>
+  </dd>
+
+  <dt><%= @model.t :ages %><%= @model.tt :ages %></dt>
+  <dd>
+    <div class="parent">
+      <label class="parent"><%= f.check_box("ages[]", {}, 'all') %> <%= I18n.t('ezine.options.ages.all') %></label>
+      <div class="child">
+        <% @item.ages_options.each do |text, val| %>
+          <label><%= f.check_box("ages[]", {}, val) %> <%= text %></label>
+        <% end %>
+      </div>
+    </div>
+  </dd>
+</dl>

@@ -34,6 +34,10 @@ ja:
 
   modules:
     translate: 自動翻訳
+    addons:
+      translate/lang/node: 翻訳
+      translate/lang/page: 翻訳
+      translate/lang/member: 翻訳
 
   cms:
     parts:
@@ -58,6 +62,10 @@ ja:
         google_translation_code: "Google API"
         accept_languages: "Accept-Language"
         in_file: ファイル
+      translate/addon/lang/page:
+        translate_target_ids: 使用言語
+      translate/addon/lang/member:
+        translate_target_ids: 使用言語
 
   tooltip:
     ss/addon/translate/site_setting:
@@ -96,3 +104,6 @@ ja:
         - Google Translation APIの言語コードを入力します。
       accept_languages:
         - Accept-Language の言語コードを入力します。
+    translate/addon/lang/page:
+      translate_target_ids:
+        - 使用言語を選択します。

@@ -1,0 +1,41 @@
+<dl class="see">
+  <dt><%= @model.t :name %><%= @model.tt :title %></dt>
+  <dd><%= f.text_field :name %></dd>
+
+  <% if @cur_site.translate_enabled? %>
+    <%= jquery do %>
+      $("button.translate-text").click(function(){
+        <% @cur_site.translate_targets.each do |target| %>
+          if ($(".ss-translations-form-<%= target.id %>:visible").length) {
+            Translate_Convertor.convert('<%= translate_apis_convertors_path %>', $("#item_name").val(), '<%= @cur_site.translate_source.id %>', '<%= target.id %>', function(body) {
+              if (body) {
+                $("#item_i18n_name_translations_<%= target.code %>").val(body);
+              }
+            });
+          }
+        <% end %>
+      });
+    <% end %>
+
+    <% @cur_site.translate_targets.each do |target| %>
+      <dt class="ss-translations-field-<%= target.id %>"><%= @model.t :i18n_name %><%= @model.tt :i18n_name %></dt>
+      <dd class="ss-translations-field-<%= target.id %>"><%= text_field_tag "#{f.object_name}[i18n_name_translations][#{target.code}]", @item.i18n_name_translations[target.code] %></dd>
+    <% end %>
+  <% end %>
+
+  <dt><%= @model.t :index_name %><%= @model.tt :title_for_index %></dt>
+  <dd><%= f.text_field :index_name %></dd>
+
+  <dt><%= link_to @model.t(:basename), '#', onclick: '$("#ezine-pages-form-dd-input").toggle(); return false;' %><%= @model.tt :filename %></dt>
+  <dd><%= f.text_field :basename, id: "ezine-pages-form-dd-input", class: "filename", style: "display: none" %></dd>
+
+  <dt><%= @model.t :layout_id %><%= @model.tt :layout_id %></dt>
+  <dd><%= f.select :layout_id, ancestral_layouts(@item.parent, @item.layout), include_blank: " " %></dd>
+
+  <%= render file: 'cms/pages/_form_body_parts', locals: { f: f } %>
+
+  <%= render file: 'cms/pages/_form_template_form', locals: { f: f } %>
+
+  <dt><%= @model.t :order %><%= @model.tt :order %></dt>
+  <dd><%= f.number_field :order %></dd>
+</dl>

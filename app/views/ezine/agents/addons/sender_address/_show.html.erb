@@ -3,4 +3,11 @@
   <dd><%= @item.send :sender_name %></dd>  
   <dt><%= @model.t :sender_email %></dt>
   <dd><%= @item.send :sender_email %></dd>
+
+  <% if @cur_site.translate_enabled? %>
+    <% @cur_site.translate_targets.each do |target| %>
+      <dt class="ss-translations-field-<%= target.id %>"><%= @model.t :i18n_sender_name %></dt>
+      <dd class="ss-translations-field-<%= target.id %>"><%= @item.i18n_sender_name_translations[target.code] %></dd>
+    <% end %>
+  <% end %>
 </dl>

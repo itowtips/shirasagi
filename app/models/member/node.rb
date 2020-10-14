@@ -86,6 +86,7 @@ module Member::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
     include Member::Addon::Registration::RequiredFields
+    include Ezine::Addon::RequiredFields
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
@@ -104,6 +105,7 @@ module Member::Node
     include Member::Addon::Registration::Completed
     include Member::Addon::Registration::ResetPassword
     include Member::Addon::Registration::RequiredFields
+    include Ezine::Addon::RequiredFields
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 

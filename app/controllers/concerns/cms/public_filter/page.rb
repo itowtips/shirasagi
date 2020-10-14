@@ -6,12 +6,26 @@ module Cms::PublicFilter::Page
 
   def find_page(path)
     page = Cms::Page.site(@cur_site).filename(path).first
+    if page.blank?
+      begin
+        code = path.split('/')[-2]
+        @lang = Translate::Lang.site(@cur_site).where(code: code).first
+        if @lang.present?
+          page = Cms::Page.site(@cur_site).filename(path.sub("/#{code}/", '/')).first
+        end
+      rescue
+        nil
+      end
+    end
     return unless page
     @preview || (page.public? && page.public_node?) ? page.becomes_with_route : nil
   end
 
   def render_page(page, env = {})
     path = "/.s#{@cur_site.id}/pages/#{page.route}/#{page.basename}"
+    if @lang.present?
+      path = "/.s#{@cur_site.id}/pages/#{page.route}/#{@lang.code}/#{page.basename}"
+    end
     spec = recognize_agent path, env
     return unless spec
 

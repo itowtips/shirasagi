@@ -1,0 +1,12 @@
+<%
+  addon ||= local_assigns.fetch(:addon, {})
+  addon[:display_body] = "hide"
+%>
+
+<dl class="see mod-cms-ezine-required-fields">
+  <dt><%= @model.t :live_required %><%= @model.tt :live_required %></dt>
+  <dd><%= f.select :live_required, @item.live_required_options %></dd>
+
+  <dt><%= @model.t :ages_required %><%= @model.tt :ages_required %></dt>
+  <dd><%= f.select :ages_required, @item.ages_required_options %></dd>
+</dl>

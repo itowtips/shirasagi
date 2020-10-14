@@ -6,4 +6,58 @@
 
   <dt><%= @model.t :signature_text %><%= @model.tt :signature_text %></dt>
   <dd><%= f.text_area :signature_text, class: "ezine-signature-text", style: "height:400px;" %></dd>
+
+  <% if @cur_site.translate_enabled? %>
+    <%= jquery do %>
+      $("button.translate-text").click(function(){
+        if ((typeof tinymce) != "undefined") {
+          <% @cur_site.translate_targets.each do |target| %>
+            if ($(".ss-translations-form-<%= target.id %>:visible").length) {
+              Translate_Convertor.convert('<%= translate_apis_convertors_path %>', tinymce.get("item_signature_html").getContent(), '<%= @cur_site.translate_source_id %>', '<%= target.id %>', function(body) {
+                if (body) {
+                  tinymce.get("item_i18n_signature_html_translations_<%= target.code %>").setContent(body);
+                }
+              });
+              Translate_Convertor.convert('<%= translate_apis_convertors_path %>', $("#item_signature_text").val(), '<%= @cur_site.translate_source_id %>', '<%= target.id %>', function(body) {
+                if (body) {
+                  $("#item_i18n_signature_text_translations_<%= target.code %>").val(body);
+                }
+              });
+            }
+          <% end %>
+        } else if (typeof CKEDITOR != "undefined") {
+          <% @cur_site.translate_targets.each do |target| %>
+            if ($(".ss-translations-form-<%= target.id %>:visible").length) {
+              Translate_Convertor.convert('<%= translate_apis_convertors_path %>', CKEDITOR.instances["item_signature_html"].getData(), '<%= @cur_site.translate_source_id %>', '<%= target.id %>', function(body) {
+                if (body) {
+                  CKEDITOR.instances["item_i18n_signature_html_translations_<%= target.code %>"].setData(body);
+                }
+              });
+              Translate_Convertor.convert('<%= translate_apis_convertors_path %>', $("#item_signature_text").val(), '<%= @cur_site.translate_source_id %>', '<%= target.id %>', function(body) {
+                if (body) {
+                  $("#item_i18n_signature_text_translations_<%= target.code %>").val(body);
+                }
+              });
+            }
+          <% end %>
+        }
+      });
+    <% end %>
+
+    <% @cur_site.translate_targets.each do |target| %>
+      <dt class="ss-translations-field-<%= target.id %>">
+        <%= @model.t :i18n_signature_html %><%= @model.tt :i18n_signature_html %>
+      </dt>
+      <dd class="ss-translations-field-<%= target.id %>">
+        <%= text_area_tag "#{f.object_name}[i18n_signature_html_translations][#{target.code}]", @item.i18n_signature_html_translations[target.code], class: "ezine-signature-html", style: "height:400px;" %>
+      </dd>
+
+      <dt class="ss-translations-field-<%= target.id %>">
+        <%= @model.t :i18n_signature_text %><%= @model.tt :i18n_signature_text %>
+      </dt>
+      <dd class="ss-translations-field-<%= target.id %>">
+        <%= text_area_tag "#{f.object_name}[i18n_signature_text_translations][#{target.code}]", @item.i18n_signature_text_translations[target.code], class: "ezine-signature-text", style: "height:400px;" %>
+      </dd>
+    <% end %>
+  <% end %>
 </dl>

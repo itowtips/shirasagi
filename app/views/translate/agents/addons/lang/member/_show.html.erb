@@ -1,0 +1,5 @@
+<% return unless @cur_site.translate_enabled? %>
+
+<dl class="see">
+  <dd class="wide"><%=br @item.translate_targets.map(&:label).join("\n") %></dd>
+</dl>

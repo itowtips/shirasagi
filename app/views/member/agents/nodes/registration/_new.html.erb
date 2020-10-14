@@ -118,6 +118,8 @@
       <%= remarks :birthday %>
     </dd>
   </dl>
+  <%= render partial: 'mail_category_form', locals: { f: f } %>
+  <%= render partial: 'translate_lang_form', locals: { f: f } %>
 </div>
 
 <%= jquery do %>

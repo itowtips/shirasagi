@@ -1,0 +1,90 @@
+<%
+   def root_ezine_node(node)
+     if node.parent && node.parent.route =~ /^ezine\//
+       root_ezine_node(node.parent)
+     else
+       node
+     end
+   end
+
+   def cate_form(item, lang)
+     item = item.becomes_with_route
+     children = item.children.and_public.sort(order: 1)
+     children = children.to_a.select do |child|
+       next true if !child.is_a?(Ezine::Node::MemberPage)
+       child.translate_targets.include?(lang)
+     end
+     if children.size > 0
+       cc = children.map { |c| c.children.size }.max != 0
+       h = %(<label class="parent">)
+       if item.is_a?(Ezine::Node::MemberPage)
+         if item.translate_targets.include?(lang)
+           h << link_to(item.name, lang.present? && @cur_site.translate_target_ids.include?(lang.id) ? "#{item.url}#{lang.code}/" : item.url)
+         end
+       else
+         h << item.name
+       end
+       h << %(</label>)
+       h << %(<div class="child #{cc ? 'grandchild' : ''}">).html_safe
+       children.each { |c| h += cate_form(c, lang) }
+       h << %(</div>).html_safe
+     else
+       h  = %(<label>)
+       if item.is_a?(Ezine::Node::MemberPage)
+         if item.translate_targets.include?(lang)
+           h << link_to(item.name, lang.present? && @cur_site.translate_target_ids.include?(lang.id) ? "#{item.url}#{lang.code}/" : item.url)
+         end
+       else
+         h << item.name
+       end
+       h << %(</label>)
+     end
+
+     h.html_safe
+   end
+%>
+
+<div class="langs nodes">
+  <div class="parent">
+    <%
+      @categories = Ezine::Node::MemberPage.site(@cur_site).all
+      @categories = @categories.to_a.select do |child|
+        next true if !child.is_a?(Ezine::Node::MemberPage)
+        child.translate_targets.include?(@cur_site.translate_source)
+      end
+      @categories = @categories.map do |cate|
+        root_ezine_node(cate)
+      end
+      @categories.uniq!
+      @categories.sort! { |lhs, rhs| lhs.order <=> rhs.order }
+    %>
+    <div class="lang"><%= @cur_site.translate_source.name %></div>
+    <% @categories.each do |cate| %>
+      <div class="parent">
+        <%= cate_form(cate, @cur_site.translate_source) %>
+      </div>
+    <% end %>
+    <% @cur_site.translate_targets.each do |lang| %>
+      <%
+        @categories = Ezine::Node::MemberPage.site(@cur_site).all
+        @categories = @categories.to_a.select do |child|
+          next true if !child.is_a?(Ezine::Node::MemberPage)
+          child.translate_targets.include?(lang)
+        end
+        @categories = @categories.map do |cate|
+          root_ezine_node(cate)
+        end
+        @categories.uniq!
+        @categories.sort! { |lhs, rhs| lhs.order <=> rhs.order }
+      %>
+      <div class="lang"><%= lang.name %></div>
+      <% @categories.each do |cate| %>
+        <div class="parent">
+          <%= cate_form(cate, lang) %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<%= paginate @items if @items.try(:current_page) %>

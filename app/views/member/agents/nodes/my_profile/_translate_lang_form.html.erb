@@ -1,0 +1,37 @@
+<% return if !@cur_site.translate_enabled? %>
+<%= jquery do %>
+  var ezineWithTranslations = function() {
+    $("#ezine-with-translations").html('');
+    $("input[name='item[translate_target_ids][]']:checked").each(function() {
+      var value = $(this).val();
+      $("input[name='item[subscription_ids][]']:checked").each(function() {
+        if ($("#ezine-with-translations label[data-id='" + $(this).val() + "']").length == 0) {
+          var translateLangIds = $(this).data('translate-lang-ids');
+          if (translateLangIds && translateLangIds.includes(value)) {
+            var label = $('<label></label>').attr('data-id', $(this).val()).append($(this).parent().text());
+            $("#ezine-with-translations").append(label);
+          }
+        }
+      });
+    });
+  };
+  $("input[name='item[subscription_ids][]']").change(function() {
+    ezineWithTranslations();
+  });
+  $("input[name='item[translate_target_ids][]']").change(function() {
+    ezineWithTranslations();
+  });
+  ezineWithTranslations();
+<% end %>
+
+<dl class="column">
+  <dt><%= I18n.t 'translate.lang' %></dt>
+  <dd>
+    <%= f.hidden_field "translate_target_ids[]", value: "" %>
+    <label><%= f.check_box("translate_target_ids[]", { checked: (@item.new_record? && params[f.object_name].blank?) || @item.translate_target_ids.include?(@cur_site.translate_source_id) }, @cur_site.translate_source_id) %> <%= @cur_site.translate_source.name %></label>
+    <% @cur_site.translate_targets.each do |target| %>
+      <label><%= f.check_box("translate_target_ids[]", {}, target.id) %> <%= target.name %></label>
+    <% end %>
+    <div id="ezine-with-translations" class="child"></div>
+  </dd>
+</dl>

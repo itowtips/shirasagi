@@ -15,21 +15,39 @@
        h = %(<label class="parent">)
        if item.is_a?(Ezine::Node::MemberPage)
          checked = item.subscription_requried?
-         h << @f.check_box("subscription_ids[]", { checked: checked, readonly: checked, disabled: checked }, item._id)
+         if @cur_site.translate_enabled? && item.try(:translate_targets)
+           translate_lang_ids = item.translate_targets.collect(&:id).collect(&:to_s)
+         end
+         h << @f.check_box("subscription_ids[]", { checked: checked, readonly: checked, disabled: checked, data: { translate_lang_ids: translate_lang_ids } }, item._id)
          requried_label = checked ? " (#{item.label :subscription_constraint})" : ''
        end
        h << %(#{item.name}#{requried_label}</label>)
        h << %(<div class="child #{cc ? 'grandchild' : ''}">).html_safe
        children.each { |c| h += cate_form(c) }
+       if @cur_site.translate_enabled? && item.try(:translate_targets)
+         item.translate_targets.each do |target|
+           h << %(<label>#{target.name}</label>)
+         end
+       end
        h << %(</div>).html_safe
      else
        h  = %(<label>)
        if item.is_a?(Ezine::Node::MemberPage)
          checked = item.subscription_requried?
-         h << @f.check_box("subscription_ids[]", { checked: checked, readonly: checked, disabled: checked }, item._id)
+         if @cur_site.translate_enabled? && item.try(:translate_targets)
+           translate_lang_ids = item.translate_targets.collect(&:id).collect(&:to_s)
+         end
+         h << @f.check_box("subscription_ids[]", { checked: checked, readonly: checked, disabled: checked, data: { translate_lang_ids: translate_lang_ids } }, item._id)
          requried_label = checked ? " (#{item.label :subscription_constraint})" : ''
        end
        h << %(#{item.name}#{requried_label}</label>)
+       if @cur_site.translate_enabled? && item.try(:translate_targets)
+         h << %(<div class="child">).html_safe
+         item.translate_targets.each do |target|
+           h << %(<label>#{target.name}</label>)
+         end
+         h << %(</div>).html_safe
+       end
      end
 
      h.html_safe
@@ -42,7 +60,7 @@
      root_ezine_node(cate)
    end
    @categories.uniq!
-   @categories.sort { |lhs, rhs| lhs.order <=> rhs.order }
+   @categories.sort! { |lhs, rhs| lhs.order <=> rhs.order }
 %>
 
 <dl class="column">
@@ -54,5 +72,47 @@
         <%= cate_form(cate) %>
       </div>
     <% end %>
+  </dd>
+</dl>
+
+<dl class="colum live">
+  <dt>
+    <%= @item.class.t :live %>
+    <% if @cur_node.live_required? %>
+      <span class="required"><%= t("ss.required_field") %></span>
+    <% end %>
+  </dt>
+  <dd>
+    <%= f.hidden_field "live[]", value: "" %>
+    <div class="parent">
+      <label class="parent"><%= f.check_box("live[]", {}, 'all') %> <%= I18n.t('ezine.options.live.all') %></label>
+      <div class="child">
+        <% @item.live_options.each do |text, val| %>
+          <label><%= f.check_box("live[]", {}, val) %> <%= text %></label>
+        <% end %>
+      </div>
+    </div>
+    <%= remarks :live %>
+  </dd>
+</dl>
+
+<dl class="colum ages">
+  <dt>
+    <%= @item.class.t :ages %>
+    <% if @cur_node.ages_required? %>
+      <span class="required"><%= t("ss.required_field") %></span>
+    <% end %>
+  </dt>
+  <dd>
+    <%= f.hidden_field "ages[]", value: "" %>
+    <div class="parent">
+      <label class="parent"><%= f.check_box("ages[]", {}, 'all') %> <%= I18n.t('ezine.options.ages.all') %></label>
+      <div class="child">
+        <% @item.ages_options.each do |text, val| %>
+          <label><%= f.check_box("ages[]", {}, val) %> <%= text %></label>
+        <% end %>
+      </div>
+    </div>
+    <%= remarks :ages %>
   </dd>
 </dl>

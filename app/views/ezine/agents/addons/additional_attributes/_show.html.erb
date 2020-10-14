@@ -1,0 +1,7 @@
+<dl class="see mod-ezine-additional-attributes">
+  <dt><%= @model.t :live %></dt>
+  <dd><%= @item.live.select(&:present?).collect{ |v| I18n.t("ezine.options.live.#{v}") }.join(",") %></dd>
+
+  <dt><%= @model.t :ages %></dt>
+  <dd><%= @item.ages.select(&:present?).collect{ |v| I18n.t("ezine.options.ages.#{v}") }.join(",") %></dd>
+</dl>

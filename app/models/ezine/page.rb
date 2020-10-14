@@ -3,6 +3,8 @@ class Ezine::Page
   include Cms::Page::SequencedFilename
   include Ezine::Addon::Body
   include Ezine::Addon::DeliverPlan
+  include Translate::Addon::Lang::Page
+  include Ezine::Addon::AdditionalAttributes
   include Cms::Addon::Release
   include Cms::Addon::ReleasePlan
   include Cms::Addon::GroupPermission
@@ -53,10 +55,22 @@ class Ezine::Page
   #
   #   `ActionMailer#deliver_now` メソッドからのエラーオブジェクト
   def deliver_to(member)
-    Ezine::Mailer.page_mail(self, member).deliver_now
-    Ezine::SentLog.create(
-      node_id: parent.id, page_id: id, email: member.email
-    ) unless member.test_member?
+    if member.site.translate_enabled? && translate_targets.present?
+      return true if !(member.live | live).include?('all') && (member.live & live).select(&:present?).blank?
+      return true if !(member.ages | ages).include?('all') && (member.ages & ages).select(&:present?).blank?
+      member.translate_targets.each do |lang|
+        next unless translate_targets.include?(lang)
+        Ezine::Mailer.page_mail(self, member, lang).deliver_now
+        Ezine::SentLog.find_or_create_by(
+          node_id: parent.id, page_id: id, email: member.email
+        ) unless member.test_member?
+      end
+    else
+      Ezine::Mailer.page_mail(self, member).deliver_now
+      Ezine::SentLog.find_or_create_by(
+        node_id: parent.id, page_id: id, email: member.email
+      ) unless member.test_member?
+    end
   end
 
   # Do a test delivery.

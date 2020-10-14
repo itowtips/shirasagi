@@ -1,0 +1,11 @@
+<% return unless @cur_site.translate_enabled? %>
+
+<dl class="see">
+  <dd class="wide">
+    <%= f.hidden_field "translate_target_ids[]", value: "" %>
+    <label><%= f.check_box("translate_target_ids[]", { checked: (@item.new_record? && params[f.object_name].blank?) || @item.translate_target_ids.include?(@cur_site.translate_source_id) }, @cur_site.translate_source_id) %> <%= @cur_site.translate_source.name %></label>
+    <% @cur_site.translate_targets.each do |target| %>
+      <label><%= f.check_box("translate_target_ids[]", {}, target.id) %> <%= target.name %></label>
+    <% end %>
+  </dd>
+</dl>

@@ -1,9 +1,10 @@
+<%= html_editor ".mod-ezine-signature-html", height: "400px", readonly: true %>
+
 <dl class="see mod-ezine-signature">
   <dt><%= @model.t :signature_html %></dt>
   <dd>
     <% if @item.send(:signature_html).present? %>
-    <%= html_editor "#mod-ezine-signature-html", height: "400px", readonly: true %>
-    <%= text_area_tag "mod-ezine-signature-html", @item.signature_html, style: "height: 400px;" %>
+    <%= text_area_tag "mod-ezine-signature-html", @item.signature_html, class: 'mod-ezine-signature-html', style: "height: 400px;" %>
     <% end %>
   </dd>
   <dt><%= @model.t :signature_text %></dt>
@@ -12,5 +13,18 @@
     <%= text_area_tag "mod-ezine-signature-text", @item.signature_text, style: "height: 400px;" %>
     <% end %>
   </dd>
+
+  <% if @cur_site.translate_enabled? %>
+    <% @cur_site.translate_targets.each do |target| %>
+      <dt class="ss-translations-field-<%= target.id %>"><%= @model.t :i18n_signature_html %></dt>
+      <dd class="ss-translations-field-<%= target.id %>">
+        <%= text_area_tag "mod-ezine-i18n-signature-html-#{target.code}", @item.i18n_signature_html_translations[target.code], class: 'mod-ezine-signature-html', style: "height: 400px;" %>
+      </dd>
+      <dt class="ss-translations-field-<%= target.id %>"><%= @model.t :i18n_signature_text %></dt>
+      <dd class="ss-translations-field-<%= target.id %>">
+        <%= text_area_tag "mod-ezine-i18n-signature-text-#{target.code}", @item.i18n_signature_text_translations[target.code], style: "height: 400px;" %>
+      </dd>
+    <% end %>
+  <% end %>
 </dl>
 

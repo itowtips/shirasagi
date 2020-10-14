@@ -1,0 +1,29 @@
+<dl class="column">
+  <dt><%= I18n.t 'member.view.mail_subscription' %></dt>
+  <dd>
+    <%= @item.subscriptions.map { |mag| mag.name }.join(", ") %>
+    <% @item.subscription_ids.each do |id| %>
+      <%= f.hidden_field "subscription_ids[]", value: id %>
+    <% end %>
+  </dd>
+</dl>
+
+<dl class="colum live">
+  <dt><%= @item.class.t :live %></dt>
+  <dd>
+    <%= @item.live.select(&:present?).collect{ |v| I18n.t("ezine.options.live.#{v}") }.join(",") %>
+    <% @item.live.each do |v| %>
+      <%= f.hidden_field "live[]", value: v %>
+    <% end %>
+  </dd>
+</dl>
+
+<dl class="colum ages">
+  <dt><%= @item.class.t :ages %></dt>
+  <dd>
+    <%= @item.ages.select(&:present?).collect{ |v| I18n.t("ezine.options.ages.#{v}") }.join(",") %>
+    <% @item.ages.each do |v| %>
+      <%= f.hidden_field "ages[]", value: v %>
+    <% end %>
+  </dd>
+</dl>

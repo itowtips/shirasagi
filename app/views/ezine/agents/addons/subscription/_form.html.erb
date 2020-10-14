@@ -42,7 +42,7 @@ end
   root_ezine_node(cate)
 end
 @categories.uniq!
-@categories.sort { |lhs, rhs| lhs.order <=> rhs.order }
+@categories.sort! { |lhs, rhs| lhs.order <=> rhs.order }
 %>
 
 <dl class="see category-form mod-ezine-subscription">

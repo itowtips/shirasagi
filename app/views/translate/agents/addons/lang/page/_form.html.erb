@@ -1,0 +1,72 @@
+<% return unless @cur_site.translate_enabled? %>
+<%= jquery do %>
+  $("input[name='item[translate_target_ids][]']").change(function() {
+    if ($("#translate-form .ss-translations-form-" + $(this).val()).length) {
+      if ($(this).prop('checked')) {
+        $("#translate-form .cms-tabs").hide();
+        $("#translate-form .addon-view").hide();
+        $("#translate-form .ss-translations-form-" + $(this).val()).show();
+        $("#translate-form .ss-translations-tab-" + $(this).val()).show();
+      } else {
+        $("#translate-form .ss-translations-tab-" + $(this).val()).hide();
+        if ($("#translate-form .cms-tabs .current:visible").length) {
+          $("#translate-form .cms-tabs .current:visible").click();
+        } else if ($("#translate-form .cms-tabs a:visible:first").length) {
+          $("#translate-form .cms-tabs a:visible:first").click();
+        } else {
+          $("#translate-form .cms-tabs").hide();
+          $("#translate-form .addon-view").hide();
+        }
+      }
+    }
+  });
+  <% @cur_site.translate_targets.each do |target| %>
+    $("#translate-form .ss-translations-tab-<%= target.id %>").on('click', function(e) {
+      $("#translate-form .cms-tabs").hide();
+      $("#translate-form .addon-view").hide();
+      $("#translate-form .ss-translations-form-<%= target.id %>").show();
+      e.preventDefault();
+      return false;
+    });
+    $("#translate-form .ss-translations-tab-<%= target.id %>").hide();
+    $("#translate-form .ss-translations-form-<%= target.id %> dl").append($(".ss-translations-field-<%= target.id %>"));
+  <% end %>
+  $("#translate-form").insertAfter($("#addon-translate-agents-addons-lang-page"));
+  $("#translate-form .cms-tabs").hide();
+  $("#translate-form .addon-view").hide();
+  <% @item.translate_targets.each do |target| %>
+    $("#translate-form .ss-translations-tab-<%= target.id %>").show();
+  <% end %>
+  <% @item.translate_targets.each do |target| %>
+    <% next if target.id == @cur_site.translate_source_id %>
+    $("#translate-form .ss-translations-form-<%= target.id %>").show();
+    <% break %>
+  <% end %>
+<% end %>
+
+<span id="translate-form">
+  <% @cur_site.translate_targets.each do |target| %>
+    <div class="cms-tabs ss-translations-form-<%= target.id %>">
+      <% @cur_site.translate_targets.each do |tab| %>
+        <%= link_to({ anchor: "translate-form-#{tab.id}" }, class: "ss-translations-tab-#{tab.id} #{'current' if tab.id == target.id}") do %>
+          <span class="tab-name"><%= tab.name %></span>
+        <% end %>
+      <% end %>
+    </div>
+    <%= render "ss/crud/addon", addon: { id: "translate-form-#{target.id}", head: target.name, toggle: true, class: "ss-translations-form-#{target.id}" } do %>
+      <dl class="see">
+        <dd><%= button_tag t("ss.buttons.translate"), { type: :button, class: "btn translate-text" } %></dd>
+      </dl>
+    <% end %>
+  <% end %>
+</span>
+
+<dl class="see">
+  <dd class="wide">
+    <%= f.hidden_field "translate_target_ids[]", value: "" %>
+    <label><%= f.check_box("translate_target_ids[]",  { checked: (@item.new_record? && params[f.object_name].blank? && @cur_site.translate_source_id == @cur_site.translate_source_id) || @item.translate_target_ids.include?(@cur_site.translate_source_id) }, @cur_site.translate_source.id) %> <%= @cur_site.translate_source.name %></label>
+    <% @cur_site.translate_targets.each do |target| %>
+      <label><%= f.check_box("translate_target_ids[]", {}, target.id) %> <%= target.name %></label>
+    <% end %>
+  </dd>
+</dl>
