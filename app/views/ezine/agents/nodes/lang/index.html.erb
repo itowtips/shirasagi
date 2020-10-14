@@ -77,11 +77,13 @@
         @categories.uniq!
         @categories.sort! { |lhs, rhs| lhs.order <=> rhs.order }
       %>
-      <div class="lang"><%= lang.name %></div>
-      <% @categories.each do |cate| %>
-        <div class="parent">
-          <%= cate_form(cate, lang) %>
-        </div>
+      <% if @categories.present? %>
+        <div class="lang"><%= lang.name %></div>
+        <% @categories.each do |cate| %>
+          <div class="parent">
+            <%= cate_form(cate, lang) %>
+          </div>
+        <% end %>
       <% end %>
     <% end %>
   </div>
