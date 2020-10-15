@@ -89,6 +89,7 @@ ja:
     attributes:
       facility/node/page:
         name: 施設名
+        page_link: ページリンク
         kana: 施設名ふりがな
         layout: レイアウト
         postcode: 郵便番号
@@ -127,6 +128,8 @@ ja:
       facility/import_job: 施設情報インポート
 
   tooltip:
+    facility/node/page:
+      page_link: 別のページにリダイレクトしたい場合URLを入力します。
     facility/addon/body:
       kana:
         - 施設名（ページタイトル）のふりがなを入力します。

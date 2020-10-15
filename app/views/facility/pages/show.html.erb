@@ -1,5 +1,11 @@
 <%= render "ss/crud/addon", addon: { head: t("modules.addons.facility/body"), id: "facility-info" } do %>
   <dl class="see body">
+
+    <% if @item.page_link.present? %>
+      <dt><%= @item.class.t :page_link %></dt>
+      <dd><%= link_to @item.page_link, @item.page_link, target: "_blank" %></dd>
+    <% end %>
+
     <dt><%= @item.class.t :name %></dt>
     <dd><%= @item.name %></dd>
 

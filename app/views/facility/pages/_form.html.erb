@@ -1,0 +1,26 @@
+<%
+
+file = "#{Rails.root}/app/views/" + @item.route.sub('/', '/agents/nodes/') + "/edit/_form.html.erb"
+
+%><dl class="see">
+  <dt><%= @model.t :route %><%= @model.tt :route %></dt>
+  <dd><%= f.hidden_field :route %>
+    <%= @item.label :route %> &nbsp;<%= link_to t('ss.links.change'), routes_cms_nodes_path, class: "ajax-box" %></dd>
+
+  <dt><%= @model.t :name %><%= @model.tt :title %></dt>
+  <dd><%= f.text_field :name %></dd>
+
+  <dt><%= @model.t :index_name %><%= @model.tt :title_for_index %></dt>
+  <dd><%= f.text_field :index_name %></dd>
+
+  <dt><%= @model.t :basename %><%= @model.tt :foldername %></dt>
+  <dd><%= f.text_field :basename, class: "filename" %></dd>
+
+  <dt><%= @model.t :layout_id %><%= @model.tt :layout_id %></dt>
+  <dd><%= f.select :layout_id, ancestral_layouts(@item, @item.layout), include_blank: " " %></dd>
+
+  <dt><%= @model.t :page_link %><%= @model.tt :page_link %></dt>
+  <dd><%= f.text_field :page_link %></dd>
+</dl>
+
+<%= render file: file, locals: { f: f } if File.exists?(file) %>

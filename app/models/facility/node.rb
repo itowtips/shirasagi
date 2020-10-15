@@ -38,18 +38,25 @@ module Facility::Node
 
     default_scope ->{ where(route: "facility/page") }
 
+    field :page_link
+    permit_params :page_link
+
     def redirect_link
-      @tourism_page = ::Tourism::Page.site(site).in(facility_id: id).first
-      return nil if @tourism_page.blank?
-      @tourism_page.url
+      page_link.presence
     end
+
+    #def redirect_link
+    #  @tourism_page = ::Tourism::Page.site(site).in(facility_id: id).first
+    #  return nil if @tourism_page.blank?
+    #  @tourism_page.url
+    #end
 
     def serve_static_file?
       false
     end
 
     COLUMNS = %w(
-      filename name layout kana address postcode tel
+      filename name layout page_link kana address postcode tel
       fax related_url categories locations services
       map_points groups
     ).freeze
@@ -83,6 +90,7 @@ module Facility::Node
         row << item.basename unless opts[:public]
         row << item.name
         row << item.layout.try(:name) unless opts[:public]
+        row << item.page_link unless opts[:public]
         row << item.kana
         row << item.address
         row << item.postcode
