@@ -1,0 +1,7 @@
+<% return if !@cur_site.line_token_enabled? %>
+<% return if @item.try(:branch?)%>
+
+<dl class="see">
+  <dt><%= @model.t :line_posted %></dt>
+  <dd><%= tryb { @item.line_posted.strftime("%Y/%m/%d %H:%M") } %></dd>
+</dl>
