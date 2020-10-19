@@ -12,11 +12,16 @@ module Cms::Addon
       field :new_days, type: Integer, default: 1
       field :loop_format, type: String
       field :loop_liquid, type: String
+      field :no_items_display_state, type: String
+      field :substitute_html, type: String
 
       permit_params :conditions, :limit, :new_days
       permit_params :loop_html, :loop_format, :loop_liquid
+      permit_params :no_items_display_state, :substitute_html
 
       before_validation :validate_conditions
+
+      validates :no_items_display_state, inclusion: { in: %w(show hide), allow_blank: true }
     end
 
     def limit
@@ -31,6 +36,10 @@ module Cms::Addon
 
     def in_new_days?(date)
       date + new_days > Time.zone.now
+    end
+
+    def no_items_display_state_options
+      %w(show hide).map { |v| [ I18n.t("ss.options.state.#{v}"), v ] }
     end
 
     def loop_format_options
