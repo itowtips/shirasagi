@@ -8,7 +8,10 @@
     <%= link_to t("guide.links.back_to_before"), before_url %>
     <%= link_to t("guide.links.back_to_first"), @cur_node.url %>
   </div>
-  <div class="progress"><div class="current" style="width: <%= (@progress * 100).to_i %>%;"></div></div>
+  <div class="progress">
+    <span class="evaluated-length"><%= @evaluated_length + 1 %></span>
+    <span class="longest-length"><%= @longest_length %></span>
+  </div>
 </nav>
 
 <%= form_for :item, url: "#{@cur_node.url}dialog.html", html: { method: "GET", enforce_utf8: false } do |f| %>

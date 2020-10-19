@@ -10,6 +10,7 @@ class Guide::QuestionDiagram
 
   def initialize(node)
     @node = node
+    @all_procedures = {}
     @roots = Guide::Question.node(node).
       select { |point| point.referenced_questions.blank? }.
       map { |point| build_diagram(point) }
@@ -59,8 +60,16 @@ class Guide::QuestionDiagram
     @procedures.values.sort_by { |item| item.order }
   end
 
+  def all_procedures
+    @all_procedures.values.sort_by { |item| item.order }
+  end
+
+  def evaluated_length
+    @longest_length - @unevaluated_longest_length
+  end
+
   def progress
-    ((@longest_length - @unevaluated_longest_length).to_f / @longest_length.to_f).floor(2)
+    (evaluated_length.to_f / @longest_length.to_f).floor(2)
   end
 
   private
@@ -77,6 +86,7 @@ class Guide::QuestionDiagram
       end
       point
     else
+      @all_procedures[point.id] = point
       point
     end
   end

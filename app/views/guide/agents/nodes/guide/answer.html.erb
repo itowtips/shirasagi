@@ -1,7 +1,6 @@
 <div class="guide-node-form">
-  <div class="procedure-count"><%= t("guide.views.procedures_needed", count: @procedures.count) %></div>
   <div class="guide-nodes nodes">
-    <div class="your-answers">あなたの回答</div>
+    <div class="your-answers"><%= t("guide.views.your-answers") %></div>
     <ul>
       <% @diagram.questions.each_with_index do |question, no| %>
         <% answer = @answers[no].to_a %>
@@ -27,5 +26,7 @@
       <% end %>
     </ul>
   </div>
-  <div class="show-answer"><%= link_to t('guide.links.show_result'), "#{@cur_node.url}result/#{@condition}" %></div>
+  <div class="show-result">
+    <div class="show-answer"><%= link_to t('guide.links.show_result'), "#{@cur_node.url}result/#{@condition}" %></div>
+  </div>
 </div>

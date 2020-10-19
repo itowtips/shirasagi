@@ -32,5 +32,7 @@ Rails.application.routes.draw do
     get "guide/result/:condition" => "public#result", cell: "nodes/guide"
     get "guide/answer/" => "public#answer", cell: "nodes/guide"
     get "guide/answer/:condition" => "public#answer", cell: "nodes/guide"
+    get "guide/procedure/" => "public#procedure", cell: "nodes/guide"
+    get "guide/procedure/:condition" => "public#procedure", cell: "nodes/guide"
   end
 end

@@ -21,11 +21,14 @@ ja:
       not_applicable: いいえ
       revise_and_resubmit: 修正して再投稿
       show_answer: 回答を確認する
+      show_procedure: 全ての手続きを確認する
       show_result: 手続きを確認する
       start_guide: ガイドを開始する
     views:
       procedures_needed: "%{count}件の手続きが必要です。"
       procedures_others: "そのほか下記に該当する方は、それぞれの窓口にお問い合わせください"
+      your-answers: あなたの回答
+      all_procedure: 全ての手続き
     options:
       question_type:
         yes_no: 'はい・いいえ'

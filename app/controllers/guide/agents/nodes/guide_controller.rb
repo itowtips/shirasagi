@@ -57,7 +57,9 @@ class Guide::Agents::Nodes::GuideController < ApplicationController
   def dialog
     @diagram = ::Guide::QuestionDiagram.new @cur_node
     @question = @diagram.input_answers(@answers).first
-    @progress = @diagram.progress
+
+    @longest_length = @diagram.longest_length
+    @evaluated_length = @diagram.evaluated_length
 
     if @question.nil?
       redirect_to "#{@cur_node.url}result/#{@condition}"
@@ -82,5 +84,12 @@ class Guide::Agents::Nodes::GuideController < ApplicationController
     @diagram = ::Guide::QuestionDiagram.new @cur_node
     @diagram.input_answers(@answers)
     @procedures = @diagram.procedures
+  end
+
+  def procedure
+    @cur_node.name = "【結果】#{@cur_node.name}"
+
+    @diagram = ::Guide::QuestionDiagram.new @cur_node
+    @procedures = @diagram.all_procedures
   end
 end
