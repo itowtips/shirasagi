@@ -417,6 +417,7 @@ ja:
       ss/logo_setting: ロゴ設定
       ss/release: 公開設定
       ss/inquiry_setting: お問い合わせフォーム設定
+      ss/partner_site: 提携サイト設定
 
   activemodel:
     attributes:
@@ -745,6 +746,8 @@ ja:
         inquiry_form_id: お問い合わせフォーム
       ss/lockable:
         lock_until: ロック期限日時
+      ss/addon/partner_setting:
+        partner_site_ids: 提携サイト
 
   tooltip:
     ss/model/user:

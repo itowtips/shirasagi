@@ -210,7 +210,7 @@ module Member::Node
       super
     end
 
-    def condition_hash
+    def condition_hash(options = {})
       cond = []
       cids = []
 
@@ -251,7 +251,7 @@ module Member::Node
 
     default_scope ->{ where(route: "member/photo_search") }
 
-    def condition_hash
+    def condition_hash(options = {})
       if conditions.present?
         super
       else
@@ -283,7 +283,7 @@ module Member::Node
 
     default_scope ->{ where(route: "member/photo_category") }
 
-    def condition_hash
+    def condition_hash(options = {})
       if conditions.present?
         super
       else
@@ -303,7 +303,7 @@ module Member::Node
 
     default_scope ->{ where(route: "member/photo_location") }
 
-    def condition_hash
+    def condition_hash(options = {})
       if conditions.present?
         super
       else

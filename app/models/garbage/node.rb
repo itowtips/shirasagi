@@ -50,7 +50,7 @@ module Garbage::Node
 
     default_scope ->{ where(route: "garbage/search") }
 
-    def condition_hash
+    def condition_hash(options = {})
       cond = []
 
       cond << { filename: /^#{::Regexp.escape(filename)}\// } if conditions.blank?
@@ -92,7 +92,7 @@ module Garbage::Node
 
     default_scope ->{ where(route: "garbage/category") }
 
-    def condition_hash
+    def condition_hash(options = {})
       cond = []
       cids = []
 
