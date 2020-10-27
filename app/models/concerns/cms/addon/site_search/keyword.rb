@@ -5,7 +5,9 @@ module Cms::Addon::SiteSearch
 
     included do
       field :site_search_keywords, type: SS::Extensions::Lines
-      permit_params :site_search_keywords
+      field :upper_html, type: String
+      field :lower_html, type: String
+      permit_params :site_search_keywords, :upper_html, :lower_html
     end
   end
 end
