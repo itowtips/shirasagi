@@ -325,6 +325,7 @@ Rails.application.routes.draw do
     get "sns_share" => "public#index", cell: "parts/sns_share"
     get "calendar_nav" => "public#index", cell: "parts/calendar_nav"
     get "monthly_nav" => "public#index", cell: "parts/monthly_nav"
+    get "site_search_keyword" => "public#index", cell: "parts/site_search_keyword"
   end
 
   page "cms" do

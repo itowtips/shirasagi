@@ -1,0 +1,11 @@
+<% return if @node.nil? %>
+<% return if @cur_part.site_search_keywords.blank? %>
+<ul>
+  <% @cur_part.site_search_keywords.each do |keyword| %>
+    <li>
+      <a href="<%= @node.url + "?" + { s: { keyword: keyword } }.to_query %>" rel="nofollow">
+        <%= keyword %>
+      </a>
+    </li>
+  <% end %>
+</ul>

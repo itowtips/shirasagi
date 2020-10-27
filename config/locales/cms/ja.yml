@@ -331,6 +331,7 @@ ja:
       cms/sns_share: SNSシェアボタン
       cms/calendar_nav: アーカイブナビ(カレンダー)
       cms/monthly_nav: アーカイブナビ（月次）
+      cms/site_search_keyword: サイト内検索(注目ワード)
     columns:
       cms/text_field: 一行入力
       cms/date_field: 日付入力
@@ -505,6 +506,7 @@ ja:
       cms/column/layout: レイアウト
       cms/column/text_like: 制約条件
       cms/column/select_like: 選択
+      cms/site_search/keyword: 注目ワード
 
   mongoid:
     models:
@@ -830,6 +832,8 @@ ja:
         child_loop_html: ループHTML
         child_upper_html: 上部HTML
         child_lower_html: 下部HTML
+      cms/addon/site_search/keyword:
+        site_search_keywords: 注目ワード
       cms/form:
         name: 名前
         order: 並び順
@@ -1826,6 +1830,10 @@ ja:
     cms/addon/for_member_node:
       for_member_state:
         - 会員がログインしている時のみ閲覧できるように設定します。
+
+    cms/addon/site_search/keyword:
+      site_search_keywords:
+        - 注目ワードを改行区切りで入力してください。
 
     cms/command:
       name:
