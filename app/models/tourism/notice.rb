@@ -19,6 +19,7 @@ class Tourism::Notice
   include Cms::Addon::Release
   include Cms::Addon::ReleasePlan
   include Cms::Addon::GroupPermission
+  include Cms::AttachedFiles
   include History::Addon::Backup
 
   set_permission_name "tourism_notices"

@@ -1912,6 +1912,7 @@ footer.send {
         line-height: 20px;
         color: $black;
         border: 5px solid $gray4;
+        z-index: 1000;
       }
     }
     .properties {
@@ -2949,7 +2950,6 @@ form .CodeMirror {
     img {
       vertical-align: top;
       min-height: 110px;
-      width: 100%;
     }
     .ext {
       display: block;

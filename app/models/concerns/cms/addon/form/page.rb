@@ -37,9 +37,9 @@ module Cms::Addon::Form::Page
   end
 
   # for creating branch page
-  def copy_column_values(from_item)
+  def copy_column_values(from_item, opts = {})
     from_item.column_values.each do |column_value|
-      column_value.clone_to(self)
+      column_value.clone_to(self, opts)
     end
   end
 
@@ -53,6 +53,19 @@ module Cms::Addon::Form::Page
     }
 
     form.render_html(self, registers).html_safe
+  end
+
+  def form_files
+    files = []
+    column_values.each do |value|
+      if value.respond_to?(:file_id) && value.file
+        files << value.file
+      end
+      if value.respond_to?(:files) && value.files.present?
+        files += value.files.to_a
+      end
+    end
+    files
   end
 
   private
@@ -100,7 +113,7 @@ module Cms::Addon::Form::Page
 
   def cms_form_page_merge_column_values
     self.column_values = []
-    copy_column_values(in_branch)
+    copy_column_values(in_branch, merge_values: true)
   end
 
   def update_column_values_updated(*_args)

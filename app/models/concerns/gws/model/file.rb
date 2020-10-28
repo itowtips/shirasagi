@@ -5,6 +5,7 @@ module Gws::Model::File
   include SS::Reference::User
   include SS::FileFactory
   include SS::ExifGeoLocation
+  include SS::CsvHeader
   include ActiveSupport::NumberHelper
 
   attr_accessor :in_file, :resizing
@@ -220,6 +221,11 @@ module Gws::Model::File
     errors.add :in_file, :blank if new_record? && in_file.blank?
     return false if errors.present?
     return if in_file.blank?
+
+    if csv_or_xlsx?
+      extract_csv_headers(in_file)
+      in_file.rewind
+    end
 
     if image?
       list = Magick::ImageList.new
