@@ -126,16 +126,7 @@ module Facility::Node
     default_scope ->{ where(route: "facility/search") }
 
     def condition_hash(options = {})
-      cond = []
-
-      cond << { filename: /^#{::Regexp.escape(filename)}\// } if conditions.blank?
-      conditions.each do |url|
-        node = Cms::Node.site(cur_site || site).filename(url).first rescue nil
-        next unless node
-        cond << { filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1 }
-      end
-
-      { '$or' => cond }
+      super(options.reverse_merge(bind: :descendants, category: false, default_location: :only_blank))
     end
   end
 
@@ -152,19 +143,7 @@ module Facility::Node
     default_scope ->{ where(route: "facility/category") }
 
     def condition_hash(options = {})
-      cond = []
-      cids = []
-
-      cids << id
-      conditions.each do |url|
-        node = Cms::Node.site(cur_site || site).filename(url).first rescue nil
-        next unless node
-        cond << { filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1 }
-        cids << node.id
-      end
-      cond << { :category_ids.in => cids } if cids.present?
-
-      { '$or' => cond }
+      super(options.reverse_merge(category: :category_ids))
     end
   end
 
@@ -180,19 +159,7 @@ module Facility::Node
     default_scope ->{ where(route: "facility/service") }
 
     def condition_hash(options = {})
-      cond = []
-      cids = []
-
-      cids << id
-      conditions.each do |url|
-        node = Cms::Node.site(cur_site || site).filename(url).first rescue nil
-        next unless node
-        cond << { filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1 }
-        cids << node.id
-      end
-      cond << { :service_ids.in => cids } if cids.present?
-
-      { '$or' => cond }
+      super(options.reverse_merge(category: :service_ids))
     end
   end
 
@@ -210,19 +177,7 @@ module Facility::Node
     default_scope ->{ where(route: "facility/location") }
 
     def condition_hash(options = {})
-      cond = []
-      cids = []
-
-      cids << id
-      conditions.each do |url|
-        node = Cms::Node.site(cur_site || site).filename(url).first rescue nil
-        next unless node
-        cond << { filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1 }
-        cids << node.id
-      end
-      cond << { :location_ids.in => cids } if cids.present?
-
-      { '$or' => cond }
+      super(options.reverse_merge(category: :location_ids))
     end
   end
 end

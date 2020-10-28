@@ -16,7 +16,7 @@ describe Cms::Addon::List::Model do
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 1
-          expect(subject[0]).to include(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
+          expect(subject[0]).to eq(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
         end
       end
 
@@ -27,10 +27,10 @@ describe Cms::Addon::List::Model do
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 3
-          expect(subject[0]).to include(
+          expect(subject[0]).to eq(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
+          expect(subject[1]).to eq(
             site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//, depth: article_node.depth + 1)
-          expect(subject[1]).to include(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
-          expect(subject[2]).to include(site_id: site.id, category_ids: article_node.id)
+          expect(subject[2]).to eq(site_id: site.id, category_ids: article_node.id)
         end
       end
 
@@ -41,7 +41,7 @@ describe Cms::Addon::List::Model do
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 1
-          expect(subject[0]).to include(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
+          expect(subject[0]).to eq(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
         end
       end
 
@@ -52,8 +52,8 @@ describe Cms::Addon::List::Model do
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 2
-          expect(subject[0]).to include(site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//)
-          expect(subject[1]).to include(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
+          expect(subject[0]).to eq(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
+          expect(subject[1]).to eq(site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//)
         end
       end
 
@@ -64,47 +64,43 @@ describe Cms::Addon::List::Model do
 
         it do
           expect(subject).to be_a(Array)
-          expect(subject.length).to eq 2
-          expect(subject[0]).to include(site_id: site.id, filename: /^#{::Regexp.escape(filename)}\//)
-          expect(subject[1]).to include(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
+          expect(subject.length).to eq 1
+          expect(subject[0]).to eq(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
         end
       end
 
       context "when \#{request_dir} is given with blank cur_main_path" do
         let!(:part) { create :cms_part_page, cur_site: site, conditions: [ "\#{request_dir}" ] }
         subject do
-          part.cur_main_path = nil
-          part.condition_hash["$or"]
+          part.condition_hash(request_dir: nil)["$or"]
         end
 
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 1
-          expect(subject[0]).to include(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
+          expect(subject[0]).to eq(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
         end
       end
 
       context "when \#{request_dir} is given with actual cur_main_path" do
         let!(:part) { create :cms_part_page, cur_site: site, conditions: [ "\#{request_dir}" ] }
         subject do
-          part.cur_main_path = "/#{article_node.filename}/index.html"
-          part.condition_hash["$or"]
+          part.condition_hash(request_dir: "/#{article_node.filename}/index.html")["$or"]
         end
 
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 2
-          expect(subject[0]).to include(
+          expect(subject[0]).to eq(
             site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//, depth: article_node.depth + 1)
-          expect(subject[1]).to include(site_id: site.id, category_ids: article_node.id)
+          expect(subject[1]).to eq(site_id: site.id, category_ids: article_node.id)
         end
       end
 
       context "when \#{request_dir} is given with non-existing cur_main_path" do
         let!(:part) { create :cms_part_page, cur_site: site, conditions: [ "\#{request_dir}" ] }
         subject do
-          part.cur_main_path = "/node-#{unique_id}/index.html"
-          part.condition_hash["$and"]
+          part.condition_hash(request_dir: "/node-#{unique_id}/index.html")["$and"]
         end
 
         it do
@@ -118,16 +114,15 @@ describe Cms::Addon::List::Model do
         let(:condition) { "\#{request_dir}/#{::File.basename(article_node.filename)}" }
         let!(:part) { create :cms_part_page, cur_site: site, conditions: [ condition ] }
         subject do
-          part.cur_main_path = "/#{root_node.filename}/index.html"
-          part.condition_hash["$or"]
+          part.condition_hash(request_dir: "/#{root_node.filename}/index.html")["$or"]
         end
 
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 2
-          expect(subject[0]).to include(
+          expect(subject[0]).to eq(
             site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//, depth: article_node.depth + 1)
-          expect(subject[1]).to include(site_id: site.id, category_ids: article_node.id)
+          expect(subject[1]).to eq(site_id: site.id, category_ids: article_node.id)
         end
       end
 
@@ -146,11 +141,11 @@ describe Cms::Addon::List::Model do
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 3
-          expect(subject[0]).to include(
+          expect(subject[0]).to eq(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
+          expect(subject[1]).to eq(
             site_id: site1.id,
             filename: /^#{::Regexp.escape(site1_article_node.filename)}\//, depth: site1_article_node.depth + 1)
-          expect(subject[1]).to include(site_id: site.id, filename: /^[^\/]+$/, depth: 1)
-          expect(subject[2]).to include(site_id: site1.id, category_ids: site1_article_node.id)
+          expect(subject[2]).to eq(site_id: site1.id, category_ids: site1_article_node.id)
         end
       end
     end

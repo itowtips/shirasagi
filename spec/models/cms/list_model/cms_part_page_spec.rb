@@ -6,7 +6,6 @@ describe Cms::Addon::List::Model do
   let!(:root_node) { create :cms_node_node, cur_site: site, layout: layout }
   let!(:article_node) { create :article_node_page, cur_site: site, cur_node: root_node, layout: layout }
   let!(:article_page) { create :article_page, cur_site: site, cur_node: article_node, layout: layout }
-  let(:cate_key) { Mongoid::Criteria::Queryable::Key.new(:category_ids, nil, "$in") }
 
   describe "#condition_hash" do
     context "on a part 'cms/page'" do
@@ -18,8 +17,8 @@ describe Cms::Addon::List::Model do
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 2
-          expect(subject[0]).to include(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
-          expect(subject[1]).to include(site_id: site.id, category_ids: node.id)
+          expect(subject[0]).to eq(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
+          expect(subject[1]).to eq(site_id: site.id, category_ids: node.id)
         end
       end
 
@@ -31,10 +30,25 @@ describe Cms::Addon::List::Model do
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 3
-          expect(subject[0]).to include(
+          expect(subject[0]).to eq(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
+          expect(subject[1]).to eq(
             site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//, depth: article_node.depth + 1)
-          expect(subject[1]).to include(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
-          expect(subject[2]).to include(site_id: site.id, cate_key => include(node.id, article_node.id))
+          expect(subject[2]).to eq(site_id: site.id, category_ids: { "$in" => [ node.id, article_node.id ] })
+        end
+      end
+
+      context "with existing node starting with slash" do
+        let!(:node) { create :cms_node_node, cur_site: site, layout: layout }
+        let!(:part) { create :cms_part_page, cur_site: site, cur_node: node, conditions: [ "/" + article_node.filename ] }
+        subject { part.condition_hash["$or"] }
+
+        it do
+          expect(subject).to be_a(Array)
+          expect(subject.length).to eq 3
+          expect(subject[0]).to eq(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
+          expect(subject[1]).to eq(
+            site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//, depth: article_node.depth + 1)
+          expect(subject[2]).to eq(site_id: site.id, category_ids: { "$in" => [ node.id, article_node.id ] })
         end
       end
 
@@ -46,8 +60,8 @@ describe Cms::Addon::List::Model do
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 2
-          expect(subject[0]).to include(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
-          expect(subject[1]).to include(site_id: site.id, category_ids: node.id)
+          expect(subject[0]).to eq(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
+          expect(subject[1]).to eq(site_id: site.id, category_ids: node.id)
         end
       end
 
@@ -59,9 +73,23 @@ describe Cms::Addon::List::Model do
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 3
-          expect(subject[0]).to include(site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//)
-          expect(subject[1]).to include(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
-          expect(subject[2]).to include(site_id: site.id, category_ids: node.id)
+          expect(subject[0]).to eq(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
+          expect(subject[1]).to eq(site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//)
+          expect(subject[2]).to eq(site_id: site.id, category_ids: node.id)
+        end
+      end
+
+      context "with existing node without last slash as wildcard" do
+        let!(:node) { create :cms_node_node, cur_site: site, layout: layout }
+        let!(:part) { create :cms_part_page, cur_site: site, cur_node: node, conditions: [ "#{article_node.filename}*" ] }
+        subject { part.condition_hash["$or"] }
+
+        it do
+          expect(subject).to be_a(Array)
+          expect(subject.length).to eq 3
+          expect(subject[0]).to eq(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
+          expect(subject[1]).to eq(site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//)
+          expect(subject[2]).to eq(site_id: site.id, category_ids: node.id)
         end
       end
 
@@ -73,10 +101,9 @@ describe Cms::Addon::List::Model do
 
         it do
           expect(subject).to be_a(Array)
-          expect(subject.length).to eq 3
-          expect(subject[0]).to include(site_id: site.id, filename: /^#{::Regexp.escape(filename)}\//)
-          expect(subject[1]).to include(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
-          expect(subject[2]).to include(site_id: site.id, category_ids: node.id)
+          expect(subject.length).to eq 2
+          expect(subject[0]).to eq(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
+          expect(subject[1]).to eq(site_id: site.id, category_ids: node.id)
         end
       end
 
@@ -84,15 +111,14 @@ describe Cms::Addon::List::Model do
         let!(:node) { create :cms_node_node, cur_site: site, layout: layout }
         let!(:part) { create :cms_part_page, cur_site: site, cur_node: node, conditions: [ "\#{request_dir}" ] }
         subject do
-          part.cur_main_path = nil
-          part.condition_hash["$or"]
+          part.condition_hash(request_dir: nil)["$or"]
         end
 
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 2
-          expect(subject[0]).to include(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
-          expect(subject[1]).to include(site_id: site.id, category_ids: node.id)
+          expect(subject[0]).to eq(site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
+          expect(subject[1]).to eq(site_id: site.id, category_ids: node.id)
         end
       end
 
@@ -100,16 +126,15 @@ describe Cms::Addon::List::Model do
         let!(:node) { create :cms_node_node, cur_site: site, layout: layout }
         let!(:part) { create :cms_part_page, cur_site: site, cur_node: node, conditions: [ "\#{request_dir}" ] }
         subject do
-          part.cur_main_path = "/#{article_node.filename}/index.html"
-          part.condition_hash["$or"]
+          part.condition_hash(request_dir: "/#{article_node.filename}/index.html")["$or"]
         end
 
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 2
-          expect(subject[0]).to include(
+          expect(subject[0]).to eq(
             site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//, depth: article_node.depth + 1)
-          expect(subject[1]).to include(site_id: site.id, category_ids: article_node.id)
+          expect(subject[1]).to eq(site_id: site.id, category_ids: article_node.id)
         end
       end
 
@@ -117,8 +142,7 @@ describe Cms::Addon::List::Model do
         let!(:node) { create :cms_node_node, cur_site: site, layout: layout }
         let!(:part) { create :cms_part_page, cur_site: site, cur_node: node, conditions: [ "\#{request_dir}" ] }
         subject do
-          part.cur_main_path = "/node-#{unique_id}/index.html"
-          part.condition_hash["$and"]
+          part.condition_hash(request_dir: "/node-#{unique_id}/index.html")["$and"]
         end
 
         it do
@@ -133,16 +157,15 @@ describe Cms::Addon::List::Model do
         let!(:node) { create :cms_node_node, cur_site: site, layout: layout }
         let!(:part) { create :cms_part_page, cur_site: site, cur_node: node, conditions: [ condition ] }
         subject do
-          part.cur_main_path = "/#{root_node.filename}/index.html"
-          part.condition_hash["$or"]
+          part.condition_hash(request_dir: "/#{root_node.filename}/index.html")["$or"]
         end
 
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 2
-          expect(subject[0]).to include(
+          expect(subject[0]).to eq(
             site_id: site.id, filename: /^#{::Regexp.escape(article_node.filename)}\//, depth: article_node.depth + 1)
-          expect(subject[1]).to include(site_id: site.id, category_ids: article_node.id)
+          expect(subject[1]).to eq(site_id: site.id, category_ids: article_node.id)
         end
       end
 
@@ -162,13 +185,13 @@ describe Cms::Addon::List::Model do
         it do
           expect(subject).to be_a(Array)
           expect(subject.length).to eq 4
-          expect(subject[0]).to include(
+          expect(subject[0]).to eq(
+            site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
+          expect(subject[1]).to eq(
             site_id: site1.id, filename: /^#{::Regexp.escape(site1_article_node.filename)}\//,
             depth: site1_article_node.depth + 1)
-          expect(subject[1]).to include(
-            site_id: site.id, filename: /^#{::Regexp.escape(node.filename)}\//, depth: node.depth + 1)
-          expect(subject[2]).to include(site_id: site1.id, category_ids: site1_article_node.id)
-          expect(subject[3]).to include(site_id: site.id, category_ids: node.id)
+          expect(subject[2]).to eq(site_id: site.id, category_ids: node.id)
+          expect(subject[3]).to eq(site_id: site1.id, category_ids: site1_article_node.id)
         end
       end
     end
