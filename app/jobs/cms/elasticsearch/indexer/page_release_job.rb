@@ -43,6 +43,7 @@ class Cms::Elasticsearch::Indexer::PageReleaseJob < Cms::ApplicationJob
     doc[:categories] = item.categories.pluck(:name)
     doc[:category_ids] = item.category_ids
     doc[:group_ids] = item.groups.pluck(:id)
+    doc[:site_id] = item.site_id
 
     doc[:released] = item.released.try(:iso8601)
     doc[:updated] = item.updated.try(:iso8601)
