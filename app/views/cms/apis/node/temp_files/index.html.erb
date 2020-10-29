@@ -74,6 +74,12 @@ var successSimilarFiles = function (data) {
   var html = $(data);
 
   $(html).find(".search").on("click", function () {
+    if ($(this).attr("disabled")) {
+      return false;
+    }
+    $(this).attr("disabled", "disabled");
+
+    $("#ajax-box .result").replaceWith(SS.loading);
     $('#ajax-box .search-ui-form [data-submitted="similar_files"]').trigger("submit");
     return false;
   });

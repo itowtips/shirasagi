@@ -31,6 +31,10 @@ var options = function () {
   return {
     url: "<%= url_for(action: :drop_and_search) %>",
     dataType: "html",
+    beforeSend: function() {
+      $('#ajax-box [data-submitted="similar_files"]').attr("disabled", "disabled");
+      $("#ajax-box .result").replaceWith(SS.loading);
+    },
     success: function(data) {
       $("#cboxLoadedContent").html(data);
     },
@@ -76,48 +80,46 @@ SS.ajaxForm("form.user-file", options);
     </dd>
   </dl>
 
-  <% if @items.present? %>
-
-    <table class="index">
-      <thead>
-        <tr>
-          <th><%= "ページ名" %></th>
-          <th><%= "ファイル名" %></th>
-          <th><%= "ページ更新日時" %></th>
-          <th><%= "連携データセット" %></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @items.each do |item| %>
-          <% page = item.page.becomes_with_route %>
-          <% dataset = @datasets[page.id] %>
-          <tr data-id="<%= item.id %>">
-            <td>
-              <%= link_to page.name, page.private_show_path + "?replace_temp_file=1#file-#{item.file_id}", target: "_blank" rescue nil %>
-            </td>
-            <td><%= item.name %></td>
-            <td><%= page.updated.strftime("%Y/%m/%d %H:%M") rescue nil %></td>
-            <td>
-              <% if dataset %>
-                <%= link_to "#{dataset.name}（#{dataset.site.name}）", dataset.private_show_path, target: "_blank" rescue nil %>
-              <% else %>
-                <%= "なし" %>
-              <% end %>
-            </td>
+  <div class="result">
+    <% if @items.present? %>
+      <table class="index">
+        <thead>
+          <tr>
+            <th><%= "ページ名" %></th>
+            <th><%= "ファイル名" %></th>
+            <th><%= "ページ更新日時" %></th>
+            <th><%= "連携データセット" %></th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
 
-    <%= hidden_field_tag "page", @items.try(:current_page), class: "current-page" %>
-    <%= paginate @items if @items.try(:current_page) %>
+        <tbody>
+          <% @items.each do |item| %>
+            <% page = item.page.becomes_with_route %>
+            <% dataset = @datasets[page.id] %>
+            <tr data-id="<%= item.id %>">
+              <td>
+                <%= link_to page.name, page.private_show_path + "?replace_temp_file=1#file-#{item.file_id}", target: "_blank" rescue nil %>
+              </td>
+              <td><%= item.name %></td>
+              <td><%= page.updated.strftime("%Y/%m/%d %H:%M") rescue nil %></td>
+              <td>
+                <% if dataset %>
+                  <%= link_to "#{dataset.name}（#{dataset.site.name}）", dataset.private_show_path, target: "_blank" rescue nil %>
+                <% else %>
+                  <%= "なし" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
 
-  <% else %>
-
-    <div><%= "既に添付されているファイルは見つかりませんでした。" %></div>
-
-  <% end %>
+      <%= hidden_field_tag "page", @items.try(:current_page), class: "current-page" %>
+      <%= paginate @items if @items.try(:current_page) %>
+    <% else %>
+      <div><%= "既に添付されているファイルは見つかりませんでした。" %></div>
+    <% end %>
+  </div>
 </div>
 
 <% end %>

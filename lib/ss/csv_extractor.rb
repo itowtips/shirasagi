@@ -26,7 +26,7 @@ class SS::CsvExtractor
     ext = extname.downcase.to_sym
     return unless Roo::CLASS_FOR_EXTENSION.include?(ext)
 
-    Timeout.timeout(60) do
+    Timeout.timeout(5) do
       sp = Roo::Spreadsheet.open(file.path, extension: ext)
       csv = sp.sheet(0).to_csv
       @csv_headers = CSV::parse(csv).first.select { |v| v.present? }
