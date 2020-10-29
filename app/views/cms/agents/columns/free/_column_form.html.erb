@@ -2,6 +2,7 @@
 <% files = value.try(:files) %>
 <% controller ||= false %>
 <% source_cleaner_conf = Cms::SourceCleanerTemplate.site(@cur_site).and_public.to_config %>
+<% opendata_assoced = @cur_node && @cur_node.becomes_with_route.try(:opendata_sites).present? %>
 <%= render 'cms/agents/columns/main/base', f: f, column: column, value: value, controller: controller do |id| %>
   <% editor_id = "#{id}-html" %>
   <%= text_area_tag("#{f.object_name}[][in_wrap][value]", value.try(:value), column.form_options.merge(id: editor_id, class: "html", style: "height: 400px;")) %>
@@ -41,12 +42,10 @@
 
   <% @extra_bodies << proc do %>
     <span class="upload-menu-new">
-      <% if @cur_node %>
-        <% if @cur_node.becomes_with_route.try(:opendata_sites).present? %>
-          <%= link_to t('ss.links.upload'), cms_apis_node_temp_files_path(cid: @cur_node, similar_files: 1), class: "ajax-box btn btn-file-upload" %>
-        <% else %>
-          <%= link_to t('ss.links.upload'), cms_apis_node_temp_files_path(cid: @cur_node), class: "ajax-box btn btn-file-upload" %>
-        <% end %>
+      <% if opendata_assoced %>
+        <%= link_to t('ss.links.upload'), cms_apis_node_temp_files_path(cid: @cur_node, similar_files: 1), class: "ajax-box btn btn-file-upload" %>
+      <% elsif @cur_node %>
+        <%= link_to t('ss.links.upload'), cms_apis_node_temp_files_path(cid: @cur_node), class: "ajax-box btn btn-file-upload" %>
       <% else %>
         <%= link_to t('ss.links.upload'), cms_apis_temp_files_path, class: "ajax-box btn btn-file-upload" %>
       <% end %>
@@ -56,9 +55,20 @@
       <%= link_to t("cms.file"), cms_apis_files_path(cid: @cur_node || '-'), class: "ajax-box btn btn-file-upload" %>
     </span>
 
-    <div class="column-value-upload-drop-area">
-      <span class="column-value-upload-drop-notice"><%= t('ss.notice.file_droppable') %></span>
-    </div>
+    <% if opendata_assoced %>
+      <div class="drop-and-search">
+        <div class="column-value-upload-drop-area">
+          <span class="column-value-upload-drop-notice"><%= t('ss.notice.file_droppable') %></span>
+        </div>
+        <div class="column-value-upload-drop-and-search-area">
+          <span class="column-value-upload-drop-notice"><%= t("ss.notice.file_droppable_and_search") %></span>
+        </div>
+      </div>
+    <% else %>
+      <div class="column-value-upload-drop-area">
+        <span class="column-value-upload-drop-notice"><%= t('ss.notice.file_droppable') %></span>
+      </div>
+    <% end %>
 
     <div class="column-value-files<% if files.blank? %> hide<% end %>">
       <% if files.present? %>
