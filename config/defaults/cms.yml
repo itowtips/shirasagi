@@ -134,6 +134,7 @@ production: &production
 
   elasticsearch:
     label: 掛川市の関連サイト全て
+    site-search-marks: [ "use-site-search", "end-use-site-search" ]
     indexes:
       - s1
       - s2
