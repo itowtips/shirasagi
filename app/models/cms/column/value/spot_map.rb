@@ -51,6 +51,13 @@ class Cms::Column::Value::SpotMap < Cms::Column::Value::Base
     h = []
     h << helpers.render_map("#map-canvas", markers: merged_map.map_points, site: site, map: { zoom: merged_map.map_zoom_level })
     h << '<div id="map-canvas" style="width: 100%; height: 400px;"></div>'
+
+    loc = merged_map.map_points.first["loc"] rescue nil
+    if loc.present?
+      url = "https://www.google.co.jp/maps/search/" + loc.join(',')
+      h << '<div class="show-map"><a href="' + url + '">Google Mapで地図を表示する</a></div>'
+    end
+
     h.join("\n")
   rescue => e
     Rails.logger.error("#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}")
