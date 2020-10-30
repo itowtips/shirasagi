@@ -23,7 +23,11 @@
       <dd class="marker">
         <p>
           <%= number_field_tag "item[map_points][][number]", nil, min: 1, class: "marker-number", placeholder: @item.t(:marker_number) %>
+          <%= link_to t("map.buttons.select_image"), "", class: "btn select-marker-image" %>
+          <%= hidden_field_tag "item[map_points][][image]", "" %>
+          <span class="marker-thumb"></span>
         </p>
+        <%== render_marker_image_form(site: @cur_site) %>
         <p>
           <%= text_field_tag "item[map_points][][loc_]", nil, class: "marker-loc-input loc", placeholder: @item.t(:marker_loc) %>
         </p>
@@ -44,7 +48,11 @@
       <dd class="marker">
         <p>
           <%= number_field_tag "item[map_points][][number]", point[:number], min: 1, max: 99, class: "marker-number", placeholder: @item.t(:marker_number) %>
+          <%= link_to t("map.buttons.select_image"), "", class: "btn select-marker-image" %>
+          <%= hidden_field_tag "item[map_points][][image]", point[:image] %>
+          <span class="marker-thumb"></span>
         </p>
+        <%== render_marker_image_form(site: @cur_site) %>
         <p>
           <%= text_field_tag "item[map_points][][loc_]", point[:loc].join(","), class: "marker-loc-input loc", placeholder: @item.t(:marker_loc) %>
         </p>

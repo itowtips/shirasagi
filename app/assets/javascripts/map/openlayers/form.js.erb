@@ -132,14 +132,19 @@ this.Openlayers_Map_Form = (function () {
   Openlayers_Map_Form.prototype.renderMarkers = function () {
     return $(".mod-map dd.marker").each((function (_this) {
       return function (i, e) {
-        var loc, num;
+        var loc, opts, image, num;
         num = $(e).find(".marker-number").val();
         $(e).attr("data-id", _this.dataID);
         if ($(e).find(".marker-loc").val() !== "") {
           loc = _this.getMapLoc($(e).find(".marker-loc"));
-          _this.setMarker(loc, {
-            id: parseInt(_this.dataID)
-          }, num);
+          image = $(e).find('[name="item[map_points][][image]"]').val();
+
+          opts = {}
+          opts["id"] = parseInt(_this.dataID);
+          if (image) {
+            opts["image"] = image;
+          }
+          _this.setMarker(loc, opts, num);
         }
         //Map_Form.attachMessage(Map_Form.dataID)
         return _this.dataID += 1;
@@ -348,7 +353,29 @@ this.Openlayers_Map_Form = (function () {
         }
       };
     })(this));
-    return $(".location-search").hide();
+    $(".mod-map .select-marker-image").on("click", (function (_this) {
+      return function (e) {
+        var marker;
+        marker = $(e.target).closest(".marker");
+        _this.openMarkerImages(marker);
+        return false;
+      };
+    })(this));
+
+    $(".mod-map .images .image").on("click", (function (_this) {
+      return function (e) {
+        _this.selectMarkerImage(e.target);
+        _this.setMarkerThumb($(e.target).closest(".marker"));
+        return false;
+      };
+    })(this));
+
+    var _this = this;
+    $(".mod-map .marker-setting .marker").each(function () {
+      _this.setMarkerThumb(this);
+    });
+
+    $(".location-search").hide();
   };
 
   Openlayers_Map_Form.prototype.clonePointForm = function () {
@@ -394,6 +421,24 @@ this.Openlayers_Map_Form = (function () {
           }
         };
       })(this));
+
+      cln.find(".images").hide();
+      cln.find(".select-marker-image").on("click", (function (_this) {
+        return function (e) {
+          var marker;
+          marker = $(e.target).closest(".marker");
+          _this.openMarkerImages(marker);
+          return false;
+        };
+      })(this));
+      cln.find(".marker-thumb").html($('<img src="' + this.markerIcon + '">'));
+      cln.find(".images .image").on("click", (function (_this) {
+        return function (e) {
+          _this.selectMarkerImage(e.target);
+          _this.setMarkerThumb($(e.target).closest(".marker"));
+          return false;
+        };
+      })(this));
     }
     if ($(".mod-map dd.marker").length === this.maxPointForm) {
       $(".mod-map dd .add-marker").parent().hide();
@@ -401,7 +446,7 @@ this.Openlayers_Map_Form = (function () {
   };
 
   Openlayers_Map_Form.prototype.createMarker = function (ele) {
-    var dataId, loc, num;
+    var opts, dataId, loc, image, num;
     loc = null;
     if ($(".mod-map .clicked").val() !== "") {
       loc = $(".mod-map .clicked").val();
@@ -419,10 +464,18 @@ this.Openlayers_Map_Form = (function () {
     ele.find(".marker-loc-input").val(loc);
     dataId = parseInt(ele.attr("data-id"));
     this.removeMarker(dataId);
+
+    loc = this.getMapLoc(ele.find(".marker-loc"));
+
+    opts = {}
+    opts["id"] = dataId;
+    image = ele.find('[name="item[map_points][][image]"]').val();
+    if (image) {
+      opts["image"] = image;
+    }
+
     num = ele.find(".marker-number").val();
-    return this.setMarker(this.getMapLoc(ele.find(".marker-loc")), {
-      id: dataId
-    }, num);
+    this.setMarker(loc, opts, num);
   };
 
   Openlayers_Map_Form.prototype.clearPointForm = function (ele) {
@@ -455,6 +508,47 @@ this.Openlayers_Map_Form = (function () {
     this.map.getView().fit(extent, this.map.getSize());
     if (this.map.getView().getZoom() > this.opts.zoom) {
       this.map.getView().setZoom(this.opts.zoom);
+    }
+  };
+
+  Openlayers_Map_Form.prototype.openMarkerImages = function (marker) {
+    var images = $(marker).find(".images");
+
+    if (this.clickMarkerId) {
+      var feature = this.getMarker(this.clickMarkerId);
+      var source = this.markerLayer.getSource();
+      source.removeFeature(feature);
+      this.clickMarkerId = null;
+      $(".mod-map .clicked").val("");
+    }
+
+    images.show();
+    $("body").not(this).one("click", function (e) {
+      images.hide();
+    });
+  };
+
+  Openlayers_Map_Form.prototype.selectMarkerImage = function (image) {
+    var marker = $(image).closest(".marker");
+    var images = $(image).closest(".images");
+    var url = $(image).find('img').andSelf("img").attr("src");
+
+    images.hide();
+    marker.find('[name="item[map_points][][image]"]').val(url);
+    if (marker.find('[name="item[map_points][][loc_]"]').val()) {
+      marker.find(".set-marker").trigger("click");
+    }
+    return false;
+  };
+
+  Openlayers_Map_Form.prototype.setMarkerThumb = function (marker) {
+    var thumb = $(marker).find(".marker-thumb");
+    var url = $(marker).find('[name="item[map_points][][image]"]').val();
+
+    if (url) {
+      $(thumb).html($('<img src="' + url + '">'));
+    } else {
+      $(thumb).html($('<img src="' + this.markerIcon + '">'));
     }
   };
 

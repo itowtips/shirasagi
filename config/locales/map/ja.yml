@@ -17,6 +17,7 @@ ja:
       set_marker: マーカーの設置
       add_marker: マーカーを追加する
       clear_marker: 削除
+      select_image: 色を選択
     confirm:
       delete_marker: マーカーを削除してよろしいですか？
       find_exif: 画像に位置情報が含まれています。位置情報を地図に設定しますか？
