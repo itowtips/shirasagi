@@ -13,6 +13,7 @@ class Tourism::Notice
   include Cms::Addon::Form::Page
   include Category::Addon::Category
   include Cms::Addon::ParentCrumb
+  include Event::Addon::Date
   include Map::Addon::Page
   include Cms::Addon::RelatedPage
   include Contact::Addon::Page
