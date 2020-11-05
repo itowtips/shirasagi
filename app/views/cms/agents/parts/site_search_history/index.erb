@@ -1,5 +1,4 @@
 <% return if @node.nil? %>
-<% return if @items.blank? %>
 
 <%= jquery do %>
 new Cms_Site_Search_History("<%= "#site-search-history-part-#{@cur_part.id}" %>");
@@ -8,6 +7,8 @@ new Cms_Site_Search_History("<%= "#site-search-history-part-#{@cur_part.id}" %>"
 <form id="<%= "site-search-history-part-#{@cur_part.id}" %>" action="<%= @node.url %>" accept-charset="UTF-8" method="get">
   <div class="site-search-keyword">
     <input type="text" title="サイト内検索" placeholder="" class="text" id="search-box" size="40" name="s[keyword]" autocomplete="off">
+
+    <% if @items.present? %>
     <ul class="site-search-history" style="display: none;">
       <% @items.each do |item| %>
         <% keyword = item.query["keyword"] %>
@@ -18,6 +19,8 @@ new Cms_Site_Search_History("<%= "#site-search-history-part-#{@cur_part.id}" %>"
         </li>
       <% end %>
     </ul>
+    <% end %>
+
   </div>
   <button type="submit" id="search-button"><img src="<%= @cur_site.url %>img/search.svg" width="16" alt="検索"></button>
 </form>
