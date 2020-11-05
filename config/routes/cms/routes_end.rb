@@ -328,6 +328,7 @@ Rails.application.routes.draw do
     get "calendar_nav" => "public#index", cell: "parts/calendar_nav"
     get "monthly_nav" => "public#index", cell: "parts/monthly_nav"
     get "site_search_keyword" => "public#index", cell: "parts/site_search_keyword"
+    get "site_search_history" => "public#index", cell: "parts/site_search_history"
   end
 
   page "cms" do

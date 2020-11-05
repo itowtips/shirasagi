@@ -32,9 +32,29 @@
   end
 %>
 
+<%= jquery do %>
+new Cms_Site_Search_History(".cms-site-search .site-search-keyword");
+<% end %>
+
 <div class="cms-site-search">
   <%= form_for :s, url: @cur_node.url, html: { method: :get, class: 'search-form' } do |f| %>
-    <%= f.text_field :keyword %>
+
+    <div class="site-search-keyword">
+      <%= f.text_field :keyword, autocomplete: "off" %>
+      <% if @search_histories.present? %>
+        <ul class="site-search-history" style="display: none;">
+          <% @search_histories.each do |item| %>
+            <% keyword = item.query["keyword"] %>
+            <li>
+              <a href="<%= @cur_node.url + "?" + { s: { keyword: keyword } }.to_query %>" rel="nofollow" data-value="<%= keyword %>">
+                <%= keyword %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+
     <%= select_tag 'target', options_for_select([[t('ss.search_on', name: @cur_site.name), 'inside'], [t('ss.search_on', name: SS::Config.cms.elasticsearch['label']), 'outside']], selected: params[:target]) %>
     <input type="submit" value="<%= t('ss.buttons.search') %>" />
   <% end %>

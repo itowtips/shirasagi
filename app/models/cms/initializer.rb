@@ -16,6 +16,7 @@ module Cms
     Cms::Part.plugin "cms/calendar_nav"
     Cms::Part.plugin "cms/monthly_nav"
     Cms::Part.plugin "cms/site_search_keyword"
+    Cms::Part.plugin "cms/site_search_history"
     Cms::Column.plugin 'cms/text_field'
     Cms::Column.plugin 'cms/date_field'
     Cms::Column.plugin 'cms/url_field2'
