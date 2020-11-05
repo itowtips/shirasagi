@@ -1,6 +1,6 @@
 <% return if !@cur_site.translate_enabled? || @item.translate_targets.blank? %>
 
-<dl class="column">
+<dl class="column translate-targets">
   <dt><%= I18n.t 'translate.lang' %></dt>
   <dd>
     <%=br @item.translate_targets.map(&:label).join("\n") %>

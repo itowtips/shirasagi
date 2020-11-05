@@ -21,13 +21,8 @@
          h << @f.check_box("subscription_ids[]", { checked: checked, readonly: checked, disabled: checked, data: { translate_lang_ids: translate_lang_ids } }, item._id)
          requried_label = checked ? " (#{item.label :subscription_constraint})" : ''
        end
-       h << %(#{item.name}#{requried_label}</label>)
+       h << %(#{item.name}#{requried_label}#{ "(#{item.translate_targets.collect(&:name).join(' ')})" if @cur_site.translate_enabled? && item.try(:translate_targets).present? }</label>)
        h << %(<div class="child #{cc ? 'grandchild' : ''}">).html_safe
-       if @cur_site.translate_enabled? && item.try(:translate_targets)
-         item.translate_targets.each do |target|
-           h << %(<label>#{target.name}</label>)
-         end
-       end
        children.each { |c| h += cate_form(c) }
        h << %(</div>).html_safe
      else
@@ -40,14 +35,7 @@
          h << @f.check_box("subscription_ids[]", { checked: checked, readonly: checked, disabled: checked, data: { translate_lang_ids: translate_lang_ids } }, item._id)
          requried_label = checked ? " (#{item.label :subscription_constraint})" : ''
        end
-       h << %(#{item.name}#{requried_label}</label>)
-       if @cur_site.translate_enabled? && item.try(:translate_targets)
-         h << %(<div class="child">).html_safe
-         item.translate_targets.each do |target|
-           h << %(<label>#{target.name}</label>)
-         end
-         h << %(</div>).html_safe
-       end
+       h << %(#{item.name}#{requried_label}#{ "(#{item.translate_targets.collect(&:name).join(' ')})" if @cur_site.translate_enabled? && item.try(:translate_targets).present? }</label>)
      end
 
      h.html_safe
@@ -63,7 +51,7 @@
    @categories.sort! { |lhs, rhs| lhs.order <=> rhs.order }
 %>
 
-<dl class="column">
+<dl class="column subscriptions">
   <dt><%= I18n.t 'member.view.mail_subscription' %></dt>
   <dd>
     <%= f.hidden_field "subscription_ids[]", value: "" %>

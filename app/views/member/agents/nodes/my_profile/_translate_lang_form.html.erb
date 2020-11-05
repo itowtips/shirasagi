@@ -8,7 +8,7 @@
         if ($("#ezine-with-translations label[data-id='" + $(this).val() + "']").length == 0) {
           var translateLangIds = $(this).data('translate-lang-ids');
           if (translateLangIds && translateLangIds.includes(value)) {
-            var label = $('<label></label>').attr('data-id', $(this).val()).append($(this).parent().text());
+            var label = $('<label></label>').attr('data-id', $(this).val()).append($(this).parent().text().replace(/\(.*\)/, ''));
             $("#ezine-with-translations").append(label);
           }
         }
@@ -24,7 +24,7 @@
   ezineWithTranslations();
 <% end %>
 
-<dl class="column">
+<dl class="column translate_targets">
   <dt><%= I18n.t 'translate.lang' %></dt>
   <dd>
     <%= f.hidden_field "translate_target_ids[]", value: "" %>
