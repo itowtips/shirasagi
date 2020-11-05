@@ -6,7 +6,8 @@ module Cms::Addon::SiteSearch
     included do
       field :upper_html, type: String
       field :lower_html, type: String
-      permit_params :upper_html, :lower_html
+      field :placeholder, type: String
+      permit_params :upper_html, :lower_html, :placeholder
     end
   end
 end

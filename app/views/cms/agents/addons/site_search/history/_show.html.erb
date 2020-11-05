@@ -15,4 +15,7 @@
       <%= text_area_tag :lower_html, @item.lower_html, class: "html" %>
     <% end %>
   </dd>
+
+  <dt><%= @model.t :placeholder %></dt>
+  <dd><%= @item.placeholder %></dd>
 </dl>
