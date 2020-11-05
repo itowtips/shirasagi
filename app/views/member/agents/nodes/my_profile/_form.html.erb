@@ -6,146 +6,152 @@
   });
 <% end %>
 
-<dl class="column name">
-  <dt>
-    <%= @model.t :name %>
+<fieldset class="column name">
+  <legend>
+    <label><%= @model.t :name %></label>
     <%= required_label %>
-  </dt>
-  <dd>
-    <%= f.text_field :name %>
+  </legend>
+  <div class="fields">
+    <label><%= f.text_field :name %></label>
     <%= remarks :name %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
-<dl class="column email">
-  <dt>
-    <%= @model.t :email %>
+<fieldset class="column email">
+  <legend>
+    <label><%= @model.t :email %></label>
     <%= required_label %>
-  </dt>
-  <dd>
-    <%= f.text_field :email %>
+  </legend>
+  <div class="fields">
+    <label><%= f.text_field :email %></label>
     <%= remarks :email %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
-<dl class="column kana">
-  <dt>
-    <%= @model.t :kana %>
+<fieldset class="column kana">
+  <legend>
+    <label><%= @model.t :kana %></label>
     <% if @cur_node.kana_required? %>
     <%= required_label %>
     <% end %>
-  </dt>
-  <dd>
-    <%= f.text_field :kana %>
+  </legend>
+  <div class="fields">
+    <label><%= f.text_field :kana %></label>
     <%= remarks :kana %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
-<dl class="column">
-  <dt>
-    <%= @model.t :organization_name %>
+<fieldset class="column">
+  <legend>
+    <label><%= @model.t :organization_name %></label>
     <% if @cur_node.organization_name_required? %>
     <%= required_label %>
     <% end %>
-  </dt>
-  <dd>
-    <%= f.text_field :organization_name %>
+  </legend>
+  <div class="fields">
+    <label><%= f.text_field :organization_name %></label>
     <%= remarks :organization_name %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
-<dl class="column">
-  <dt>
-    <%= @model.t :job %>
+<fieldset class="column">
+  <legend>
+    <label><%= @model.t :job %></label>
     <% if @cur_node.job_required? %>
     <%= required_label %>
     <% end %>
-  </dt>
-  <dd>
-    <%= f.text_field :job %>
+  </legend>
+  <div class="fields">
+    <label><%= f.text_field :job %></label>
     <%= remarks :job %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
-<dl class="column">
-  <dt>
-    <%= @model.t :tel %>
+<fieldset class="column">
+  <legend>
+    <label><%= @model.t :tel %></label>
     <% if @cur_node.tel_required? %>
     <%= required_label %>
     <% end %>
-  </dt>
-  <dd>
-    <%= f.text_field :tel %>
+  </legend>
+  <div class="fields">
+    <label><%= f.text_field :tel %></label>
     <%= remarks :tel %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
-<dl class="colum postal-code">
-  <dt>
-    <%= @model.t :postal_code %>
+<fieldset class="colum postal-code">
+  <legend>
+    <label><%= @model.t :postal_code %></label>
     <% if @cur_node.postal_code_required? %>
     <%= required_label %>
     <% end %>
-  </dt>
-  <dd>
-    <%= f.text_field :postal_code %>
+  </legend>
+  <div class="fields">
+    <label><%= f.text_field :postal_code %></label>
     <%= f.button t('member.buttons.address_search'), name: 'postal-code-search', type: :button %>
     <span class="postal-code-search-error"></span>
     <%= remarks :postal_code %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
-<dl class="column">
-  <dt>
-    <%= @model.t :addr %>
+<fieldset class="column">
+  <legend>
+    <label><%= @model.t :addr %></label>
     <% if @cur_node.addr_required? %>
     <%= required_label %>
     <% end %>
-  </dt>
-  <dd>
-    <%= f.text_field :addr %>
+  </legend>
+  <div class="fields">
+    <label><%= f.text_field :addr %></label>
     <%= remarks :addr %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
-<dl class="column">
-  <dt>
-    <%= @model.t :sex %>
+<fieldset class="column">
+  <legend>
+    <label><%= @model.t :sex %></label>
     <% if @cur_node.sex_required? %>
     <%= required_label %>
     <% end %>
-  </dt>
-  <dd>
+  </legend>
+  <div class="fields">
     <% @item.sex_options.each do |text, val| %>
-      <%= label_tag("item_sex_#{val}", class: val) do %>
+      <label>
         <%= f.radio_button :sex, val %><%= text %>
-      <% end %>
+      </label>
     <% end %>
     <%= remarks :sex %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
-<dl class="column">
-  <dt>
-    <%= @model.t :birthday %>
+<fieldset class="column">
+  <legend>
+    <label><%= @model.t :birthday %></label>
     <% if @cur_node.birthday_required? %>
     <%= required_label %>
     <% end %>
-  </dt>
-  <dd>
+  </legend>
+  <div class="fields">
     <%= f.fields_for :in_birth do |birth_f| %>
       <% era, year, month, day = @item.parse_in_birth %>
-      <%= birth_f.select :era, @item.wareki_options, selected: era, include_blank: true %>
-      <%= birth_f.number_field :year, value: year %>
-      <%= t("datetime.prompts.year") %>
-      <%= birth_f.select :month, options_for_select((1..12).to_a, month), include_blank: true  %>
-      <%= t("datetime.prompts.month") %>
-      <%= birth_f.select :day, options_for_select((1..31).to_a, day), include_blank: true %>
-      <%= t("datetime.prompts.day") %>
+      <label><%= birth_f.select :era, @item.wareki_options, selected: era, include_blank: true %></label>
+      <label>
+        <%= birth_f.number_field :year, value: year %>
+        <%= t("datetime.prompts.year") %>
+      </label>
+      <label>
+        <%= birth_f.select :month, options_for_select((1..12).to_a, month), include_blank: true  %>
+        <%= t("datetime.prompts.month") %>
+      </label>
+      <label>
+        <%= birth_f.select :day, options_for_select((1..31).to_a, day), include_blank: true %>
+        <%= t("datetime.prompts.day") %>
+      </label>
     <% end %>
     <%= remarks :birthday %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
 <%= render file: '_mail_category_form', locals: { f: f } %>
 <%= render partial: 'translate_lang_form', locals: { f: f } %>

@@ -51,26 +51,26 @@
    @categories.sort! { |lhs, rhs| lhs.order <=> rhs.order }
 %>
 
-<dl class="column subscriptions">
-  <dt><%= I18n.t 'member.view.mail_subscription' %></dt>
-  <dd>
+<fieldset class="column subscriptions">
+  <legend><%= I18n.t 'member.view.mail_subscription' %></legend>
+  <div class="fields">
     <%= f.hidden_field "subscription_ids[]", value: "" %>
     <% @categories.each do |cate| %>
       <div class="parent">
         <%= cate_form(cate) %>
       </div>
     <% end %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
-<dl class="colum live">
-  <dt>
-    <%= @item.class.t :live %>
+<fieldset class="colum live">
+  <legend>
+    <label><%= @item.class.t :live %></label>
     <% if @cur_node.live_required? %>
       <span class="required"><%= t("ss.required_field") %></span>
     <% end %>
-  </dt>
-  <dd>
+  </legend>
+  <div class="fields">
     <%= f.hidden_field "live[]", value: "" %>
     <div class="parent">
       <label class="parent"><%= f.check_box("live[]", {}, 'all') %> <%= I18n.t('ezine.options.live.all') %></label>
@@ -81,17 +81,17 @@
       </div>
     </div>
     <%= remarks :live %>
-  </dd>
-</dl>
+  </div>
+</fieldset>
 
-<dl class="colum ages">
-  <dt>
-    <%= @item.class.t :ages %>
+<fieldset class="colum ages">
+  <legend>
+    <label><%= @item.class.t :ages %></label>
     <% if @cur_node.ages_required? %>
       <span class="required"><%= t("ss.required_field") %></span>
     <% end %>
-  </dt>
-  <dd>
+  </legend>
+  <div class="fields">
     <%= f.hidden_field "ages[]", value: "" %>
     <div class="parent">
       <label class="parent"><%= f.check_box("ages[]", {}, 'all') %> <%= I18n.t('ezine.options.ages.all') %></label>
@@ -102,5 +102,5 @@
       </div>
     </div>
     <%= remarks :ages %>
-  </dd>
-</dl>
+  </div>
+</fieldset>

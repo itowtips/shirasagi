@@ -24,14 +24,14 @@
   ezineWithTranslations();
 <% end %>
 
-<dl class="column translate-targets">
-  <dt><%= I18n.t 'translate.lang' %></dt>
-  <dd>
+<fieldset class="column translate-targets">
+  <legend><%= I18n.t 'translate.lang' %></legend>
+  <div class="fields">
     <%= f.hidden_field "translate_target_ids[]", value: "" %>
     <label><%= f.check_box("translate_target_ids[]", { checked: (@item.new_record? && params[f.object_name].blank?) || @item.translate_target_ids.include?(@cur_site.translate_source_id) }, @cur_site.translate_source_id) %> <%= @cur_site.translate_source.name %></label>
     <% @cur_site.translate_targets.each do |target| %>
       <label><%= f.check_box("translate_target_ids[]", {}, target.id) %> <%= target.name %></label>
     <% end %>
     <div id="ezine-with-translations" class="child"></div>
-  </dd>
-</dl>
+  </div>
+</fieldset>
