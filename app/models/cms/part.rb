@@ -103,6 +103,7 @@ class Cms::Part
 
   class SiteSearchHistory
     include Cms::Model::Part
+    include Cms::Addon::SiteSearch::History
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup

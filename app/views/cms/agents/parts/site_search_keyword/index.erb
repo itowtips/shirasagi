@@ -1,11 +1,11 @@
 <% return if @node.nil? %>
 <% return if @cur_part.site_search_keywords.blank? %>
-<ul class="site-search-keyword">
+
+<%== @cur_part.upper_html if @cur_part.upper_html.present?  %>
+<ul>
   <% @cur_part.site_search_keywords.each do |keyword| %>
-    <li>
-      <a href="<%= @node.url + "?" + { s: { keyword: keyword } }.to_query %>" rel="nofollow">
-        <%= keyword %>
-      </a>
-    </li>
+    <% url = @node.url + "?" + { s: { keyword: keyword } }.to_query %>
+    <li><%= link_to keyword, url, rel: :nofollow, class: keyword %></li>
   <% end %>
 </ul>
+<%== @cur_part.lower_html if @cur_part.lower_html.present? %>

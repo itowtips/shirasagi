@@ -508,6 +508,7 @@ ja:
       cms/column/text_like: 制約条件
       cms/column/select_like: 選択
       cms/site_search/keyword: 注目ワード
+      cms/site_search/history: 履歴
 
   mongoid:
     models:
@@ -834,6 +835,10 @@ ja:
         child_upper_html: 上部HTML
         child_lower_html: 下部HTML
       cms/addon/site_search/keyword:
+        site_search_keywords: 注目ワード
+        upper_html: 上部HTML
+        lower_html: 下部HTML
+      cms/addon/site_search/history:
         site_search_keywords: 注目ワード
         upper_html: 上部HTML
         lower_html: 下部HTML
@@ -1837,6 +1842,12 @@ ja:
     cms/addon/site_search/keyword:
       site_search_keywords:
         - 注目ワードを改行区切りで入力してください。
+      upper_html:
+        - 上部HTMLを入力します。
+      lower_html:
+        - 下部HTMLを入力します。
+
+    cms/addon/site_search/history:
       upper_html:
         - 上部HTMLを入力します。
       lower_html:
