@@ -27,6 +27,6 @@
     </ul>
   </div>
   <div class="show-result">
-    <div class="show-answer"><%= link_to t('guide.links.show_result'), "#{@cur_node.url}result/#{@condition}" %></div>
+    <div class="show-answer"><%= link_to t('guide.links.show_result'), "#{@cur_node.url}result/#{@condition}#{@cur_node.guide_url_fragment}" %></div>
   </div>
 </div>

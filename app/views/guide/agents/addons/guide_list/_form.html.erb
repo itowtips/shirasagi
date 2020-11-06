@@ -27,6 +27,9 @@
   <dt><%= @model.t :guide_index_html %><%= @model.tt :guide_index_html %></dt>
   <dd><%= f.text_area :guide_index_html, class: :html %></dd>
 
+  <dt><%= @model.t :guide_url_fragment %><%= @model.tt :guide_url_fragment %></dt>
+  <dd><%= f.text_field :guide_url_fragment %></dd>
+
   <% if @model.use_liquid %>
     <dt><%= @model.t :loop_format %><%= @model.tt :loop_format %></dt>
     <dd><%= f.select :loop_format, @item.loop_format_options %></dd>

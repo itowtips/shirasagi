@@ -95,6 +95,7 @@ ja:
         procedure_ids: その他の手続き
       guide/addon/guide_list:
         guide_index_html: ガイド開始画面 HTML
+        guide_url_fragment: ガイドURLアンカー
         guide_html: ガイド画面 HTML
         loop_html: 結果画面 ループHTML
         upper_html: 結果画面 上部HTML
@@ -147,6 +148,8 @@ ja:
     guide/addon/guide_list:
       guide_index_html:
         - ガイド開始画面 HTML を入力します。
+      guide_url_fragment:
+        - 遷移時のURLアンカーを入力します。
       guide_html:
         - ガイド画面 HTML を入力します。
       upper_html:

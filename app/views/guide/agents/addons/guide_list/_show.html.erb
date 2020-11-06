@@ -9,6 +9,9 @@
     <% end %>
   </dd>
 
+  <dt><%= @model.t :guide_url_fragment %></dt>
+  <dd><%= @item.guide_url_fragment %></dd>
+
   <% if @item.loop_format_liquid? %>
     <dt><%= @model.t :loop_liquid %></dt>
     <dd>

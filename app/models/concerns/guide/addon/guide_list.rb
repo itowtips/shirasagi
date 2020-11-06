@@ -7,8 +7,9 @@ module Guide::Addon
     included do
       field :guide_index_html, type: String
       field :guide_html, type: String
+      field :guide_url_fragment, type: String
 
-      permit_params :guide_index_html, :guide_html
+      permit_params :guide_index_html, :guide_html, :guide_url_fragment
     end
   end
 end

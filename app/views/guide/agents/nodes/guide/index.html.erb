@@ -1,4 +1,4 @@
-<%= form_for :item, url: "#{@cur_node.url}dialog.html", html: { method: "GET", enforce_utf8: false } do |f| %>
+<%= form_for :item, url: "#{@cur_node.url}dialog.html#{@cur_node.guide_url_fragment}", html: { method: "GET", enforce_utf8: false } do |f| %>
   <div class="guide-node-form">
     <%= sanitize(@cur_node.guide_index_html) %>
     <footer class="send">
