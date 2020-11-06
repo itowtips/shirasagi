@@ -4,21 +4,27 @@ class Event::Agents::Nodes::SearchController < ApplicationController
   helper Event::EventHelper
   helper Cms::ListHelper
 
-  before_action :set_params
-
   def index
-    @categories = []
-    @items = []
-    if @cur_node.parent
-      @categories = Cms::Node.site(@cur_site).where({:id.in => @cur_node.parent.st_category_ids}).sort(filename: 1)
-    end
-    if @keyword.present? || @category_ids.present? || @start_date.present? || @close_date.present? || @facility_ids.present?
-      list_events
-      set_markers
-    end
-    @facilities = Facility::Node::Page.site(@cur_site).and_public
+    set_params
+    set_start_date
+    set_categories
+    set_event_pages
+    set_facilities
+    set_items
+    set_markers
 
     render_with_pagination @items
+  end
+
+  def result
+    set_params
+    set_categories
+    set_event_pages
+    set_facilities
+    set_items
+    set_markers
+
+    render :index
   end
 
   private
@@ -40,11 +46,46 @@ class Event::Agents::Nodes::SearchController < ApplicationController
     end
   end
 
-  def list_events
-    criteria = Cms::Page.site(@cur_site).and_public
-    criteria = criteria.search(keyword: @keyword) if @keyword.present?
-    criteria = criteria.in(category_ids: @category_ids) if @category_ids.present?
-    criteria = criteria.in(facility_ids: @facility_ids) if @facility_id.present?
+  def set_start_date
+    @start_date ||= Time.zone.today
+  end
+
+  def set_categories
+    @categories = []
+    return unless @cur_node.parent
+
+    @categories = Cms::Node.site(@cur_site).
+      where({:id.in => @cur_node.parent.st_category_ids}).
+      sort(filename: 1).to_a
+  end
+
+  def set_event_pages
+    @event_pages = Cms::Page.site(@cur_site).and_public.exists(event_dates: 1)
+  end
+
+  def set_facilities
+    facility_ids = @event_pages.pluck(:facility_id, :facility_ids).flatten.compact
+    @facilities = Facility::Node::Page.site(@cur_site).and_public.
+      in(id: facility_ids).order_by(kana: 1, name: 1).to_a
+  end
+
+  def set_items
+    criteria = @event_pages
+
+    if @keyword.present?
+      criteria = criteria.search(keyword: @keyword)
+    end
+
+    if @category_ids.present?
+      criteria = criteria.in(category_ids: @category_ids)
+    end
+
+    if @facility_id.present?
+      criteria = criteria.or([
+        { facility_ids: { "$in": @facility_ids } },
+        { facility_id: { "$in": @facility_ids } }
+      ])
+    end
 
     if @start_date.present? && @close_date.present?
       criteria = criteria.search(dates: @start_date..@close_date)
@@ -52,52 +93,56 @@ class Event::Agents::Nodes::SearchController < ApplicationController
       criteria = criteria.search(start_date: @start_date)
     elsif @close_date.present?
       criteria = criteria.search(close_date: @close_date)
-    else
-      criteria = criteria.exists(event_dates: 1)
     end
 
     @items = criteria.order_by(@cur_node.sort_hash).
       page(params[:page]).
       per(@cur_node.limit)
-
-    @items = @items.gte_event_dates(Time.zone.today) if @start_date.blank? && @close_date.blank?
-    @items
   end
 
   def set_markers
     @markers = []
-    @items = list_events
-    @items.each do |event|
-      if event.map_points.present?
-        event.map_points.each do |map_point|
-          marker_info = view_context.render_map_point_info(event, map_point)
-          map_point[:html] = marker_info
+    @items.each do |item|
+      item = item.becomes_with_route
+
+      if item.respond_to?(:map_points) && item.map_points.present?
+
+        # page has map_points
+        item.map_points.each do |map_point|
+          map_point[:html] = view_context.render_map_point_info(item, map_point)
           map_point[:number] = ""
           @markers << map_point
         end
-      end
 
-      event = Event::Page.site(@cur_site).
-        and_public.
-        where(filename: event.filename).first
+      elsif item.respond_to?(:facility) && item.facility.present?
 
-      if event.present?
-        if event.map_points.blank? && event.facility_ids.present?
-          event.facility_ids.each do |facility_id|
-            if @facility_ids.present?
-              next if !@facility_ids.include?(facility_id)
-            end
-            facility = Facility::Node::Page.site(@cur_site).and_public.where(id: facility_id).first
-            items = Facility::Map.site(@cur_site).and_public.
-              where(filename: /^#{::Regexp.escape(facility.filename)}\//, depth: facility.depth + 1).order_by(order: 1).first.map_points
-            items.each do |item|
-              marker_info = view_context.render_facility_info(facility, item[:loc])
-              item[:html] = marker_info
-              item[:number] = ""
-              @markers << item
-            end
+        # page has related facility_id's map_points
+        facility = item.facility
+        facility_map = Facility::Map.site(@cur_site).and_public.
+          where(filename: /^#{::Regexp.escape(facility.filename)}\//, depth: facility.depth + 1).order_by(order: 1).first
+        next if facility_map.nil?
+
+        facility_map.map_points.each do |map_point|
+          map_point[:html] = view_context.render_facility_info(facility, map_point[:loc])
+          map_point[:number] = ""
+          @markers << map_point
+        end
+
+      elsif item.respond_to?(:facilities) && item.facilities.present?
+
+        # page has related facility_ids's map_points
+        item.facilities.each do |facility|
+          facility_map = Facility::Map.site(@cur_site).and_public.
+            where(filename: /^#{::Regexp.escape(facility.filename)}\//, depth: facility.depth + 1).order_by(order: 1).first
+          next if facility_map.nil?
+
+          facility_map.map_points.each do |map_point|
+            map_point[:html] = view_context.render_facility_info(facility, map_point[:loc])
+            map_point[:number] = ""
+            @markers << map_point
           end
-      end
+        end
+
       end
     end
   end

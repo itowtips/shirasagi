@@ -62,6 +62,7 @@ Rails.application.routes.draw do
     get "page/:year:month:day/(index.:format)" => "public#daily", cell: "nodes/page",
       year: /\d{4}/, month: /\d{2}/, day: /\d{2}/
     get "search/(index.:format)" => "public#index", cell: "nodes/search"
+    get "search/(result.:format)" => "public#result", cell: "nodes/search"
   end
 
   part "event" do

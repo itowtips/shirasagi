@@ -1,4 +1,4 @@
-<%= form_for(:item, url: "#{@cur_node.url}", method: "get", html: { class: 'event-search' }) do %>
+<%= form_for(:item, url: "#{@cur_node.url}result.html", method: "get", html: { class: 'event-search' }) do %>
   <fieldset class="keyword">
     <label for="search_keyword"><%= t("event.keyword") %></label>
     <%= text_field_tag :search_keyword, @keyword %>
@@ -18,8 +18,8 @@
   <fieldset class="event-date-range">
     <legend><%= t("event.dates.setting") %></legend>
     <div class="dates location">
-      <%= text_field_tag "event[][start_date]", @start_date.present? ? I18n.l(@start_date) : nil, { id: nil, class: "date js-date start", title: t("event.dates.start_date") } %>
-      - <%= text_field_tag "event[][close_date]", @close_date.present? ? I18n.l(@close_date) : nil, { id: nil, class: "date js-date close", title: t("event.dates.close_date") } %>
+      <%= text_field_tag "event[][start_date]", tryb { l(@start_date) }, { id: nil, class: "date js-date start", title: t("event.dates.start_date") } %>
+      - <%= text_field_tag "event[][close_date]", tryb { l(@close_date) }, { id: nil, class: "date js-date close", title: t("event.dates.close_date") } %>
     </div>
   </fieldset>
 
