@@ -1,0 +1,7 @@
+ja:
+  modules:
+    fs: ファイル
+
+  cms:
+    nodes:
+      fs/image_viewer: 画像ビューワー

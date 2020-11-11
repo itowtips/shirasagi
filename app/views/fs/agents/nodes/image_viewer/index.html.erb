@@ -1,0 +1,3 @@
+<% return if @url.blank? %>
+<div id="image-viewer" class="image-viewer"></div>
+<%= render_image_viewer("image-viewer", [@url]) %>

@@ -2,6 +2,15 @@ Rails.application.routes.draw do
 
   Fs::Initializer
 
+  content "fs" do
+    get "/" => redirect { |p, req| "#{req.path}/image_viewers" }, as: :main
+    resources :image_viewers, only: [:index]
+  end
+
+  node "fs" do
+    get "image_viewer/(index.:format)" => "public#index", cell: "nodes/image_viewer"
+  end
+
   namespace "fs" do
     get "*id_path/_/:filename" => "files#index", id_path: %r{(\d\/)*\d}, filename: %r{[^\/]+}, as: :file, format: false
     get "*id_path/_/thumb/:filename" => "files#thumb", id_path: %r{(\d\/)*\d}, filename: %r{[^\/]+}, as: :thumb, format: false
