@@ -12,16 +12,19 @@ this.Openlayers_Map = (function () {
     this.markerLayer = null;
     this.popup = null;
     this.markerIcon = '/assets/img/map-marker.png';
+    this.markerZindex = 0;
     this.render();
   }
 
   Openlayers_Map.defaultZoom = 10;
 
   Openlayers_Map.prototype.render = function () {
+    var markers = this.opts['markers'];
     this.initMap();
     this.initPopup();
-    if (this.opts['markers']) {
-      this.renderMarkers(this.opts['markers']);
+    if (markers) {
+      this.sortMarkers(markers);
+      this.renderMarkers(markers);
     }
     this.resize();
     return this.renderEvents();
@@ -137,6 +140,7 @@ this.Openlayers_Map = (function () {
   };
 
   Openlayers_Map.prototype.createMarkerStyle = function (iconSrc, number) {
+    this.markerZindex += 10;
     return new ol.style.Style({
       image: new ol.style.Icon({
         anchor: [0.5, 1],
@@ -152,7 +156,8 @@ this.Openlayers_Map = (function () {
         textBaseline: "center",
         offsetY: -25,
         text: number
-      })
+      }),
+      zIndex: this.markerZindex
     });
   };
 
@@ -229,6 +234,25 @@ this.Openlayers_Map = (function () {
 
   Openlayers_Map.prototype.setZoom = function (level) {
     return this.map.getView().setZoom(level);
+  };
+
+  Openlayers_Map.prototype.sortMarkers = function (markers) {
+    $.each(markers, function() {
+      var loc1 = [this["loc"][1], this["loc"][0]];
+      var loc2 = [90, 0];
+      var wgs84Sphere = new ol.Sphere(6378137);
+      this["distance"] = wgs84Sphere.haversineDistance(loc1, loc2);
+    });
+    markers.sort(function(m1, m2) {
+      if (m1["distance"] > m2["distance"]) {
+        return -1;
+      }
+      if (m2["distance"] > m1["distance"]) {
+        return 1;
+      }
+      return 0;
+    });
+    return markers;
   };
 
   Openlayers_Map.prototype.renderMarkers = function (markers) {

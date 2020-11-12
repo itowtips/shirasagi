@@ -19,6 +19,7 @@ this.Openlayers_Map_Form = (function () {
     this.deleteMessage = "<%= I18n.t('map.confirm.delete_marker') %>";
     this.dataID = 0;
     this.markerIcon = '/assets/img/map-marker.png';
+    this.markerZindex = 0;
     this.clickIcon = '/assets/img/map-marker-click.png';
     this.clickMarkerId = null;
     this.render();
@@ -129,27 +130,58 @@ this.Openlayers_Map_Form = (function () {
     })(this));
   };
 
-  Openlayers_Map_Form.prototype.renderMarkers = function () {
-    return $(".mod-map dd.marker").each((function (_this) {
-      return function (i, e) {
-        var loc, opts, image, num;
-        num = $(e).find(".marker-number").val();
-        $(e).attr("data-id", _this.dataID);
-        if ($(e).find(".marker-loc").val() !== "") {
-          loc = _this.getMapLoc($(e).find(".marker-loc"));
-          image = $(e).find('[name="item[map_points][][image]"]').val();
+  Openlayers_Map_Form.prototype.sortMarkers = function (markers) {
+    $.each(markers, function() {
+      var loc1 = [this["loc"][1], this["loc"][0]];
+      var loc2 = [90, 0];
+      var wgs84Sphere = new ol.Sphere(6378137);
+      this["distance"] = wgs84Sphere.haversineDistance(loc1, loc2);
+    });
+    markers.sort(function(m1, m2) {
+      if (m1["distance"] > m2["distance"]) {
+        return -1;
+      }
+      if (m2["distance"] > m1["distance"]) {
+        return 1;
+      }
+      return 0;
+    });
+    return markers;
+  };
 
-          opts = {}
-          opts["id"] = parseInt(_this.dataID);
-          if (image) {
-            opts["image"] = image;
-          }
-          _this.setMarker(loc, opts, num);
-        }
-        //Map_Form.attachMessage(Map_Form.dataID)
-        return _this.dataID += 1;
-      };
-    })(this));
+  Openlayers_Map_Form.prototype.renderMarkers = function () {
+    var _this = this;
+    var markers = [];
+
+    $(".mod-map dd.marker").each(function (i, e) {
+      var id, loc, image, number;
+      $(e).attr("data-id", _this.dataID);
+      if ($(e).find(".marker-loc").val() !== "") {
+        id = parseInt(_this.dataID);
+        loc = _this.getMapLoc($(e).find(".marker-loc"));
+        image = $(e).find('[name="item[map_points][][image]"]').val();
+        number = $(e).find(".marker-number").val();
+        markers.push({
+          id: id,
+          loc: loc,
+          image: image,
+          number: number
+        });
+      }
+      //Map_Form.attachMessage(Map_Form.dataID)
+      _this.dataID += 1;
+    });
+    this.sortMarkers(markers);
+    $.each(markers, function() {
+      var loc, opts = {};
+      loc = this["loc"];
+      opts["id"] = this["id"];
+      if (this["image"]) {
+        opts["image"] = this["image"];
+      }
+      opts["number"] = this["number"]
+      _this.setMarker(loc, opts);
+    });
   };
 
   Openlayers_Map_Form.prototype.showPopup = function (e, feature) {
@@ -193,33 +225,37 @@ this.Openlayers_Map_Form = (function () {
     return this.popupOverlay.setPosition(e.coordinate);
   };
 
-  Openlayers_Map_Form.prototype.setMarker = function (loc, opts, num) {
-    var feature, pos, ref, ref1, ref2, src, style, number;
+  Openlayers_Map_Form.prototype.setMarker = function (loc, opts) {
+    var feature, pos, ref, ref1, ref2, src, style, number, image, text;
     if (opts == null) {
       opts = {};
     }
-    number = num
     src = this.markerIcon;
     if (opts['image']) {
       src = opts['image'];
     }
-    style = new ol.style.Style({
-      image: new ol.style.Icon({
-        anchor: [0.5, 1],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'fraction',
-        src: src
-      }),
-      text: new ol.style.Text({
+    image = new ol.style.Icon({
+      anchor: [0.5, 1],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'fraction',
+      src: src
+    });
+
+    number = opts["number"];
+    if (number) {
+      text = new ol.style.Text({
         fill: new ol.style.Fill({color: "#333"}),
         stroke: new ol.style.Stroke({color: "#333", width: 1}),
         scale: 1.3,
         textAlign: "center",
         textBaseline: "center",
         offsetY: -25,
-        text: number,
-      })
-    });
+        text: number
+      });
+    }
+
+    this.markerZindex += 10;
+    style = new ol.style.Style({ image: image, text: text, zIndex: this.markerZindex });
     pos = [loc[1], loc[0]];
     feature = new ol.Feature({
       geometry: new ol.geom.Point(ol.proj.transform(pos, "EPSG:4326", "EPSG:3857")),
@@ -446,7 +482,7 @@ this.Openlayers_Map_Form = (function () {
   };
 
   Openlayers_Map_Form.prototype.createMarker = function (ele) {
-    var opts, dataId, loc, image, num;
+    var opts, dataId, loc, image;
     loc = null;
     if ($(".mod-map .clicked").val() !== "") {
       loc = $(".mod-map .clicked").val();
@@ -473,9 +509,8 @@ this.Openlayers_Map_Form = (function () {
     if (image) {
       opts["image"] = image;
     }
-
-    num = ele.find(".marker-number").val();
-    this.setMarker(loc, opts, num);
+    opts["number"] = ele.find(".marker-number").val();
+    this.setMarker(loc, opts);
   };
 
   Openlayers_Map_Form.prototype.clearPointForm = function (ele) {
