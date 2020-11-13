@@ -104,7 +104,11 @@ SS.ajaxForm("form.user-file", options);
               <td><%= page.updated.strftime("%Y/%m/%d %H:%M") rescue nil %></td>
               <td>
                 <% if dataset %>
-                  <%= link_to "#{dataset.name}（#{dataset.site.name}）", dataset.private_show_path, target: "_blank" rescue nil %>
+                  <% if dataset.allowed?(:read, @cur_user, site: dataset.site)%>
+                    <%= link_to "#{dataset.name}（#{dataset.site.name}）", dataset.private_show_path, target: "_blank" rescue nil %>
+                  <% else %>
+                    <%= "#{dataset.name}（#{dataset.site.name}）" %>
+                  <% end %>
                 <% else %>
                   <%= "なし" %>
                 <% end %>
