@@ -315,7 +315,6 @@ this.Openlayers_Map = (function () {
       return;
     }
     extent = this.markerLayer.getSource().getExtent();
-
     this.map.getView().fit(extent, this.map.getSize());
     if (this.map.getView().getZoom() > this.opts.zoom) {
       this.map.getView().setZoom(this.opts.zoom);
