@@ -515,6 +515,7 @@ ja:
       cms/site_search/keyword: 注目ワード
       cms/site_search/history: 履歴
       cms/line_poster: LINE連携
+      cms/redirect_link: リンクページ
 
   mongoid:
     models:
@@ -973,6 +974,8 @@ ja:
         line_posted: 投稿日時
         line_edit_auto_post: 編集時に自動投稿
         line_post_error: 投稿エラー
+      cms/addon/redirect_link:
+        redirect_link: リダイレクトURL
 
   activemodel:
     attributes:
@@ -2112,6 +2115,9 @@ ja:
         - LINEに投稿するメッセージを入力します。
       line_edit_auto_post:
         - 有効に設定すると公開記事を編集時にLINE投稿をおこないます。
+    cms/addon/redirect_link:
+      redirect_link:
+        - ページを別URLにリダイレクトする際に入力します。
 
   all_content:
     page_id: ページID

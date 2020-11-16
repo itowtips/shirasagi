@@ -153,14 +153,6 @@ module Cms::Model::Page
     nil
   end
 
-  def redirect_link
-    nil
-  end
-
-  def view_layout
-    "cms/page"
-  end
-
   def attached_files
     if self.class.include?(Cms::Addon::Form::Page) && self.form
       self.form_files.to_a
