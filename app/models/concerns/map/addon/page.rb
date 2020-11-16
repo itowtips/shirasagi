@@ -37,18 +37,18 @@ module Map::Addon
         if self.map_route.present?
           self.map_route.split(',').each do |route|
             map_points.each do |map_point|
-              url += map_point[:loc].join(',') + "/" if route == map_point[:number]
+              url += map_point['loc'].join(',') + "/" if route == map_point['number']
             end
           end
         else
-          map_points = self.map_points.sort_by! { |map_point| map_point[:number].to_i }
+          map_points = self.map_points.sort_by! { |map_point| map_point['number'].to_i }
           map_points.each do |map_point|
-            next if map_point[:number].blank?
-            url += map_point[:loc].join(',') + "/"
+            next if map_point['number'].blank?
+            url += map_point['loc'].join(',') + "/"
           end
           if self.map_goal.present?
             map_points.each do |map_point|
-              url += map_point[:loc].join(',') + "/" if map_point[:number] == self.map_goal.to_s
+              url += map_point['loc'].join(',') + "/" if map_point['number'] == self.map_goal.to_s
             end
           end
         end
@@ -58,7 +58,7 @@ module Map::Addon
 
     def validate_number
       if self.map_points.present?
-        self.map_points.group_by { |e| e[:number] }.map do |n, m|
+        self.map_points.group_by { |e| e['number'] }.map do |n, m|
           if n.present?
             if !n.numeric?
               return self.errors.add :map_points, :invalid_number
@@ -74,7 +74,7 @@ module Map::Addon
 
     def validate_map_goal
       if self.map_goal.present?
-        if self.map_points.select { |x| x[:number].include?(self.map_goal.to_s) }.blank?
+        if self.map_points.select { |x| x['number'].include?(self.map_goal.to_s) }.blank?
           return self.errors.add :map_goal, :invalid
         end
       end
@@ -84,7 +84,7 @@ module Map::Addon
       if self.map_route.present?
         self.map_route.split(',').each do |n|
           return self.errors.add :map_route, :invalid if !n.numeric?
-          return self.errors.add :map_route, :invalid if self.map_points.find_all { |x| x[:number].include?(n) }.blank?
+          return self.errors.add :map_route, :invalid if self.map_points.find_all { |x| x['number'].include?(n) }.blank?
         end
       end
     end
