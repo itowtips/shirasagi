@@ -7,7 +7,6 @@ module Cms::BaseFilter
 
     helper Cms::NodeHelper
     helper Cms::FormHelper
-    helper Cms::PathHelper
     helper Map::MapHelper
     helper SS::ImageViewerHelper
     before_action :validate_cms
