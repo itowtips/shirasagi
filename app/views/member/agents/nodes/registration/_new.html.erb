@@ -1,6 +1,12 @@
 <%= stylesheet_link_tag 'member/public', media: 'all' %>
 <%= javascript_include_tag 'member/public' %>
 
+<style type="text/css">
+  .colum.name, .colum.email:nth-of-type(3), .colum.kana, .colum.organization-name, .colum.job, .colum.tel, .colum.postal-code, .colum.addr, .colum.sex, .colum.birthday{
+    display: none;
+  }
+</style>
+
 <div class="columns">
   <fieldset class="colum name">
     <legend>

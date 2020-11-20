@@ -1,6 +1,12 @@
 <%= stylesheet_link_tag 'member/public', media: 'all' %>
 <%= javascript_include_tag 'member/public' %>
 
+<style type="text/css">
+  .colum.name, .colum.email:nth-of-type(3), .colum.kana, .colum.organization-name, .colum.job, .colum.tel, .colum.postal-code, .colum.addr, .colum.sex, .colum.birthday{
+    display: none;
+  }
+</style>
+
 <%= f.hidden_field_tag("token", params[:token]) %>
 <%= f.hidden_field_tag("group", params[:group]) if params[:group].present? %>
 

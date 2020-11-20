@@ -47,7 +47,9 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
     end
 
     @item.in_check_name = true
-    @item.set_required @cur_node
+    # @item.set_required @cur_node
+    @item.in_check_name = false
+    @item.in_check_email_again = false
     @item.state = 'temporary'
     @item
   end
@@ -99,7 +101,8 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
 
     @item.attributes = get_params
     @item.in_check_password = true
-    @item.set_required @cur_node
+    # @item.set_required @cur_node
+    @item.name = @item.email
     @item.state = 'enabled'
 
     if @item.in_password_again.blank?
