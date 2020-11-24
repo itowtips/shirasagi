@@ -49,7 +49,6 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
     @item.in_check_name = true
     # @item.set_required @cur_node
     @item.in_check_name = false
-    @item.in_check_email_again = false
     @item.state = 'temporary'
     @item
   end
@@ -137,6 +136,7 @@ class Member::Agents::Nodes::RegistrationController < ApplicationController
     end
 
     member = Cms::Member.site(@cur_site).where(email: @item.email).first
+    member.in_mobile = true
     if member.nil?
       @item.errors.add :email, :not_registerd
       render action: :send_again

@@ -49,6 +49,7 @@
    end
    @categories.uniq!
    @categories.sort! { |lhs, rhs| lhs.order <=> rhs.order }
+   @categories = [@categories.first] if @categories.present?
 %>
 
 <fieldset class="column subscriptions">

@@ -55,7 +55,7 @@
     SS_Preview.mobile_path = <%== @cur_site.mobile_path.to_json %>;
     <% if @preview_page %>
       SS_Preview.request_path = <%== request.path.to_json %>;
-      SS_Preview.form_item = <%== @preview_item.to_json %>;
+      SS_Preview.form_item = <%== @previewitem.to_json %>;
     <% end %>
     <% if mode == :preview && rendered %>
       <% if %i[page].include?(rendered[:type]) %>

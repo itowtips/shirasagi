@@ -27,6 +27,7 @@ module Cms::Model::Member
     attr_accessor :in_check_name
     attr_accessor :in_check_email_again
     attr_accessor :in_check_password
+    attr_accessor :in_mobile
 
     seqid :id
     field :name, type: String
@@ -42,7 +43,7 @@ module Cms::Model::Member
     field :verify_mail_sent, type: DateTime
 
     permit_params :name, :email, :email_again, :email_type, :password, :in_password, :in_password_again, :state
-    permit_params :sends_notify_mail, :sends_verification_mail, :in_confirm_personal_info
+    permit_params :sends_notify_mail, :sends_verification_mail, :in_confirm_personal_info, :in_mobile
 
     validates :name, presence: true, length: { maximum: 40 }, if: ->{ enabled? || in_check_name }
     validates :email, email: true, length: { maximum: 80 }

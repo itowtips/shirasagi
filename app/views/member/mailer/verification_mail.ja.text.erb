@@ -1,10 +1,13 @@
 <%
   message.subject = "[#{I18n.t('member.mail.subject.verification')}]#{@member.name} - #{@node.site.name}"
   message.subject = @node.reply_subject if @node.reply_subject.present?
+  location = @node.site.mobile_location.gsub(/^\/|\/$/, "")
+  url = "#{@node.full_url}verify?#{ { token: @member.verification_token }.to_query }"
+  url.gsub!(/#{@node.site.url}(?!#{location}\/)(?!(fs\/|\.mypage\/redirect))/, "#{@node.site.url}#{location}/") if @member.in_mobile
 %>
 <%= @node.reply_upper_text %>
 
-<%= "#{@node.full_url}verify?#{ { token: @member.verification_token }.to_query }" %>
+<%= url %>
 
 <%= @node.reply_lower_text %>
 
