@@ -56,14 +56,18 @@ class Ezine::Page
   #   `ActionMailer#deliver_now` メソッドからのエラーオブジェクト
   def deliver_to(member)
     if member.site.translate_enabled? && translate_targets.present?
-      return true if !(member.live | live).include?('all') && (member.live & live).select(&:present?).blank?
-      return true if !(member.ages | ages).include?('all') && (member.ages & ages).select(&:present?).blank?
-      member.translate_targets.each do |lang|
-        next unless translate_targets.include?(lang)
-        Ezine::Mailer.page_mail(self, member, lang).deliver_now
-        Ezine::SentLog.find_or_create_by(
-          node_id: parent.id, page_id: id, email: member.email
-        ) unless member.test_member?
+      if member.test_member?
+        translate_targets.each do |lang|
+          Ezine::Mailer.page_mail(self, member, lang).deliver_now
+        end
+      else
+        return true if !(member.live | live).include?('all') && (member.live & live).select(&:present?).blank?
+        return true if !(member.ages | ages).include?('all') && (member.ages & ages).select(&:present?).blank?
+        member.translate_targets.each do |lang|
+          next unless translate_targets.include?(lang)
+          Ezine::Mailer.page_mail(self, member, lang).deliver_now
+          Ezine::SentLog.find_or_create_by(node_id: parent.id, page_id: id, email: member.email)
+        end
       end
     else
       Ezine::Mailer.page_mail(self, member).deliver_now
