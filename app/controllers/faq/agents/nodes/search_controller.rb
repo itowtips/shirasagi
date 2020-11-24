@@ -7,7 +7,11 @@ class Faq::Agents::Nodes::SearchController < ApplicationController
   before_action :accept_cors_request, only: [:rss]
 
   def pages
-    Faq::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date)
+    if @cur_node.search_page_model == "article_page"
+      Article::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date)
+    else
+      Faq::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date)
+    end
   end
 
   def index
@@ -43,6 +47,17 @@ class Faq::Agents::Nodes::SearchController < ApplicationController
   private
 
   def make_query(q)
-    { name: /#{::Regexp.escape(q)}/ }
+    if @cur_node.search_page_model == "article_page"
+      regexp = /#{::Regexp.escape(q)}/m
+      {
+        "$or" => [
+          { "name" => regexp },
+          { "column_values.value" => regexp },
+          { "column_values.lists" => { "$in" => [regexp] } },
+        ]
+      }
+    else
+      { name: /#{::Regexp.escape(q)}/ }
+    end
   end
 end

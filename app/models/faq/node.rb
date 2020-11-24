@@ -28,6 +28,7 @@ module Faq::Node
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
+    include Faq::Addon::SearchList
     include Event::Addon::PageList
     include Category::Addon::Setting
     include Cms::Addon::Release

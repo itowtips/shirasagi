@@ -8,12 +8,17 @@ ja:
     query:
       category: カテゴリー
       keyword: キーワード
+    options:
+      search_page_model:
+        faq_page: FAQページ
+        article_page: 記事ページ
 
   modules:
     faq: FAQ
     addons:
       faq/question: 質問
       faq/search: FAQ記事検索
+      faq/search_list: FAQ記事検索
 
   cms:
     nodes:
@@ -31,6 +36,8 @@ ja:
         answer: 回答
       faq/addon/search:
         search_node_id: 検索フォルダー
+      faq/addon/search_list:
+        search_page_model: 検索対象
 
   cms_role:
     read_other_faq_pages: ページの閲覧（全て）
@@ -58,6 +65,9 @@ ja:
       search_node_id:
         - 検索先のフォルダーを設定します。
         - 未入力の場合は自フォルダーを対象にします。
+    faq/addon/search_list:
+      search_page_model:
+        - 検索対象を設定します。
 
   job:
     models:
