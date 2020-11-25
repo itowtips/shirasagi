@@ -7,12 +7,14 @@ class Ezine::TestMember
 
   field :email, type: String
   field :email_type, type: String
+  embeds_ids :groups, class_name: "SS::Group"
 
-  permit_params :email, :email_type
+  permit_params :email, :email_type, group_ids: []
 
   belongs_to :node, class_name: "Cms::Node"
 
   validates :email, uniqueness: { scope: :node_id }, presence: true, email: true
+  validates :group_ids, presence: true
 
   # Test member is always "enabled".
   scope :enabled, ->{ all }

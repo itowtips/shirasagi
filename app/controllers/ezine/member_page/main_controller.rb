@@ -65,6 +65,11 @@ class Ezine::MemberPage::MainController < ApplicationController
 
     set_item
     load_test_members
+    @members = @members.in(group_ids: @item.group_ids)
+    @members_email = @members.reduce("") do |a, e|
+      a += e.email + "\n" unless e.email.blank?
+      a
+    end
   end
 
   def delivery_test

@@ -1,4 +1,4 @@
-<% return if !@cur_site.translate_enabled? || @item.translate_targets.blank? %>
+<% return if !@cur_site.translate_enabled? %>
 
 <%= jquery do %>
   <% @cur_site.translate_targets.each do |target| %>

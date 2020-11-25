@@ -74,6 +74,10 @@ ja:
       ezine/category_node: カテゴリ
       ezine/lang: 多言語メールマガジン一覧
 
+  errors:
+    messages:
+      not_set: が設定されていません
+
   mongoid:
     models:
       ezine/column: メルマガ項目
@@ -115,6 +119,7 @@ ja:
       ezine/test_member:
         email: メールアドレス
         email_type: 配信形式
+        group_ids: グループ
       ezine/entry:
         email: メールアドレス
         email_type: 配信形式

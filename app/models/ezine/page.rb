@@ -82,7 +82,7 @@ class Ezine::Page
   # テスト配信を行う。
   def deliver_to_test_members
     parent_node = parent.becomes_with_route
-    parent_node.test_members_to_deliver.each do |test_member|
+    parent_node.test_members_to_deliver.in(group_ids: group_ids).each do |test_member|
       deliver_to test_member
     end
 
