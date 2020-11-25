@@ -7,6 +7,7 @@
     <%= link_to t("member.links.profile"), "#{@cur_node.url}edit" %>
     <%= link_to t("member.links.change_password"), "#{@cur_node.url}change_password" %>
     <%= link_to t("member.links.leave"), "#{@cur_node.url}leave" %>
+    <%= link_to t("ss.logout"), "#{Member::Node::Login.site(@cur_site).first.url}logout.html?ref=#{@cur_path}", class: "logout", rel: "nofollow" %>
   <% else %>
     <%= link_to t('ss.links.back'), @cur_node.url %>
   <% end %>
