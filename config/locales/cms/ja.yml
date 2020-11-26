@@ -299,6 +299,9 @@ ja:
         thumb_carousel: サムネイル画像とLINEメッセージ
         body_carousel: 本文内の最初の画像とLINEメッセージ
         message_only_carousel: LINEメッセージ
+      email_type:
+        text: テキスト版
+        html: HTML版
     sns_share:
       fb_like: Facebook いいね！
       fb_share: Facebook シェア
@@ -626,6 +629,7 @@ ja:
         name: 氏名
         email: メールアドレス
         email_again: メールアドレス（確認用）
+        email_type: 配信形式
         password: パスワード
         in_password: パスワード
         in_password_again: パスワード（確認用）
