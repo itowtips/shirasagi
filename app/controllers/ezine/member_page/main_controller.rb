@@ -70,6 +70,11 @@ class Ezine::MemberPage::MainController < ApplicationController
       a += e.email + "\n" unless e.email.blank?
       a
     end
+    if @item.use_groups_email == 'enabled'
+      @item.groups.each do |group|
+        @members_email += group[:contact_email] + "\n" if group[:contact_email].present?
+      end
+    end
   end
 
   def delivery_test

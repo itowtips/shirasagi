@@ -65,6 +65,7 @@ ja:
       ezine/subscription_constraint: 購読制約
       ezine/additional_attributes: 追加情報
       ezine/required_fields: 必須入力
+      ezine/deliver_test: テスト配信
 
   cms:
     nodes:
@@ -147,6 +148,8 @@ ja:
       ezine/addon/required_fields:
         live_required: お住まい
         ages_required: 年齢
+      ezine/addon/deliver_test:
+        use_groups_email: グループのメールアドレス
 
   tooltip:
     ezine/addon/signature:

@@ -5,6 +5,7 @@ class Ezine::Page
   include Ezine::Addon::DeliverPlan
   include Translate::Addon::Lang::Page
   include Ezine::Addon::AdditionalAttributes
+  include Ezine::Addon::DeliverTest
   include Cms::Addon::Release
   include Cms::Addon::ReleasePlan
   include Cms::Addon::GroupPermission
@@ -84,6 +85,13 @@ class Ezine::Page
     parent_node = parent.becomes_with_route
     parent_node.test_members_to_deliver.in(group_ids: group_ids).each do |test_member|
       deliver_to test_member
+    end
+    if use_groups_email == 'enabled'
+      groups.each do |group|
+        next if group[:contact_email].blank?
+        test_member = Ezine::TestMember.new(site_id: site_id, email: group[:contact_email], email_type: 'text', group_ids: [group.id])
+        deliver_to test_member
+      end
     end
 
     update test_delivered: Time.zone.now
