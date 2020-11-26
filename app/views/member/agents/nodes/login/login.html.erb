@@ -19,6 +19,7 @@
 
   <% if @cur_node.form_auth == "enabled" %>
     <%= form_tag "", class: "form-login" do |f| %>
+      <%= hidden_field_tag "authenticity_token", form_authenticity_token %>
       <%= error_messages_for :item %>
 
       <dl>
