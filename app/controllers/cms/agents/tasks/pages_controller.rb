@@ -1,9 +1,19 @@
 class Cms::Agents::Tasks::PagesController < ApplicationController
   include Cms::PublicFilter::Page
+  include SS::RescueWith
 
   PER_BATCH = 100
 
   private
+
+  def rescue_p
+    proc do |exception|
+      exception_backtrace(exception) do |message|
+        @task.log message
+        Rails.logger.error message
+      end
+    end
+  end
 
   def each_page(&block)
     criteria = Cms::Page.site(@site).and_public
@@ -19,7 +29,9 @@ class Cms::Agents::Tasks::PagesController < ApplicationController
 
   def each_page_with_rescue(&block)
     each_page do |page|
-      yield page
+      rescue_with(rescue_p: rescue_p) do
+        yield page
+      end
     end
   end
 
@@ -50,12 +62,14 @@ class Cms::Agents::Tasks::PagesController < ApplicationController
     ids   = pages.pluck(:id)
 
     ids.each do |id|
-      page = Cms::Page.site(@site).where(id: id).first
-      next unless page
-      page = page.becomes_with_route
-      if !page.update
-        @task.log page.url
-        @task.log page.errors.full_messages.join("/")
+      rescue_with(rescue_p: rescue_p) do
+        page = Cms::Page.site(@site).where(id: id).first
+        next unless page
+        page = page.becomes_with_route
+        if !page.update
+          @task.log page.url
+          @task.log page.errors.full_messages.join("/")
+        end
       end
     end
   end
@@ -74,11 +88,13 @@ class Cms::Agents::Tasks::PagesController < ApplicationController
     @task.total_count = ids.size
 
     ids.each do |id|
-      @task.count
-      page = Cms::Page.site(@site).or(cond).where(id: id).first
-      next unless page
-      @task.log page.full_url
-      release_page page.becomes_with_route
+      rescue_with(rescue_p: rescue_p) do
+        @task.count
+        page = Cms::Page.site(@site).or(cond).where(id: id).first
+        next unless page
+        @task.log page.full_url
+        release_page page.becomes_with_route
+      end
     end
   end
 
@@ -108,8 +124,10 @@ class Cms::Agents::Tasks::PagesController < ApplicationController
     @task.total_count = pages.size
 
     pages.order_by(id: 1).find_each(batch_size: PER_BATCH) do |page|
-      @task.count
-      @task.log page.path if Fs.rm_rf page.path
+      rescue_with(rescue_p: rescue_p) do
+        @task.count
+        @task.log page.path if Fs.rm_rf page.path
+      end
     end
   end
 end

@@ -1,5 +1,6 @@
 class Cms::Agents::Tasks::NodesController < ApplicationController
   include Cms::PublicFilter::Node
+  include SS::RescueWith
 
   before_action :set_params
   PER_BATCH = 100
@@ -7,6 +8,15 @@ class Cms::Agents::Tasks::NodesController < ApplicationController
   private
 
   def set_params
+  end
+
+  def rescue_p
+    proc do |exception|
+      exception_backtrace(exception) do |message|
+        @task.log message
+        Rails.logger.error message
+      end
+    end
   end
 
   def each_node(&block)
@@ -20,7 +30,9 @@ class Cms::Agents::Tasks::NodesController < ApplicationController
 
   def each_node_with_rescue(&block)
     each_node do |node|
-      yield node
+      rescue_with(rescue_p: rescue_p) do
+        yield node
+      end
     end
   end
 
@@ -35,7 +47,9 @@ class Cms::Agents::Tasks::NodesController < ApplicationController
 
   def each_root_pages_with_rescue(&block)
     each_root_pages do |page|
-      yield page
+      rescue_with(rescue_p: rescue_p) do
+        yield page
+      end
     end
   end
 
