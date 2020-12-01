@@ -111,7 +111,7 @@ class Event::Agents::Parts::CalendarController < ApplicationController
   end
 
   def index_detail_table
-    @items = Cms::Page.public_list(site: @cur_site, node: @cur_part.parent, date: @cur_date).
+    @items = Cms::Page.public_list(site: @cur_site, node: @parent_node, date: @cur_date).
         where('event_dates.0' => { "$exists" => true })
     @current_month_date = Date.new(@year, @month, 1)
     @prev_month_date = @current_month_date.change(day: 1).advance(days: -1)
