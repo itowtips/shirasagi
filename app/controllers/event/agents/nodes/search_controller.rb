@@ -60,7 +60,8 @@ class Event::Agents::Nodes::SearchController < ApplicationController
   end
 
   def set_event_pages
-    @event_pages = Cms::Page.site(@cur_site).and_public.exists(event_dates: 1)
+    @event_pages = Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date).
+      where('event_dates.0' => { "$exists" => true })
   end
 
   def set_facilities
