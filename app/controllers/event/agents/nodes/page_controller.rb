@@ -117,36 +117,46 @@ class Event::Agents::Nodes::PageController < ApplicationController
     dates = dates.map { |m| m.mongoize }
     @items = events(dates)
     @items.each do |item|
-      event = Event::Page.site(@cur_site).
-        and_public.
-        where(filename: item.filename).first
-      event = item if event.nil?
+      item = item.becomes_with_route
 
-      if event.try(:map_points).present?
-        event.map_points.each do |map_point|
-          marker_info = view_context.monthly_map_point_info(event, map_point)
-          map_point[:html] = marker_info
+      if item.respond_to?(:map_points) && item.map_points.present?
+
+        # page has map_points
+        item.map_points.each do |map_point|
+          map_point[:html] = view_context.render_map_point_info(item, map_point)
           map_point[:number] = ""
           @markers << map_point
         end
-      end
 
-      if event.try(:map_points).blank? && event.try(:facility_ids).present?
-        event.facility_ids.each do |facility_id|
-          next if @facility_ids.present? && !@facility_ids.include?(facility_id)
+      elsif item.respond_to?(:facility) && item.facility.present?
 
-          facility = Facility::Node::Page.site(@cur_site).and_public.where(id: facility_id).first
-          facility_map = Facility::Map.site(@cur_site).and_public.
+        # page has related facility_id's map_points
+        facility = item.facility
+        facility_map = Facility::Map.site(@cur_site).and_public.
             where(filename: /^#{::Regexp.escape(facility.filename)}\//, depth: facility.depth + 1).order_by(order: 1).first
+        next if facility_map.nil?
+
+        facility_map.map_points.each do |map_point|
+          map_point[:html] = view_context.render_facility_info(facility, map_point[:loc])
+          map_point[:number] = ""
+          @markers << map_point
+        end
+
+      elsif item.respond_to?(:facilities) && item.facilities.present?
+
+        # page has related facility_ids's map_points
+        item.facilities.each do |facility|
+          facility_map = Facility::Map.site(@cur_site).and_public.
+              where(filename: /^#{::Regexp.escape(facility.filename)}\//, depth: facility.depth + 1).order_by(order: 1).first
           next if facility_map.nil?
 
-          facility_map.map_points.each do |item|
-            marker_info = view_context.monthly_facility_info(facility, dates, item[:loc])
-            item[:html] = marker_info
-            item[:number] = ""
-            @markers << item
+          facility_map.map_points.each do |map_point|
+            map_point[:html] = view_context.render_facility_info(facility, map_point[:loc])
+            map_point[:number] = ""
+            @markers << map_point
           end
         end
+
       end
     end
   end
