@@ -4,13 +4,13 @@ module Cms::Addon
     extend SS::Addon
 
     included do
-      field :line_auto_post, type: String, metadata: { branch: false }
-      field :line_edit_auto_post, type: String, metadata: { branch: false }
+      field :line_auto_post, type: String
+      field :line_edit_auto_post, type: String
       field :line_posted, type: Array, default: [], metadata: { branch: false }
       field :line_post_error,  type: String, metadata: { branch: false }
 
-      field :line_text_message, type: String, metadata: { branch: false }
-      field :line_post_format, type: String, metadata: { branch: false }
+      field :line_text_message, type: String
+      field :line_post_format, type: String
 
       validates :line_text_message, length: { maximum: 60 }
       validates :line_text_message, presence: true, if: -> { line_auto_post == "active" }
@@ -35,6 +35,7 @@ module Cms::Addon
     def line_post_enabled?
       self.site = site || @cur_site
       return false if !site.line_token_enabled?
+      return false if respond_to?(:branch?) && branch?
       return false if line_auto_post != "active"
       return false if line_posted.present? && line_edit_auto_post != "active"
       true
