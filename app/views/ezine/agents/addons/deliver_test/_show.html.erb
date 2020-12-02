@@ -1,4 +1,4 @@
 <dl class="see mod-ezine-additional-attributes">
-  <dt><%= @model.t :use_groups_email %></dt>
-  <dd><%= @item.label(:use_groups_email) %></dd>
+  <dt><%= @model.t :test_group_ids %></dt>
+  <dd><%=br @item.test_groups.order_by(name: 1).map{|c| c.name } %></dd>
 </dl>

@@ -38,6 +38,7 @@ module Ezine::Node
     include Ezine::Addon::SenderAddress
     include Ezine::Addon::SubscriptionConstraint
     include Translate::Addon::Lang::Node
+    include Ezine::Addon::DeliverTest
     include Cms::Addon::PageList
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission

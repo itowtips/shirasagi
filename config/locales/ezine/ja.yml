@@ -149,7 +149,7 @@ ja:
         live_required: お住まい
         ages_required: 年齢
       ezine/addon/deliver_test:
-        use_groups_email: グループのメールアドレス
+        test_group_ids: テストグループ
 
   tooltip:
     ezine/addon/signature:
