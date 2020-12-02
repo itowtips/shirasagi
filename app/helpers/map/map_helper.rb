@@ -44,6 +44,7 @@ module Map::MapHelper
   def render_map(selector, opts = {})
     return "" unless map_enabled?(opts)
 
+    center = opts[:center] || SS.config.map.map_center
     markers = opts[:markers]
     map_options = opts[:map] || {}
     s = []
@@ -54,6 +55,7 @@ module Map::MapHelper
 
       # set default values
       map_options[:readonly] = true
+      map_options[:center] = center.reverse if center.present?
       map_options[:markers] = markers if markers.present?
       map_options[:layers] = SS.config.map.layers
 
@@ -65,6 +67,7 @@ module Map::MapHelper
 
       # set default values
       map_options[:readonly] = true
+      map_options[:center] = center.reverse if center.present?
       map_options[:markers] = markers if markers.present?
       map_options[:layers] = SS.config.map.open_street_map
 
@@ -74,6 +77,7 @@ module Map::MapHelper
     else
       include_googlemaps_api(opts)
 
+      s << "Googlemaps_Map.center = #{center.to_json};" if center.present?
       s << "Googlemaps_Map.load(\"" + selector + "\", #{map_options.to_json});"
       s << 'Googlemaps_Map.setMarkers(' + markers.to_json + ');' if markers.present?
     end
