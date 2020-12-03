@@ -81,8 +81,6 @@ module Cms::Addon
       return unless public_node?
       return if @posted_sns
 
-      dump(twitter_post_enabled?)
-
       # tweet
       post_to_twitter if twitter_post_enabled?
 
