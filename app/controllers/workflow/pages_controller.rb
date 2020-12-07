@@ -13,6 +13,8 @@ class Workflow::PagesController < ApplicationController
   def set_item
     @item = @model.find(params[:id]).becomes_with_route
     @item.attributes = fix_params
+    @item.lock_owner_id = nil if @item.respond_to?(:lock_owner_id)
+    @item.lock_until = nil if @item.respond_to?(:lock_until)
     @item.try(:allow_other_user_files)
   end
 
