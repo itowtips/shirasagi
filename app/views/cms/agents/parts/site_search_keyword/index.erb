@@ -4,7 +4,14 @@
 <%== @cur_part.upper_html if @cur_part.upper_html.present?  %>
 <ul>
   <% @cur_part.site_search_keywords.each do |keyword| %>
-    <% url = @node.url + "?" + { s: { keyword: keyword } }.to_query %>
+    <%
+      if keyword.include?(',')
+        url = keyword.split(',').last
+        keyword = keyword.split(',').first
+      else
+        url = @node.url + "?" + { s: { keyword: keyword } }.to_query
+      end
+    %>
     <li><%= link_to keyword, url, rel: :nofollow, class: keyword %></li>
   <% end %>
 </ul>
