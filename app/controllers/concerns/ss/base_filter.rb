@@ -167,7 +167,12 @@ module SS::BaseFilter
     end
 
     @ss_rescue = { status: status_code }
-    @wrapper = wrapper if Rails.env.development?
+
+    if Rails.env.development?
+      @wrapper = wrapper
+    else
+      Rails.logger.error("#{exception.class} (#{exception.message}):\n  #{exception.backtrace.join("\n  ")}")
+    end
 
     if @ss_mode == :cms && !@cur_site
       @ss_mode = nil
