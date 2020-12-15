@@ -35,6 +35,7 @@ class Cms::Column::Value::SpotNotice < Cms::Column::Value::Base
     return [] if facility.blank? || site.blank?
 
     ::Tourism::Notice.site(site).in(facility_id: facility.id).
+      and_public.
       order_by({ :released => -1 }).
       limit(5).to_a
   rescue => e
