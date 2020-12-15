@@ -4,6 +4,7 @@ class Article::Page
   include Cms::Addon::EditLock
   include Workflow::Addon::Branch
   include Workflow::Addon::Approver
+  include Article::Addon::Covid
   include Cms::Addon::Meta
   include Cms::Addon::SnsPoster
   include Cms::Addon::LinePoster

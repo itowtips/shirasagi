@@ -8,6 +8,8 @@ ja:
 
   modules:
     article: 記事
+    addons:
+      article/covid: 新型コロナ
 
   cms:
     nodes:
@@ -42,6 +44,14 @@ ja:
       article/page: 記事ページ
       article/node/page: 記事リスト
       article/part/node: 記事リスト
+    attributes:
+      article/addon/covid:
+        index_covid_name: "一覧用タイトル（コロナ）"
+
+  tooltip:
+    article/addon/covid:
+      index_covid_name:
+        - 新型コロナ情報のコーナーに表示する一覧用タイトルを入力します。
 
   job:
     models:

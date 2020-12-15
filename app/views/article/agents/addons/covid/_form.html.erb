@@ -1,0 +1,6 @@
+<% return if @cur_node.becomes_with_route.try(:st_covid_category).nil? %>
+
+<dl class="see mod-article-covid">
+  <dt><%= @model.t :index_covid_name %><%= @model.tt :index_covid_name %></dt>
+  <dd style="padding-left: 20px;"><%= f.text_field :index_covid_name %></dd>
+</dl>

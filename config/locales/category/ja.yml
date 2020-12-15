@@ -9,6 +9,7 @@ ja:
     addons:
       category/category: カテゴリー
       category/setting: カテゴリー
+      category/covid_setting: コロナ用カテゴリー
 
   cms:
     nodes:
@@ -29,6 +30,8 @@ ja:
         partial_node: フォルダー
         integration_master_node: 統合元フォルダー
         integration_partial_node: 対象フォルダー
+      category/addon/covid_setting:
+        st_covid_category: コロナ用カテゴリー
 
   errors:
     messages:
@@ -43,6 +46,9 @@ ja:
     category/addon/category:
       categories:
         - 表示するカテゴリーページの名称にチェックを入れます。
+    category/addon/covid_setting:
+      st_covid_category:
+        - 新型コロナのカテゴリーを選択します。
     category/addon/split:
       split_partial_node_name:
         - 分割後のフォルダータイトルを入力します。

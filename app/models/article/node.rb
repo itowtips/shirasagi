@@ -15,6 +15,7 @@ module Article::Node
     include Event::Addon::PageList
     include Cms::Addon::Form::Node
     include Category::Addon::Setting
+    include Category::Addon::CovidSetting
     include Cms::Addon::TagSetting
     include Cms::Addon::ForMemberNode
     include Cms::Addon::OpendataRef::Site

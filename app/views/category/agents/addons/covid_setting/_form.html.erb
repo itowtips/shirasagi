@@ -1,0 +1,25 @@
+<dl class="see mod-covid-category">
+  <dt><%= @item.t :st_covid_category %><%= @model.tt :st_covid_category %></dt>
+  <dd class="wide" style="line-height: 2.5">
+    <%= f.hidden_field "st_covid_category_id", value: "", class: "hidden-ids" %>
+    <%= link_to t("cms.apis.categories.index"), cms_apis_categories_path(single: 1), class: "ajax-box" %>
+  </dd>
+  <dd>
+    <table class="index ajax-selected">
+      <thead>
+        <tr>
+          <th class="name"><%= t("category.name") %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @item.st_covid_category %>
+          <tr data-id="<%= @item.st_covid_category_id %>">
+            <td><%= f.hidden_field "st_covid_category_id", value: @item.st_covid_category_id, id: nil %> <%= @item.st_covid_category.name %></td>
+            <td><%= link_to t("ss.buttons.delete"), "#", class: "deselect btn" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>
