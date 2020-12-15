@@ -264,7 +264,7 @@ module Map::MapHelper
   def render_map_point_info(event, map_point)
     if event_end_date(event).present?
       if @items.present?
-        if event_end_date(event) >= Time.zone.today || @items.where(id: event.id).present?
+        if event_end_date(event) >= Time.zone.today || @items.to_a.index { |item| item.id == event.id }.present?
           map_point_info(event, map_point)
         end
       elsif event_end_date(event) >= Time.zone.today
@@ -283,7 +283,7 @@ module Map::MapHelper
       events.each do |event|
         if event_end_date(event).present?
           if @items.present?
-            next if event_end_date(event) <= Time.zone.today && @items.where(id: event.id).blank?
+            next if event_end_date(event) <= Time.zone.today && @items.to_a.index { |item| item.id == event.id }.blank?
           elsif event_end_date(event) <= Time.zone.today
             next
           end
@@ -298,7 +298,7 @@ module Map::MapHelper
           next if event.map_points.present? && event.facility_ids.present?
           if event_end_date(event).present?
             if @items.present?
-              next if event_end_date(event) <= Time.zone.today && @items.where(id: event.id).blank?
+              next if event_end_date(event) <= Time.zone.today && @items.to_a.index { |item| item.id == event.id }.blank?
             elsif event_end_date(event) <= Time.zone.today
               next
             end
