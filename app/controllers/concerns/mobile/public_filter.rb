@@ -36,8 +36,9 @@ module Mobile::PublicFilter
 
     # links
     location = @cur_site.mobile_location.gsub(/^\/|\/$/, "")
+    body.gsub!(/href="#{@cur_site.url}#{location}\//, "data-href-replaced=\"#{@cur_site.url}#{location}/")
     site_urls.each do |site_url|
-      body.gsub!(/href="#{site_url}(?!#{location}\/)(?!(fs\/|\.mypage\/redirect))/, "data-href-replaced=\"#{site_url}#{location}/")
+      body.gsub!(/href="#{site_url}(?!#{location}\/)(?!#{location}\/)(?!(fs\/|\.mypage\/redirect))/, "data-href-replaced=\"#{site_url}#{location}/")
     end
     body.gsub!("data-href-replaced=\"", "href=\"")
 
