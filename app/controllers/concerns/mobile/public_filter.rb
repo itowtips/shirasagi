@@ -30,9 +30,17 @@ module Mobile::PublicFilter
 
     body = response.body
 
+    # sub sites
+    site_urls = SS::Site.all.select { |site| @cur_site.full_root_url == site.full_root_url }.map(&:url)
+    site_urls = site_urls.sort_by { |url| url.count("/") }.reverse
+
     # links
     location = @cur_site.mobile_location.gsub(/^\/|\/$/, "")
-    body.gsub!(/href="#{@cur_site.url}(?!#{location}\/)(?!(fs\/|\.mypage\/redirect))/, "href=\"#{@cur_site.url}#{location}/")
+    site_urls.each do |site_url|
+      body.gsub!(/href="#{site_url}(?!#{location}\/)(?!(fs\/|\.mypage\/redirect))/, "data-href-replaced=\"#{site_url}#{location}/")
+    end
+    body.gsub!("data-href-replaced=\"", "href=\"")
+
     body.gsub!(/<span .*?id="ss-(small|medium|large|kana|pc|mb)".*?>.*?<\/span>/, "")
 
     # tags
