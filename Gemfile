@@ -62,6 +62,7 @@ gem 'roo-xls', git: "https://github.com/roo-rb/roo-xls.git"
 gem 'liquid'
 gem 'http_accept_language'
 gem 'google-cloud-translate', '2.0.0'
+gem 'retriable'
 
 # OAuth
 gem 'oauth2'
