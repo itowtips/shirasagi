@@ -1,6 +1,9 @@
-<% return if @cur_node.becomes_with_route.try(:st_covid_category).nil? %>
-<% return if @item.index_covid_name.blank? %>
-
+<%
+  st_covid_category = @cur_node.becomes_with_route.try(:st_covid_category)
+  return if st_covid_category.nil?
+  return if !st_covid_category.readable?(@cur_user, site: @cur_site)
+  return if @item.index_covid_name.blank?
+%>
 <dl class="see mod-article-covid">
   <dt><%= @model.t :index_covid_name %></dt>
   <dd><%= @item.index_covid_name %></dd>
