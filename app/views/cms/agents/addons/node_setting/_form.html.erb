@@ -16,6 +16,9 @@ view_route = @item.view_route if @item.view_route.present?
   <dt><%= @model.t :shortcut %><%= @model.tt :shortcut %></dt>
   <dd><%= f.select :shortcut, @item.shortcut_options %></dd>
 
+  <dt><%= @model.t :shortcut_order %><%= @model.tt :shortcut_order %></dt>
+  <dd><%= f.number_field :shortcut_order %></dd>
+
   <dt><%= @model.t :view_route %><%= @model.tt :view_route %></dt>
   <dd><%= f.select :view_route, Cms::Node.new.route_options, selected: view_route, include_blank: " " %></dd>
 </dl>

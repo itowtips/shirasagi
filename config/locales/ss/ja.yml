@@ -474,6 +474,7 @@ ja:
         limit: 表示件数
         layout_id: レイアウト
         shortcut: ショートカット
+        shortcut_order: ショートカットの並び順
         view_state: 状態
         text_index: 全文検索インデックス(未使用)
       ss/model/site:

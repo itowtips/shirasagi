@@ -19,8 +19,9 @@ module Cms::Model::Node
     field :route, type: String
     field :view_route, type: String
     field :shortcut, type: String, default: "hide"
+    field :shortcut_order, type: Integer, default: 0
 
-    permit_params :view_route, :shortcut
+    permit_params :view_route, :shortcut, :shortcut_order
 
     validates :route, presence: true
     validate :validate_invalid_filename
@@ -139,6 +140,11 @@ module Cms::Model::Node
       [I18n.t('ss.options.state.show'), 'show'],
       [I18n.t('ss.options.state.hide'), 'hide'],
     ]
+  end
+
+  def shortcut_order
+    value = self[:shortcut_order].to_i
+    value < 0 ? 0 : value
   end
 
   def validate_destination_filename(dst)
