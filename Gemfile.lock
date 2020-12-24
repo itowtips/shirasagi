@@ -736,6 +736,7 @@ DEPENDENCIES
   rubocop-performance
   ruby-saml
   rubyzip
+  sass
   sassc-rails
   scss_lint
   sdoc
