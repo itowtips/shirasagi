@@ -40,6 +40,9 @@ module History::Model::Data
 
   def restore_data(data, opts = {})
     model.relations.each do |k, relation|
+      next if k == "attached_file_attributes"
+      next if k == "history_files"
+
       case relation.class.to_s
       when Mongoid::Association::Referenced::HasMany.to_s
         if relation.dependent.present? && opts[:create_by_trash].present?
