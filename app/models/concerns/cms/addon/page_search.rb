@@ -415,7 +415,7 @@ module Cms::Addon
         item.summary_html,
 
         item.html,
-        item.body_parts.map{ |body| body.gsub("\t", '    ') }.join("\t"),
+        item.body_parts.to_a.map{ |body| body.gsub("\t", '    ') }.join("\t"),
 
         # category
         category_name_tree(item).join("\n"),
