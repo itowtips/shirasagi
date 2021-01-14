@@ -24,11 +24,18 @@ module SS::AjaxFileFilter
   public
 
   def index
+    @select_ids = params[:select_ids].presence
+
     @items = @model
     @items = @items.site(@cur_site) if @cur_site
-    @items = @items.allow(:read, @cur_user).
-      order_by(filename: 1).
-      page(params[:page]).per(20)
+    @items = @items.allow(:read, @cur_user)
+
+    if @select_ids.present?
+      @items = @items.in(id: @select_ids).order_by(filename: 1)
+    else
+      @items = @items.order_by(filename: 1).
+        page(params[:page]).per(20)
+    end
   end
 
   def select

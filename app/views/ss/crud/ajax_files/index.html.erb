@@ -23,11 +23,16 @@ var dataTypeOption = function () {
   return "json";
 };
 var successAttach = function (data) {
-  $("#cboxLoadedContent").load("<%= url_for(action: :index, file_size: params[:file_size]) %>", function() {
-    if (!Array.isArray(data) || data.length == 0) {
-      return;
-    }
+  if (!Array.isArray(data) || data.length == 0) {
+    $.colorbox.close();
+    return;
+  }
 
+  var loadUrl = "<%= url_for(action: :index, file_size: params[:file_size]) %>";
+  loadUrl += "?" + $.map(data, function(v) { return "select_ids[]=" + v._id.toString(); }).join("&");
+  loadUrl = encodeURI(loadUrl);
+
+  $("#cboxLoadedContent").load(loadUrl, function() {
     var sorted_name_and_datas = [];
     var file_views = [];
 

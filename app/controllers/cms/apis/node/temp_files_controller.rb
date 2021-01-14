@@ -7,11 +7,18 @@ class Cms::Apis::Node::TempFilesController < ApplicationController
   model Cms::TempFile
 
   def index
+    @select_ids = params[:select_ids].presence
+
     @items = @model.site(@cur_site).
       node(@cur_node).
-      allow(:read, @cur_user).
-      order_by(filename: 1).
-      page(params[:page]).per(20)
+      allow(:read, @cur_user)
+
+    if @select_ids.present?
+      @items = @items.in(id: @select_ids).order_by(filename: 1)
+    else
+      @items = @items.order_by(filename: 1).
+        page(params[:page]).per(20)
+    end
   end
 
   def similar_files
