@@ -37,6 +37,8 @@ class Opendata::CmsIntegration::AssocJob < Cms::ApplicationJob
         resource.destroy
         Rails.logger.info("#{resource.name}: resource is destroyed")
       end
+
+      def dataset.compression_dataset; end
       dataset.save!
     end
 
@@ -52,6 +54,8 @@ class Opendata::CmsIntegration::AssocJob < Cms::ApplicationJob
     end
 
     dataset.state = 'closed'
+
+    def dataset.compression_dataset; end
     dataset.save!
     Rails.logger.info("#{dataset.name}: dataset is closed")
   end
@@ -157,6 +161,7 @@ class Opendata::CmsIntegration::AssocJob < Cms::ApplicationJob
     # https://jira.mongodb.org/browse/MONGOID-4544
     # dataset.touch
 
+    def dataset.compression_dataset; end
     dataset.save!
   end
 
@@ -208,6 +213,7 @@ class Opendata::CmsIntegration::AssocJob < Cms::ApplicationJob
         end
       end
 
+      def dataset.compression_dataset; end
       dataset.save!
     end
   end
