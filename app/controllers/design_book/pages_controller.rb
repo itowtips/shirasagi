@@ -26,7 +26,7 @@ class DesignBook::PagesController < ApplicationController
       node(@cur_node, params.dig(:s, :target)).
       allow(:read, @cur_user).
       search(params[:s]).
-      order_by(filename: 1).
+      order_by(updated: -1).
       page(params[:page]).per(50)
   end
 end
