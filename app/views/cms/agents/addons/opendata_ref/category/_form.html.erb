@@ -6,7 +6,7 @@
 %>
 
 <%
-  categories = Opendata::Node::Category.in(site_id: @cur_node.becomes_with_route.opendata_site_ids).and_public.pluck(:name, :id)
+  categories = Opendata::Node::Category.in(site_id: @cur_node.becomes_with_route.opendata_site_ids).and_public.order_by(order: 1).pluck(:name, :id)
   return if categories.blank?
 %>
 <dl class="see mod-cms-opendata-category category-form">

@@ -58,6 +58,9 @@ class Cms::Apis::FormsController < ApplicationController
   def select_temp_file
     @item = SS::File.find(params[:id])
     @item = @item.copy_if_necessary
+    @cur_node = Cms::Node.find(params[:node]).becomes_with_route rescue nil
+    @page = Cms::Page.find_or_initialize_by(id: params[:owner_item_id])
+    @page = @page.becomes_with_route(params[:owner_item_type].underscore)
     @form = params[:form].present? ? params[:form] : "upload"
     render layout: false
   end
