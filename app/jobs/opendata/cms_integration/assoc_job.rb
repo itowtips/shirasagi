@@ -225,6 +225,8 @@ class Opendata::CmsIntegration::AssocJob < Cms::ApplicationJob
 
       def dataset.compression_dataset; end
       dataset.save!
+      dataset.remove_file
+      dataset
     end
   end
 
