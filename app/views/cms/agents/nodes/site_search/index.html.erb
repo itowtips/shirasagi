@@ -31,11 +31,6 @@
     )
   end
 %>
-
-<%= jquery do %>
-new Cms_Site_Search_History(".cms-site-search .site-search-keyword");
-<% end %>
-
 <div class="cms-site-search">
   <%= form_for :s, url: @cur_node.url, html: { method: :get, class: 'search-form' } do |f| %>
 

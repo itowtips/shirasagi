@@ -4,7 +4,6 @@ class Cms::Agents::Nodes::SiteSearchController < ApplicationController
 
   before_action :set_setting
   before_action :save_search_history
-  before_action :set_search_histories
 
   model Cms::Elasticsearch::Searcher
 
@@ -21,30 +20,12 @@ class Cms::Agents::Nodes::SiteSearchController < ApplicationController
     keyword = get_params[:keyword].to_s.strip.gsub(/　/, " ")
     return if keyword.blank?
 
-    token = cookies["_ss_site_search"]
-    query = { keyword: keyword }
-    user_agent = request.user_agent
-
-    if token && !Cms::SiteSearch::History::Log.site(@cur_site).where(token: token).first
-      token = nil
-    end
-
-    Cms::SiteSearch::History::Log.site(@cur_site).where(token: token, query: query).destroy_all
-
-    log = Cms::SiteSearch::History::Log.new(
-      token: token, site: @cur_site, query: query,
-      user_agent: user_agent, remote_addr: remote_addr
-    )
-    log.save
-
-    cookies.permanent["_ss_site_search"] = log.token
-  end
-
-  def set_search_histories
-    token = cookies["_ss_site_search"]
-
-    @search_histories = Cms::SiteSearch::History::Log.site(@cur_site).
-      where(token: token).limit(6).to_a
+    Cms::SiteSearch::History::Log.new(
+      site: @cur_site,
+      query: { keyword: keyword },
+      remote_addr: remote_addr,
+      user_agent: request.user_agent
+    ).save
   end
 
   def fix_params
