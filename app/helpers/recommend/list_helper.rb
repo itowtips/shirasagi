@@ -15,12 +15,13 @@ module Recommend::ListHelper
     displayed = 0
     @items.each do |item|
       next if display_list.index(item.path)
-      next if display_list.index(item.access_url)
+      next if item.class.method_defined?(:access_url) && display_list.index(item.access_url)
       content = item.content
       next unless content
       next unless content.public?
 
       if @cur_site.inquiry_form.try(:filename) == content.filename
+        next if !item.class.method_defined?(:access_url)
         display_list << item.access_url
       else
         display_list << item.path
@@ -29,7 +30,7 @@ module Recommend::ListHelper
       if cur_item.loop_setting.present?
         ih = item.render_template(cur_item.loop_setting.html, self)
       elsif cur_item.loop_html.present?
-        if @cur_site.inquiry_form.try(:filename) == content.filename
+        if @cur_site.inquiry_form.try(:filename) == content.filename && item.class.method_defined?(:access_url)
           uri = Addressable::URI.parse(item.access_url)
           query = Rack::Utils.parse_nested_query(uri.query)
           group = Cms::Group.where(id: query['group'].to_s).first
