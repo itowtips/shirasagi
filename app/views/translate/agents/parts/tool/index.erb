@@ -42,7 +42,7 @@ $(".<%= key %>").on("change", function () {
 if ($(".<%= key %>.en").length) {
   var lang = SS_Translate.language();
   var source = <%== @source_lang.accept_languages.to_json %>;
-  if (!source.indexOf(lang)) {
+  if (source.indexOf(lang)) {
     $(".<%= key %>" + "." + source[0]).hide();
     $(".<%= key %>.en").show();
   }
