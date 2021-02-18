@@ -10,13 +10,13 @@ class Event::Page
   include Cms::Addon::RedirectLink
   include Cms::Addon::Body
   include Cms::Addon::File
-  include Category::Addon::Category
   include Cms::Addon::ParentCrumb
   include Event::Addon::Body
   include Event::Addon::IcalLink
   include Cms::Addon::AdditionalInfo
   include Event::Addon::Date
   include Map::Addon::Page
+  include Category::Addon::Category
   include Cms::Addon::Tag
   include Cms::Addon::RelatedPage
   include Cms::Addon::Release
