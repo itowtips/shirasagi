@@ -9,6 +9,7 @@ ja:
     links:
       add_or_edit: 追加または編集する
       open_site_search: サイト内検索の結果を開く
+      exception_text: '関連するページは<a href="%{link}">こちら</a>になります。'
     options:
       question:
         success: はい

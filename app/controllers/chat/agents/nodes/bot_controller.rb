@@ -51,7 +51,9 @@ class Chat::Agents::Nodes::BotController < ApplicationController
           }
         end
       else
-        @results = [{ response: @cur_node.exception_text, 'siteSearchUrl' => uri.try(:to_s) }]
+        exception_text = @cur_node.exception_text
+        exception_text = I18n.t("chat.links.exception_text", link: uri.try(:to_s)) if exception_text.blank?
+        @results = [{ response: exception_text }]
       end
     else
       @results = [{ suggests: @cur_node.first_suggest.presence, response: @cur_node.first_text }]
