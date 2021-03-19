@@ -8,14 +8,14 @@ class Chat::Agents::Nodes::BotController < ApplicationController
   def create_chat_history
     return if @result == @cur_node.becomes_with_route.first_text
     history = Chat::History.new(params.permit(Chat::History.permitted_fields))
-    history.session_id = request.session.id
+    history.session_id = cookies["_ss_recommend"] rescue nil
     history.request_id = request.uuid
     history.prev_intent_id = Chat::History.site(@cur_site).
       where(node_id: @cur_node.id, session_id: history.session_id).
       order_by(created: -1).first.try(:intent).try(:id)
-    history.intent_id = @intent.try(:id)
+    history.intent_id = @intents.first.try(:id) if @intents.present?
     history.result = @result
-    history.suggest = @intent.try(:suggest)
+    history.suggest = @intents.first.try(:suggest) if @intents.present?
     history.click_suggest = params[:text] if params[:click_suggest].present?
     history.site_id = @cur_site.id
     history.node_id = @cur_node.id
@@ -45,9 +45,9 @@ class Chat::Agents::Nodes::BotController < ApplicationController
           response = intent.response.presence || @cur_node.response_template
           question = @cur_node.question.presence if intent.question == 'enabled'
           url = uri.try(:to_s) if intent.site_search == 'enabled'
+          response += I18n.t("chat.links.exception_text_with_intent", link: url) if intent.site_search == 'enabled'
           {
-            id: intent.id, suggests: intent.suggest.presence, response: response, 'siteSearchUrl' => url,
-            question: question
+            id: intent.id, suggests: intent.suggest.presence, response: response, question: question
           }
         end
       else
