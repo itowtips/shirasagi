@@ -1,4 +1,4 @@
-<% return if @cur_page.contact_state == "hide" || !@cur_page.contact_present? %>
+<% return unless @cur_page.show_contact? %>
 
 <footer class="contact">
   <h2><%= t("contact.view.title") %></h2>

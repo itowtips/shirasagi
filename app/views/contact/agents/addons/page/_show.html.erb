@@ -1,4 +1,4 @@
-<% return if @item.contact_state == "hide" || !@item.contact_present? %>
+<% return unless @item.show_contact? %>
 
 <dl class="see mod-contact">
   <dt><%= @model.t :contact_state %></dt>
