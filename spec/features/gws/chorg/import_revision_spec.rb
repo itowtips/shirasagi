@@ -19,6 +19,7 @@ describe "gws_chorg_import_revision", type: :feature, dbscope: :example do
       {
         "name"=>"組織変更/グループ_1",
         "order"=>"1",
+        "contact_group_name"=>"グループ1",
         "contact_tel"=>"000-0000-0000",
         "contact_fax"=>"000-0000-0000",
         "contact_email"=>"sample1@example.jp",
@@ -34,6 +35,7 @@ describe "gws_chorg_import_revision", type: :feature, dbscope: :example do
       {
         "name"=>"組織変更/グループ_2",
         "order"=>"2",
+        "contact_group_name"=>"グループ2",
         "contact_tel"=>"000-0000-0000",
         "contact_fax"=>"000-0000-0000",
         "contact_email"=>"sample2@example.jp",
@@ -49,6 +51,7 @@ describe "gws_chorg_import_revision", type: :feature, dbscope: :example do
       {
         "name"=>"組織変更/グループ_3",
         "order"=>"3",
+        "contact_group_name"=>"グループ3",
         "contact_tel"=>"000-0000-0000",
         "contact_fax"=>"000-0000-0000",
         "contact_email"=>"sample3@example.jp",
@@ -64,6 +67,7 @@ describe "gws_chorg_import_revision", type: :feature, dbscope: :example do
       {
         "name"=>"組織変更/グループ_4",
         "order"=>"4",
+        "contact_group_name"=>"グループ4",
         "contact_tel"=>"000-0000-0000",
         "contact_fax"=>"000-0000-0000",
         "contact_email"=>"sample4@example.jp",

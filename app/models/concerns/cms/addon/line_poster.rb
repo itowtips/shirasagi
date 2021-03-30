@@ -4,6 +4,8 @@ module Cms::Addon
     extend SS::Addon
 
     included do
+      attr_accessor :skip_sns_post
+
       field :line_auto_post, type: String
       field :line_edit_auto_post, type: String
       field :line_posted, type: Array, default: [], metadata: { branch: false }
@@ -35,6 +37,7 @@ module Cms::Addon
 
     def line_post_enabled?
       self.site = site || @cur_site
+      return false if skip_sns_post.present?
       return false if !site.line_token_enabled?
       return false if respond_to?(:branch?) && branch?
       return false if line_auto_post != "active"

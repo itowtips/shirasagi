@@ -17,7 +17,7 @@ module Chorg::Model::Revision
       CSV.generate do |data|
         data << %w(
           id type source destination order
-          contact_tel contact_fax contact_email contact_link_url contact_link_name
+          contact_group_name contact_tel contact_fax contact_email contact_link_url contact_link_name
           ldap_dn
         ).map { |k| I18n.t("chorg.import.changeset.#{k}") }
 
@@ -57,7 +57,7 @@ module Chorg::Model::Revision
       CSV.generate do |data|
         data << %w(
           id type source destination order
-          contact_tel contact_fax contact_email contact_link_url contact_link_name
+          contact_group_name contact_tel contact_fax contact_email contact_link_url contact_link_name
           ldap_dn
         ).map { |k| I18n.t("chorg.import.changeset.#{k}") }
         SS.config.chorg.changeset_sample_csv.each { |line| data << line }
@@ -73,6 +73,7 @@ module Chorg::Model::Revision
       line << source["name"]
       line << destination["name"]
       line << destination["order"]
+      line << destination["contact_group_name"]
       line << destination["contact_tel"]
       line << destination["contact_fax"]
       line << destination["contact_email"]
@@ -96,6 +97,7 @@ module Chorg::Model::Revision
       attr["destination"] = {
         "name" => line[I18n.t("chorg.import.changeset.destination")].to_s.strip,
         "order" => line[I18n.t("chorg.import.changeset.order")].to_s.strip,
+        "contact_group_name" => line[I18n.t("chorg.import.changeset.contact_group_name")].to_s.strip,
         "contact_tel" => line[I18n.t("chorg.import.changeset.contact_tel")].to_s.strip,
         "contact_fax" => line[I18n.t("chorg.import.changeset.contact_fax")].to_s.strip,
         "contact_email" => line[I18n.t("chorg.import.changeset.contact_email")].to_s.strip,

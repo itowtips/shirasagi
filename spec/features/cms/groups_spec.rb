@@ -61,7 +61,7 @@ describe "cms_groups", type: :feature, dbscope: :example do
       link_url = "http://demo.ss-proj.org/"
       link_name = "http://demo.ss-proj.org/"
       g1 = create(
-        :cms_group, name: "A", order: 10, contact_tel: tel, contact_fax: tel,
+        :cms_group, name: "A", order: 10, contact_group_name: "label", contact_tel: tel, contact_fax: tel,
         contact_email: email, contact_link_url: link_url, contact_link_name: link_name
       )
       cms_site.add_to_set(group_ids: [g1.id])
@@ -80,6 +80,7 @@ describe "cms_groups", type: :feature, dbscope: :example do
       groups = Cms::Group.site(cms_site).ne(id: cms_group.id)
       expected_names = %w(A A/B A/B/C A/B/C/D A/E A/E/F A/E/G)
       expected_orders = %w(10 20 30 40 50 60 70).map(&:to_i)
+      expected_contact_group_names = ["label", "label1", "label2", "label3", nil, nil, nil]
       expected_contact_tels = %w(1 2 3 4 5 6 7).fill("000-000-0000")
       expected_contact_faxs = %w(1 2 3 4 5 6 7).fill("000-000-0000")
       expected_contact_emails = %w(1 2 3 4 5 6 7).fill("sys@example.jp")
@@ -88,6 +89,7 @@ describe "cms_groups", type: :feature, dbscope: :example do
 
       expect(groups.map(&:name)).to eq expected_names
       expect(groups.map(&:order)).to eq expected_orders
+      expect(groups.map(&:contact_group_name)).to eq expected_contact_group_names
       expect(groups.map(&:contact_tel)).to eq expected_contact_tels
       expect(groups.map(&:contact_fax)).to eq expected_contact_faxs
       expect(groups.map(&:contact_email)).to eq expected_contact_emails

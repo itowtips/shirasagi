@@ -13,7 +13,7 @@ module Cms::Addon::Import
     module ClassMethods
       def csv_headers
         %w(
-          id name order ldap_dn contact_tel contact_fax contact_email contact_link_url
+          id name order ldap_dn contact_group_name contact_tel contact_fax contact_email contact_link_url
           contact_link_name activation_date expiration_date
         )
       end
@@ -27,6 +27,7 @@ module Cms::Addon::Import
             line << item.name
             line << item.order
             line << item.ldap_dn
+            line << item.contact_group_name
             line << item.contact_tel
             line << item.contact_fax
             line << item.contact_email
@@ -73,17 +74,18 @@ module Cms::Addon::Import
     end
 
     def update_row(row, index)
-      id             = row[t("id")].to_s.strip
-      name           = row[t("name")].to_s.strip
-      order          = row[t("order")].to_s.strip
-      ldap_dn        = row[t("ldap_dn")].to_s.strip
-      contact_tel    = row[t("contact_tel")].to_s.strip
-      contact_fax    = row[t("contact_fax")].to_s.strip
-      contact_email  = row[t("contact_email")].to_s.strip
-      contact_link_url = row[t("contact_link_url")].to_s.strip
-      contact_link_name = row[t("contact_link_name")].to_s.strip
-      activation_date = row[t("activation_date")].to_s.strip
-      expiration_date = row[t("expiration_date")].to_s.strip
+      id                 = row[t("id")].to_s.strip
+      name               = row[t("name")].to_s.strip
+      order              = row[t("order")].to_s.strip
+      ldap_dn            = row[t("ldap_dn")].to_s.strip
+      contact_group_name = row[t("contact_group_name")].to_s.strip
+      contact_tel        = row[t("contact_tel")].to_s.strip
+      contact_fax        = row[t("contact_fax")].to_s.strip
+      contact_email      = row[t("contact_email")].to_s.strip
+      contact_link_url   = row[t("contact_link_url")].to_s.strip
+      contact_link_name  = row[t("contact_link_name")].to_s.strip
+      activation_date    = row[t("activation_date")].to_s.strip
+      expiration_date    = row[t("expiration_date")].to_s.strip
 
       if id.present?
         item = self.class.unscoped.site(cur_site).where(id: id).first
@@ -101,16 +103,17 @@ module Cms::Addon::Import
         item = self.class.new
       end
 
-      item.name            = name
-      item.order           = order
-      item.ldap_dn         = ldap_dn
-      item.contact_tel     = contact_tel
-      item.contact_fax     = contact_fax
-      item.contact_email   = contact_email
-      item.contact_link_url = contact_link_url
-      item.contact_link_name = contact_link_name
-      item.activation_date = activation_date
-      item.expiration_date = expiration_date
+      item.name               = name
+      item.order              = order
+      item.ldap_dn            = ldap_dn
+      item.contact_group_name = contact_group_name
+      item.contact_tel        = contact_tel
+      item.contact_fax        = contact_fax
+      item.contact_email      = contact_email
+      item.contact_link_url   = contact_link_url
+      item.contact_link_name  = contact_link_name
+      item.activation_date    = activation_date
+      item.expiration_date    = expiration_date
 
       if item.save
         @imported += 1

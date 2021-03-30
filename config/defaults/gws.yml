@@ -73,6 +73,7 @@ production: &production
       - "Gws::Circular::Category"
       - "Gws::Circular::Post"
       - "Gws::CustomGroup"
+      - "Gws::Discussion::Post"
       - "Gws::Facility::Category"
       - "Gws::Facility::Item"
       - "Gws::Faq::Category"
@@ -116,6 +117,10 @@ production: &production
       - "Gws::Workflow::File"
       - "Gws::Workflow::Form"
       - "Gws::Workflow::Route"
+    exclude_validation_models:
+      - "Gws::Schedule::Plan"
+      - "Gws::Schedule::PlanSearch"
+      - "Gws::Schedule::Todo"
     exclude_fields:
       - "filename"
       - "state"
@@ -127,6 +132,7 @@ production: &production
       - "workflow_comment"
       - "url"
       - "/_url$/"
+      - "text"
     ids_fields:
       - "_id"
       - "id"

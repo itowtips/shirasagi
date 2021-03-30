@@ -17,9 +17,13 @@ production: &production
     - "workflow_comment"
     - "url"
     - "/_url$/"
+    - "contains_urls"
+    - "_type"
   ids_fields:
     - "_id"
     - "id"
+  embedded_array_fields:
+    - "column_values"
   max_division: 3
   changeset_sample_csv:
     - - ""
@@ -27,6 +31,7 @@ production: &production
       - ""
       - シラサギ市/新設_グループ
       - 10
+      - 新設グループ
       - 000-000-0000
       - 000-000-0000
       - sample1@example.jp
@@ -38,6 +43,7 @@ production: &production
       - シラサギ市/企画政策部/政策課
       - シラサギ市/企画政策部/分割_政策課
       - 20
+      - "企画政策部　分割_政策課"
       - 000-000-0000
       - 000-000-0000
       - sample2@example.jp
@@ -49,6 +55,7 @@ production: &production
       - シラサギ市/企画政策部/広報課
       - シラサギ市/企画政策部/移動_広報課
       - 30
+      - "企画政策部　移動_広報課"
       - 000-000-0000
       - 000-000-0000
       - sample3@example.jp
@@ -60,6 +67,7 @@ production: &production
       - シラサギ市/危機管理部/管理課
       - シラサギ市/危機管理部/防災課
       - 40
+      - "企画政策部　防災課"
       - 000-000-0000
       - 000-000-0000
       - sample4@example.jp
@@ -69,6 +77,7 @@ production: &production
     - - ""
       - 廃止
       - シラサギ市/危機管理部
+      - ""
       - ""
       - ""
       - ""

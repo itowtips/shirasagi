@@ -30,6 +30,7 @@ ja:
       add_changesets: &group_props
         name: グループ名
         order: 表示順
+        contact_group_name: 担当部署
         contact_tel: 電話番号
         contact_fax: ファックス番号
         contact_email: メールアドレス
@@ -69,6 +70,8 @@ ja:
         detail: 詳細
         more: もっと見る
         close: 閉じる
+    labels:
+      all_sites: 全てのサイト
     menus:
       revisions:
         add: 新設を追加する
@@ -101,6 +104,7 @@ ja:
         source: 操作元グループ名
         destination: 操作先グループ名
         order: 表示順
+        contact_group_name: 担当部署
         contact_tel: 電話番号
         contact_fax: ファックス番号
         contact_email: メールアドレス
@@ -147,6 +151,7 @@ ja:
         reservation: 予約実行
       chorg/revision:
         content_csv_file_id: コンテンツCSVファイル
+        target_site_ids: 対象サイト
 
   tooltip:
     chorg/model/revision:
@@ -171,6 +176,9 @@ ja:
       content_csv_file_id:
         - 組織変更実行後にパーツ、レイアウト、ページ、フォルダーの異動を行うためのコンテンツCSVファイルを選択します。
         - コンテンツCSVには異動後のグループ名などを設定してください。
+      target_site_ids:
+        - 組織変更の対象となるサイトを選択します。
+        - 指定がない場合は全サイトが対象となります。
     chorg/run_params:
       reservation:
         - 実行する時間を予約できます。
@@ -182,6 +190,8 @@ ja:
           order:
             - グループ画面での表示順を入力します。
             - 数字が小さいほど上位に表示されます。
+          contact_group_name:
+            - 新設するグループの担当部署を入力します。
           contact_tel:
             - 新設するグループの電話番号を入力します。
           contact_fax:
@@ -203,6 +213,8 @@ ja:
           order:
             - グループ画面での表示順を入力します。
             - 数字が小さいほど上位に表示されます。
+          contact_group_name:
+            - 分割後のグループの担当部署を入力します。
           contact_tel:
             - 分割後のグループの電話番号を入力します。
           contact_fax:
@@ -223,6 +235,8 @@ ja:
           order:
             - グループ画面での表示順を入力します。
             - 数字が小さいほど上位に表示されます。
+          contact_group_name:
+            - 移動先グループの担当部署を入力します。
           contact_tel:
             - 移動先グループの電話番号を入力します。
           contact_fax:
@@ -243,6 +257,8 @@ ja:
           order:
             - グループ画面での表示順を入力します。
             - 数字が小さいほど上位に表示されます。
+          contact_group_name:
+            - 統合先グループの担当部署を入力します。
           contact_tel:
             - 統合先グループの電話番号を入力します。
           contact_fax:
