@@ -152,6 +152,10 @@ module Cms::Addon
       :contact_fax, :contact_email, :contact_link_url, :contact_link_name
     ].freeze
 
+    COLUMN_VALUES_FIELDS = [
+      :value, :text, :link_url, :link_label, :lists
+    ].freeze
+
     included do
       field :search_name, type: String
       field :search_filename, type: String
@@ -308,7 +312,15 @@ module Cms::Addon
 
     def build_search_keyword_criteria
       if search_keyword.present?
-        { "$or" => KEYWORD_FIELDS.map { |field| { field => /#{::Regexp.escape(search_keyword)}/ } } }
+        cond = KEYWORD_FIELDS.map { |field| { field => /#{::Regexp.escape(search_keyword)}/ } }
+        cond << {
+          column_values: {
+            "$elemMatch" => {
+              "$or"=> COLUMN_VALUES_FIELDS.map { |key| { key => { "$in" => [/#{::Regexp.escape(search_keyword)}/] } } }
+            }
+          }
+        }
+        { "$or" => cond  }
       else
         {}
       end
