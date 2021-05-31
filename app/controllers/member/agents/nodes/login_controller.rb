@@ -58,6 +58,24 @@ class Member::Agents::Nodes::LoginController < ApplicationController
 
   def callback
     auth = request.env["omniauth.auth"]
+
+    #require "pry"
+    #binding.pry
+
+    #uid = auth.uid
+    #site = SS::Site.first
+    #client = Line::Bot::Client.new do |config|
+    #  config.channel_secret = site.line_channel_secret
+    #  config.channel_token = site.line_channel_access_token
+    #end
+    #messages = [
+    #  {
+    #    type: "text",
+    #    text: "Hello, world"
+    #  }
+    #]
+    #client.push_message(uid, messages)
+
     member = Cms::Member.site(@cur_site).and_enabled.where(oauth_type: auth.provider, oauth_id: auth.uid).first
     if member.blank?
       # 外部認証していない場合、ログイン情報を保存してから、ログインさせる
