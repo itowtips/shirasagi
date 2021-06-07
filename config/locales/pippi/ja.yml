@@ -1,0 +1,44 @@
+ja:
+  pippi:
+    options:
+      subscribe_line_message:
+        active: LINEメッセージを受信する
+        expired: LINEメッセージを受信しない
+      child_age_situations:
+        ninshin: 妊娠中
+        0_3month: 0〜3か月
+        4_6month: 4〜6か月
+        7_12month: 7〜12か月
+        1_2year: 1～2歳
+        3_5year: 3～5歳
+        elder: 小学生以上
+    placeholder:
+      member_name: お子さんの愛称、ニックネームを入力ください
+
+  modules:
+    addons:
+      pippi/member/additional_attributes: 追加情報
+
+  mongoid:
+    attributes:
+      pippi/member/addon/additional_attributes:
+        subscribe_line_message: LINEメッセージ
+        first_registered: 初回登録日時
+        subscribe_richmenu_id: LINEリッチメニューID
+        child_name: 子ども名前
+        child_birthday: 生年月日
+        child1: "子ども1"
+        child2: "子ども2"
+        child3: "子ども3"
+        child4: "子ども4"
+        child5: "子ども5"
+        child1_name: "子ども1の名前"
+        child2_name: "子ども2の名前"
+        child3_name: "子ども3の名前"
+        child4_name: "子ども4の名前"
+        child5_name: "子ども5の名前"
+        child1_birthday: "子ども1の生年月日"
+        child2_birthday: "子ども2の生年月日"
+        child3_birthday: "子ども3の生年月日"
+        child4_birthday: "子ども4の生年月日"
+        child5_birthday: "子ども5の生年月日"

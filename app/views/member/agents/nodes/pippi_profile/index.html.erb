@@ -1,0 +1,29 @@
+<%= render partial: "menu" %>
+
+<div class="mypage-show member-profile">
+  <div class="columns">
+    <dl class="column">
+      <dt><%= @model.t :name %></dt>
+      <dd><%= @item.name %></dd>
+    </dl>
+
+    <dl class="column">
+      <dt><%= @item.t :subscribe_line_message %></dt>
+      <dd><%= @item.label :subscribe_line_message %></dd>
+    </dl>
+
+    <% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
+      <dl class="column">
+        <dt><%= @model.t "child#{i}_birthday" %></dt>
+        <dd><%= tryb { I18n.l(@item.send("child#{i}_birthday").to_date, format: :long) } %></dd>
+      </dl>
+    <% end %>
+
+    <% @item.each_deliver_categories do |root, children| %>
+      <dl class="column">
+        <dt><%= root.name %></dt>
+        <dd><%= children.map(&:name).join(", ") %></dd>
+      </dl>
+    <% end %>
+  </div>
+</div>

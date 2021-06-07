@@ -1,0 +1,69 @@
+<% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
+  <fieldset class="column child-name child-<%= i %>">
+    <legend>
+      <%= @model.t("child#{i}_name") %>
+    </legend>
+    <div class="chlid-name">
+      <%= f.text_field "child#{i}_name", placeholder: t("pippi.placeholder.member_name") %>
+    </div>
+  </fieldset>
+
+<fieldset class="column name">
+  <legend>
+    <%= @model.t :name %>
+  </legend>
+  <div>
+    <%= @item.name %>
+  </div>
+</fieldset>
+
+<fieldset class="column subscribe-line-message">
+  <legend>
+    <%= @model.t(:subscribe_line_message) %>
+    <%= required_label %>
+  </legend>
+  <div>
+    <%= f.select :subscribe_line_message, @item.subscribe_line_message_options %>
+    <%= remarks :subscribe_line_message %>
+  </div>
+</fieldset>
+
+<% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
+  <fieldset class="column child-birthday child-birthday<%= i %>">
+    <legend>
+      <%= @model.t("child#{i}_birthday") %>
+    </legend>
+    <div>
+      <%= f.fields_for "in_child#{i}_birth" do |birth_f| %>
+        <% era, year, month, day = @item.send("parse_in_child#{i}_birth") %>
+        <%= birth_f.number_field :year, value: (year || Time.zone.today.year) %>
+        <%= t("datetime.prompts.year") %>
+        <%= birth_f.select :month, options_for_select((1..12).to_a, month), include_blank: true  %>
+        <%= t("datetime.prompts.month") %>
+        <%= birth_f.select :day, options_for_select((1..31).to_a, day), include_blank: true %>
+        <%= t("datetime.prompts.day") %>
+      <% end %>
+    </div>
+  </fieldset>
+<% end %>
+
+<%= hidden_field_tag "item[deliver_category_ids][]" %>
+<% @item.deliver_categories.and_closed.each do |item| %>
+  <%= hidden_field_tag "item[deliver_category_ids][]", item.id %>
+<% end %>
+
+<% Cms::Line::DeliverCategory::Category.site(@cur_site).each_public do |root, children| %>
+  <fieldset class="column deliver-category deliver-category-<%= root.order %>">
+    <legend>
+      <%= root.name %>
+    </legend>
+    <div>
+      <% children.each do |category| %>
+        <label class="category-<%= category.order %>">
+          <%= check_box_tag "#{f.object_name}[deliver_category_ids][]", category.id, @item.deliver_category_ids.include?(category.id) %>
+          <%= category.name %>
+        </label>
+      <% end %>
+    </div>
+  </fieldset>
+<% end %>

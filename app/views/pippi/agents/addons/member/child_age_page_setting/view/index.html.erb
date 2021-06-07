@@ -1,0 +1,30 @@
+<%
+  @cur_node = @mypage
+  @cur_node.attributes = @mypage.child_age_context
+
+  @tabs = @cur_member.deliver_child_ages
+  return if @tabs.blank?
+  @tabs.each do |tab|
+    tab[:pages] = tab[:child_ages].map { |child_age| child_age.st_pages.to_a }.
+      flatten.sample(@cur_node.limit)
+  end
+%>
+
+<%= jquery do %>
+SS_Tabs.render("#cms-tabs-mypage<%= @mypage.id %>");
+<% end %>
+
+<section class="child-ages">
+  <header><h2>年齢別情報</h2></header>
+  <div class="cms-tabs tabs" id="cms-tabs-mypage<%= @mypage.id %>">
+    <% @tabs.each_with_index do |tab, idx| %>
+    <article class="tab" id="cms-tab-mypage<%= @mypage.id %>-<%= idx %>">
+      <header><h2><%= tab[:name] %>さん</h2></header>
+      <div class="pages">
+        <% @items = tab[:pages] %>
+        <%= render_page_list %>
+      </div>
+    </article>
+    <% end %>
+  </div>
+</section>
