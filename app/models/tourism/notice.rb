@@ -6,7 +6,7 @@ class Tourism::Notice
   include Workflow::Addon::Approver
   include Tourism::Addon::Facility
   include Cms::Addon::Meta
-  include Cms::Addon::SnsPoster
+  include Cms::Addon::TwitterPoster
   include Cms::Addon::LinePoster
   include Cms::Addon::Thumb
   include Cms::Addon::RedirectLink

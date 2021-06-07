@@ -27,7 +27,7 @@ module Tourism::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
     include Cms::Addon::EditorSetting
-    include Cms::Addon::NodeAutoPostSetting
+    include Cms::Addon::NodeTwitterPostSetting
     include Cms::Addon::NodeLinePostSetting
     include Cms::Addon::PageList
     include Cms::Addon::Form::Node

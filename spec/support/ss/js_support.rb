@@ -124,6 +124,73 @@ module SS
       puts "screenshot: #{filename}"
     rescue
     end
+
+    ENSURE_ADDON_OPENED = <<~SCRIPT.freeze
+      (function(addonId, resolve) {
+        var $addon = $(addonId);
+        if (! $addon[0]) {
+          resolve(false);
+          return;
+        }
+        if ($addon.hasClass("hide")) {
+          resolve(false);
+          return;
+        }
+        if (! $addon.hasClass("body-closed")) {
+          resolve(true);
+          return;
+        }
+        $addon.one("ss:addonShown", function() { resolve(true); });
+        $addon.find(".toggle-head").trigger("click");
+      })(arguments[0], arguments[1]);
+    SCRIPT
+
+    HOOK_EVENT_COMPLETION = <<~SCRIPT.freeze
+      (function(promiseId, eventName, selector) {
+        var defer = $.Deferred();
+        $(selector || document).one(eventName, function() { defer.resolve(true); });
+        window.SS[promiseId] = defer.promise();
+      })(arguments[0], arguments[1], arguments[2]);
+    SCRIPT
+
+    WAIT_EVENT_COMPLETION = <<~SCRIPT.freeze
+      (function(promiseId, resolve) {
+        var promise = window.SS[promiseId];
+        if (!promise) {
+          resolve(false);
+          return;
+        }
+        delete window.SS[promiseId];
+        promise.done(function(result) { resolve(result); });
+      })(arguments[0], arguments[1]);
+    SCRIPT
+
+    def ensure_addon_opened(addon_id)
+      result = page.evaluate_async_script(ENSURE_ADDON_OPENED, addon_id)
+      expect(result).to be_truthy
+      true
+    end
+
+    def wait_cbox_open(&block)
+      wait_event_to_fire("cbox_complete", &block)
+    end
+
+    def wait_cbox_close(&block)
+      wait_event_to_fire("cbox_closed", &block)
+    end
+
+    def wait_event_to_fire(event_name, selector = nil)
+      promise_id = "promise_#{unique_id}"
+      page.execute_script(HOOK_EVENT_COMPLETION, promise_id, event_name, selector)
+
+      # do operations which fire events
+      ret = yield
+
+      result = page.evaluate_async_script(WAIT_EVENT_COMPLETION, promise_id)
+      expect(result).to be_truthy
+
+      ret
+    end
   end
 end
 

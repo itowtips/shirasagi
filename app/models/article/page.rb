@@ -6,7 +6,7 @@ class Article::Page
   include Workflow::Addon::Approver
   include Article::Addon::Covid
   include Cms::Addon::Meta
-  include Cms::Addon::SnsPoster
+  include Cms::Addon::TwitterPoster
   include Cms::Addon::LinePoster
   include Gravatar::Addon::Gravatar
   include Cms::Addon::Thumb

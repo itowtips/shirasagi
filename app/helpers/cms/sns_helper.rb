@@ -1,25 +1,23 @@
 module Cms::SnsHelper
-  def line_post_confirm?
+  def show_line_post_confirm?
     return false if !@item.class.include?(Cms::Addon::LinePoster)
 
     site = @item.site
     item = (@item.respond_to?(:master) && @item.master) ? @item.master : @item
-    line_posted = item.line_posted.present?
 
     return false if !site.line_token_enabled?
     return false if @item.line_auto_post != "active"
-    return false if line_posted && @item.line_edit_auto_post != "active"
+    return false if item.line_posted.present?
     true
   end
 
-  def twitter_post_confirm?
-    return false if !@item.class.include?(Cms::Addon::SnsPoster)
+  def show_twitter_post_confirm?
+    return false if !@item.class.include?(Cms::Addon::TwitterPoster)
 
     item = (@item.respond_to?(:master) && @item.master) ? @item.master : @item
-    twitter_posted = item.twitter_posted.present?
 
     return false if !@item.use_twitter_post?
-    return false if twitter_posted && !@item.edit_auto_post_enabled?
+    return false if item.twitter_posted.present?
     true
   end
 
@@ -31,10 +29,10 @@ module Cms::SnsHelper
 
   def render_sns_post_confirm
     messages = []
-    if line_post_confirm?
+    if show_line_post_confirm?
       messages << t("cms.confirm.line_post_enabled")
     end
-    if twitter_post_confirm?
+    if show_twitter_post_confirm?
       messages << t("cms.confirm.twitter_post_enabled")
     end
     if facebook_post_confirm?

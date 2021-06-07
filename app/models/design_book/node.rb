@@ -4,7 +4,7 @@ class DesignBook::Node
   include Cms::Addon::NodeSetting
   include Cms::Addon::EditorSetting
   include Cms::Addon::GroupPermission
-  include Cms::Addon::NodeAutoPostSetting
+  include Cms::Addon::NodeTwitterPostSetting
   include Cms::Addon::NodeLinePostSetting
   include Cms::Addon::ForMemberNode
 
@@ -21,7 +21,7 @@ class DesignBook::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
     include Cms::Addon::EditorSetting
-    include Cms::Addon::NodeAutoPostSetting
+    include Cms::Addon::NodeTwitterPostSetting
     include Cms::Addon::NodeLinePostSetting
     include Event::Addon::PageList
     include Cms::Addon::Form::Node
