@@ -1,0 +1,9 @@
+<%= code_editor ".mod-cms-json-form textarea", mode: :html %>
+
+<dl class="see mod-cms-json-form">
+  <dt><%= @model.t :name %><%= @model.tt :name %></dt>
+  <dd><%= f.text_field :name %></dd>
+
+  <dt><%= @model.t :body %><%= @model.tt :body %></dt>
+  <dd><%= f.text_area :body, style: "height: 400px;" %></dd>
+</dl>

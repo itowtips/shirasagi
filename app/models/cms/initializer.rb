@@ -7,6 +7,7 @@ module Cms
     Cms::Node.plugin "cms/photo_album"
     Cms::Node.plugin "cms/group_page"
     Cms::Node.plugin "cms/site_search"
+    Cms::Node.plugin "cms/line_hub"
     Cms::Part.plugin "cms/site_search_history"
     Cms::Part.plugin "cms/history_list"
     Cms::Part.plugin "cms/free"
@@ -113,6 +114,14 @@ module Cms
     Cms::Role.permission :import_private_cms_nodes
     Cms::Role.permission :import_other_cms_nodes
     Cms::Role.permission :unlock_other_cms_pages
+    Cms::Role.permission :read_other_cms_line_templates
+    Cms::Role.permission :read_private_cms_line_templates
+    Cms::Role.permission :edit_other_cms_line_templates
+    Cms::Role.permission :edit_private_cms_line_templates
+    Cms::Role.permission :delete_other_cms_line_templates
+    Cms::Role.permission :delete_private_cms_line_templates
+    Cms::Role.permission :use_cms_line_event_sessions
+
     if SS.config.michecker && SS.config.michecker['disable'].blank?
       Cms::Role.permission :use_cms_michecker
     end

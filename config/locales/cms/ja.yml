@@ -30,6 +30,10 @@ ja:
     input_directly: 直接入力する
     layout: レイアウト
     link_check: リンクチェック
+    line: LINE
+    line_template: テンプレート
+    line_poster: Poster連携
+    line_event_session: セッション
     form_check: 制約チェック
     list_view: リスト表示
     row_num: 行目
@@ -554,6 +558,13 @@ ja:
     read_other_cms_check_links_errors: リンクチェックエラーの閲覧（全て）
     read_private_cms_check_links_errors: リンクチェックエラーの閲覧（所有）
     edit_cms_check_links_ignore_urls: リンクチェックエラー例外の管理
+    read_other_cms_line_templates: LINEテンプレートの閲覧（全て）
+    read_private_cms_line_templates: LINEテンプレートの閲覧（所有）
+    edit_other_cms_line_templates: LINEテンプレートの編集（全て）
+    edit_private_cms_line_templates: LINEテンプレートの編集（所有）
+    delete_other_cms_line_templates: LINEテンプレートの削除（全て）
+    delete_private_cms_line_templates: LINEテンプレートの削除（所有）
+    use_cms_line_event_sessions: LINEセッションの管理
 
   modules:
     cms: 標準機能
@@ -1126,6 +1137,9 @@ ja:
         group_ids: 管理グループ
       cms/check_links/ignore_url:
         name: 除外URL
+      cms/line/template:
+        name: タイトル
+        body: JSON
 
   activemodel:
     attributes:
@@ -1478,6 +1492,11 @@ ja:
       destination_filename:
         - ページやフォルダーを移動します。
         - 移動先をフルパスで設定します。
+    cms/line/template:
+      name:
+        - タイトルを入力します。
+      body:
+        - テンプレートのJSON本文を入力します。
 
     cms/site:
       name:

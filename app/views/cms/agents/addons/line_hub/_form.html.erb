@@ -1,0 +1,27 @@
+<%= jquery do %>
+  var sort = new SS_SortableForm('.mod-cms-addon-line-hub .index');
+  sort.renderItems(<%== @item.line_delegates.to_json %>);
+<% end %>
+
+<div class="mod-cms-addon-line-hub">
+  <table class="index form-index sortable-index">
+    <thead>
+    <tr>
+      <th><%= @item.t('line/mode') %></th>
+      <th><%= @item.t('line/trigger_type') %></th>
+      <th><%= @item.t('line/trigger_data') %></th>
+      <th><%= @item.t('line/target') %></th>
+      <th><%= @item.t('line/template_id') %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-base="true">
+      <td><%= f.text_field_tag 'item[line_delegates][][mode]', nil, id: nil %></td>
+      <td><%= f.text_field_tag 'item[line_delegates][][trigger_type]', nil, id: nil %></td>
+      <td><%= f.text_field_tag 'item[line_delegates][][trigger_data]', nil, id: nil %></td>
+      <td><%= f.text_field_tag 'item[line_delegates][][target]', nil, id: nil %></td>
+      <td><%= f.text_field_tag 'item[line_delegates][][template_id]', nil, id: nil %></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,25 @@
+<%= form_tag({ action: :deliver }, { method: :post, multipart: true }) do %>
+
+  <div><%= @items.count %><%= t("ss.units.count") %></div>
+
+  <table class="index">　
+    <thead>
+      <tr>
+        <th><%= Cms::Member.t(:name) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @items.each do |item| %>
+        <tr>
+          <td><%= item.name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= paginate @items if @items.try(:current_page) %>
+
+  <footer class="send">
+    <%= submit_tag "配信処理を実行する", name: 'import', class: :save, data: { confirm: t("ss.confirm.import") } %>
+  </footer>
+<% end %>

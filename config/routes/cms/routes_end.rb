@@ -161,6 +161,17 @@ Rails.application.routes.draw do
       resource :site_setting
     end
 
+    namespace "line" do
+      resources :templates, concerns: :deletion
+      resources :event_sessions, only: [:index, :show, :destroy], concerns: :deletion
+      namespace "poster" do
+        resources :segment_deliveries, concerns: :deletion do
+          get :deliver, on: :member
+          post :deliver, on: :member
+        end
+      end
+    end
+
     get "check_links" => "check_links#index"
     post "check_links" => "check_links#run"
     get "generate_nodes" => "generate_nodes#index"
@@ -337,6 +348,8 @@ Rails.application.routes.draw do
     get "archive" => "public#redirect_to_archive_index", cell: "nodes/archive"
     get "photo_album" => "public#index", cell: "nodes/photo_album"
     get "site_search/(index.:format)" => "public#index", cell: "nodes/site_search"
+    get "line_hub/line" => "public#index", cell: "nodes/line_hub"
+    post "line_hub/line" => "public#index", cell: "nodes/line_hub"
   end
 
   part "cms" do
