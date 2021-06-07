@@ -1,0 +1,10 @@
+<dl class="see">
+  <dt><%= @model.t :name %><%= @model.tt :name %></dt>
+  <dd><%= f.text_field :name %></dd>
+
+  <dt><%= @model.t :poster_template %><%= @model.tt :poster_template %></dt>
+  <dd><%= f.text_field :poster_template %></dd>
+
+  <dt><%= @model.t :send_at %><%= @model.tt :send_at %></dt>
+  <dd><%= f.text_field :send_at, class: "datetime js-datetime", value: tryb { @item.send_at.strftime("%Y/%m/%d %H:%M") } %></dd>
+</dl>
