@@ -1,14 +1,19 @@
 require 'spec_helper'
 
-describe Cms::Page do
-  subject(:model) { Cms::Page }
-  subject(:factory) { :cms_page }
+describe Cms::Page, type: :model, dbscope: :example do
+  describe "factory" do
+    let(:factory) { :cms_page }
+    it_behaves_like "mongoid#save"
+  end
 
-  it_behaves_like "mongoid#save"
-  it_behaves_like "mongoid#find"
+  describe ".first" do
+    subject { create :cms_page }
+    let(:model) { subject.class }
+    it_behaves_like "mongoid#find"
+  end
 
   describe "#attributes" do
-    subject(:item) { model.last }
+    subject(:item) { create :cms_page }
     let(:show_path) { Rails.application.routes.url_helpers.cms_page_path(site: subject.site, id: subject) }
 
     it { expect(item.becomes_with_route).not_to eq nil }
@@ -76,7 +81,7 @@ describe Cms::Page do
   end
 
   describe "#name_for_index" do
-    let(:item) { model.last }
+    let(:item) { create :cms_page }
     subject { item.name_for_index }
 
     context "the value is set" do

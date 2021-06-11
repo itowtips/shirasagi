@@ -14,6 +14,7 @@ module Recommend::ListHelper
 
     displayed = 0
     @items.each do |item|
+      item.cur_site = @cur_site if item.respond_to?(:cur_site=) && item.site_id == @cur_site.id
       next if display_list.index(item.path)
       next if item.class.method_defined?(:access_url) && display_list.index(item.access_url)
       content = item.content
