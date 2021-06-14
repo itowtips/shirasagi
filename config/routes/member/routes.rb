@@ -58,6 +58,8 @@ Rails.application.routes.draw do
     # resources :groups, concerns: :deletion do
     #   resources :members, controller: :group_members, concerns: :deletion
     # end
+
+    resources :pippi_profiles, concerns: :deletion
   end
 
   node "member" do
@@ -139,6 +141,13 @@ Rails.application.routes.draw do
     post "registration/change_password(.:format)" => "public#change_password", cell: "nodes/registration"
     get "registration/confirm_password(.:format)" => "public#confirm_password", cell: "nodes/registration"
     post "registration/postal_code(.:format)" => "public#postal_code", cell: "nodes/registration"
+
+    ## pippi contents
+    get "pippi_profile(index.:format)" => "public#index", cell: "nodes/pippi_profile"
+    resource :pippi_profile, controller: "public", cell: "nodes/pippi_profile", only: [:edit, :update]
+    get "pippi_profile/leave(.:format)" => "public#leave", cell: "nodes/pippi_profile"
+    post "pippi_profile/confirm_leave(.:format)" => "public#confirm_leave", cell: "nodes/pippi_profile"
+    post "pippi_profile/complete_leave(.:format)" => "public#complete_leave", cell: "nodes/pippi_profile"
   end
 
   page "member" do

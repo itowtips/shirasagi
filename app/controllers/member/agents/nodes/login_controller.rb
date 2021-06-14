@@ -63,6 +63,13 @@ class Member::Agents::Nodes::LoginController < ApplicationController
       # 外部認証していない場合、ログイン情報を保存してから、ログインさせる
       Cms::Member.create_auth_member(auth, @cur_site)
       member = Cms::Member.site(@cur_site).and_enabled.where(oauth_type: auth.provider, oauth_id: auth.uid).first
+    else
+      # auth info の名前が変わっていたら上書きする
+      name = Cms::Member.name_of(auth.info)
+      if member.name != name
+        member.name = name
+        member.update
+      end
     end
 
     set_member_and_redirect member
