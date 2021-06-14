@@ -1,0 +1,25 @@
+ja:
+  pippi:
+    options:
+      subscribe_line_message:
+        active: LINEメッセージを受信する
+        expired: LINEメッセージを受信しない
+      child_age_situations:
+        ninshin: 妊娠中
+        0_3month: 0〜3か月
+        4_6month: 4〜6か月
+        7_12month: 7〜12か月
+        1_2year: 1～2歳
+        3_5year: 3～5歳
+        elder: 小学生以上
+
+  modules:
+    pippi: ぴっぴ機能
+    addons:
+      pippi/member/additional_attributes: 追加情報
+
+  mongoid:
+    attributes:
+      pippi/member/addon/additional_attributes:
+        subscribe_line_message: LINEメッセージ
+        child_age_situations: 子供の年齢

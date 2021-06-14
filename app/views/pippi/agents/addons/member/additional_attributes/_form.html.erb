@@ -1,0 +1,20 @@
+<%= jquery do %>
+  $("#addon-member-agents-addons-additional_attributes").hide();
+  $("#addon-ezine-agents-addons-subscription").hide();
+<% end %>
+
+<dl class="see mod-pippi-member-additional-attributes">
+  <dt><%= @item.t(:subscribe_line_message) %></dt>
+  <dd><%= f.select :subscribe_line_message, @item.subscribe_line_message_options %></dd>
+
+  <dt><%= @model.t(:child_age_situations) %></dt>
+  <dd>
+    <%= hidden_field_tag "#{f.object_name}[child_age_situations][]", nil %>
+    <% @item.child_age_situations_options.each do |k, v| %>
+      <label>
+        <%= check_box_tag "#{f.object_name}[child_age_situations][]", v, @item.child_age_situations.include?(v.to_s) %>
+        <%= k %>
+      </label>
+    <% end %>
+  </dd>
+</dl>

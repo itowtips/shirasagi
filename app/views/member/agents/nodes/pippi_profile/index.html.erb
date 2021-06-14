@@ -1,0 +1,20 @@
+<%= render partial: "menu" %>
+
+<div class="mypage-show member-profile">
+  <div class="columns">
+    <dl class="column">
+      <dt><%= @model.t :name %></dt>
+      <dd><%= @item.name %></dd>
+    </dl>
+
+    <dl class="column">
+      <dt><%= @item.t :subscribe_line_message %></dt>
+      <dd><%= @item.label :subscribe_line_message %></dd>
+    </dl>
+
+    <dl class="column">
+      <dt><%= @item.t :child_age_situations %></dt>
+      <dd><%= @item.label_child_age_situations %></dd>
+    </dl>
+  </div>
+</div>

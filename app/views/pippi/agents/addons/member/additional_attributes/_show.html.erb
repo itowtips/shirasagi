@@ -1,0 +1,12 @@
+<%= jquery do %>
+  $("#addon-member-agents-addons-additional_attributes").hide();
+  $("#addon-ezine-agents-addons-subscription").hide();
+<% end %>
+
+<dl class="see mod-pippi-member-additional-attributes">
+  <dt><%= @item.t(:subscribe_line_message) %></dt>
+  <dd><%= @item.label :subscribe_line_message %></dd>
+
+  <dt><%= @model.t(:child_age_situations) %></dt>
+  <dd><%= @item.label_child_age_situations %></dd>
+</dl>
