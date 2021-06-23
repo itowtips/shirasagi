@@ -7,50 +7,79 @@ class Cms::Agents::Tasks::NodesController < ApplicationController
   private
 
   def set_params
-    #
+  end
+
+  def each_node(&block)
+    nodes = base_criteria = Cms::Node.site(@site).and_public
+    nodes = nodes.where(filename: /^#{::Regexp.escape(@node.filename)}(\/|$)/) if @node
+    all_ids = nodes.pluck(:id)
+    all_ids.each_slice(PER_BATCH) do |ids|
+      base_criteria.in(id: ids).to_a.each(&block)
+    end
+  end
+
+  def each_node_with_rescue(&block)
+    each_node do |node|
+      yield node
+    end
+  end
+
+  def each_root_pages(&block)
+    base_criteria = Cms::Page.site(@site).and_public
+    pages = base_criteria.where(filename: /^[^\/]+$/, depth: 1)
+    all_ids = pages.pluck(:id)
+    all_ids.each_slice(PER_BATCH) do |ids|
+      Cms::Page.in(id: ids).to_a.each(&block)
+    end
+  end
+
+  def each_root_pages_with_rescue(&block)
+    each_root_pages do |page|
+      yield page
+    end
   end
 
   public
 
   def generate
     @task.log "# #{@site.name}"
+    @task.performance.header(name: "generate node performance log at #{Time.zone.now.iso8601}")
+    @task.performance.collect_site(@site) do
+      generate_root_pages unless @node
 
-    generate_root_pages unless @node
+      each_node_with_rescue do |node|
+        next unless node
 
-    nodes = Cms::Node.site(@site).and_public
-    nodes = nodes.where(filename: /^#{::Regexp.escape(@node.filename)}(\/|$)/) if @node
-    ids   = nodes.pluck(:id)
+        node = node.becomes_with_route
+        next unless node.public?
+        next unless node.public_node?
 
-    ids.each do |id|
-      node = Cms::Node.site(@site).and_public.where(id: id).first
-      next unless node
-      next unless node.public?
-      next unless node.public_node?
+        @task.performance.collect_node(node) do
+          cont = node.route.sub("/", "/agents/tasks/node/").camelize.pluralize
+          cname = cont + "Controller"
 
-      node = node.becomes_with_route
-      cont = node.route.sub("/", "/agents/tasks/node/").camelize.pluralize
-      cname = cont + "Controller"
-
-      agent = SS::Agent.new cont rescue nil
-      next if agent.blank? || agent.controller.class.to_s != cname
-      agent.controller.instance_variable_set :@task, @task
-      agent.controller.instance_variable_set :@site, @site
-      agent.controller.instance_variable_set :@node, node
-      agent.invoke :generate
-
-      #generate_node_pages node
+          agent = SS::Agent.new cont rescue nil
+          next if agent.blank? || agent.controller.class.to_s != cname
+          agent.controller.instance_variable_set :@task, @task
+          agent.controller.instance_variable_set :@site, @site
+          agent.controller.instance_variable_set :@node, node
+          agent.invoke :generate
+        end
+      end
     end
   end
 
   def generate_root_pages
-    pages = Cms::Page.site(@site).and_public.where(filename: /^[^\/]+$/, depth: 1)
-    ids   = pages.pluck(:id)
-
-    ids.each do |id|
+    each_root_pages_with_rescue do |page|
       @task.count
-      page = Cms::Page.where(id: id).first
       next unless page
-      @task.log page.url if page.becomes_with_route.generate_file
+
+      @task.performance.collect_page(page) do
+        page = page.becomes_with_route
+        result = page.generate_file(task: @task)
+
+        @task.log page.url if result
+      end
     end
   end
 
@@ -59,7 +88,13 @@ class Cms::Agents::Tasks::NodesController < ApplicationController
 
     pages.order_by(id: 1).find_each(batch_size: PER_BATCH) do |page|
       @task.count
-      @task.log page.url if page.becomes_with_route.generate_file
+
+      @task.performance.collect_page(page) do
+        page = page.becomes_with_route
+        result = page.generate_file(task: @task)
+
+        @task.log page.url if result
+      end
     end
   end
 end

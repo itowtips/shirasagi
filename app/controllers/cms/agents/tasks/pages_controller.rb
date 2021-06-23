@@ -3,19 +3,42 @@ class Cms::Agents::Tasks::PagesController < ApplicationController
 
   PER_BATCH = 100
 
+  private
+
+  def each_page(&block)
+    criteria = Cms::Page.site(@site).and_public
+    criteria = criteria.node(@node) if @node
+    all_ids = criteria.pluck(:id)
+    @task.total_count = all_ids.size
+
+    all_ids.each_slice(PER_BATCH) do |ids|
+      criteria.in(id: ids).to_a.each(&block)
+      @task.count(ids.length)
+    end
+  end
+
+  def each_page_with_rescue(&block)
+    each_page do |page|
+      yield page
+    end
+  end
+
+  public
+
   def generate
     @task.log "# #{@site.name}"
+    @task.performance.header(name: "generate page performance log at #{Time.zone.now.iso8601}")
+    @task.performance.collect_site(@site) do
+      each_page_with_rescue do |page|
+        next unless page
 
-    pages = Cms::Page.site(@site).and_public
-    pages = pages.node(@node) if @node
-    ids   = pages.pluck(:id)
-    @task.total_count = ids.size
+        @task.performance.collect_page(page) do
+          page = page.becomes_with_route
+          result = page.generate_file(release: false, task: @task)
 
-    ids.each do |id|
-      @task.count
-      page = Cms::Page.site(@site).and_public.where(id: id).first
-      next unless page
-      @task.log page.url if page.becomes_with_route.generate_file(release: false)
+          @task.log page.url if result
+        end
+      end
     end
   end
 
