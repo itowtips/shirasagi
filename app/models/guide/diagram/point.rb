@@ -11,6 +11,10 @@ class Guide::Diagram::Point
 
   store_in collection: "guide_diagram_point"
 
+  def label
+    procedure? ? "[手続き] #{name}" : "[質問] #{name}"
+  end
+
   def procedure?
     self._type == "Guide::Procedure"
   end

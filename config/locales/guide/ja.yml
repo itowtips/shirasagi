@@ -3,6 +3,7 @@ ja:
     guide: 目的別ガイド
     question: 質問
     procedure: 手続き
+    importer: インポート
     apis:
       questions:
         index: 質問項目を選択する

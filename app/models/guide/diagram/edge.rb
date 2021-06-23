@@ -11,6 +11,10 @@ class Guide::Diagram::Edge
 
   embeds_ids :points, class_name: "Guide::Diagram::Point"
 
+  def label
+    "[選択肢] #{value}"
+  end
+
   def procedures
     points.where(_type: "Guide::Procedure")
   end

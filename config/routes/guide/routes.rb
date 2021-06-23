@@ -17,11 +17,15 @@ Rails.application.routes.draw do
   end
 
   content "guide" do
-    get "/" => redirect { |p, req| "#{req.path}/questions" }, as: :main
+    get "/" => redirect { |p, req| "#{req.path}/procedures" }, as: :main
     resources :guides, only: [:index]
     resources :questions, concerns: :deletion
     resources :procedures, concerns: :deletion
-    resources :diagram, only: [:index]
+    resources :importers, only: [:index] do
+      get :download_procedures, on: :collection
+      get :download_questions, on: :collection
+      get :download_transitions, on: :collection
+    end
   end
 
   node "guide" do
