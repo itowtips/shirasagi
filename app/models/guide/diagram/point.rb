@@ -1,6 +1,7 @@
 class Guide::Diagram::Point
   extend SS::Translation
   include SS::Document
+  include SS::Reference::User
   include SS::Reference::Site
   include Cms::Reference::Node
 
@@ -11,7 +12,7 @@ class Guide::Diagram::Point
 
   store_in collection: "guide_diagram_point"
 
-  def label
+  def export_label
     procedure? ? "[手続き] #{name}" : "[質問] #{name}"
   end
 

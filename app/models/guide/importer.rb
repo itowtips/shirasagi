@@ -1,10 +1,52 @@
 class Guide::Importer
   include ActiveModel::Model
+  include SS::PermitParams
   include Cms::SitePermission
+  include Cms::CsvImportBase
 
   set_permission_name "guide_procedures"
 
   attr_accessor :cur_site, :cur_node, :cur_user
+  attr_accessor :in_file
+
+  permit_params :in_file
+
+  def import_procedures
+    return false unless validate_import
+
+    @row_index = 0
+    self.class.each_csv(in_file) do |row|
+      @row_index += 1
+      @row = row
+      save_procedure
+    end
+
+    errors.empty?
+  end
+
+  def save_procedure
+    id = @row["id"]
+    if id.present?
+      item = Guide::Procedure.site(cur_site).node(cur_node).where(id: id).first
+      if item.nil?
+        errors.add :base, "#{id} 見つかりませんでした。"
+        return false
+      end
+    else
+      item = Guide::Procedure.new(cur_site: cur_site, cur_node: cur_node, cur_user: cur_user)
+    end
+    headers = %w(name link_url order procedure_location belongings procedure_applicant remarks)
+    headers.each do |k|
+      item.send("#{k}=", @row[Guide::Procedure.t(k)])
+    end
+
+    if item.save
+      true
+    else
+      errors.add :base, "保存に失敗しました。"
+      false
+    end
+  end
 
   def procedures_enum
     Enumerator.new do |y|
@@ -60,7 +102,12 @@ class Guide::Importer
         row << item.id
         row << item.name
         item.edges.map do |edge|
-          row << ([edge.label] + edge.points.map(&:label)).join("\n")
+          labels = []
+          labels << edge.export_label
+          edge.points.each do |point|
+            labels << point.export_label
+          end
+          row << labels.join("\n")
         end
         y << encode_sjis(row.to_csv)
       end
@@ -68,6 +115,25 @@ class Guide::Importer
   end
 
   private
+
+  def validate_import
+    if in_file.blank?
+      errors.add(:base, I18n.t('ss.errors.import.blank_file'))
+      return
+    end
+
+    if ::File.extname(in_file.original_filename).casecmp(".csv") != 0
+      errors.add(:base, I18n.t('ss.errors.import.invalid_file_type'))
+      return
+    end
+
+    unless self.class.valid_csv?(in_file, max_read_lines: 1)
+      errors.add(:base, I18n.t('ss.errors.import.invalid_file_type'))
+      return
+    end
+
+    true
+  end
 
   def encode_sjis(str)
     str.encode("SJIS", invalid: :replace, undef: :replace)

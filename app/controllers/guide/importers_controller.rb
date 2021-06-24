@@ -25,6 +25,17 @@ class Guide::ImportersController < ApplicationController
     send_enum(@item.procedures_enum, type: "text/csv; charset=#{encoding}", filename: filename)
   end
 
+  def import_procedures
+    @item = Guide::Importer.new fix_params
+    if request.get?
+      render :import
+      return
+    end
+
+    @item.attributes = get_params
+    render_update @item.import_procedures, location: { action: :index }, render: { file: :import }
+  end
+
   def download_questions
     @item = Guide::Importer.new fix_params
     filename = "questions_#{Time.zone.now.to_i}.csv"
@@ -32,10 +43,26 @@ class Guide::ImportersController < ApplicationController
     send_enum(@item.questions_enum, type: "text/csv; charset=#{encoding}", filename: filename)
   end
 
+  def import_questions
+    @item = Guide::Importer.new fix_params
+    if request.get?
+      render :import
+      return
+    end
+  end
+
   def download_transitions
     @item = Guide::Importer.new fix_params
-    filename = "questions_#{Time.zone.now.to_i}.csv"
+    filename = "transitions_#{Time.zone.now.to_i}.csv"
     encoding = "Shift_JIS"
     send_enum(@item.transitions_enum, type: "text/csv; charset=#{encoding}", filename: filename)
+  end
+
+  def import_transitions
+    @item = Guide::Importer.new fix_params
+    if request.get?
+      render :import
+      return
+    end
   end
 end

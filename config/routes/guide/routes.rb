@@ -23,8 +23,16 @@ Rails.application.routes.draw do
     resources :procedures, concerns: :deletion
     resources :importers, only: [:index] do
       get :download_procedures, on: :collection
+      get :import_procedures, on: :collection
+      post :import_procedures, on: :collection
+
       get :download_questions, on: :collection
+      get :import_questions, on: :collection
+      post :import_questions, on: :collection
+
       get :download_transitions, on: :collection
+      get :import_transitions, on: :collection
+      post :import_transitions, on: :collection
     end
   end
 

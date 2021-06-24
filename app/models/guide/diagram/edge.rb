@@ -11,7 +11,7 @@ class Guide::Diagram::Edge
 
   embeds_ids :points, class_name: "Guide::Diagram::Point"
 
-  def label
+  def export_label
     "[選択肢] #{value}"
   end
 
