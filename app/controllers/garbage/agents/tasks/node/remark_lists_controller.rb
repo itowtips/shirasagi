@@ -33,5 +33,6 @@ class Garbage::Agents::Tasks::Node::RemarkListsController < ApplicationControlle
     csv.encode("UTF-8", invalid: :replace, undef: :replace)
 
     file = "#{node.path}/remarks.csv"
-    write_file node, csv, file: file  end
+    Fs.write_data_if_modified(file, csv)
+  end
 end
