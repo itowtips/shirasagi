@@ -7,11 +7,13 @@ module SS::CaptchaFilter
 
   def show_captcha(options = {})
     @cur_captcha = SS::Captcha.generate_captcha
+
     session[:captcha_id] = @cur_captcha.id
+    show_specific_error = options.fetch(:show_specific_error, false)
 
     h = []
     if @cur_captcha.captcha_text.present? && options.present?
-      h << "<img src=\"data:image/jpeg;base64,#{@cur_captcha.image_path}\">".html_safe
+      h << "<img src=\"data:image/jpeg;base64,#{@cur_captcha.image_path}\">"
     elsif @cur_captcha.captcha_text.present?
       h << '<div class="simple-captcha">'
       h << '  <div class="image">'
@@ -24,11 +26,9 @@ module SS::CaptchaFilter
       h << "    #{t "simple_captcha.label"}"
       h << '  </div>'
       h << '</div>'
-    elsif options.fetch(:show_specific_error, false)
-      h << "<p>#{t "simple_captcha.captcha_error"}</p>"
-      h << "<p>#{@cur_captcha.captcha_error}</p>"
     else
-      h << "<p>#{t "simple_captcha.captcha_error"}</p>".html_safe
+      h << "<p>#{t "simple_captcha.captcha_error"}</p>"
+      h << "<p>#{@cur_captcha.captcha_error}</p>" if show_specific_error
     end
 
     h.join("\n").html_safe
