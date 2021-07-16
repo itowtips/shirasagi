@@ -7,7 +7,7 @@ site_name = SS::Db::Seed.site_name || 'シラサギ市'
 def save_group(data)
   if item = SS::Group.where(name: data[:name]).first
     puts "exists #{data[:name]}"
-    item.update_attributes! data
+    item.update! data
     return item
   end
 
