@@ -9,10 +9,10 @@ module SS::CaptchaFilter
     @cur_captcha = SS::Captcha.generate_captcha
     session[:captcha_id] = @cur_captcha.id
 
+    h = []
     if @cur_captcha.captcha_text.present? && options.present?
-      return "<img src=\"data:image/jpeg;base64,#{@cur_captcha.image_path}\">".html_safe
+      h << "<img src=\"data:image/jpeg;base64,#{@cur_captcha.image_path}\">".html_safe
     elsif @cur_captcha.captcha_text.present?
-      h = []
       h << '<div class="simple-captcha">'
       h << '  <div class="image">'
       h << "    <img src=\"data:image/jpeg;base64,#{@cur_captcha.image_path}\">"
@@ -24,21 +24,14 @@ module SS::CaptchaFilter
       h << "    #{t "simple_captcha.label"}"
       h << '  </div>'
       h << '</div>'
-
-      return h.join("\n").html_safe
-    end
-
-    if options.fetch(:show_specific_error, false)
-      h = []
+    elsif options.fetch(:show_specific_error, false)
       h << "<p>#{t "simple_captcha.captcha_error"}</p>"
       h << "<p>#{@cur_captcha.captcha_error}</p>"
-
-      return h.join("\n").html_safe
     else
-      return "<p>#{t "simple_captcha.captcha_error"}</p>".html_safe
+      h << "<p>#{t "simple_captcha.captcha_error"}</p>".html_safe
     end
 
-    return
+    h.join("\n").html_safe
   end
 
   def get_captcha
