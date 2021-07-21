@@ -631,6 +631,7 @@ ja:
       cms/content_quota: 容量制限
       cms/check_links: リンクチェック実行結果
       cms/history_list: 閲覧履歴
+      cms/line_hub: "LINE HUB"
 
   mongoid:
     models:
@@ -1140,6 +1141,12 @@ ja:
       cms/line/template:
         name: タイトル
         body: JSON
+      cms/addon/line_hub:
+        line/mode: "モード"
+        line/trigger_type: "Trigger Type"
+        line/trigger_data: "Trigger Data"
+        line/target: Target
+        line/template_id: 返信テンプレート
 
   activemodel:
     attributes:
