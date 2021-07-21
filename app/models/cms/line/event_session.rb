@@ -3,15 +3,27 @@ class Cms::Line::EventSession
   include SS::Reference::Site
   include Cms::SitePermission
 
+  DEFAULT_MODE = "ai-agent"
+  LOCK_FOR = 5.minutes.freeze
+
   set_permission_name "cms_line_event_sessions", :use
 
   field :channel_user_id, type: String
-  field :mode, type: String, default: "ai-agent"
+  field :mode, type: String, default: DEFAULT_MODE
   field :lock_until, type: DateTime, default: ::Time::EPOCH
+  field :locked_at, type: DateTime
 
   validates :channel_user_id, presence: true
 
-  LOCK_FOR = 5.minutes.freeze
+  def start_lock
+    now = Time.zone.now
+    self.set(locked_at: now.utc) if locked_at.blank?
+
+    if now >= locked_at + 10.minutes
+      self.mode = DEFAULT_MODE
+      save
+    end
+  end
 
   class << self
     def lock(site, channel_user_id)
@@ -27,6 +39,7 @@ class Cms::Line::EventSession
       item = criteria.find_one_and_update({ '$set' => { lock_until: lock_timeout.utc } }, return_document: :after)
       if item
         begin
+          item.start_lock
           yield(item)
         ensure
           item.set(lock_until: ::Time::EPOCH)

@@ -366,6 +366,7 @@ Rails.application.routes.draw do
     resources :site_searches, only: [:index]
     get "search_contents/:id" => "page_search_contents#show", as: "page_search_contents"
     get "search_contents/:id/download" => "page_search_contents#download", as: "download_page_search_contents"
+    resources :line_hubs, only: [:index]
   end
 
   node "cms" do
