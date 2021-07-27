@@ -1,22 +1,16 @@
 class Cms::Line::Hub::Delegate
   include Mongoid::Document
 
-  field :mode, type: String
+  belongs_to :service, class_name: "Cms::Line::Service"
   field :trigger_type, type: String
   field :trigger_data, type: String
-  field :target, type: String
-  belongs_to :template, class_name: "Cms::Line::Template"
 
-  validates :mode, presence: true
+  validates :service_id, presence: true
   validates :trigger_type, presence: true
   validates :trigger_data, presence: true
-  validates :target, presence: true
 
-  def target_class
-    @target_class ||= "Cms::Line::Service::#{target}".constantize rescue nil
-  end
-
-  def switch_mode(service, event)
+  def switch_mode(processor, event)
+    return false if service.blank?
     return false if event["type"] != trigger_type
 
     case trigger_type
@@ -28,19 +22,20 @@ class Cms::Line::Hub::Delegate
       return false
     end
 
-    if service.event_session.mode != mode
-      service.event_session.mode = mode
-      service.event_session.update
-      service.client.reply_message(event["replyToken"], template.json) if template
+    processor.event_session.mode = service.service
+    processor.event_session.update
+
+    if service.switch_messages.present?
+      processor.client.reply_message(event["replyToken"], service.switch_messages)
     end
     return true
   end
 
-  def delegate(service, events)
-    return false if !target_class
-    return false if service.event_session.mode != mode
+  def delegate(processor, events)
+    return false if service.blank?
+    return false if processor.event_session.mode != service.service
 
-    target_class.delegate(service, events).call
+    service.delegate_processor(processor, events).call
     true
   end
 end

@@ -32,6 +32,8 @@ ja:
     layout: レイアウト
     link_check: リンクチェック
     line: LINE
+    line_service: サービス
+    line_facility_search_category: 施設カテゴリー
     line_template: テンプレート
     line_poster: Poster連携
     line_event_session: セッション
@@ -379,6 +381,10 @@ ja:
         thumb_carousel: サムネイル画像とLINEメッセージ
         body_carousel: 本文内の最初の画像とLINEメッセージ
         message_only_carousel: LINEメッセージ
+      line_services:
+        gd_chat: AI案内
+        my_plan: 今日の予定
+        facility_search: 施設検索
       sns_post_log_type:
         twitter: Twitter投稿
         line: LINE投稿
@@ -583,7 +589,7 @@ ja:
     edit_private_cms_line_templates: LINEテンプレートの編集（所有）
     delete_other_cms_line_templates: LINEテンプレートの削除（全て）
     delete_private_cms_line_templates: LINEテンプレートの削除（所有）
-    use_cms_line_event_sessions: LINEセッションの管理
+    use_cms_line_services: LINEサービスの管理
 
   modules:
     cms: 標準機能
@@ -653,6 +659,7 @@ ja:
       cms/history_list: 閲覧履歴
       cms/member_reference: メンバー
       cms/line_hub: "LINE HUB"
+      cms/line/service/facility_search: 施設検索
 
   mongoid:
     models:
@@ -1178,6 +1185,15 @@ ja:
         line/trigger_data: "Trigger Data"
         line/target: Target
         line/template_id: 返信テンプレート
+      cms/addon/line/service/facility_search:
+        category_ids: 施設カテゴリー
+      cms/line/facility_search/category:
+        name: タイトル
+        image_id: サムネイル画像
+        summary: サマリー
+        order: 並び順
+        category_ids: 施設の種類
+        state: ステータス
 
   activemodel:
     attributes:
@@ -2341,6 +2357,20 @@ ja:
         - 下部HTMLを入力します。
       placeholder:
         - プレースホルダーを入力します。
+
+    cms/line/facility_search/category:
+       name:
+         - タイトルを入力します。
+       image_id:
+         - サムネイル画像を入力します。
+       summary:
+         - サマリーを入力します。
+       order:
+         - 並び順を入力します。
+       category_ids:
+         - 施設の種類を選択します。
+       state:
+         - ステータスを入力します。
 
   all_content:
     page_id: ページID

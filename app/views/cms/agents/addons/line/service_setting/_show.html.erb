@@ -1,22 +1,17 @@
 <table class="index">
   <thead>
     <tr>
-      <th><%= @item.t('line/mode') %></th>
+      <th><%= @item.t('line/service') %></th>
       <th><%= @item.t('line/trigger_type') %></th>
       <th><%= @item.t('line/trigger_data') %></th>
-      <th><%= @item.t('line/target') %></th>
-      <th><%= @item.t('line/template_id') %></th>
     </tr>
   </thead>
-
   <tbody>
   <% @item.line_delegates.each do |item| %>
     <tr>
-      <td><%= item.mode %></td>
+      <td><%= item.service.try(:name) %></td>
       <td><%= item.trigger_type %></td>
       <td><%= item.trigger_data %></td>
-      <td><%= item.target %></td>
-      <td><%= item.template.try(:name) %></td>
     </tr>
   <% end %>
   </tbody>

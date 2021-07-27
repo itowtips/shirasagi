@@ -1,0 +1,9 @@
+<dl class="see">
+  <% if @item.new_record? %>
+    <dt><%= @model.t :service %><%= @model.tt :service %></dt>
+    <dd><%= f.select :service, @item.service_options %></dd>
+  <% end %>
+
+  <dt><%= @model.t :order %><%= @model.tt :oreder %></dt>
+  <dd><%= f.number_field :order %></dd>
+</dl>

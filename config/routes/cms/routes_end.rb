@@ -175,6 +175,11 @@ Rails.application.routes.draw do
     end
 
     namespace "line" do
+      resources :services, concerns: :deletion do
+        namespace "facility_search" do
+          resources :categories, concerns: :deletion
+        end
+      end
       resources :templates, concerns: :deletion
       resources :event_sessions, only: [:index, :show, :destroy], concerns: :deletion
       namespace "poster" do
