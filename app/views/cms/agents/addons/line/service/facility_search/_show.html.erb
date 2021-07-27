@@ -1,0 +1,28 @@
+<dl class="see mod-cms-line-service-facility_search">
+  <dt><%= @item.t :category_ids %></dt>
+  <dd><%= link_to "カテゴリーを管理する", cms_line_service_facility_search_categories_path(service_id: @item), class: "btn" %></dd>
+  <dd>
+    <% if @item.categories.present? %>
+      <table class="index">
+        <thead>
+        <tr>
+          <th class="order"><%= Cms::Line::FacilitySearch::Category.t(:order) %></th>
+          <th class="name"><%= Cms::Line::FacilitySearch::Category.t(:name) %></th>
+          <th class="category"><%= Cms::Line::FacilitySearch::Category.t(:category_ids) %></th>
+          <th class="datetime"><%= Cms::Line::FacilitySearch::Category.t(:updated) %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @item.categories.each do |category| %>
+          <tr data-id="<%= category.id %>">
+            <td><%= category.order %></td>
+            <td><%= category.name %></td>
+            <td><%= category.categories.pluck(:name).join(", ") %></td>
+            <td><%= I18n.l(category.updated) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </dd>
+</dl>

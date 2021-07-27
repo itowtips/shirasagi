@@ -3,26 +3,37 @@ class Cms::Line::EventSession
   include SS::Reference::Site
   include Cms::SitePermission
 
-  DEFAULT_MODE = "ai-agent"
+  DEFAULT_MODE = "gd_chat"
   LOCK_FOR = 5.minutes.freeze
 
-  set_permission_name "cms_line_event_sessions", :use
+  set_permission_name "cms_line_services", :use
 
   field :channel_user_id, type: String
   field :mode, type: String, default: DEFAULT_MODE
+  field :data, type: Hash, default: {}
   field :lock_until, type: DateTime, default: ::Time::EPOCH
-  field :locked_at, type: DateTime
+  field :locked_at, type: DateTime, default: ::Time::EPOCH
 
   validates :channel_user_id, presence: true
 
   def start_lock
     now = Time.zone.now
-    self.set(locked_at: now.utc) if locked_at.blank?
 
     if now >= locked_at + 10.minutes
       self.mode = DEFAULT_MODE
       save
     end
+    self.set(locked_at: now.utc)
+  end
+
+  def set_data(key, value)
+    self.data[mode] ||= {}
+    self.data[mode][key] = value
+    save
+  end
+
+  def get_data(key)
+    data.dig(mode, key.to_s)
   end
 
   class << self

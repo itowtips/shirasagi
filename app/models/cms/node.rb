@@ -143,7 +143,7 @@ class Cms::Node
   class LineHub
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
-    include Cms::Addon::LineHub
+    include Cms::Addon::Line::ServiceSetting
     include Cms::Addon::Meta
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission

@@ -11,20 +11,26 @@ class Cms::Agents::Nodes::LineHubController < ApplicationController
       config.channel_token = @cur_site.line_channel_access_token
     end
 
-    service = Cms::Line::Service::Hub.setup(@cur_site, @cur_node, client, request)
-    if !service.valid_signature?
+    processor = Cms::Line::Service::Processor::Hub.new(
+      site: @cur_site,
+      node: @cur_node,
+      client: client,
+      request: request)
+    processor.parse_request
+
+    if !processor.valid_signature?
       Rails.logger.error("invalid line request")
       head :bad_request
       return
     end
 
-    if service.webhook_verify_request?
+    if processor.webhook_verify_request?
       head :ok
       Rails.logger.info("verified line request")
       return
     end
 
-    service.call
+    processor.call
     head :ok
   end
 end

@@ -120,7 +120,7 @@ module Cms
     Cms::Role.permission :edit_private_cms_line_templates
     Cms::Role.permission :delete_other_cms_line_templates
     Cms::Role.permission :delete_private_cms_line_templates
-    Cms::Role.permission :use_cms_line_event_sessions
+    Cms::Role.permission :use_cms_line_services
 
     if SS.config.michecker && SS.config.michecker['disable'].blank?
       Cms::Role.permission :use_cms_michecker

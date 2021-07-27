@@ -1,4 +1,4 @@
-class Cms::Line::Service::Hub < Cms::Line::Service::Base
+class Cms::Line::Service::Processor::Hub < Cms::Line::Service::Processor::Base
   def call
     delegated = false
     events.each do |event|
