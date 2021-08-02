@@ -11,7 +11,7 @@ class Cms::Line::FacilitySearch::CategoriesController < ApplicationController
   private
 
   def set_service
-    @service = Cms::Line::Service.find(params[:service_id])
+    @service = Cms::Line::Service::Base.find(params[:service_id])
   end
 
   def fix_params

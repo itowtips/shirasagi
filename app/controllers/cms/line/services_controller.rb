@@ -2,7 +2,7 @@ class Cms::Line::ServicesController < ApplicationController
   include Cms::BaseFilter
   include Cms::CrudFilter
 
-  model Cms::Line::Service
+  model Cms::Line::Service::Base
 
   navi_view "cms/line/main/navi"
 
@@ -18,6 +18,8 @@ class Cms::Line::ServicesController < ApplicationController
 
   def set_model
     return super if params[:action] != "create"
-    @model = self.class.model_class.service_class(params.dig(:item, :service))
+
+    service = params.dig(:item, :service)
+    @model = "Cms::Line::Service::#{service.classify}".constantize
   end
 end

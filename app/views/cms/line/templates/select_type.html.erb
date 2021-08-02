@@ -1,0 +1,21 @@
+<div>作成するメッセージタイプを選択してください。</div>
+
+<div style="display: flex;">
+
+<%= link_to({ action: :new, type: "text" }, { style: "display: flex; padding: 10px;" }) do %>
+  <%= image_tag("/assets/img/line/templates/text.png", alt: "text", style: "width: 200px;") %>
+  <div>
+    <header>テキスト</header>
+    <div>通常のテキストメッセージです。</div>
+  </div>
+<% end %>
+
+<%= link_to({ action: :new, type: "image" }, { style: "display: flex; padding: 10px;" }) do %>
+  <%= image_tag("/assets/img/line/templates/image.png", alt: "text", style: "width: 200px;") %>
+  <div>
+    <header>画像</header>
+    <div>画像を送信します。</div>
+  </div>
+<% end %>
+
+</div>

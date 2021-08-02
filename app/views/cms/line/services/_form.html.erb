@@ -2,6 +2,9 @@
   <% if @item.new_record? %>
     <dt><%= @model.t :service %><%= @model.tt :service %></dt>
     <dd><%= f.select :service, @item.service_options %></dd>
+  <% else %>
+    <dt><%= @model.t :service %></dt>
+    <dd><%= "#{@item.name} (#{@item.service})" %></dd>
   <% end %>
 
   <dt><%= @model.t :order %><%= @model.tt :oreder %></dt>

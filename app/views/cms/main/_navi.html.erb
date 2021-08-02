@@ -23,7 +23,7 @@
 <% end %>
 
 <nav class="main-navi">
-  <% if Cms::Line::Template.allowed?(:read, @cur_user, site: @cur_site) %>
+  <% if Cms::Line::Template::Base.allowed?(:read, @cur_user, site: @cur_site) %>
   <h2><%= link_to t("cms.line"), cms_line_templates_path, class: "icon-conv" %></h2>
   <% end %>
 

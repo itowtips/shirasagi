@@ -180,14 +180,11 @@ Rails.application.routes.draw do
           resources :categories, concerns: :deletion
         end
       end
-      resources :templates, concerns: :deletion
-      resources :event_sessions, only: [:index, :show, :destroy], concerns: :deletion
-      namespace "poster" do
-        resources :segment_deliveries, concerns: :deletion do
-          get :deliver, on: :member
-          post :deliver, on: :member
-        end
+      scope(path: 'template/:type', defaults: { type: '-' }) do
+        resources :templates, concerns: :deletion
       end
+      resources :messages, concerns: :deletion
+      resources :event_sessions, only: [:index, :show, :destroy], concerns: :deletion
     end
 
     get "check_links" => "check_links#index"
