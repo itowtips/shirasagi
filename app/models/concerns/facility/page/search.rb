@@ -7,9 +7,14 @@ module Facility::Page
       before_save :set_map_points
       before_save :set_sidebar_html
 
+      after_save :save_geolocation
+      after_destroy :remove_geolocation
+
       field :map_points, type: Array, default: []
       field :sidebar_html, type: String, default: ""
     end
+
+    private
 
     def set_map_points
       self.map_points = []
@@ -33,6 +38,14 @@ module Facility::Page
 
     def set_sidebar_html
       self.sidebar_html = render_map_sidebar(self)
+    end
+
+    def save_geolocation
+      Map::Geolocation.update_with_facility(self)
+    end
+
+    def remove_geolocation
+      Map::Geolocation.remove_with_owner_item(self)
     end
   end
 end
