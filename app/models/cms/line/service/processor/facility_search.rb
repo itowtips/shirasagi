@@ -119,6 +119,76 @@ class Cms::Line::Service::Processor::FacilitySearch < Cms::Line::Service::Proces
   def reply_location(event)
     lat = event["message"]["latitude"]
     lon = event["message"]["longitude"]
+    category_ids = service.categories.select do |item|
+      item.id == event_session.get_data(:category)
+    end.first.try(:category_ids)
+
+    query = {
+      owner_item_type: "Facility::Node::Page",
+      site_id: site.id,
+      category_ids: { "$in" => category_ids },
+      filename: /^map\//
+    }
+
+    pipes = []
+    pipes << {
+      '$geoNear' => {
+        near: { type: "Point", coordinates: [ lon , lat ] },
+        distanceField: "distance",
+        query: query,
+        spherical: true
+      }
+    }
+    pipes << { '$limit' => 10 }
+    items = Map::Geolocation.collection.aggregate(pipes).to_a
+
+    columns = []
+    items.each do |item|
+      facility = Facility::Node::Page.find(item["owner_item_id"]) rescue nil
+      next unless facility
+
+      distance = item["distance"]
+      if distance >= 1000
+        distance = "#{(distance / 1000).round(1)} km"
+      else
+        distance = "#{distance.round(1)} m"
+      end
+
+      columns << {
+        "title": facility.name,
+        "text": "#{facility.address}\n#{distance}",
+        "actions": [
+          {
+            "type": "uri",
+            "label": I18n.t("chat.line_bot.service.details"),
+            "uri": facility.full_url
+          }
+        ]
+      }
+    end
+
+    if columns.blank?
+      client.reply_message(event['replyToken'], {
+        "type": "text",
+        "text": "施設が見つかりませんでした。"
+      })
+      return
+    end
+
+    messages = [
+      {
+        "type": "text",
+        "text": "以下の施設が見つかりました"
+      },
+      carousel_template("施設検索結果", columns)
+    ]
+    client.reply_message(event["replyToken"], messages)
+  end
+
+=begin
+  def reply_location(event)
+    lat = event["message"]["latitude"]
+    lon = event["message"]["longitude"]
     loc = [lon, lat]
 
     category = service.categories.select { |item| item.id == event_session.get_data(:category) }.first
@@ -172,4 +242,5 @@ class Cms::Line::Service::Processor::FacilitySearch < Cms::Line::Service::Proces
       client.reply_message(event["replyToken"], messages)
     end
   end
+=end
 end
