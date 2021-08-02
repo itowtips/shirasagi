@@ -114,22 +114,21 @@ class Cms::Line::Service::Processor::FacilitySearch < Cms::Line::Service::Proces
     client.reply_message(event["replyToken"], messages)
   end
 
-  EARTH_RADIUS_KM = 6378.137
-
   def reply_location(event)
     lat = event["message"]["latitude"]
     lon = event["message"]["longitude"]
     loc = [lon, lat]
 
-    category = service.categories.select { |item| item.id == event_session.get_data(:category) }.first
+    category_ids = service.categories.select do |item|
+      item.id == event_session.get_data(:category)
+    end.first.try(:category_ids)
     facility_maps = Facility::Map.site(site).to_a
 
     points = []
     facility_maps.each do |item|
       facility = item.parent.becomes_with_route
       next if !facility.public?
-      next if category.nil?
-      next if !facility.category_ids.include?(category.id)
+      next if (facility.category_ids & category_ids).blank?
 
       item.map_points.each do |point|
         point = OpenStruct.new(point)
@@ -167,7 +166,7 @@ class Cms::Line::Service::Processor::FacilitySearch < Cms::Line::Service::Proces
           "type": "text",
           "text": "以下の施設が見つかりました（#{points.size}）"
         },
-        carousel_template(category.name, columns)
+        carousel_template("施設検索結果", columns)
       ]
       client.reply_message(event["replyToken"], messages)
     end
