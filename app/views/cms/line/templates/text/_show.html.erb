@@ -1,0 +1,15 @@
+<dl class="see">
+  <dt><%= @model.t :name %></dt>
+  <dd><%= @item.name %></dd>
+
+  <dt><%= @model.t :text %></dt>
+  <dd><%=br @item.text %></dd>
+
+  <% if @item.body.present? %>
+    <dt><%= @model.t :body %></dt>
+    <dd>
+      <%= code_editor "#mod-cms-html", mode: :html, readonly: true %>
+      <%= text_area_tag "mod-cms-html", @item.body, style: "height: 400px" %>
+    </dd>
+  <% end %>
+</dl>

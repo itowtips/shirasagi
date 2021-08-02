@@ -11,11 +11,14 @@ class Cms::Agents::Nodes::LineHubController < ApplicationController
       config.channel_token = @cur_site.line_channel_access_token
     end
 
-    processor = Cms::Line::Service::Processor::Hub.new(
-      site: @cur_site,
-      node: @cur_node,
-      client: client,
-      request: request)
+    service = @cur_node.webhook_service
+    if !service
+      Rails.logger.error("service not registered")
+      head :bad_request
+      return
+    end
+
+    processor = service.processor(@cur_site, @cur_node, client, request)
     processor.parse_request
 
     if !processor.valid_signature?

@@ -1,15 +1,83 @@
 class Cms::Line::Service::Processor::FacilitySearch < Cms::Line::Service::Processor::Base
 
-  def carousel_template(title, columns)
-    columns = [columns] if !columns.is_a?(Array)
+  def flex_carousel_template(title, items)
+    items = [items] if !items.is_a?(Array)
+
+    contents = items.map do |item|
+      opts = OpenStruct.new
+      yield(item, opts)
+
+      image = opts[:image]
+      name = opts[:name].to_s
+      text = opts[:text].to_s
+      action = opts[:action]
+
+      content = { type: "bubble", size: "kilo" }
+
+      if image
+        content[:hero] = {
+          type: "image",
+          url: image.full_url,
+          size: "full",
+          aspectRatio: "20:13",
+          aspectMode: "cover"
+        }
+      end
+
+      content[:body] = {
+        type: "box",
+        layout: "vertical",
+        contents: []
+      }
+
+      # name
+      content[:body][:contents] << {
+        type: "text",
+        text: name,
+        wrap: true,
+        weight: "bold",
+        margin: "none"
+      }
+
+      # text
+      text.split("\n").each_with_index do |line, idx|
+        content[:body][:contents] << {
+          type: "text",
+          text: line,
+          wrap: true,
+          size: "sm",
+          margin: (idx == 0) ? "md" : "none"
+        }
+      end
+
+      # action
+      if action
+        content[:footer] = {
+          type: "box",
+          layout: "vertical",
+          contents: [
+            {
+              type: "button",
+              action: action,
+              style: "secondary",
+              margin: "none"
+            }
+          ]
+        }
+        content[:styles] = {
+          footer: { separator: true }
+        }
+      end
+
+      content
+    end
+
     {
-      "type": "template",
-      "altText": title,
-      "template": {
-        "type": "carousel",
-        "columns": columns,
-        "imageAspectRatio": "rectangle",
-        "imageSize": "cover"
+      type: "flex",
+      altText: title,
+      contents: {
+        type: "carousel",
+        contents: contents
       }
     }
   end
@@ -39,94 +107,48 @@ class Cms::Line::Service::Processor::FacilitySearch < Cms::Line::Service::Proces
   end
 
   def reply_category(event, category)
-    column = {
-      "title": category.name,
-      "text": category.summary,
-      "actions": [
-        {
-          "type": "message",
-          "label": "#{category.name}を探す",
-          "text": "#{category.name}を探す"
-        }
-      ]
-    }
-    if category.image
-      column["thumbnailImageUrl"] = category.image.full_url
-      column["imageBackgroundColor"] = "#FFFFFF"
+    template = flex_carousel_template(category.name, category) do |item, opts|
+      opts[:name] = item.name
+      opts[:text] = item.summary
+      opts[:image] = item.image
+      opts[:action] = {
+        "type": "message",
+        "text": "#{item.name}を探す",
+        "label": item.name
+      }
     end
-    client.reply_message(event["replyToken"], carousel_template(category.name, column))
+    client.reply_message(event["replyToken"], template)
   end
 
   def reply_search(event, category)
     event_session.set_data(:category, category.id)
-    text1 = "1. マップ上の赤いピンで位置を指定します。"
-    text2 = "2. 赤いピン上部の吹き出しの内の「位置情報を送信」をタップします。"
-    #column = {
-    #  "title": "位置情報の送信",
-    #  "text": text,
-    #  "actions": [
-    #    {
-    #      "type": "uri",
-    #      "label": "位置情報を送信する",
-    #      "uri": "https://line.me/R/nv/location/"
-    #    }
-    #  ]
-    #}
-    messages = {
-      "type": "flex",
-      "altText": "this is a flex message",
-      "contents": {
-        "type": "bubble",
-        "size": "kilo",
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": "位置情報の送信"
-            },
-            {
-              "type": "text",
-              "text": text1,
-              "wrap": true,
-              "size": "xs"
-            },
-            {
-              "type": "text",
-              "text": text2,
-              "wrap": true,
-              "size": "xs"
-            },
-            {
-              "type": "button",
-              "action": {
-                "type": "uri",
-                "label": "位置情報を送信する",
-                "uri": "https://line.me/R/nv/location/"
-              }
-            }
-          ]
-        }
+    template = flex_carousel_template("位置情報の送信", category) do |item, opts|
+      opts[:name] = "位置情報の送信"
+      opts[:text] = "1. マップ上の赤いピンで位置を指定します。\n2. 赤いピン上部の吹き出しの内の「位置情報を送信」をタップします。"
+      opts[:action] = {
+        "type": "uri",
+        "label": "位置情報を送信する",
+        "uri": "https://line.me/R/nv/location/"
       }
-    }
-
-    client.reply_message(event["replyToken"], messages)
+    end
+    client.reply_message(event["replyToken"], template)
   end
 
   def reply_location(event)
     lat = event["message"]["latitude"]
     lon = event["message"]["longitude"]
-    category_ids = service.categories.select do |item|
+
+    category = service.categories.select do |item|
       item.id == event_session.get_data(:category)
-    end.first.try(:category_ids)
+    end.first
+    category_ids = category ? category.category_ids : []
 
     query = {
       owner_item_type: "Facility::Node::Page",
       site_id: site.id,
-      category_ids: { "$in" => category_ids },
-      filename: /^map\//
+      category_ids: { "$in" => category_ids }
     }
+    query[:filename] = /^#{service.facility_node.filename}\// if service.facility_node
 
     pipes = []
     pipes << {
@@ -139,9 +161,7 @@ class Cms::Line::Service::Processor::FacilitySearch < Cms::Line::Service::Proces
     }
     pipes << { '$limit' => 10 }
     items = Map::Geolocation.collection.aggregate(pipes).to_a
-
-    columns = []
-    items.each do |item|
+    items = items.map do |item|
       facility = Facility::Node::Page.find(item["owner_item_id"]) rescue nil
       next unless facility
 
@@ -152,20 +172,12 @@ class Cms::Line::Service::Processor::FacilitySearch < Cms::Line::Service::Proces
         distance = "#{distance.round(1)} m"
       end
 
-      columns << {
-        "title": facility.name,
-        "text": "#{facility.address}\n#{distance}",
-        "actions": [
-          {
-            "type": "uri",
-            "label": I18n.t("chat.line_bot.service.details"),
-            "uri": facility.full_url
-          }
-        ]
-      }
-    end
+      item["facility"] = facility
+      item["distance"] = distance
+      item
+    end.compact
 
-    if columns.blank?
+    if items.blank?
       client.reply_message(event['replyToken'], {
         "type": "text",
         "text": "施設が見つかりませんでした。"
@@ -173,73 +185,39 @@ class Cms::Line::Service::Processor::FacilitySearch < Cms::Line::Service::Proces
       return
     end
 
+    template = flex_carousel_template("#{category.name}を探す", items) do |item, opts|
+      opts[:name] = item["facility"].name
+      opts[:text] = "距離：#{item["distance"]}\n#{facility_text(item["facility"])}"
+      opts[:action] = {
+        "type": "uri",
+        "label": "ページを見る",
+        "uri": item["facility"].full_url
+      }
+    end
+
     messages = [
       {
         "type": "text",
         "text": "以下の施設が見つかりました"
       },
-      carousel_template("施設検索結果", columns)
+      template
     ]
     client.reply_message(event["replyToken"], messages)
   end
 
-=begin
-  def reply_location(event)
-    lat = event["message"]["latitude"]
-    lon = event["message"]["longitude"]
-    loc = [lon, lat]
+  def facility_text(facility)
+    text = []
+    labels = I18n.t("mongoid.attributes.facility/node/page").map { |k, v| [v, k.to_s] }.to_h
 
-    category_ids = service.categories.select do |item|
-      item.id == event_session.get_data(:category)
-    end.first.try(:category_ids)
-    facility_maps = Facility::Map.site(site).to_a
-
-    points = []
-    facility_maps.each do |item|
-      facility = item.parent.becomes_with_route
-      next if !facility.public?
-      next if (facility.category_ids & category_ids).blank?
-
-      item.map_points.each do |point|
-        point = OpenStruct.new(point)
-        point[:facility] = facility
-        point[:distance] = ::Geocoder::Calculations.distance_between(
-          loc.reverse, point.loc.reverse, units: :km
-        )
-        points << point
+    service.text_keys.each do |label|
+      key = labels[label]
+      if key
+        text << "#{label}：#{facility.send(key)}"
+      else
+        add_info = facility.additional_info.select { |v| v[:field] == label }.first
+        text << "#{label}：#{add_info[:value]}" if add_info
       end
     end
-    points = points.sort_by(&:distance)
-
-    columns = points.take(10).map do |point|
-      {
-        "title": point.facility.name,
-        "text": "#{point.facility.address}\n #{point.distance}",
-        "actions": [
-          {
-            "type": "uri",
-            "label": I18n.t("chat.line_bot.service.details"),
-            "uri": point.facility.full_url
-          }
-        ]
-      }
-    end
-
-    if columns.blank?
-      client.reply_message(event['replyToken'], {
-        "type": "text",
-        "text": "施設が見つかりませんでした。"
-      })
-    else
-      messages = [
-        {
-          "type": "text",
-          "text": "以下の施設が見つかりました（#{points.size}）"
-        },
-        carousel_template("施設検索結果", columns)
-      ]
-      client.reply_message(event["replyToken"], messages)
-    end
+    text.join("\n")
   end
-=end
 end

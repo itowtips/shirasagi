@@ -1,4 +1,4 @@
-class Cms::Line::Service
+class Cms::Line::Service::Base
   include SS::Document
   include SS::Reference::Site
   include SS::Reference::User
@@ -66,12 +66,9 @@ class Cms::Line::Service
   end
 
   class << self
-    def service_class(service)
-      "Cms::Line::Service::#{service.classify}".constantize rescue nil
-    end
-
     def service_options
       services = [
+        Cms::Line::Service::Hub,
         Cms::Line::Service::FacilitySearch,
         Cms::Line::Service::GdChat,
         Cms::Line::Service::MyPlan,

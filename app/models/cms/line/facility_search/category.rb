@@ -8,7 +8,7 @@ class Cms::Line::FacilitySearch::Category
 
   set_permission_name "cms_line_services", :use
 
-  belongs_to :service, class_name: "Cms::Line::Service"
+  belongs_to :service, class_name: "Cms::Line::Service::Base"
 
   field :name, type: String
   field :summary, type: String

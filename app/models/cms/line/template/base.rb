@@ -1,11 +1,12 @@
-class Cms::Line::Template
+class Cms::Line::Template::Base
   include SS::Document
   include SS::Reference::User
   include SS::Reference::Site
   include Cms::Addon::GroupPermission
   include History::Addon::Backup
 
-  seqid :id
+  set_permission_name "cms_line_templates"
+
   field :name, type: String
   field :body, type: String
 
@@ -21,9 +22,16 @@ class Cms::Line::Template
   private
 
   def validate_body
-    json
-  rescue JSON::ParserError => e
-    errors.add :base, "#{t(:body)}#{I18n.t("errors.messages.invalid")} #{e.to_s}"
+    if body.blank?
+      errors.add :body, :blank
+      return
+    end
+
+    begin
+      json
+    rescue JSON::ParserError => e
+      errors.add :base, "#{t(:body)}#{I18n.t("errors.messages.invalid")} #{e.to_s}"
+    end
   end
 
   class << self

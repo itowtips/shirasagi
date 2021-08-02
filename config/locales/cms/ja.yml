@@ -370,6 +370,7 @@ ja:
         body_carousel: 本文内の最初の画像とLINEメッセージ
         message_only_carousel: LINEメッセージ
       line_services:
+        hub: サービスHUB
         gd_chat: AI案内
         my_plan: 今日の予定
         facility_search: 施設検索
@@ -638,7 +639,10 @@ ja:
       cms/check_links: リンクチェック実行結果
       cms/history_list: 閲覧履歴
       cms/line_hub: "LINE HUB"
+      cms/line/webhook: "LINE Webhook"
+      cms/line/service/hub: HUB
       cms/line/service/facility_search: 施設検索
+      cms/line/service/gd_chat: GDチャットボット
 
   mongoid:
     models:
@@ -1148,14 +1152,23 @@ ja:
       cms/line/template:
         name: タイトル
         body: JSON
-      cms/addon/line_hub:
-        line/mode: "モード"
+      cms/line/service/base:
+        service: サービス
+        order: 並び順
+      cms/addon/line/service/hub:
+        line/service: サービス
         line/trigger_type: "Trigger Type"
         line/trigger_data: "Trigger Data"
-        line/target: Target
-        line/template_id: 返信テンプレート
+        expired_text: 有効期限切れメッセージ
+        expired_minutes: 有効期限（分）
+      cms/addon/line/webhook:
+        webhook_service_id: LINEサービス
       cms/addon/line/service/facility_search:
+        facility_node_id: 施設一覧
+        text_keys: 施設詳細の表示項目
         category_ids: 施設カテゴリー
+      cms/addon/line/service/gd_chat:
+        api_url: "API URL"
       cms/line/facility_search/category:
         name: タイトル
         image_id: サムネイル画像
@@ -2382,6 +2395,10 @@ ja:
          - 施設の種類を選択します。
        state:
          - ステータスを入力します。
+
+    cms/addon/line/webhook:
+      webhook_service_id:
+        - LINEサービスを設定します。
 
   all_content:
     page_id: ページID

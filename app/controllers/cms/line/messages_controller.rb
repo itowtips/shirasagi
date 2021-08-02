@@ -1,16 +1,10 @@
-class Cms::Line::TemplatesController < ApplicationController
+class Cms::Line::MessagesController < ApplicationController
   include Cms::BaseFilter
   include Cms::CrudFilter
 
   navi_view "cms/line/main/navi"
 
   private
-
-  def set_model
-    @type = params[:type].presence
-    @type = nil if @type == "-"
-    @model = @type ? "#{Cms::Line::Template}::#{@type.classify}".constantize : Cms::Line::Template::Base
-  end
 
   def fix_params
     { cur_user: @cur_user, cur_site: @cur_site }

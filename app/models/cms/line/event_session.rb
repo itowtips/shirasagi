@@ -3,28 +3,19 @@ class Cms::Line::EventSession
   include SS::Reference::Site
   include Cms::SitePermission
 
-  DEFAULT_MODE = "gd_chat"
+  class ServiceExpiredError < StandardError; end
+
   LOCK_FOR = 5.minutes.freeze
 
   set_permission_name "cms_line_services", :use
 
   field :channel_user_id, type: String
-  field :mode, type: String, default: DEFAULT_MODE
+  field :mode, type: String
   field :data, type: Hash, default: {}
   field :lock_until, type: DateTime, default: ::Time::EPOCH
-  field :locked_at, type: DateTime, default: ::Time::EPOCH
+  field :locked_at, type: DateTime
 
   validates :channel_user_id, presence: true
-
-  def start_lock
-    now = Time.zone.now
-
-    if now >= locked_at + 10.minutes
-      self.mode = DEFAULT_MODE
-      save
-    end
-    self.set(locked_at: now.utc)
-  end
 
   def set_data(key, value)
     self.data[mode] ||= {}
@@ -50,8 +41,10 @@ class Cms::Line::EventSession
       item = criteria.find_one_and_update({ '$set' => { lock_until: lock_timeout.utc } }, return_document: :after)
       if item
         begin
-          item.start_lock
           yield(item)
+          item.set(locked_at: Time.zone.now.utc)
+        rescue ServiceExpiredError
+          #
         ensure
           item.set(lock_until: ::Time::EPOCH)
         end

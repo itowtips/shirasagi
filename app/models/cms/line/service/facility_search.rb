@@ -1,4 +1,4 @@
-class Cms::Line::Service::FacilitySearch < Cms::Line::Service
+class Cms::Line::Service::FacilitySearch < Cms::Line::Service::Base
   include Cms::Addon::Line::Service::FacilitySearch
 
   def switch_messages
@@ -24,11 +24,11 @@ class Cms::Line::Service::FacilitySearch < Cms::Line::Service
       },
       {
         "type": "flex",
-        "altText": "this is a flex message",
+        "altText": "探したい施設を選んでください",
         "contents": {
           "type": "bubble",
           "size": "kilo",
-          "body": {
+            "body": {
             "type": "box",
             "layout": "vertical",
             "contents": contents,

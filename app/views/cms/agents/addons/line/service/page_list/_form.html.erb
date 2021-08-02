@@ -1,0 +1,7 @@
+<dl class="see mod-cms-line-service-page_list">
+  <dt><%= @model.t :conditions %><%= @model.tt :conditions %></dt>
+  <dd><%= f.text_area :conditions, value: @item.conditions.join("\n"), style: "height: 100px;" %></dd>
+
+  <dt class="limit"><%= @model.t :limit %><%= @model.tt :limit %></dt>
+  <dd class="limit"><%= f.number_field :limit %></dd>
+</dl>
