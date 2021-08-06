@@ -11,11 +11,11 @@ describe Faq::Page::ImportJob, dbscope: :example do
     Cms::Group.where(name: name).first_or_create!(attributes_for(:cms_group, name: name))
   end
   let!(:layout) { create(:cms_layout, site: site, name: "FAQ") }
-  let!(:category_1) { create(:category_node_node, site: site, filename: "faq", name: "よくある質問") }
-  let!(:category_2) { create(:category_node_page, site: site, filename: "faq/c1", name: "くらし・手続き") }
-  let!(:category_3) { create(:category_node_page, site: site, filename: "faq/c2", name: "子育て・教育") }
-  let!(:node_1) { create(:faq_node_page, site: site, filename: "faq/docs", st_category_ids: [category_1.id], group_ids: [ group2.id ]) }
-  let!(:node_2) { create(:faq_node_page, site: site, filename: "faq/docs2", group_ids: [ group2.id ]) }
+  let!(:category1) { create(:category_node_node, site: site, filename: "faq", name: "よくある質問") }
+  let!(:category2) { create(:category_node_page, site: site, filename: "faq/c1", name: "くらし・手続き") }
+  let!(:category3) { create(:category_node_page, site: site, filename: "faq/c2", name: "子育て・教育") }
+  let!(:node1) { create(:faq_node_page, site: site, filename: "faq/docs", st_category_ids: [category1.id], group_ids: [ group2.id ]) }
+  let!(:node2) { create(:faq_node_page, site: site, filename: "faq/docs2", group_ids: [ group2.id ]) }
   let(:role) { create(:cms_role_admin, site_id: site.id, permissions: ['import_private_faq_pages']) }
   let(:user) { create(:cms_user, uid: unique_id, name: unique_id, group_ids: [ group2.id ], role: role) }
   let!(:related_page) { create(:article_page, site: site, filename: "docs/page27.html", name: "関連ページ") }
@@ -25,10 +25,10 @@ describe Faq::Page::ImportJob, dbscope: :example do
   let!(:ss_file) { create(:ss_file, site: site, in_file: in_file ) }
 
   describe ".perform_later" do
-    context "with node_1" do
+    context "with node1" do
       before do
         perform_enqueued_jobs do
-          described_class.bind(site_id: site, node_id: node_1, user_id: user).perform_later(ss_file.id)
+          described_class.bind(site_id: site, node_id: node1, user_id: user).perform_later(ss_file.id)
         end
       end
 
@@ -37,10 +37,10 @@ describe Faq::Page::ImportJob, dbscope: :example do
         expect(log.logs).to include(/INFO -- : .* Started Job/)
         expect(log.logs).to include(/INFO -- : .* Completed Job/)
 
-        items = Faq::Page.site(site).where(filename: /^#{node_1.filename}\//, depth: 3)
+        items = Faq::Page.site(site).where(filename: /^#{node1.filename}\//, depth: 3)
         expect(items.count).to be 4
 
-        item = items.where(filename: "#{node_1.filename}/page1.html").first
+        item = items.where(filename: "#{node1.filename}/page1.html").first
         expect(item.name).to eq "休日や夜間の戸籍の届出について"
         expect(item.index_name).to eq "一覧用タイトル"
         expect(item.layout.try(:name)).to eq "FAQ"
@@ -71,10 +71,10 @@ describe Faq::Page::ImportJob, dbscope: :example do
       end
     end
 
-    context "with node_2" do
+    context "with node2" do
       before do
         perform_enqueued_jobs do
-          described_class.bind(site_id: site, node_id: node_2, user_id: user).perform_later(ss_file.id)
+          described_class.bind(site_id: site, node_id: node2, user_id: user).perform_later(ss_file.id)
         end
       end
 
@@ -83,10 +83,10 @@ describe Faq::Page::ImportJob, dbscope: :example do
         expect(log.logs).to include(/INFO -- : .* Started Job/)
         expect(log.logs).to include(/INFO -- : .* Completed Job/)
 
-        items = Faq::Page.site(site).where(filename: /^#{node_2.filename}\//, depth: 3)
+        items = Faq::Page.site(site).where(filename: /^#{node2.filename}\//, depth: 3)
         expect(items.count).to be 4
 
-        item = items.where(filename: "#{node_2.filename}/page2.html").first
+        item = items.where(filename: "#{node2.filename}/page2.html").first
         expect(item.name).to eq "休日や夜間の戸籍の届出について"
         expect(item.index_name).to eq "一覧用タイトル"
         expect(item.layout.try(:name)).to eq "FAQ"
