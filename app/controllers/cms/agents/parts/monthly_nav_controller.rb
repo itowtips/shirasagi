@@ -22,18 +22,18 @@ class Cms::Agents::Parts::MonthlyNavController < ApplicationController
     end
   end
 
-  def previous_month_beginning(i)
-    (Time.zone.today - i.month).beginning_of_month
+  def previous_month_beginning(num)
+    (Time.zone.today - num.month).beginning_of_month
   end
 
-  def previous_month_end(i)
-    (Time.zone.today - i.month).end_of_month.end_of_day
+  def previous_month_end(num)
+    (Time.zone.today - num.month).end_of_month.end_of_day
   end
 
-  def contents_size(i)
+  def contents_size(num)
     Cms::Page.site(@cur_site).and_public(@cur_date).
       where(@condition_hash).
-      where(:released.gte => previous_month_beginning(i), :released.lte => previous_month_end(i))
+      where(:released.gte => previous_month_beginning(num), :released.lte => previous_month_end(num))
       .count
   end
 end
