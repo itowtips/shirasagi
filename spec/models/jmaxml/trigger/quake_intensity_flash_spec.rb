@@ -22,11 +22,11 @@ describe Jmaxml::Trigger::QuakeIntensityFlash, dbscope: :example do
       subject { create(:jmaxml_trigger_quake_intensity_flash) }
 
       before do
-        region_210 = create(:jmaxml_region_210)
-        region_211 = create(:jmaxml_region_211)
-        region_212 = create(:jmaxml_region_212)
-        region_213 = create(:jmaxml_region_213)
-        subject.target_region_ids = [ region_210.id, region_211.id, region_212.id, region_213.id ]
+        region_c210 = create(:jmaxml_region_c210)
+        region_c211 = create(:jmaxml_region_c211)
+        region_c212 = create(:jmaxml_region_c212)
+        region_c213 = create(:jmaxml_region_c213)
+        subject.target_region_ids = [ region_c210.id, region_c211.id, region_c212.id, region_c213.id ]
         subject.save!
       end
 
@@ -68,11 +68,11 @@ describe Jmaxml::Trigger::QuakeIntensityFlash, dbscope: :example do
       subject { create(:jmaxml_trigger_quake_intensity_flash) }
 
       before do
-        region_210 = create(:jmaxml_region_210)
-        region_211 = create(:jmaxml_region_211)
-        region_212 = create(:jmaxml_region_212)
-        region_213 = create(:jmaxml_region_213)
-        subject.target_region_ids = [ region_210.id, region_211.id, region_212.id, region_213.id ]
+        region_c210 = create(:jmaxml_region_c210)
+        region_c211 = create(:jmaxml_region_c211)
+        region_c212 = create(:jmaxml_region_c212)
+        region_c213 = create(:jmaxml_region_c213)
+        subject.target_region_ids = [ region_c210.id, region_c211.id, region_c212.id, region_c213.id ]
         subject.save!
       end
 

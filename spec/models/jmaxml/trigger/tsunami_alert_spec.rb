@@ -21,11 +21,11 @@ describe Jmaxml::Trigger::TsunamiAlert, dbscope: :example do
     subject { create(:jmaxml_trigger_tsunami_alert) }
 
     before do
-      region_100 = create(:jmaxml_tsunami_region_100)
-      region_101 = create(:jmaxml_tsunami_region_101)
-      region_102 = create(:jmaxml_tsunami_region_102)
-      region_110 = create(:jmaxml_tsunami_region_110)
-      subject.target_region_ids = [ region_100.id, region_101.id, region_102.id, region_110.id ]
+      region_c100 = create(:jmaxml_tsunami_region_c100)
+      region_c101 = create(:jmaxml_tsunami_region_c101)
+      region_c102 = create(:jmaxml_tsunami_region_c102)
+      region_c110 = create(:jmaxml_tsunami_region_c110)
+      subject.target_region_ids = [ region_c100.id, region_c101.id, region_c102.id, region_c110.id ]
       subject.save!
     end
 

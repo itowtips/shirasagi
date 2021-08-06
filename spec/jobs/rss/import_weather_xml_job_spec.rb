@@ -186,8 +186,8 @@ describe Rss::ImportWeatherXmlJob, dbscope: :example do
     end
 
     before do
-      region_152 = create(:jmaxml_region_152)
-      node.target_region_ids = [ region_152.id ]
+      region_c152 = create(:jmaxml_region_c152)
+      node.target_region_ids = [ region_c152.id ]
       node.earthquake_intensity = '3'
       node.my_anpi_post_id = node_my_anpi_post.id
       node.anpi_mail_id = node_ezine_member_page.id
@@ -276,8 +276,8 @@ describe Rss::ImportWeatherXmlJob, dbscope: :example do
     end
 
     before do
-      region_2920100 = create(:jmaxml_forecast_region_c2920100)
-      trigger1.target_region_ids = [ region_2920100.id ]
+      region_c2920100 = create(:jmaxml_forecast_region_c2920100)
+      trigger1.target_region_ids = [ region_c2920100.id ]
       trigger1.save!
 
       node.filters.new(name: unique_id, state: 'enabled', trigger_ids: [ trigger1.id.to_s ],
@@ -391,11 +391,11 @@ describe Rss::ImportWeatherXmlJob, dbscope: :example do
       end
 
       before do
-        region_210 = create(:jmaxml_region_210)
-        region_211 = create(:jmaxml_region_211)
-        region_212 = create(:jmaxml_region_212)
-        region_213 = create(:jmaxml_region_213)
-        node.target_region_ids = [ region_210.id, region_211.id, region_212.id, region_213.id ]
+        region_c210 = create(:jmaxml_region_c210)
+        region_c211 = create(:jmaxml_region_c211)
+        region_c212 = create(:jmaxml_region_c212)
+        region_c213 = create(:jmaxml_region_c213)
+        node.target_region_ids = [ region_c210.id, region_c211.id, region_c212.id, region_c213.id ]
         node.earthquake_intensity = '5+'
         node.my_anpi_post_id = node_my_anpi_post.id
         node.anpi_mail_id = node_ezine_member_page.id
@@ -486,13 +486,13 @@ describe Rss::ImportWeatherXmlJob, dbscope: :example do
       end
 
       before do
-        region_210 = create(:jmaxml_region_210)
-        region_211 = create(:jmaxml_region_211)
-        region_212 = create(:jmaxml_region_212)
-        region_213 = create(:jmaxml_region_213)
-        trigger1.target_region_ids = [ region_210.id, region_211.id, region_212.id, region_213.id ]
+        region_c210 = create(:jmaxml_region_c210)
+        region_c211 = create(:jmaxml_region_c211)
+        region_c212 = create(:jmaxml_region_c212)
+        region_c213 = create(:jmaxml_region_c213)
+        trigger1.target_region_ids = [ region_c210.id, region_c211.id, region_c212.id, region_c213.id ]
         trigger1.save!
-        trigger2.target_region_ids = [ region_210.id, region_211.id, region_212.id, region_213.id ]
+        trigger2.target_region_ids = [ region_c210.id, region_c211.id, region_c212.id, region_c213.id ]
         trigger2.save!
 
         node.filters.new(name: unique_id, state: 'enabled', trigger_ids: [ trigger1.id.to_s ],

@@ -34,11 +34,11 @@ describe Jmaxml::Action::PublishPage, dbscope: :example do
         let(:trigger) { create(:jmaxml_trigger_quake_intensity_flash) }
 
         before do
-          region_210 = create(:jmaxml_region_210)
-          region_211 = create(:jmaxml_region_211)
-          region_212 = create(:jmaxml_region_212)
-          region_213 = create(:jmaxml_region_213)
-          trigger.target_region_ids = [ region_210.id, region_211.id, region_212.id, region_213.id ]
+          region_c210 = create(:jmaxml_region_c210)
+          region_c211 = create(:jmaxml_region_c211)
+          region_c212 = create(:jmaxml_region_c212)
+          region_c213 = create(:jmaxml_region_c213)
+          trigger.target_region_ids = [ region_c210.id, region_c211.id, region_c212.id, region_c213.id ]
           trigger.save!
 
           subject.publish_to_id = article_node.id
@@ -74,12 +74,12 @@ describe Jmaxml::Action::PublishPage, dbscope: :example do
         let(:trigger) { create(:jmaxml_trigger_quake_info) }
 
         before do
-          region_210 = create(:jmaxml_region_210)
-          region_211 = create(:jmaxml_region_211)
-          region_212 = create(:jmaxml_region_212)
-          region_213 = create(:jmaxml_region_213)
+          region_c210 = create(:jmaxml_region_c210)
+          region_c211 = create(:jmaxml_region_c211)
+          region_c212 = create(:jmaxml_region_c212)
+          region_c213 = create(:jmaxml_region_c213)
           trigger.earthquake_intensity = '4'
-          trigger.target_region_ids = [ region_210.id, region_211.id, region_212.id, region_213.id ]
+          trigger.target_region_ids = [ region_c210.id, region_c211.id, region_c212.id, region_c213.id ]
           trigger.save!
 
           subject.publish_to_id = article_node.id
@@ -119,11 +119,11 @@ describe Jmaxml::Action::PublishPage, dbscope: :example do
         let(:trigger) { create(:jmaxml_trigger_tsunami_alert) }
 
         before do
-          region_100 = create(:jmaxml_tsunami_region_100)
-          region_101 = create(:jmaxml_tsunami_region_101)
-          region_102 = create(:jmaxml_tsunami_region_102)
-          region_110 = create(:jmaxml_tsunami_region_110)
-          trigger.target_region_ids = [ region_100.id, region_101.id, region_102.id, region_110.id ]
+          region_c100 = create(:jmaxml_tsunami_region_c100)
+          region_c101 = create(:jmaxml_tsunami_region_c101)
+          region_c102 = create(:jmaxml_tsunami_region_c102)
+          region_c110 = create(:jmaxml_tsunami_region_c110)
+          trigger.target_region_ids = [ region_c100.id, region_c101.id, region_c102.id, region_c110.id ]
           trigger.save!
 
           subject.publish_to_id = article_node.id
@@ -168,11 +168,11 @@ describe Jmaxml::Action::PublishPage, dbscope: :example do
         let(:trigger) { create(:jmaxml_trigger_tsunami_info) }
 
         before do
-          region_100 = create(:jmaxml_tsunami_region_100)
-          region_101 = create(:jmaxml_tsunami_region_101)
-          region_102 = create(:jmaxml_tsunami_region_102)
-          region_110 = create(:jmaxml_tsunami_region_110)
-          trigger.target_region_ids = [ region_100.id, region_101.id, region_102.id, region_110.id ]
+          region_c100 = create(:jmaxml_tsunami_region_c100)
+          region_c101 = create(:jmaxml_tsunami_region_c101)
+          region_c102 = create(:jmaxml_tsunami_region_c102)
+          region_c110 = create(:jmaxml_tsunami_region_c110)
+          trigger.target_region_ids = [ region_c100.id, region_c101.id, region_c102.id, region_c110.id ]
           trigger.save!
 
           subject.publish_to_id = article_node.id
@@ -264,9 +264,9 @@ describe Jmaxml::Action::PublishPage, dbscope: :example do
           end
 
           before do
-            region1 = create(:jmaxml_water_level_station_85050900020300042)
-            region2 = create(:jmaxml_water_level_station_85050900020300045)
-            region3 = create(:jmaxml_water_level_station_85050900020300053)
+            region1 = create(:jmaxml_water_level_station_c85050900020300042)
+            region2 = create(:jmaxml_water_level_station_c85050900020300045)
+            region3 = create(:jmaxml_water_level_station_c85050900020300053)
             trigger.target_region_ids = [ region1.id, region2.id, region3.id ]
             trigger.save!
 
@@ -511,11 +511,11 @@ describe Jmaxml::Action::PublishPage, dbscope: :example do
         let(:trigger) { create(:jmaxml_trigger_quake_intensity_flash) }
 
         before do
-          region_210 = create(:jmaxml_region_210)
-          region_211 = create(:jmaxml_region_211)
-          region_212 = create(:jmaxml_region_212)
-          region_213 = create(:jmaxml_region_213)
-          trigger.target_region_ids = [ region_210.id, region_211.id, region_212.id, region_213.id ]
+          region_c210 = create(:jmaxml_region_c210)
+          region_c211 = create(:jmaxml_region_c211)
+          region_c212 = create(:jmaxml_region_c212)
+          region_c213 = create(:jmaxml_region_c213)
+          trigger.target_region_ids = [ region_c210.id, region_c211.id, region_c212.id, region_c213.id ]
           trigger.save!
 
           subject.publish_to_id = article_node.id
@@ -547,11 +547,11 @@ describe Jmaxml::Action::PublishPage, dbscope: :example do
         let(:trigger) { create(:jmaxml_trigger_quake_info) }
 
         before do
-          region_210 = create(:jmaxml_region_210)
-          region_211 = create(:jmaxml_region_211)
-          region_212 = create(:jmaxml_region_212)
-          region_213 = create(:jmaxml_region_213)
-          trigger.target_region_ids = [ region_210.id, region_211.id, region_212.id, region_213.id ]
+          region_c210 = create(:jmaxml_region_c210)
+          region_c211 = create(:jmaxml_region_c211)
+          region_c212 = create(:jmaxml_region_c212)
+          region_c213 = create(:jmaxml_region_c213)
+          trigger.target_region_ids = [ region_c210.id, region_c211.id, region_c212.id, region_c213.id ]
           trigger.save!
 
           subject.publish_to_id = article_node.id
