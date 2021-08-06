@@ -276,7 +276,7 @@ describe Rss::ImportWeatherXmlJob, dbscope: :example do
     end
 
     before do
-      region_2920100 = create(:jmaxml_forecast_region_2920100)
+      region_2920100 = create(:jmaxml_forecast_region_c2920100)
       trigger1.target_region_ids = [ region_2920100.id ]
       trigger1.save!
 

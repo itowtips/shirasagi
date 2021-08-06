@@ -229,11 +229,11 @@ describe Jmaxml::Action::SendMail, dbscope: :example do
         let(:trigger) { create(:jmaxml_trigger_weather_alert) }
 
         before do
-          region_2920100 = create(:jmaxml_forecast_region_2920100)
-          region_2920200 = create(:jmaxml_forecast_region_2920200)
-          region_2920300 = create(:jmaxml_forecast_region_2920300)
-          region_2920400 = create(:jmaxml_forecast_region_2920400)
-          trigger.target_region_ids = [ region_2920100.id, region_2920200.id, region_2920300.id, region_2920400.id ]
+          region_c2920100 = create(:jmaxml_forecast_region_c2920100)
+          region_c2920200 = create(:jmaxml_forecast_region_c2920200)
+          region_c2920300 = create(:jmaxml_forecast_region_c2920300)
+          region_c2920400 = create(:jmaxml_forecast_region_c2920400)
+          trigger.target_region_ids = [ region_c2920100.id, region_c2920200.id, region_c2920300.id, region_c2920400.id ]
           trigger.save!
         end
 
@@ -334,7 +334,7 @@ describe Jmaxml::Action::SendMail, dbscope: :example do
         before do
           target_region_ids = []
           area_codes.each do |area_code|
-            region = create("jmaxml_forecast_region_#{area_code}".to_sym)
+            region = create("jmaxml_forecast_region_c#{area_code}".to_sym)
             target_region_ids << region.id
           end
           trigger.target_region_ids = target_region_ids
@@ -374,8 +374,8 @@ describe Jmaxml::Action::SendMail, dbscope: :example do
         let(:trigger) { create(:jmaxml_trigger_volcano_flash) }
 
         before do
-          region1 = create(:jmaxml_forecast_region_2042900)
-          region2 = create(:jmaxml_forecast_region_2043200)
+          region1 = create(:jmaxml_forecast_region_c2042900)
+          region2 = create(:jmaxml_forecast_region_c2043200)
           trigger.target_region_ids = [ region1.id, region2.id ]
           trigger.save!
         end
@@ -411,11 +411,11 @@ describe Jmaxml::Action::SendMail, dbscope: :example do
         let(:trigger) { create(:jmaxml_trigger_ash_fall_forecast) }
 
         before do
-          region_4620100 = create(:jmaxml_forecast_region_4620100)
-          region_4620300 = create(:jmaxml_forecast_region_4620300)
-          region_4621400 = create(:jmaxml_forecast_region_4621400)
-          region_4621700 = create(:jmaxml_forecast_region_4621700)
-          trigger.target_region_ids = [ region_4620100.id, region_4620300.id, region_4621400.id, region_4621700.id ]
+          region_c4620100 = create(:jmaxml_forecast_region_c4620100)
+          region_c4620300 = create(:jmaxml_forecast_region_c4620300)
+          region_c4621400 = create(:jmaxml_forecast_region_c4621400)
+          region_c4621700 = create(:jmaxml_forecast_region_c4621700)
+          trigger.target_region_ids = [ region_c4620100.id, region_c4620300.id, region_c4621400.id, region_c4621700.id ]
           trigger.save!
         end
 
@@ -453,11 +453,11 @@ describe Jmaxml::Action::SendMail, dbscope: :example do
         let(:trigger) { create(:jmaxml_trigger_tornado_alert) }
 
         before do
-          region_1310100 = create(:jmaxml_forecast_region_1310100)
-          region_1310200 = create(:jmaxml_forecast_region_1310200)
-          region_1310300 = create(:jmaxml_forecast_region_1310300)
-          region_1310400 = create(:jmaxml_forecast_region_1310400)
-          trigger.target_region_ids = [ region_1310100.id, region_1310200.id, region_1310300.id, region_1310400.id ]
+          region_c1310100 = create(:jmaxml_forecast_region_c1310100)
+          region_c1310200 = create(:jmaxml_forecast_region_c1310200)
+          region_c1310300 = create(:jmaxml_forecast_region_c1310300)
+          region_c1310400 = create(:jmaxml_forecast_region_c1310400)
+          trigger.target_region_ids = [ region_c1310100.id, region_c1310200.id, region_c1310300.id, region_c1310400.id ]
           trigger.save!
         end
 
@@ -582,8 +582,8 @@ describe Jmaxml::Action::SendMail, dbscope: :example do
         let(:trigger) { create(:jmaxml_trigger_volcano_flash) }
 
         before do
-          region1 = create(:jmaxml_forecast_region_2042900)
-          region2 = create(:jmaxml_forecast_region_2043200)
+          region1 = create(:jmaxml_forecast_region_c2042900)
+          region2 = create(:jmaxml_forecast_region_c2043200)
           trigger.target_region_ids = [ region1.id, region2.id ]
           trigger.save!
         end
