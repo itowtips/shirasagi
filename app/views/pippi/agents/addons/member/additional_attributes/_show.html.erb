@@ -7,6 +7,11 @@
   <dt><%= @item.t(:subscribe_line_message) %></dt>
   <dd><%= @item.label :subscribe_line_message %></dd>
 
-  <dt><%= @model.t(:child_age_situations) %></dt>
-  <dd><%= @item.label_child_age_situations %></dd>
+  <% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
+    <dt><%= @model.t "child#{i}_birthday" %></dt>
+    <dd><%= tryb { I18n.l(@item.send("child#{i}_birthday").to_date, format: :long) } %></dd>
+  <% end %>
+
+  <dt><%= @item.t :residence_areas %></dt>
+  <dd><%= @item.residence_areas.map { |k| t("pippi.options.residence_areas.#{k}") }.join(", ") %></dd>
 </dl>

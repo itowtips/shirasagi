@@ -12,6 +12,14 @@ ja:
         1_2year: 1～2歳
         3_5year: 3～5歳
         elder: 小学生以上
+      residence_areas:
+        nakaku: 中区
+        higashiku: 東区
+        nishiku: 西区
+        minamiku: 南区
+        kitaku: 北区
+        hamakitaku: 浜北区
+        tenryuku: 天竜区
 
   modules:
     pippi: ぴっぴ機能
@@ -22,4 +30,9 @@ ja:
     attributes:
       pippi/member/addon/additional_attributes:
         subscribe_line_message: LINEメッセージ
-        child_age_situations: 子供の年齢
+        child1_birthday: "子供の年齢 1"
+        child2_birthday: "子供の年齢 2"
+        child3_birthday: "子供の年齢 3"
+        child4_birthday: "子供の年齢 4"
+        child5_birthday: "子供の年齢 5"
+        residence_areas: お住いの地区

@@ -12,9 +12,16 @@
       <dd><%= @item.label :subscribe_line_message %></dd>
     </dl>
 
+    <% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
+      <dl class="column">
+        <dt><%= @model.t "child#{i}_birthday" %></dt>
+        <dd><%= tryb { I18n.l(@item.send("child#{i}_birthday").to_date, format: :long) } %></dd>
+      </dl>
+    <% end %>
+
     <dl class="column">
-      <dt><%= @item.t :child_age_situations %></dt>
-      <dd><%= @item.label_child_age_situations %></dd>
+      <dt><%= @item.t :residence_areas %></dt>
+      <dd><%= @item.residence_areas.map { |k| t("pippi.options.residence_areas.#{k}") }.join(", ") %></dd>
     </dl>
   </div>
 </div>

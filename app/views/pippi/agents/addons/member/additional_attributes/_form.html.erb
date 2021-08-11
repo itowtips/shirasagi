@@ -7,12 +7,28 @@
   <dt><%= @item.t(:subscribe_line_message) %></dt>
   <dd><%= f.select :subscribe_line_message, @item.subscribe_line_message_options %></dd>
 
-  <dt><%= @model.t(:child_age_situations) %></dt>
+  <% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
+    <dt><%= @model.t("child#{i}_birthday") %></dt>
+    <dd>
+      <%= f.fields_for "in_child#{i}_birth" do |birth_f| %>
+        <% era, year, month, day = @item.send("parse_in_child#{i}_birth") %>
+        <%= birth_f.select :era, @item.wareki_options, selected: era, include_blank: true %>
+        <%= birth_f.number_field :year, value: year %>
+        <%= t("datetime.prompts.year") %>
+        <%= birth_f.select :month, options_for_select((1..12).to_a, month), include_blank: true  %>
+        <%= t("datetime.prompts.month") %>
+        <%= birth_f.select :day, options_for_select((1..31).to_a, day), include_blank: true %>
+        <%= t("datetime.prompts.day") %>
+      <% end %>
+    </dd>
+  <% end %>
+
+  <dt><%= @model.t(:residence_areas) %></dt>
   <dd>
-    <%= hidden_field_tag "#{f.object_name}[child_age_situations][]", nil %>
-    <% @item.child_age_situations_options.each do |k, v| %>
+    <%= hidden_field_tag "#{f.object_name}[residence_areas][]", nil %>
+    <% @item.residence_areas_options.each do |k, v| %>
       <label>
-        <%= check_box_tag "#{f.object_name}[child_age_situations][]", v, @item.child_age_situations.include?(v.to_s) %>
+        <%= check_box_tag "#{f.object_name}[residence_areas][]", v, @item.residence_areas.include?(v.to_s) %>
         <%= k %>
       </label>
     <% end %>
