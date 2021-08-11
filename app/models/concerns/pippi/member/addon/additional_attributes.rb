@@ -3,40 +3,92 @@ module Pippi::Member::Addon
     extend SS::Addon
     extend ActiveSupport::Concern
 
+    CHILD_MAX_SIZE = 5
+
     included do
       field :subscribe_line_message, type: String, default: "active"
-      field :child_age_situations, type: Array, default: []
+      field :residence_areas, type: Array, default: []
 
       validates :subscribe_line_message, inclusion: { in: %w(active expired) }
-      validate :validate_child_age_situations
-
+      validate :validate_residence_areas
       permit_params :subscribe_line_message
-      permit_params child_age_situations: []
+      permit_params residence_areas: []
+
+      1.upto(CHILD_MAX_SIZE) do |i|
+        field :"child#{i}_birthday", type: Date
+        attr_accessor :"in_child#{i}_birth"
+
+        permit_params :"in_child#{i}_birth" => [:era, :year, :month, :day]
+        validate :"set_child#{i}_birthday"
+      end
     end
 
     def subscribe_line_message_options
       %w(active expired).map { |m| [ I18n.t("pippi.options.subscribe_line_message.#{m}"), m ] }.to_a
     end
 
-    def child_age_situations_options
-      I18n.t("pippi.options.child_age_situations").map { |k, v| [v, k] }
+    def residence_areas_options
+      I18n.t("pippi.options.residence_areas").map { |k, v| [v, k] }
     end
 
-    def label_child_age_situations(keys = nil)
-      keys ||= I18n.t("pippi.options.child_age_situations").keys.map(&:to_s)
-      keys.map do |k|
-        child_age_situations.include?(k) ? I18n.t("pippi.options.child_age_situations.#{k}") : nil
-      end.compact.join(", ")
+    def validate_residence_areas
+      self.residence_areas = residence_areas.select(&:present?)
+      return if residence_areas.blank?
+
+      if (residence_areas - I18n.t("pippi.options.residence_areas").keys.map(&:to_s)).present?
+        errors.add :residence_areas, :inclusion
+      end
     end
 
-    def validate_child_age_situations
-      self.child_age_situations = child_age_situations.select(&:present?)
+    1.upto(CHILD_MAX_SIZE) do |i|
+      accessor_key = :"in_child#{i}_birth"
+      field_key = :"child#{i}_birthday"
 
-      keys = I18n.t("pippi.options.child_age_situations").keys.map(&:to_s)
-      child_age_situations.each do |child_age_situation|
-        if !keys.include?(child_age_situation)
-          errors.add :child_age_situations, :inclusion
-          break
+      define_method("parse_in_child#{i}_birth") do
+        in_child_birth = send(accessor_key)
+        child_birthday = send(field_key)
+
+        if in_child_birth
+          era   = in_child_birth["era"]
+          year  = in_child_birth["year"]
+          month = in_child_birth["month"]
+          day   = in_child_birth["day"]
+        else
+          era   = child_birthday ? "seireki" : nil
+          year  = child_birthday.try(:year)
+          month = child_birthday.try(:month)
+          day   = child_birthday.try(:day)
+        end
+
+        [era, year, month, day]
+      end
+
+      define_method("set_child#{i}_birthday") do
+        in_child_birth = send(accessor_key).presence || {}
+        era = in_child_birth[:era]
+        year = in_child_birth[:year]
+        month = in_child_birth[:month]
+        day = in_child_birth[:day]
+
+        if era.blank? && year.blank? && month.blank? && day.blank?
+          send("#{field_key}=", nil)
+          return
+        elsif era.blank? || year.blank? || month.blank? || day.blank?
+          errors.add field_key, :invalid
+          return
+        end
+
+        year = year.to_i
+        month = month.to_i
+        day = day.to_i
+
+        begin
+          wareki = I18n.t("ss.wareki")[era.to_sym]
+          min = Date.parse(wareki[:min])
+          date = Date.new(min.year + year - 1, month, day)
+          send("#{field_key}=", date)
+        rescue
+          errors.add field_key, :invalid
         end
       end
     end

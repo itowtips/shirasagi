@@ -15,7 +15,7 @@ class Cms::Line::FacilitySearch::Category
   field :order, type: Integer, default: 0
   field :state, type: String, default: 'public'
 
-  belongs_to_file2 :image, static_state: "public"
+  belongs_to_file2 :image
   embeds_ids :categories, class_name: "Facility::Node::Category"
 
   validates :service_id, presence: true
