@@ -74,7 +74,7 @@ describe "article_pages twitter post", type: :feature, dbscope: :example, js: tr
       end
     end
 
-    context "post message_only_carousel" do
+    context "post page" do
       it "#edit" do
         capture_twitter_rest_client do |capture|
           visit edit_path
@@ -82,6 +82,7 @@ describe "article_pages twitter post", type: :feature, dbscope: :example, js: tr
           within "#addon-cms-agents-addons-twitter_poster" do
             expect(page).to have_css("select option[selected]", text: I18n.t("ss.options.state.expired"))
             select I18n.t("ss.options.state.active"), from: "item[twitter_auto_post]"
+            select I18n.t("cms.options.twitter_post_format.page_only"), from: "item[twitter_post_format]"
           end
 
           ensure_addon_opened("#addon-cms-agents-addons-release_plan")
@@ -145,6 +146,7 @@ describe "article_pages twitter post", type: :feature, dbscope: :example, js: tr
           within "#addon-cms-agents-addons-twitter_poster" do
             expect(page).to have_css("select option[selected]", text: I18n.t("ss.options.state.expired"))
             select I18n.t("ss.options.state.active"), from: "item[twitter_auto_post]"
+            select I18n.t("cms.options.twitter_post_format.page_only"), from: "item[twitter_post_format]"
           end
 
           ensure_addon_opened("#addon-cms-agents-addons-release_plan")
