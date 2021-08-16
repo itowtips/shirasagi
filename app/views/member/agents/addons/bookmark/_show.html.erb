@@ -1,0 +1,12 @@
+<dl class="see mod-member-bookmarks">
+  <dt><%= @item.t(:bookmarks) %></dt>
+  <dd>
+    <table class="index">
+      <tbody>
+        <% @item.bookmarks.each do |item| %>
+          <tr><%= item %></tr>
+        <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>

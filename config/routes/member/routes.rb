@@ -43,6 +43,7 @@ Rails.application.routes.draw do
     resources :blogs, concerns: :deletion
     resources :blog_pages, concerns: :deletion
     resources :blog_page_locations, concerns: :deletion
+    resources :favorite_pages, concerns: :deletion
 
     resources :photos, concerns: [:deletion, :command] do
       get :index_listable, on: :collection
@@ -100,6 +101,9 @@ Rails.application.routes.draw do
     post "my_profile/confirm_password(.:format)" => "public#confirm_password", cell: "nodes/my_profile"
     get "my_profile/complete_password(.:format)" => "public#complete_password", cell: "nodes/my_profile"
     post "my_profile/postal_code(.:format)" => "public#postal_code", cell: "nodes/my_profile"
+
+    get "favorite_page/(index.:format)" => "public#index", cell: "nodes/favorite_page"
+    post "favorite_page/(index.:format)" => "public#index", cell: "nodes/favorite_page"
 
     scope "my_blog" do
       resource :setting, controller: "public", cell: "nodes/my_blog/setting", except: [:index, :show, :destroy]
@@ -164,6 +168,7 @@ Rails.application.routes.draw do
     get "photo_slide" => "public#index", cell: "parts/photo_slide"
     get "photo_search" => "public#index", cell: "parts/photo_search"
     get "invited_group" => "public#index", cell: "parts/invited_group"
+    get "favorite_page" => "public#index", cell: "parts/favorite_page"
   end
 
   namespace "member", path: ".m:member", member: /\d+/ do

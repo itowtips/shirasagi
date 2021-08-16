@@ -322,6 +322,17 @@ module Member::Node
     default_scope ->{ where(route: "member/my_group") }
   end
 
+  class FavoritePage
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "member/favorite_page") }
+  end
+
   class PippiProfile
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
