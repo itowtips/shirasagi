@@ -641,7 +641,6 @@ ja:
         line_channel_access_token: チャンネルアクセストークン
       ss/addon/site_auto_post_setting:
         site_twitter_auto_post: Twitter自動投稿
-        site_sns_auto_delete: 非公開時に投稿を削除
         site_edit_auto_post: 編集時に自動投稿
       ss/addon/file_setting:
         file_resizing: 添付ファイルリサイズ
