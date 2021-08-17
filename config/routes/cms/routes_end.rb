@@ -166,8 +166,12 @@ Rails.application.routes.draw do
     get "search_contents/:id/download" => "page_search_contents#download", as: "download_page_search_contents"
     delete "search_contents/:id" => "search_contents/pages#destroy_all_pages"
 
-    resources :check_links_pages, only: [:show, :index]
-    resources :check_links_nodes, only: [:show, :index]
+    resources :check_links_pages, only: [:show, :index] do
+      get :download, on: :collection
+    end
+    resources :check_links_nodes, only: [:show, :index] do
+      get :download, on: :collection
+    end
 
     namespace "apis" do
       get "groups" => "groups#index"

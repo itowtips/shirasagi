@@ -1,23 +1,42 @@
+<div class="list-head">
+  <%= render file: "_search" %>
+</div>
+
+<%
+  def group_label(item)
+    names = item.groups.pluck(:name).sort_by { |name| name.count("/") * -1 }
+    label = names.first
+    label += " ..." if names.size >= 2
+    label
+  end
+%>
+
 <table class="index">
   <thead>
     <tr>
-      <th><%= @model.t("name") %></th>
-      <th><%= @model.t("check_links_errors_url") %></th>
-      <th><%= @model.t("check_links_errors_updated") %></th>
+      <th style="overflow: hidden; text-overflow: ellipsis;"><%= @model.t("name") %></th>
+      <th style="white-space: nowrap;"><%= @model.t("filename") %></th>
+      <th style="white-space: nowrap;"><%= @model.t("group_ids") %></th>
+      <th style="white-space: nowrap;"><%= @model.t("check_links_errors_url") %></th>
     </tr>
   </thead>
   <tbody>
   <% @items.each do |item| %>
     <tr>
-      <td><%= link_to item.name, { action: :show, id: item }, class: "title" %></td>
-      <td>
-        <% if item.public? %>
-          <%= link_to item.full_url, item.full_url, target: :_blank %>
-        <% else %>
-          <%= item.name %>
-        <% end %>
+      <td style="overflow: hidden; text-overflow: ellipsis;"><%= link_to item.name, { action: :show, id: item }, class: "title" %></td>
+      <td style="white-space: nowrap;"><%= item.filename %></td>
+      <td style="white-space: nowrap;">
+        <%= group_label(item) %>
       </td>
-      <td><%= tryb{ item.check_links_errors_updated.strftime("%Y/%m/%d %H:%M") } %></td>
+      <td style="white-space: nowrap;">
+        <% if item.public? %>
+          <%= link_to "公開画面", item.full_url, target: :_blank %>
+        <% else %>
+          <%= "公開画面" %>
+        <% end %>
+        <%= "|" %>
+        <%= link_to "プレビュー", item.full_url, target: :_blank %>
+      </td>
     </tr>
   <% end %>
   </tbody>

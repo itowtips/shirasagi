@@ -845,7 +845,7 @@ ja:
         check_links_errors_url: URL
         check_links_errors: 検出されたリンク切れ
         check_links_errors_updated: 検出日時
-        check_links_errors_remark: ※集計時のタイミングやサーバー負荷状況によっては誤検出の場合がございます。
+        check_links_errors_remark: ※集計時のタイミングやサーバー負荷状況によっては誤検出の場合があります。
       cms/addon/tag_setting:
         st_tags: タグ
       cms/addon/tag:

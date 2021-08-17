@@ -1,0 +1,15 @@
+<%
+
+@s = OpenStruct.new params[:s]
+
+%>
+<div class="search-form">
+  <%= form_for :s, url: "", html: { class: "search", method: :get } do |f| %>
+    <span style="margin-right: 10px;">
+      <%= f.text_field :keyword %>
+    </span>
+    <input type="submit" value="<%= t('ss.buttons.search') %>" class="btn" />
+    <input type="button" value="<%= t('ss.buttons.reset') %>" onclick="location.href='?'" class="btn" />
+    <%= link_to "CSV", { action: :download }, class: "btn btn-csv" %>
+  <% end %>
+</div>

@@ -1,0 +1,23 @@
+<%
+  filename = @cur_path.sub(@cur_site.url, "/").sub(/^\//, "")
+  @item = Cms::Page.site(@cur_site).where(filename: filename).first
+
+  filename = filename.sub(/\/index\.html$/, "")
+  @item ||= Cms::Node.site(@cur_site).where(filename: filename).first
+
+  @item = @item.becomes_with_route if @item
+  @check_links_errors = @item.try(:check_links_errors)
+%>
+
+<%= jquery do %>
+  var linkErrors = <%== @check_links_errors.to_json %>;
+  console.log(linkErrors);
+  if (linkErrors) {
+    $.each(linkErrors, function() {
+      $("body").find('[href="' + this + '"]').each(function () {
+        var ele = this;
+        $(ele).addClass("ss-check-links-error");
+      });
+    });
+  }
+<% end %>
