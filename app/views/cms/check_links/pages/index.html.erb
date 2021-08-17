@@ -1,0 +1,56 @@
+<div class="index">
+  <div class="list-head">
+    <div style="line-height: 20px;">
+      <%= @cur_report.created.strftime("%Y/%m/%d %H:%M") %> 時点でのレポートです。<br>
+      リンク切れを修正した場合、再度リンクチェックを実行し、新しいレポートを作成してください。
+    </div>
+    <div style="padding-top: 2px; color: red;">※リンクチェックの実行タイミングや通信先サーバーの負荷状況によっては誤検出の場合があります。</div>
+  </div>
+  <div class="list-head">
+    <%
+      @s = OpenStruct.new params[:s]
+    %>
+    <div class="list-head-search-full">
+      <%= form_for :s, url: "", html: { method: :get } do |f| %>
+        <span style="margin-right: 10px;">
+          <%= f.text_field :keyword %>
+        </span>
+        <input type="submit" value="<%= t('ss.buttons.search') %>" class="btn" />
+        <input type="button" value="<%= t('ss.buttons.reset') %>" onclick="location.href='?'" class="btn" />
+      <% end %>
+    </div>
+  </div>
+
+  <div class="list-items">
+    <div style="padding: 2px"><%= "#{@model.content_name}#{@items.size}#{t("ss.units.count")}" %></div>
+    <table class="index">
+      <thead>
+        <tr>
+          <th style="overflow: hidden; text-overflow: ellipsis;"><%= @model.t("name") %></th>
+          <th style="white-space: nowrap;"><%= @model.t("filename") %></th>
+          <th style="white-space: nowrap;"><%= @model.t("group_ids") %></th>
+          <th style="width: 180px;"><%= t("ss.links.preview") %></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @items.each do |item| %>
+        <% content = item.content %>
+        <tr>
+          <td style="overflow: hidden; text-overflow: ellipsis;"><%= link_to item.name, { action: :show, id: item }, class: "title" %></td>
+          <td style="white-space: nowrap;"><%= item.filename %></td>
+          <td style="white-space: nowrap;"><%= item.group_label %></td>
+          <td>
+            <% if content %>
+              <%= link_to "#{item.t(:urls)}#{item.urls.size}#{t("ss.units.count")}", cms_preview_path(path: content.preview_path), target: "_blank", rel: "noopener" %>
+            <% else %>
+              <%= "ページ削除済み" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <%= paginate @items if @items.try(:current_page) %>
+  </div>
+</div>

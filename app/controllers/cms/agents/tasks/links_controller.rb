@@ -11,36 +11,33 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
   def set_params
   end
 
-  def unset_errors_in_contents
-    Cms::Page.site(@site).has_check_links_errors.each do |content|
-      content.with_repl_master.unset(:check_links_errors_updated, :check_links_errors)
+  def create_report
+    return if @errors.blank?
+
+    @report_max_age = SS.config.cms.check_links["report_max_age"].to_i
+    return if @report_max_age <= 0
+
+    # destroy old reports
+    report_ids = Cms::CheckLinks::Report.site(@site).limit(@report_max_age).pluck(:id)
+    Cms::CheckLinks::Report.site(@site).nin(id: report_ids).each do |report|
+      @task.log "# #{report.name} destroyed"
+      report.destroy
     end
 
-    Cms::Node.site(@site).has_check_links_errors.each do |content|
-      content.with_repl_master.unset(:check_links_errors_updated, :check_links_errors)
+    # create new report
+    @report = Cms::CheckLinks::Report.new
+    @report.site = @site
+    if !@report.save
+      @task.log "Error : Failed to save Cms::CheckLinks::Report #{@report.errors.full_messages}"
+      return
     end
-  end
+    @task.log "# #{@report.name} created"
 
-  def set_errors_in_contents(ref, urls)
-    content = find_content_from_ref(ref)
-    if content
-      content.with_repl_master.set(check_links_errors_updated: @task.started, check_links_errors: urls)
+    @errors.map do |ref, urls|
+      urls = urls.map { |url| (url[0] == "/") ? File.join(@base_url, url) : url }
+      next if @report.save_error(ref, urls)
+      @task.log "Error : Failed to save Cms::CheckLinks::Error #{ref} (#{urls.join(",")})"
     end
-  end
-
-  def find_content_from_ref(ref)
-    filename = ref.sub(/^#{::Regexp.escape(@site.url)}/, "")
-    filename.sub!(/\?.*$/, "")
-    filename += "index.html" if ref.match?(/\/$/)
-
-    page = Cms::Page.site(@site).where(filename: filename).first
-    return page if page
-
-    filename.sub!(/\/(index\.html)?$/, "")
-    node = Cms::Node.site(@site).where(filename: filename).first
-    return node if node
-
-    return nil
   end
 
   public
@@ -88,11 +85,7 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
       ).deliver_now
     end
 
-    unset_errors_in_contents
-    @errors.map do |ref, urls|
-      urls = urls.map { |url| (url[0] == "/") ? File.join(@base_url, url) : url }
-      set_errors_in_contents(ref, urls)
-    end
+    create_report
     head :ok
   end
 

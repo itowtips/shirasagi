@@ -189,8 +189,16 @@ Rails.application.routes.draw do
     delete "search_contents/:id" => "search_contents/pages#destroy_all_pages"
     resource :generate_lock
 
-    resources :check_links_pages, only: [:show, :index]
-    resources :check_links_nodes, only: [:show, :index]
+    namespace "check_links" do
+      resources :reports, concerns: [:deletion], only: [:show, :index] do
+        resources :pages, only: [:show, :index] do
+          get :download, on: :collection
+        end
+        resources :nodes, only: [:show, :index] do
+          get :download, on: :collection
+        end
+      end
+    end
 
     namespace "apis" do
       get "groups" => "groups#index"

@@ -6,6 +6,7 @@ ja:
     body_layout: 本文レイアウト
     calendar_view: カレンダー表示
     check_links: リンクチェック実行結果
+    check_links_reports: レポート
     check_links_nodes: フォルダー
     check_links_pages: ページ
     count_pages: ページ目
@@ -533,6 +534,10 @@ ja:
     delete_cms_ignore_alert: 警告を無視して削除する
     edit_cms_ignore_alert: 警告を無視して非公開保存する
     use_cms_sitemap: フォルダ容量のCSVダウンロード
+    read_cms_check_links_reports: リンクチェックレポートの閲覧
+    delete_cms_check_links_reports: リンクチェックレポートの削除
+    read_other_cms_check_links_errors: リンクチェックエラーの閲覧（全て）
+    read_private_cms_check_links_errors: リンクチェックエラーの閲覧（所有）
 
   modules:
     cms: 標準機能
@@ -918,11 +923,6 @@ ja:
         periods: 表示期間
       cms/addon/archive_view_switcher:
         archive_view: 表示設定
-      cms/addon/check_links:
-        check_links_errors_url: URL
-        check_links_errors: 検出されたリンク切れ
-        check_links_errors_updated: 検出日時
-        check_links_errors_remark: ※集計時のタイミングやサーバー負荷状況によっては誤検出の場合がございます。
       cms/addon/tag_setting:
         st_tags: タグ
       cms/addon/tag:
@@ -1084,6 +1084,12 @@ ja:
         page_id: 連携ページ
       cms/addon/content_quota:
         content_quota: 容量制限
+      cms/check_links/error/base:
+        name: タイトル
+        filename: ファイル名
+        urls: リンク切れ
+        content: 検出対象
+        group_ids: 管理グループ
 
   activemodel:
     attributes:

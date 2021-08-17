@@ -1,0 +1,26 @@
+<div class="addon-views">
+  <%= render "ss/crud/addon", addon: { id: "addon-basic", head: "エラー情報" } do %>
+    <dl class="see">
+      <dt><%= @item.t :name %></dt>
+      <dd><%= @item.name %></dd>
+
+      <dt><%= @item.t :created %></dt>
+      <dd><%= @item.created.strftime("%Y/%m/%d %H:%M") %></dd>
+
+      <dt><%= @item.t :content %></dt>
+      <dd>
+        <% if @content.allowed?(:read, @cur_user, site: @cur_site, node: @content.try(:parent)) %>
+          <%= link_to "#{@content.name} (#{@content.filename})", @content.private_show_path %>
+        <% else %>
+          <%= "#{@content.name} (#{@content.filename})" %>
+        <% end %>
+      </dd>
+
+      <dt><%= @item.t :urls %></dt>
+      <dd><%=br @item.urls %></dd>
+
+      <dt><%= @item.t(:group_ids) %></dt>
+      <dd><%=br @item.groups.pluck(:name).join("\n") %></dd>
+    </dl>
+  <% end %>
+</div>

@@ -327,6 +327,9 @@ SS_Preview = (function () {
         window.location.href = url;
       });
 
+    $("#ss-preview-btn-check-links-errors")
+      .colorbox({ fixed: true, width: "90%", height: "90%", html: $("#check-links-errors").html() });
+
     this.$el.on("click", ".ss-preview-btn-pc", function () {
       self.previewPc();
     });

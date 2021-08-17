@@ -1,0 +1,57 @@
+<%
+  filename = @cur_path.sub(@cur_site.url, "/").sub(/^\//, "")
+  @item = Cms::Page.site(@cur_site).where(filename: filename).first
+
+  filename = filename.sub(/\/index\.html$/, "")
+  @item ||= Cms::Node.site(@cur_site).where(filename: filename).first
+
+  if @item
+    @item = @item.becomes_with_route
+    @check_links_error = @item.try(:check_links_error)
+    @error_urls = @check_links_error.urls if @check_links_error
+  end
+
+  return if @error_urls.blank?
+%>
+
+<div id="check-links-errors" class="ajax-box">
+</div>
+
+<a id="ss-preview-btn-check-links-errors" class="ss-preview-btn ss-preview-btn-outline" href="">
+  <%= "リンク切れ" %>
+</a>
+
+<%= jquery do %>
+  var linkErrors = <%== @error_urls.to_json %>;
+  var count = 0;
+  if (linkErrors) {
+    $.each(linkErrors, function() {
+      var ele = $("body").find('[href="' + this + '"]');
+      if (ele.length) {
+        $(ele).each(function () {
+          count += 1;
+
+          var ele = this;
+          $(ele).addClass("ss-check-links-error");
+          $(ele).addClass("ss-check-links-error-" + count);
+
+          var errorLink = $("<a>");
+          errorLink.text(this.href);
+          errorLink.data("scroll-to", "ss-check-links-error-" + count);
+
+          errorLink.on("click", function() {
+            var cls = $(this).data("scroll-to");
+            var offset = $("." + cls).offset().top - ($("#ss-preview").offset().top + $("#ss-preview").height());
+            console.log(offset);
+            $('body,html').animate({ scrollTop: offset });
+          });
+          $("#check-links-errors").append(errorLink);
+        });
+      } else {
+        var errorLink = $("<a>");
+        errorLink.text(this + "(リンクは見つかりませんでした。)");
+        $("#check-links-errors").append(errorLink);
+      }
+    });
+  }
+<% end %>
