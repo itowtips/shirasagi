@@ -1,0 +1,21 @@
+<%
+  return if @item.respond_to?(:branch?) && @item.branch?
+  return if @item.latest_check_links_report.nil?
+
+  error = @item.check_links_error
+  label = t("cms.notices.check_links_report_created", time: @item.latest_check_links_report.created.strftime("%Y/%m/%d %H:%M"))
+
+  return if error.nil?
+%>
+<dl class="see mod-cms-check_links">
+  <dd class="wide">
+    <%= link_to "#{error.t(:urls)}#{error.urls.size}#{t("ss.units.count")}", cms_preview_path(path: @item.preview_path) %>
+    <span style="margin-left: 10px;">
+      <% if error.allowed?(:read, @cur_user, site: @cur_site) %>
+        <%= link_to label, error.private_show_path %>
+      <% else %>
+        <%= label %>
+      <% end %>
+    </span>
+  </dd>
+</dl>
