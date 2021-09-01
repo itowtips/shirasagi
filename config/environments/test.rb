@@ -30,7 +30,7 @@ Rails.application.configure do
   config.action_view.form_with_generates_remote_forms = false
 
   # Show full error reports and disable caching.
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local       = false
   config.action_controller.perform_caching = false
 
   # Raise exceptions instead of rendering exception templates.
