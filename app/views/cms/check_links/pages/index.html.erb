@@ -20,22 +20,22 @@
 
   <div class="list-items">
     <div style="padding: 2px"><%= "#{@model.content_name}#{@items.size}#{t("ss.units.count")}" %></div>
-    <table class="index">
+    <table class="index check-links-erros">
       <thead>
         <tr>
-          <th><%= @model.t("name") %></th>
-          <th style="white-space: nowrap;"><%= @model.t("ref_url") %></th>
-          <th style="white-space: nowrap;"><%= @model.t("group_ids") %></th>
-          <th style="white-space: nowrap;"><%= @model.t("state") %></th>
-          <th style="width: 150px;"><%= t("ss.links.preview") %></th>
-          <th style="width: 120px;"><%= t("mongoid.models.cms/check_links/error/base") %></th>
+          <th class="name"><%= @model.t("name") %></th>
+          <th class="url"><%= @model.t("ref_url") %></th>
+          <th class="groups"><%= @model.t("group_ids") %></th>
+          <th class="state"><%= @model.t("state") %></th>
+          <th class="preview"><%= t("ss.links.preview") %></th>
+          <th class="detail"><%= t("mongoid.models.cms/check_links/error/base") %></th>
         </tr>
       </thead>
       <tbody>
       <% @items.each do |item| %>
         <% content = item.content %>
         <tr>
-          <td>
+          <td class="name">
             <% if content && content.allowed?(:read, @cur_user, site: @cur_site, node: content.try(:parent)) %>
               <%= link_to content.name, content.private_show_path %>
             <% elsif content %>
@@ -44,25 +44,25 @@
               <%= item.name %>
             <% end %>
           </td>
-          <td style="white-space: nowrap;">
+          <td class="url">
             <%= link_to item.ref, item.ref_url, target: "_blank", rel: "noopener" %>
           </td>
-          <td style="white-space: nowrap;"><%= item.group_label %></td>
-          <td>
+          <td class="groups"><%= item.group_label %></td>
+          <td class="state">
             <% if content %>
               <%= content.public? ? t("ss.state.public") : t("ss.state.closed") %>
             <% else %>
               <%= t("ss.options.state.deleted") %>
             <% end %>
           </td>
-          <td>
+          <td class="preview">
             <% if content %>
               <%= link_to "#{item.t(:urls)}#{item.urls.size}#{t("ss.units.count")}", "#{cms_preview_path(path: "")}/#{item.preview_path}", target: "_blank", rel: "noopener" %>
             <% else %>
               <%= "#{item.t(:urls)}#{item.urls.size}#{t("ss.units.count")}" %>
             <% end %>
           </td>
-          <td><%= link_to t("ss.links.show"), { action: :show, id: item }, class: "title" %></td>
+          <td class="detail"><%= link_to t("ss.links.show"), { action: :show, id: item }, class: "title" %></td>
         </tr>
       <% end %>
       </tbody>
