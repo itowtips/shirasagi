@@ -2,36 +2,60 @@ class Cms::Line::Template::Base
   include SS::Document
   include SS::Reference::User
   include SS::Reference::Site
-  include Cms::Addon::GroupPermission
-  include History::Addon::Backup
+  include SS::Relation::File
+  include Fs::FilePreviewable
 
-  set_permission_name "cms_line_templates"
-
+  belongs_to :message, class_name: "Cms::Line::Message"
   field :name, type: String
-  field :body, type: String
+  field :order, type: Integer, default: 0
 
-  permit_params :name, :body
+  permit_params :name, :order
 
-  validates :name, presence: true
-  validate :validate_body
+  before_save :set_name
+
+  default_scope -> { order_by(order: 1) }
+
+  # Cms::Line::Template::Image relations (mongoid destroy not working if define relations in child class)
+  belongs_to_file2 :image
+
+  # Cms::Line::Template::Page relations
+  belongs_to :page, class_name: "Cms::Page"
+  permit_params :page_id
+
+  def type
+  end
+
+  def type_options
+    I18n.t("cms.options.line_template_type").map { |k, v| [v, k] }
+  end
+
+  def body
+  end
 
   def json
-    JSON.parse(body)
+    body.to_json
+  end
+
+  def balloon_html
+  end
+
+  def state
+    message.state
+  end
+
+  def file_previewable?(file, user:, member:)
+    state == "public"
+  end
+
+  def allowed?(action, user, opts = {})
+    return false unless message
+    message.allowed?(action, user, opts)
   end
 
   private
 
-  def validate_body
-    if body.blank?
-      errors.add :body, :blank
-      return
-    end
-
-    begin
-      json
-    rescue JSON::ParserError => e
-      errors.add :base, "#{t(:body)}#{I18n.t("errors.messages.invalid")} #{e.to_s}"
-    end
+  def set_name
+    self.name ||= self.id.to_s
   end
 
   class << self

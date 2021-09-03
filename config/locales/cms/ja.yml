@@ -34,8 +34,11 @@ ja:
     line: LINE
     line_service: サービス
     line_facility_search_category: 施設カテゴリー
+    line_message: メッセージ
     line_template: テンプレート
-    line_poster: Poster連携
+    line_deliver_log: 配信ログ
+    line_deliver_condition: 配信条件
+    line_test_member: テストメンバー
     line_event_session: セッション
     form_check: 制約チェック
     list_view: リスト表示
@@ -386,6 +389,26 @@ ja:
         gd_chat: AI案内
         my_plan: 今日の予定
         facility_search: 施設検索
+      line_deliver_condition_state:
+        multicast_with_no_condition: 登録メンバー全員に配信する
+        multicast_with_registered_condition: 登録メンバーに条件配信する（配信条件を設定）
+        multicast_with_input_condition: 登録メンバーに条件配信する（配信条件を入力）
+        #broadcast: 友達登録者全員に配信する
+      line_template_type:
+        text: テキスト
+        image: 画像
+        page: 記事ページ
+      line_template_thumb_state:
+        none: 表示しない
+        thumb_carousel: 記事のサムネイル画像
+        body_carousel: 本文内の最初の画像
+      deliver_state:
+        draft: 下書き
+        ready: 配信待ち
+        completed: 配信完了
+      deliver_mode:
+        main: 本配信
+        test: テスト配信
       sns_post_log_type:
         twitter: Twitter投稿
         line: LINE投稿
@@ -664,6 +687,13 @@ ja:
       cms/line/service/hub: HUB
       cms/line/service/facility_search: 施設検索
       cms/line/service/gd_chat: GDチャットボット
+      cms/line/deliver_condition/body: 配信条件
+      cms/line/message/body: 本文
+      cms/line/message/deliver_condition: 配信条件
+      cms/line/message/deliver_plan: 配信予約
+      cms/line/template/text: テンプレート：テキスト
+      cms/line/template/image: テンプレート：画像
+      cms/line/template/page: テンプレート：記事ページ
 
   mongoid:
     models:
@@ -1167,7 +1197,13 @@ ja:
         name: タイトル
         type: 投稿SNS
         state: ステータス
-        page_id: 連携ページ
+        source_id: 連携対象
+        action: アクション
+        response_code: レスポンスコード
+        response_body: レスポンスボディ
+        messages: リクエストメッセージ
+        multicast_user_ids: multicastユーザーID
+        member_ids: 配信メンバー
       cms/addon/content_quota:
         content_quota: 容量制限
       cms/check_links/error/base:
@@ -1180,9 +1216,12 @@ ja:
         group_ids: 管理グループ
       cms/check_links/ignore_url:
         name: 除外URL
-      cms/line/template:
+      cms/line/message:
         name: タイトル
         body: JSON
+        deliver_state: 配信ステータス
+        completed: 配信日時
+        test_completed: テスト配信日時
       cms/line/service/base:
         service: サービス
         order: 並び順
@@ -1207,6 +1246,43 @@ ja:
         order: 並び順
         category_ids: 施設の種類
         state: ステータス
+      cms/line/deliver_condition:
+        name: タイトル
+        order: 並び順
+      cms/line/test_member:
+        name: 名前
+        oauth_id: OAuth ID (ユーザーID)
+      cms/addon/line/deliver_condition/body: &line_deliver_condition
+        year1: 年齢1
+        year2: 年齢2
+        year3: 年齢3
+        year4: 年齢4
+        year5: 年齢5
+        lower_year1: 年齢1（下限）
+        lower_year2: 年齢2（下限）
+        lower_year3: 年齢3（下限）
+        lower_year4: 年齢4（下限）
+        lower_year5: 年齢5（下限）
+        upper_year1: 年齢1（上限）
+        upper_year2: 年齢2（上限）
+        upper_year3: 年齢3（上限）
+        upper_year4: 年齢4（上限）
+        upper_year5: 年齢5（上限）
+        residence_areas: 地区
+      cms/addon/line/message/deliver_condition:
+        deliver_condition_state: 設定
+        deliver_condition_id: 配信条件
+        <<: *line_deliver_condition
+      cms/addon/line/message/deliver_plan:
+        deliver_date: 配信日時(予約)
+      cms/line/template/base:
+        type: テンプレートタイプ
+        text: メッセージ
+        image_id: 画像
+        page_id: ページ
+        title: タイトル
+        summary: メッセージ
+        thumb_state: サムネイル画像
 
   activemodel:
     attributes:
@@ -2388,6 +2464,30 @@ ja:
     cms/addon/line/webhook:
       webhook_service_id:
         - LINEサービスを設定します。
+
+    cms/line/test_member:
+      name: 名前を入力します。
+      oauth_id:
+        - メンバーの OAuth ID を入力します。
+        - LINE Messaging API の ユーザーID と同じです。
+
+    cms/line/template/base:
+      text: メッセージを入力します。
+      image_id: 画像を入力します。
+      page_id: ページを選択します。
+      title: タイトルを入力します。
+      summary: メッセージを入力します。
+      thumb_state:
+        - サムネイル画像を選択します。
+        -
+        - ・表示しない
+        - サムネイル画像を表示しません。
+        -
+        - ・記事のサムネイル画像
+        - 記事のサムネイル画像を設定します。
+        -
+        - ・本文内の最初の画像
+        - 記事本文内の最初の画像を設定します。
 
   all_content:
     page_id: ページID

@@ -8,8 +8,9 @@
   <dd><%= @item.label :subscribe_line_message %></dd>
 
   <% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
+    <% next if @item.send("child#{i}_birthday").blank? %>
     <dt><%= @model.t "child#{i}_birthday" %></dt>
-    <dd><%= tryb { I18n.l(@item.send("child#{i}_birthday").to_date, format: :long) } %></dd>
+    <dd><%= l(@item.send("child#{i}_birthday").to_date, format: :long) %>（<%= "#{@item.send("child#{i}_age")}歳" %>）</dd>
   <% end %>
 
   <dt><%= @item.t :residence_areas %></dt>
