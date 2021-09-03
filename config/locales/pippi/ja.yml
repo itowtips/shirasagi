@@ -30,6 +30,7 @@ ja:
     attributes:
       pippi/member/addon/additional_attributes:
         subscribe_line_message: LINEメッセージ
+        child_ages: 子供の年齢
         child1_birthday: "子供の年齢 1"
         child2_birthday: "子供の年齢 2"
         child3_birthday: "子供の年齢 3"

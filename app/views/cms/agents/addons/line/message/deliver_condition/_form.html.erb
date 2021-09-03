@@ -1,0 +1,51 @@
+<%
+  def deliver_condition_options
+    Cms::Line::DeliverCondition.site(@cur_site).map { |item| [item.name_with_order, item.id] }
+  end
+%>
+
+<%= jquery do %>
+  var toggleDeliverCondition = function(){
+    var state = $('[name="item[deliver_condition_state]"]').val();
+    if (state) {
+      $(".deliver_condition").hide();
+      $(".deliver_condition." + state).show();
+    }
+  };
+  $('[name="item[deliver_condition_state]"]').on("change", toggleDeliverCondition);
+  toggleDeliverCondition();
+<% end %>
+
+<dl class="see" style="padding-bottom: 5px;">
+  <dt><%= @model.t :deliver_condition_state %></dt>
+  <dd><%= f.select :deliver_condition_state, @item.deliver_condition_state_options %></dd>
+</dl>
+
+<dl class="see deliver_condition multicast_with_registered_condition">
+  <dt><%= @model.t :deliver_condition_id %></dt>
+  <dd><%= f.select :deliver_condition_id, deliver_condition_options %></dd>
+</dl>
+
+<dl class="see deliver_condition multicast_with_input_condition">
+  <% 1.upto(Cms::Line::DeliverCondition::CHILD_CONDITION_MAX_SIZE) do |i| %>
+    <dt><%= @model.t("year#{i}") %></dt>
+    <dd>
+      <%= f.number_field "lower_year#{i}", min: 0 %>
+      <%= "歳" %>
+      <%= t("ss.wave_dash") %>
+      <%= f.number_field "upper_year#{i}", min: 0 %>
+      <%= "歳" %>
+    </dd>
+  <% end %>
+
+  <dt><%= @model.t(:residence_areas) %></dt>
+  <dd>
+    <%= hidden_field_tag "#{f.object_name}[residence_areas][]", nil %>
+    <% @item.residence_areas_options.each do |k, v| %>
+      <label>
+        <%= check_box_tag "#{f.object_name}[residence_areas][]", v, @item.residence_areas.include?(v.to_s) %>
+        <%= k %>
+      </label>
+    <% end %>
+  </dd>
+</dl>

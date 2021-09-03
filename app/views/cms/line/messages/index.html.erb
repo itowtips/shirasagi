@@ -1,0 +1,17 @@
+<% @index_meta = proc do |item| %>
+  <span class="id">#<%= item.id %></span>
+  <span class="datetime"><%= t("ss.views.index.updated", updated: item.updated.strftime("%Y/%m/%d %H:%M")) %></span>
+  <% if item.ready? %>
+    <% if item.deliver_date %>
+      <span class="datetime"><%= t("ss.views.index.reserved", time: item.deliver_date.strftime("%Y/%m/%d %H:%M")) %></span>
+    <% else %>
+      <span class="datetime"><%= t("ss.views.index.reserved", time: "即時配信") %></span>
+    <% end %>
+  <% end %>
+  <% if item.completed %>
+    <span class="datetime"><%= t("ss.views.index.delivered", time: item.completed.strftime("%Y/%m/%d %H:%M")) %></span>
+  <% end %>
+  <span class="state state-<%= item.deliver_state %>"><%= item.label :deliver_state %></span>
+<% end %>
+
+<%= render file: "cms/crud/index" %>

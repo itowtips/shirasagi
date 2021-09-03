@@ -167,11 +167,19 @@ Rails.application.routes.draw do
           resources :categories, concerns: :deletion
         end
       end
-      scope(path: 'template/:type', defaults: { type: '-' }) do
-        resources :templates, concerns: :deletion
+      resources :messages, concerns: :deletion do
+        get :deliver, on: :member
+        post :deliver, on: :member
+        get :test_deliver, on: :member
+        post :test_deliver, on: :member
+        resources :templates, path: "template/:type/templates", defaults: { type: '-' }, concerns: :deletion do
+          get :select_type, on: :collection
+        end
       end
-      resources :messages, concerns: :deletion
       resources :event_sessions, only: [:index, :show, :destroy], concerns: :deletion
+      resources :deliver_conditions, concerns: :deletion
+      resources :test_members, concerns: :deletion
+      resources :deliver_logs, only: [:index, :show, :destroy], concerns: [:deletion]
     end
 
     get "check_links" => "check_links#index"
@@ -296,6 +304,11 @@ Rails.application.routes.draw do
 
       namespace "translate" do
         get "langs" => "langs#index"
+      end
+
+      namespace "line" do
+        get "deliver_members/:model/:id" => "deliver_members#index", model: /message|deliver_condition|line_deliver/, as: :deliver_members
+        get "deliver_members/:model/:id/download" => "deliver_members#download", model: /message|deliver_condition|line_deliver/
       end
     end
   end

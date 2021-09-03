@@ -40,9 +40,42 @@ module Pippi::Member::Addon
       end
     end
 
+    def calculate_age(today, birthday)
+      d1 = format("%04d%02d%02d", today.year, today.month, today.day).to_i
+      d2 = format("%04d%02d%02d", birthday.year, birthday.month, birthday.day).to_i
+      d3 = (d1 - d2)
+      d3 = format("%08d", (d3 > 0) ? d3 : 0)
+      d3[0..3].to_i
+    end
+
+    def child_ages
+      ages = []
+      1.upto(CHILD_MAX_SIZE) do |i|
+        ages << send("child#{i}_age")
+      end
+      ages.compact
+    end
+
+    def child_ages_labels
+      (1..Cms::Member::CHILD_MAX_SIZE).map do |i|
+        birthday = send("child#{i}_birthday")
+        birthday ? "#{I18n.l(birthday.to_date, format: :long)}（#{send("child#{i}_age")}歳）" : nil
+      end.compact
+    end
+
+    def residence_areas_labels
+      residence_areas.map { |k| I18n.t("pippi.options.residence_areas.#{k}") }
+    end
+
     1.upto(CHILD_MAX_SIZE) do |i|
       accessor_key = :"in_child#{i}_birth"
       field_key = :"child#{i}_birthday"
+
+      define_method("child#{i}_age") do
+        child_birthday = send(field_key)
+        return if child_birthday.blank?
+        calculate_age(Time.zone.today, child_birthday)
+      end
 
       define_method("parse_in_child#{i}_birth") do
         in_child_birth = send(accessor_key)
@@ -89,6 +122,29 @@ module Pippi::Member::Addon
           send("#{field_key}=", date)
         rescue
           errors.add field_key, :invalid
+        end
+      end
+    end
+
+    module ClassMethods
+      def encode_sjis(str)
+        str.encode("SJIS", invalid: :replace, undef: :replace)
+      end
+
+      def line_members_enum
+        members = criteria.to_a
+        Enumerator.new do |y|
+          headers = %w(id name oauth_id child_ages residence_areas).map { |v| self.t(v) }
+          y << encode_sjis(headers.to_csv)
+          members.each do |item|
+            row = []
+            row << item.id
+            row << item.name
+            row << item.oauth_id
+            row << item.child_ages_labels.join("\n")
+            row << item.residence_areas_labels.join("\n")
+            y << encode_sjis(row.to_csv)
+          end
         end
       end
     end

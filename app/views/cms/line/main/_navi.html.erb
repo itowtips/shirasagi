@@ -1,8 +1,11 @@
 <nav class="mod-navi">
   <h2><%= t("cms.line") %></h2>
-  <h3><%= link_to t("cms.line_service"), cms_line_services_path %></h3>
+  <h3><%= link_to t("cms.line_message"), cms_line_messages_path %></h3>
+  <h3><%= link_to t("cms.line_deliver_log"), cms_line_deliver_logs_path %></h3>
+  <h3><%= link_to t("cms.line_deliver_condition"), cms_line_deliver_conditions_path %></h3>
+  <h3><%= link_to t("cms.line_test_member"), cms_line_test_members_path %></h3>
   <h3><%= link_to t("cms.line_event_session"), cms_line_event_sessions_path %></h3>
-  <h3><%= link_to t("cms.line_template"), cms_line_templates_path %></h3>
+  <h3><%= link_to t("cms.line_service"), cms_line_services_path %></h3>
 </nav>
 
 <%= render partial: "cms/main/navi" %>
