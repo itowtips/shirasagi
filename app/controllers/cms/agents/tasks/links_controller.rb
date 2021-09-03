@@ -4,6 +4,10 @@ require 'resolv-replace'
 require 'nkf'
 
 class Cms::Agents::Tasks::LinksController < ApplicationController
+  class RefString < String
+    attr_accessor :inner_yield
+  end
+
   before_action :set_params
 
   private
@@ -25,7 +29,7 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
     @task.log "# #{@report.name} created"
 
     @errors.map do |ref, urls|
-      next if @report.save_error(ref, urls)
+      next if @report.save_error(ref, urls.select(&:inner_yield))
       @task.log "Error : Failed to save Cms::CheckLinks::Error ref:#{ref} (#{urls.join(",")})"
     end
 
@@ -45,7 +49,7 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
 
     @base_url = @site.full_url.sub(/^(https?:\/\/.*?\/).*/, '\\1')
 
-    @urls    = { @site.url => %w(Site) }
+    @urls    = { RefString.new(@site.url) => %w(Site) }
     @results = {}
     @errors  = {}
 
@@ -66,8 +70,9 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
       ref = File.join(@base_url, ref) if ref[0] == "/"
       msg << ref
       msg << urls.map do |url|
+        inner_yield = url.inner_yield
         url = File.join(@base_url, url) if url[0] == "/"
-        "  - #{url}"
+        "  - #{url} #{inner_yield}"
       end
     end
     msg = msg.join("\n")
@@ -151,8 +156,16 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
 
     begin
       html = NKF.nkf "-w", html
-      html = html.gsub(/<!--.*?-->/m, "")
+
+      html.scan(/<!-- layout_yield -->(.*?)<!-- \/layout_yield -->/m)
+      yield_start, yield_end = [html.size, 0]
+      yield_start, yield_end = Regexp.last_match.offset(0) if Regexp.last_match
+      #html = html.gsub(/<!--.*?-->/m, "")
+
       html.scan(/\shref="([^"]+)"/i) do |m|
+        href_start, href_end = Regexp.last_match.offset(0)
+        inner_yield = (href_start > yield_start && href_end < yield_end)
+
         next_url = m[0]
         next_url = next_url.sub(/^#{::Regexp.escape(@base_url)}/, "/")
         next_url = next_url.sub(/#.*/, "")
@@ -163,11 +176,13 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
         next_url = File.expand_path next_url, url.sub(/[^\/]*?$/, "") if internal
         next_url = URI.encode(next_url) if next_url.match?(/[^-_.!~*'()\w;\/\?:@&=+$,%#]/)
 
-        if @results[next_url] == 0
+        next_url = RefString.new(next_url)
+        next_url.inner_yield = inner_yield
+
+        if @results[next_url] == 1
+          next
+        elsif @results[next_url] == 0
           add_invalid_url(next_url, [url])
-          next
-        elsif @results[next_url] == 1
-          next
         else
           @urls[next_url] ||= []
           @urls[next_url] << url
