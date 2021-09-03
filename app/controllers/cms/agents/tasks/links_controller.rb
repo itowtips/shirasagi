@@ -12,7 +12,7 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
   end
 
   def create_report
-    @report_max_age = SS.config.cms.check_links["report_max_age"].to_i
+    @report_max_age = (SS.config.cms.check_links["report_max_age"].presence || 5).to_i
     return if @report_max_age <= 0
 
     # create new report
