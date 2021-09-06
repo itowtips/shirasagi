@@ -4,10 +4,6 @@ require 'resolv-replace'
 require 'nkf'
 
 class Cms::Agents::Tasks::LinksController < ApplicationController
-  class RefString < String
-    attr_accessor :inner_yield
-  end
-
   before_action :set_params
 
   private
@@ -46,10 +42,11 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
   # Checks the URLs by task.
   def check
     @task.log "# #{@site.name}"
+    @ref_string = Cms::CheckLinks::RefString
 
     @base_url = @site.full_url.sub(/^(https?:\/\/.*?\/).*/, '\\1')
 
-    @urls    = { RefString.new(@site.url) => %w(Site) }
+    @urls    = { @ref_string.new(@site.url) => %w(Site) }
     @results = {}
     @errors  = {}
 
@@ -70,9 +67,9 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
       ref = File.join(@base_url, ref) if ref[0] == "/"
       msg << ref
       msg << urls.map do |url|
-        inner_yield = url.inner_yield
+        meta = @meta.present? ? url.meta : ""
         url = File.join(@base_url, url) if url[0] == "/"
-        "  - #{url} #{inner_yield}"
+        "  - #{url} #{meta}"
       end
     end
     msg = msg.join("\n")
@@ -116,7 +113,7 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
 
     refs.each do |ref|
       @errors[ref] ||= []
-      @errors[ref] << url if !@errors[ref].include?(url)
+      @errors[ref] << url
     end
   end
 
@@ -157,13 +154,17 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
     begin
       html = NKF.nkf "-w", html
 
+      # scan layout_yield offset
       html.scan(/<!-- layout_yield -->(.*?)<!-- \/layout_yield -->/m)
       yield_start, yield_end = [html.size, 0]
       yield_start, yield_end = Regexp.last_match.offset(0) if Regexp.last_match
-      #html = html.gsub(/<!--.*?-->/m, "")
+
+      # remove href in comment
+      html.gsub!(/<!--.*?-->/m) { |m| " " * m.size }
 
       html.scan(/\shref="([^"]+)"/i) do |m|
-        href_start, href_end = Regexp.last_match.offset(0)
+        offset = Regexp.last_match.offset(0)
+        href_start, href_end = offset
         inner_yield = (href_start > yield_start && href_end < yield_end)
 
         next_url = m[0]
@@ -176,8 +177,7 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
         next_url = File.expand_path next_url, url.sub(/[^\/]*?$/, "") if internal
         next_url = URI.encode(next_url) if next_url.match?(/[^-_.!~*'()\w;\/\?:@&=+$,%#]/)
 
-        next_url = RefString.new(next_url)
-        next_url.inner_yield = inner_yield
+        next_url = @ref_string.new(next_url, offset: offset, inner_yield: inner_yield)
 
         if @results[next_url] == 1
           next

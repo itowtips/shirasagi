@@ -60,28 +60,28 @@ describe "cms/check_links/pages", type: :feature, dbscope: :example do
       expect(csv.size).to eq 3
     end
 
-    xit "nodes" do
-      generate_nodes
-      execute_job
-
-      visit index_path
-      within ".list-items" do
-        expect(page).to have_selector('.list-item', count: 1)
-        first(".list-item a.title").click
-      end
-
-      within "#navi" do
-        within first(".mod-navi") do
-          click_on I18n.t("ss.node")
-        end
-      end
-
-      click_on I18n.t("ss.buttons.download")
-      expect(page.response_headers["Transfer-Encoding"]).to eq "chunked"
-      csv = ::SS::ChunkReader.new(page.html).to_a.join
-      csv = csv.encode("UTF-8", "SJIS")
-      csv = ::CSV.parse(csv)
-      expect(csv.size).to eq 1
-    end
+    #it "nodes" do
+    #  generate_nodes
+    #  execute_job
+    #
+    #  visit index_path
+    #  within ".list-items" do
+    #    expect(page).to have_selector('.list-item', count: 1)
+    #    first(".list-item a.title").click
+    #  end
+    #
+    #  within "#navi" do
+    #    within first(".mod-navi") do
+    #      click_on I18n.t("ss.node")
+    #    end
+    #  end
+    #
+    #  click_on I18n.t("ss.buttons.download")
+    #  expect(page.response_headers["Transfer-Encoding"]).to eq "chunked"
+    #  csv = ::SS::ChunkReader.new(page.html).to_a.join
+    #  csv = csv.encode("UTF-8", "SJIS")
+    #  csv = ::CSV.parse(csv)
+    #  expect(csv.size).to eq 1
+    #end
   end
 end
