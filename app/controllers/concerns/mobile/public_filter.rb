@@ -30,6 +30,10 @@ module Mobile::PublicFilter
 
     body = response.body
 
+    # sub sites
+    site_urls = SS::Site.all.select { |site| @cur_site.full_root_url == site.full_root_url }.map(&:url)
+    site_urls = site_urls.sort_by { |url| url.count("/") }.reverse
+
     # links
     location = @cur_site.mobile_location.gsub(/^\/|\/$/, "")
     body.gsub!(/href="#{@cur_site.url}#{location}\//, "data-href-replaced=\"#{@cur_site.url}#{location}/")
