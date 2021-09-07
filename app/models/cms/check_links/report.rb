@@ -9,7 +9,7 @@ class Cms::CheckLinks::Report
   seqid :id
   field :name, type: String
 
-  has_many :link_errors, foreign_key: "report_id", class_name: "Cms::CheckLinks::Error::Base", dependent: :destroy
+  has_many :link_errors, foreign_key: "report_id", class_name: "Cms::CheckLinks::Error::Base", dependent: :destroy, inverse_of: :report
 
   before_save :set_name
 
@@ -40,7 +40,7 @@ class Cms::CheckLinks::Report
   end
 
   def save_error(ref, urls)
-    urls = urls - ignore_urls
+    urls -= ignore_urls
     return true if urls.blank?
 
     ref_url = File.join(site.full_root_url, ref) if ref[0] == "/"

@@ -40,18 +40,21 @@ describe "cms/check_links/pages", type: :feature, dbscope: :example, js: true do
     Cms::CheckLinks::Report.site(site).first
   end
 
+  def visit_latest_report_pages
+    visit index_path
+    within ".list-items" do
+      expect(page).to have_selector('.list-item', count: 1)
+      first(".list-item a.title").click
+    end
+  end
+
   context "with auth" do
     before { login_cms_user }
 
     it "#index" do
       execute_job
 
-      visit index_path
-      within ".list-items" do
-        expect(page).to have_selector('.list-item', count: 1)
-        first(".list-item a.title").click
-      end
-
+      visit_latest_report_pages
       within "#main" do
         expect(page).to have_css(".list-items", text: page_count)
         within "tbody" do
@@ -60,63 +63,34 @@ describe "cms/check_links/pages", type: :feature, dbscope: :example, js: true do
         end
       end
 
-      # error detail
-      within "#main tbody" do
-        within all("tr")[0] do
-          click_on I18n.t("ss.links.show")
-        end
-      end
-
-      within "#addon-basic" do
-        expect(page).to have_css("dd", text: "/docs/notfound1.html")
-        expect(page).to have_css("dd", text: "/docs/notfound2.html")
-      end
-      click_on I18n.t("ss.links.back_to_index")
-
-      within "#main tbody" do
-        within all("tr")[1] do
-          click_on I18n.t("ss.links.show")
-        end
-      end
-
-      within "#addon-basic" do
-        expect(page).to have_css("dd", text: "/docs/notfound1.html")
-        expect(page).to have_css("dd", text: "/docs/notfound2.html")
-      end
-      click_on I18n.t("ss.links.back_to_index")
-
       # page addon
+      visit_latest_report_pages
       within "#main tbody" do
         click_on index.name
       end
 
       within "#addon-cms-agents-addons-check_links" do
-        expect(page).to have_link(link_count)
-        expect(page).to have_link(index_error_label)
-        click_on index_error_label
+        expect(page).to have_text(link_count)
+        expect(page).to have_text(index_error_label)
       end
-      click_on I18n.t("ss.links.back_to_index")
 
+      visit_latest_report_pages
       within "#main tbody" do
         click_on docs_page1.name
       end
 
       within "#addon-cms-agents-addons-check_links" do
-        expect(page).to have_link(link_count)
-        expect(page).to have_link(page1_error_label)
-        click_on page1_error_label
+        expect(page).to have_text(link_count)
+        expect(page).to have_text(page1_error_label)
       end
       click_on I18n.t("ss.links.back_to_index")
 
       # preview
+      visit_latest_report_pages
       within "#main tbody" do
         within all("tr")[0] do
-          click_on link_count
+          click_on I18n.t("cms.links.check_preview")
         end
-      end
-
-      within "#main tbody" do
-        expect(page).to have_link(link_count)
       end
       switch_to_window(windows.last)
 

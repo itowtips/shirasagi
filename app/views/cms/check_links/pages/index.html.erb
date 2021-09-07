@@ -28,7 +28,6 @@
           <th class="groups"><%= @model.t("group_ids") %></th>
           <th class="state"><%= @model.t("state") %></th>
           <th class="preview"><%= t("ss.links.preview") %></th>
-          <th class="detail"><%= t("mongoid.models.cms/check_links/error/base") %></th>
         </tr>
       </thead>
       <tbody>
@@ -56,13 +55,16 @@
             <% end %>
           </td>
           <td class="preview">
+            <%= "#{item.t(:urls)}#{item.urls.size}#{t("ss.units.count")}" %>
+            <%= "（" %>
             <% if content %>
-              <%= link_to "#{item.t(:urls)}#{item.urls.size}#{t("ss.units.count")}", "#{cms_preview_path(path: "")}/#{item.preview_path}", target: "_blank", rel: "noopener" %>
+              <%= link_to t("cms.links.check_preview"), "#{cms_preview_path(path: "")}/#{item.preview_path}", target: "_blank", rel: "noopener" %>
             <% else %>
-              <%= "#{item.t(:urls)}#{item.urls.size}#{t("ss.units.count")}" %>
+              <%= t("cms.links.check_preview") %>
             <% end %>
+            <%= "）" %>
+            <!-- <%= link_to t("ss.links.show"), { action: :show, id: item }, class: "title" %> -->
           </td>
-          <td class="detail"><%= link_to t("ss.links.show"), { action: :show, id: item }, class: "title" %></td>
         </tr>
       <% end %>
       </tbody>

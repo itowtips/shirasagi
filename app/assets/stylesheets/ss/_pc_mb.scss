@@ -3613,15 +3613,15 @@ table.check-links-erros {
       width: 30%;
     }
     &.url, &.groups {
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
     }
-    &.state, &.detail {
+    &.state {
       width: 100px;
     }
     &.preview {
-      width: 120px;
+      width: 300px;
     }
   }
 }
