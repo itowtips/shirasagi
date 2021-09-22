@@ -8,7 +8,7 @@ class Cms::Line::Message
   include Cms::Addon::GroupPermission
   #include History::Addon::Backup
 
-  set_permission_name "cms_line_templates"
+  set_permission_name "cms_line_messages", :use
 
   seqid :id
   field :name, type: String
@@ -88,6 +88,10 @@ class Cms::Line::Message
 
   def deliver_state_options
     I18n.t("cms.options.deliver_state").map { |k, v| [v,  k] }
+  end
+
+  def root_owned?(user)
+    true
   end
 
   class << self

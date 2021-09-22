@@ -57,9 +57,6 @@ module Cms::Line::BaseJob
       user_ids = members_to.map(&:oauth_id)
       member_ids = members_to.map(&:id)
 
-      require "pry"
-      binding.pry
-
       Cms::SnsPostLog::LineDeliver.create_with(item) do |log|
         begin
           log.action = item.deliver_action

@@ -3,9 +3,9 @@ class Cms::Line::DeliverCondition
   include SS::Reference::User
   include SS::Reference::Site
   include Cms::Addon::Line::DeliverCondition::Body
-  include Cms::SitePermission
+  include Cms::Addon::GroupPermission
 
-  set_permission_name "cms_line_services", :use
+  set_permission_name "cms_line_messages", :use
 
   seqid :id
 
@@ -25,6 +25,10 @@ class Cms::Line::DeliverCondition
   def order
     value = self[:order].to_i
     value < 0 ? 0 : value
+  end
+
+  def root_owned?(user)
+    true
   end
 
   class << self

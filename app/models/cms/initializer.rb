@@ -114,12 +114,8 @@ module Cms
     Cms::Role.permission :import_private_cms_nodes
     Cms::Role.permission :import_other_cms_nodes
     Cms::Role.permission :unlock_other_cms_pages
-    Cms::Role.permission :read_other_cms_line_templates
-    Cms::Role.permission :read_private_cms_line_templates
-    Cms::Role.permission :edit_other_cms_line_templates
-    Cms::Role.permission :edit_private_cms_line_templates
-    Cms::Role.permission :delete_other_cms_line_templates
-    Cms::Role.permission :delete_private_cms_line_templates
+    Cms::Role.permission :use_other_cms_line_messages
+    Cms::Role.permission :use_private_cms_line_messages
     Cms::Role.permission :use_cms_line_services
 
     if SS.config.michecker && SS.config.michecker['disable'].blank?

@@ -1,4 +1,8 @@
 class Cms::SnsPostLog::LineDeliver < Cms::SnsPostLog::Line
+  include Cms::Addon::GroupPermission
+
+  set_permission_name "cms_line_messages", :use
+
   field :deliver_name, type: String
   field :deliver_mode, type: String, default: "main"
   embeds_ids :members, class_name: 'Cms::Member'
@@ -11,6 +15,10 @@ class Cms::SnsPostLog::LineDeliver < Cms::SnsPostLog::Line
     members
   end
 
+  def root_owned?(user)
+    true
+  end
+
   private
 
   def set_name
@@ -19,6 +27,16 @@ class Cms::SnsPostLog::LineDeliver < Cms::SnsPostLog::Line
   end
 
   class << self
+    def create_with(item)
+      log = self.new
+      log.site = item.site
+      log.source_name = item.name
+      log.source = item
+      log.group_ids = item.group_ids
+      yield(log)
+      log.save
+    end
+
     def search(params)
       criteria = self.where({})
       return criteria if params.blank?

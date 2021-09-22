@@ -4,7 +4,7 @@ class Cms::Line::TestMember
   include SS::Reference::Site
   include Cms::Addon::GroupPermission
 
-  set_permission_name "cms_line_templates"
+  set_permission_name "cms_line_messages", :use
 
   seqid :id
   field :name, type: String
@@ -16,6 +16,10 @@ class Cms::Line::TestMember
   validates :oauth_id, presence: true
 
   default_scope -> { order_by(name: 1) }
+
+  def root_owned?(user)
+    true
+  end
 
   class << self
     def search(params)
