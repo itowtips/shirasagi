@@ -10,5 +10,11 @@ module Cms::Addon
     def line_messages
       templates.order_by(order: 1).map(&:body)
     end
+
+    module ClassMethods
+      def max_templates
+        5.freeze
+      end
+    end
   end
 end

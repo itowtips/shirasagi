@@ -42,7 +42,7 @@ module Cms::Addon
     end
 
     def extract_multicast_members
-      criteria = Cms::Member.site(site)
+      criteria = Cms::Member.site(site).and_enabled
       criteria = criteria.where(:oauth_id.exists => true, oauth_type: "line")
       criteria.where(subscribe_line_message: "active")
     end

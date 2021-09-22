@@ -1,6 +1,6 @@
 <%
   confirm_message = "テスト配信を開始してよろしいですか？"
-  test_members = Cms::Line::TestMember.site(@cur_site).to_a
+  test_members = Cms::Line::TestMember.site(@cur_site).allow(:read, @cur_user, site: @cur_site).to_a
 %>
 
 <%= form_for :item, url: { action: :test_deliver }, html: { id: "item-form", method: :post, multipart: true, autocomplete: :off } do |f| %>

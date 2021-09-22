@@ -1,6 +1,14 @@
 <%
   def deliver_condition_options
-    Cms::Line::DeliverCondition.site(@cur_site).map { |item| [item.name_with_order, item.id] }
+    options = Cms::Line::DeliverCondition.site(@cur_site).allow(:read, @cur_user, site: @cur_site).to_a.
+      map { |item| [item.name_with_order, item.id] }
+
+    condition = @item.deliver_condition
+    if condition
+      options.unshift([condition.name_with_order, condition.id])
+      options.uniq!
+    end
+    options
   end
 %>
 

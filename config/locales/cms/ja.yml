@@ -588,12 +588,8 @@ ja:
     read_other_cms_check_links_errors: リンクチェックエラーの閲覧（全て）
     read_private_cms_check_links_errors: リンクチェックエラーの閲覧（所有）
     edit_cms_check_links_ignore_urls: リンクチェックエラー例外の管理
-    read_other_cms_line_templates: LINEテンプレートの閲覧（全て）
-    read_private_cms_line_templates: LINEテンプレートの閲覧（所有）
-    edit_other_cms_line_templates: LINEテンプレートの編集（全て）
-    edit_private_cms_line_templates: LINEテンプレートの編集（所有）
-    delete_other_cms_line_templates: LINEテンプレートの削除（全て）
-    delete_private_cms_line_templates: LINEテンプレートの削除（所有）
+    use_other_cms_line_messages: LINEメッセージの利用（全て）
+    use_private_cms_line_messages: LINEメッセージの利用（所有）
     use_cms_line_services: LINEサービスの管理
 
   modules:
@@ -2482,6 +2478,21 @@ ja:
         - メンバーの OAuth ID を入力します。
         - LINE Messaging API の ユーザーID と同じです。
 
+    cms/line/message:
+      name:
+       - タイトルを入力します。
+
+    cms/addon/line/message/deliver_condition:
+      deliver_condition_state:
+        - 設定を入力します。
+
+      deliver_condition_id:
+        - 配信条件を入力します。
+
+    cms/addon/line/message/deliver_plan:
+      deliver_date:
+        - 配信日時(予約)を入力します。
+
     cms/line/template/base:
       text: メッセージを入力します。
       image_id: 画像を入力します。
@@ -2499,6 +2510,13 @@ ja:
         -
         - ・本文内の最初の画像
         - 記事本文内の最初の画像を設定します。
+
+    cms/line/deliver_condition:
+      name:
+       - タイトルを入力します。
+      order:
+       - 並び順を入力します。
+       - 数字が小さいほど上位に表示されます。
 
   all_content:
     page_id: ページID
