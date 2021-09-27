@@ -41,11 +41,21 @@ module Pippi::Member::Addon
     end
 
     def calculate_age(today, birthday)
+      # year
       d1 = format("%04d%02d%02d", today.year, today.month, today.day).to_i
       d2 = format("%04d%02d%02d", birthday.year, birthday.month, birthday.day).to_i
       d3 = (d1 - d2)
       d3 = format("%08d", (d3 > 0) ? d3 : 0)
-      d3[0..3].to_i
+      y = d3[0..3].to_i
+
+      # month
+      if today > birthday
+        m = today.day >= birthday.day ? today.month : today.advance(months: -1).month
+        m = (m >= birthday.month) ? m - birthday.month : (12 - birthday.month) + m
+      else
+        m = 0
+      end
+      [y, m]
     end
 
     def child_ages
@@ -57,10 +67,7 @@ module Pippi::Member::Addon
     end
 
     def child_ages_labels
-      (1..Cms::Member::CHILD_MAX_SIZE).map do |i|
-        birthday = send("child#{i}_birthday")
-        birthday ? "#{I18n.l(birthday.to_date, format: :long)}（#{send("child#{i}_age")}歳）" : nil
-      end.compact
+      (1..Cms::Member::CHILD_MAX_SIZE).map { |i| send("child#{i}_age_label") }.compact
     end
 
     def residence_areas_labels
@@ -75,6 +82,12 @@ module Pippi::Member::Addon
         child_birthday = send(field_key)
         return if child_birthday.blank?
         calculate_age(Time.zone.today, child_birthday)
+      end
+
+      define_method("child#{i}_age_label") do
+        birthday = send("child#{i}_birthday")
+        y, m = send("child#{i}_age")
+        birthday ? "#{I18n.l(birthday.to_date, format: :long)}（#{y}歳#{m}ヶ月）" : nil
       end
 
       define_method("parse_in_child#{i}_birth") do

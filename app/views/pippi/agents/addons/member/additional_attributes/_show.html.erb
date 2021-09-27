@@ -10,7 +10,7 @@
   <% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
     <% next if @item.send("child#{i}_birthday").blank? %>
     <dt><%= @model.t "child#{i}_birthday" %></dt>
-    <dd><%= l(@item.send("child#{i}_birthday").to_date, format: :long) %>（<%= "#{@item.send("child#{i}_age")}歳" %>）</dd>
+    <dd><%= @item.send("child#{i}_age_label") %></dd>
   <% end %>
 
   <dt><%= @item.t :residence_areas %></dt>
