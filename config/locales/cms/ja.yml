@@ -1233,6 +1233,16 @@ ja:
         upper_year3: 年齢3（上限）
         upper_year4: 年齢4（上限）
         upper_year5: 年齢5（上限）
+        lower_month1: 年齢1（下限）
+        lower_month2: 年齢2（下限）
+        lower_month3: 年齢3（下限）
+        lower_month4: 年齢4（下限）
+        lower_month5: 年齢5（下限）
+        upper_month1: 年齢1（上限）
+        upper_month2: 年齢2（上限）
+        upper_month3: 年齢3（上限）
+        upper_month4: 年齢4（上限）
+        upper_month5: 年齢5（上限）
         residence_areas: 地区
       cms/addon/line/message/deliver_condition:
         deliver_condition_state: 設定
@@ -2582,3 +2592,6 @@ ja:
       cms/role/import_job: 権限インポート
       cms/all_contents_import_job: 全コンテンツ一括設定
       cms/michecker_job: miChecker
+      cms/line/deliver_job: LINE配信
+      cms/line/test_deliver_job: LINEテスト配信
+      cms/line/deliver_reserved_job: LINE予約配信

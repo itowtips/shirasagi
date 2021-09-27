@@ -8,7 +8,10 @@ module Cms::Addon
       1.upto(CHILD_CONDITION_MAX_SIZE) do |i|
         field :"lower_year#{i}", type: Integer
         field :"upper_year#{i}", type: Integer
+        field :"lower_month#{i}", type: Integer
+        field :"upper_month#{i}", type: Integer
         permit_params :"lower_year#{i}", :"upper_year#{i}"
+        permit_params :"lower_month#{i}", :"upper_month#{i}"
       end
 
       field :residence_areas, type: Array, default: []
@@ -24,9 +27,29 @@ module Cms::Addon
       1.upto(CHILD_CONDITION_MAX_SIZE) do |i|
         lower_year = send("lower_year#{i}")
         upper_year = send("upper_year#{i}")
-        years += (lower_year..upper_year).to_a if lower_year && upper_year
+        lower_month = send("lower_month#{i}")
+        upper_month = send("upper_month#{i}")
+
+        if lower_year && upper_year
+          lower_month ||= 0
+          upper_month ||= 11
+
+          lower_to_upper = (lower_year..upper_year)
+          size = lower_to_upper.size
+          lower_to_upper.each_with_index do |y, i|
+            lm = 0
+            rm = 11
+
+            if i == 0
+              lm = lower_month
+            elsif i == size - 1
+              rm = upper_month
+            end
+            years += (lm..rm).map { |m| [y, m] }
+          end
+        end
       end
-      years.uniq.sort
+      years.uniq
     end
 
     def condition_label
@@ -34,8 +57,13 @@ module Cms::Addon
       h << (1..CHILD_CONDITION_MAX_SIZE).map do |i|
         lower_year = send("lower_year#{i}")
         upper_year = send("upper_year#{i}")
+        lower_month = send("lower_month#{i}")
+        upper_month = send("upper_month#{i}")
         next unless lower_year && upper_year
-        (lower_year == upper_year) ? "#{lower_year}歳" : "#{lower_year}歳〜#{upper_year}歳"
+
+        lower = lower_month ? "#{lower_year}歳#{lower_month}ヶ月" : "#{lower_year}歳"
+        upper = upper_month ? "#{upper_year}歳#{upper_month}ヶ月" : "#{upper_year}歳"
+        (lower == upper) ? lower : "#{lower}〜#{upper}"
       end.compact.join(", ")
       h << residence_areas.map { |area| I18n.t("pippi.options.residence_areas.#{area}") }.join(", ")
       h.select(&:present?).join("\n")
@@ -83,10 +111,24 @@ module Cms::Addon
       define_method("validate_year#{i}") do
         lower_year = send("lower_year#{i}")
         upper_year = send("upper_year#{i}")
+        lower_month = send("lower_month#{i}")
+        upper_month = send("upper_month#{i}")
 
+        # validate year
         if lower_year && upper_year
           if lower_year > upper_year
             errors.add "upper_year#{i}", :greater_than, count: t("lower_year#{i}")
+          else
+            # validate month
+            if lower_month && upper_month
+              if lower_year == upper_year && lower_month > upper_month
+                errors.add "upper_month#{i}", :greater_than, count: t("lower_month#{i}")
+              end
+            elsif lower_month
+              errors.add "upper_month#{i}", :blank
+            elsif upper_month
+              errors.add "lower_month#{i}", :blank
+            end
           end
         elsif lower_year
           errors.add "upper_year#{i}", :blank
