@@ -41,6 +41,8 @@ module Pippi::Member::Addon
     end
 
     def calculate_age(today, birthday)
+      return if birthday > today
+
       # year
       d1 = format("%04d%02d%02d", today.year, today.month, today.day).to_i
       d2 = format("%04d%02d%02d", birthday.year, birthday.month, birthday.day).to_i
@@ -49,12 +51,8 @@ module Pippi::Member::Addon
       y = d3[0..3].to_i
 
       # month
-      if today > birthday
-        m = today.day >= birthday.day ? today.month : today.advance(months: -1).month
-        m = (m >= birthday.month) ? m - birthday.month : (12 - birthday.month) + m
-      else
-        m = 0
-      end
+      m = today.day >= birthday.day ? today.month : today.advance(months: -1).month
+      m = (m >= birthday.month) ? m - birthday.month : (12 - birthday.month) + m
       [y, m]
     end
 
@@ -86,8 +84,11 @@ module Pippi::Member::Addon
 
       define_method("child#{i}_age_label") do
         birthday = send("child#{i}_birthday")
+        return if birthday.blank?
         y, m = send("child#{i}_age")
-        birthday ? "#{I18n.l(birthday.to_date, format: :long)}（#{y}歳#{m}ヶ月）" : nil
+        label = I18n.l(birthday.to_date, format: :long)
+        label += "（#{y}歳#{m}ヶ月）" if y && m
+        label
       end
 
       define_method("parse_in_child#{i}_birth") do

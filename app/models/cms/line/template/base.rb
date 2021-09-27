@@ -55,7 +55,7 @@ class Cms::Line::Template::Base
   private
 
   def set_name
-    self.name ||= self.id.to_s
+    self.name ||= message.try(:name)
   end
 
   class << self

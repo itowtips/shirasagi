@@ -669,6 +669,7 @@ ja:
       cms/line/template/text: テンプレート：テキスト
       cms/line/template/image: テンプレート：画像
       cms/line/template/page: テンプレート：記事ページ
+      cms/line/template/json_body: テンプレート：JSON
 
   mongoid:
     models:
@@ -1258,6 +1259,7 @@ ja:
         title: タイトル
         summary: メッセージ
         thumb_state: サムネイル画像
+        json_body: JSON
 
   activemodel:
     attributes:
@@ -2520,6 +2522,8 @@ ja:
         -
         - ・本文内の最初の画像
         - 記事本文内の最初の画像を設定します。
+      json_body:
+        - JSONを入力してください。
 
     cms/line/deliver_condition:
       name:

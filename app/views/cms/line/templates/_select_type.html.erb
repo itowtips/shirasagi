@@ -30,5 +30,15 @@
         </div>
       <% end %>
     </div>
+
+    <div class="message-type-wrap">
+      <%= link_to({ action: :new, type: "json_body" }, { class: "message-type page #{(@type == "json_body") ? "current" : ""}" }) do %>
+        <%= image_tag("/assets/img/line/templates/json_body.jpg", alt: "json_body") %>
+        <div class="description">
+          <h2 class="title">JSON</h2>
+          <div class="summary">JSONテンプレートを直接入力します。</div>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
