@@ -37,6 +37,7 @@ ja:
     line_template: テンプレート
     line_deliver_log: 配信ログ
     line_deliver_condition: 配信条件
+    line_deliver_category: 配信カテゴリー
     line_test_member: テストメンバー
     line_event_session: セッション
     form_check: 制約チェック
@@ -590,6 +591,7 @@ ja:
     edit_cms_check_links_ignore_urls: リンクチェックエラー例外の管理
     use_other_cms_line_messages: LINEメッセージの利用（全て）
     use_private_cms_line_messages: LINEメッセージの利用（所有）
+    use_cms_line_deliver_categories: LINE配信カテゴリーの管理
     use_cms_line_services: LINEサービスの管理
 
   modules:
@@ -1215,6 +1217,10 @@ ja:
       cms/line/deliver_condition:
         name: タイトル
         order: 並び順
+      cms/line/deliver_category:
+        name: タイトル
+        order: 並び順
+        state: ステータス
       cms/line/test_member:
         name: 名前
         oauth_id: OAuth ID (ユーザーID)
@@ -1244,7 +1250,6 @@ ja:
         upper_month3: 年齢3（上限）
         upper_month4: 年齢4（上限）
         upper_month5: 年齢5（上限）
-        residence_areas: 地区
       cms/addon/line/message/deliver_condition:
         deliver_condition_state: 設定
         deliver_condition_id: 配信条件
@@ -2526,6 +2531,13 @@ ja:
         - JSONを入力してください。
 
     cms/line/deliver_condition:
+      name:
+       - タイトルを入力します。
+      order:
+       - 並び順を入力します。
+       - 数字が小さいほど上位に表示されます。
+
+    cms/line/deliver_category:
       name:
        - タイトルを入力します。
       order:

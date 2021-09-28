@@ -13,13 +13,15 @@ module Cms::Addon
         permit_params :"lower_year#{i}", :"upper_year#{i}"
         permit_params :"lower_month#{i}", :"upper_month#{i}"
       end
-
-      field :residence_areas, type: Array, default: []
-      permit_params residence_areas: []
+      embeds_ids :deliver_categories, class_name: "Cms::Line::DeliverCategory"
+      permit_params deliver_category_ids: []
     end
 
-    def residence_areas_options
-      I18n.t("pippi.options.residence_areas").map { |k, v| [v, k] }
+    def each_deliver_categories
+      Cms::Line::DeliverCategory.site(site).each_public do |root, children|
+        categories = children.select { |child| deliver_category_ids.include?(child.id) }
+        yield(root, categories) if categories.present?
+      end
     end
 
     def condition_ages
@@ -54,6 +56,8 @@ module Cms::Addon
 
     def condition_label
       h = []
+
+      # year condition
       h << (1..CHILD_CONDITION_MAX_SIZE).map do |i|
         lower_year = send("lower_year#{i}")
         upper_year = send("upper_year#{i}")
@@ -65,7 +69,12 @@ module Cms::Addon
         upper = upper_month ? "#{upper_year}歳#{upper_month}ヶ月" : "#{upper_year}歳"
         (lower == upper) ? lower : "#{lower}〜#{upper}"
       end.compact.join(", ")
-      h << residence_areas.map { |area| I18n.t("pippi.options.residence_areas.#{area}") }.join(", ")
+
+      # category condition
+      Cms::Line::DeliverCategory.site(site).and_root.and_public.each do |root|
+        categories = root.children.and_public.select { |category| deliver_category_ids.include?(category.id) }
+        h << categories.map(&:name).join(", ") if categories.present?
+      end
       h.select(&:present?).join("\n")
     end
 
@@ -78,8 +87,12 @@ module Cms::Addon
     def extract_conditional_members
       criteria = extract_multicast_members
 
-      if residence_areas.present?
-        criteria = criteria.in(residence_areas: residence_areas)
+      if deliver_categories.and_public.present?
+        cond = []
+        each_deliver_categories do |_, children|
+          cond << { "deliver_category_ids" => { "$in" => children.map(&:id) } }
+        end
+        criteria = criteria.and(cond) if cond.present?
       end
 
       if condition_ages.present?
@@ -88,7 +101,6 @@ module Cms::Addon
         end
         criteria = Cms::Member.in(id: members.pluck(:id))
       end
-
       criteria
     end
 
@@ -97,15 +109,6 @@ module Cms::Addon
     end
 
     private
-
-    def validate_residence_areas
-      self.residence_areas = residence_areas.select(&:present?)
-      return if residence_areas.blank?
-
-      if (residence_areas - I18n.t("pippi.options.residence_areas").keys.map(&:to_s)).present?
-        errors.add :residence_areas, :inclusion
-      end
-    end
 
     1.upto(CHILD_CONDITION_MAX_SIZE) do |i|
       define_method("validate_year#{i}") do
@@ -140,10 +143,9 @@ module Cms::Addon
 
     def validate_condition_body
       1.upto(CHILD_CONDITION_MAX_SIZE).each { |i| send("validate_year#{i}") }
-      validate_residence_areas
       return if errors.present?
 
-      if condition_ages.blank? && residence_areas.blank?
+      if condition_ages.blank? && deliver_categories.and_public.blank?
         errors.add :base, "配信条件を入力してください"
       end
     end

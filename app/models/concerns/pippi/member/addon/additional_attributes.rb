@@ -7,12 +7,12 @@ module Pippi::Member::Addon
 
     included do
       field :subscribe_line_message, type: String, default: "active"
-      field :residence_areas, type: Array, default: []
+      embeds_ids :deliver_categories, class_name: "Cms::Line::DeliverCategory"
 
       validates :subscribe_line_message, inclusion: { in: %w(active expired) }
-      validate :validate_residence_areas
+
       permit_params :subscribe_line_message
-      permit_params residence_areas: []
+      permit_params deliver_category_ids: []
 
       1.upto(CHILD_MAX_SIZE) do |i|
         field :"child#{i}_birthday", type: Date
@@ -23,21 +23,15 @@ module Pippi::Member::Addon
       end
     end
 
+    def each_deliver_categories
+      Cms::Line::DeliverCategory.site(site).each_public do |root, children|
+        categories = children.select { |child| deliver_category_ids.include?(child.id) }
+        yield(root, categories) if categories.present?
+      end
+    end
+
     def subscribe_line_message_options
       %w(active expired).map { |m| [ I18n.t("pippi.options.subscribe_line_message.#{m}"), m ] }.to_a
-    end
-
-    def residence_areas_options
-      I18n.t("pippi.options.residence_areas").map { |k, v| [v, k] }
-    end
-
-    def validate_residence_areas
-      self.residence_areas = residence_areas.select(&:present?)
-      return if residence_areas.blank?
-
-      if (residence_areas - I18n.t("pippi.options.residence_areas").keys.map(&:to_s)).present?
-        errors.add :residence_areas, :inclusion
-      end
     end
 
     def calculate_age(today, birthday)
@@ -66,10 +60,6 @@ module Pippi::Member::Addon
 
     def child_ages_labels
       (1..Cms::Member::CHILD_MAX_SIZE).map { |i| send("child#{i}_age_label") }.compact
-    end
-
-    def residence_areas_labels
-      residence_areas.map { |k| I18n.t("pippi.options.residence_areas.#{k}") }
     end
 
     1.upto(CHILD_MAX_SIZE) do |i|
@@ -140,15 +130,31 @@ module Pippi::Member::Addon
       end
     end
 
+    def private_show_path(*args)
+      options = args.extract_options!
+      options.merge!(site: (cur_site || site), id: id)
+      helper_mod = Rails.application.routes.url_helpers
+      helper_mod.cms_member_path(*args, options) rescue nil
+    end
+
     module ClassMethods
       def encode_sjis(str)
         str.encode("SJIS", invalid: :replace, undef: :replace)
       end
 
-      def line_members_enum
+      def line_members_enum(site)
         members = criteria.to_a
+
+        roots = []
+        category_ids = []
+        Cms::Line::DeliverCategory.site(site).each_public do |root, children|
+          roots << root
+          category_ids << children.map(&:id)
+        end
+
         Enumerator.new do |y|
-          headers = %w(id name oauth_id child_ages residence_areas).map { |v| self.t(v) }
+          headers = %w(id name oauth_id child_ages).map { |v| self.t(v) }
+          headers += roots.map(&:name)
           y << encode_sjis(headers.to_csv)
           members.each do |item|
             row = []
@@ -156,7 +162,9 @@ module Pippi::Member::Addon
             row << item.name
             row << item.oauth_id
             row << item.child_ages_labels.join("\n")
-            row << item.residence_areas_labels.join("\n")
+            category_ids.each do |ids|
+              row << item.deliver_categories.select { |category| ids.include?(category.id) }.map(&:name).join("\n")
+            end
             y << encode_sjis(row.to_csv)
           end
         end

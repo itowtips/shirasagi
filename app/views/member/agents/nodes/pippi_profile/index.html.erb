@@ -19,9 +19,11 @@
       </dl>
     <% end %>
 
-    <dl class="column">
-      <dt><%= @item.t :residence_areas %></dt>
-      <dd><%= @item.residence_areas.map { |k| t("pippi.options.residence_areas.#{k}") }.join(", ") %></dd>
-    </dl>
+    <% @item.each_deliver_categories do |root, children| %>
+      <dl class="column">
+        <dt><%= root.name %></dt>
+        <dd><%= children.map(&:name).join(", ") %></dd>
+      </dl>
+    <% end %>
   </div>
 </div>

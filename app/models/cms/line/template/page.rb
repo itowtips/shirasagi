@@ -27,11 +27,11 @@ class Cms::Line::Template::Page < Cms::Line::Template::Base
     query = "?_=#{Time.zone.now.to_i}"
     h << '<div class="talk-balloon">'
     h << '<div class="message-type page">'
-    if thumb_image_full_url
-      h << "<div class=\"img-warp\"><img src=\"#{thumb_image_full_url}#{query}\"></div>"
+    if thumb_image_url
+      h << "<div class=\"img-warp\"><img src=\"#{thumb_image_url}#{query}\"></div>"
     end
     h << "<div class=\"title\">#{title}</div>"
-    h << "<div class=\"summary\">#{summary}</div>"
+    h << "<div class=\"summary\">#{ApplicationController.helpers.br(summary)}</div>"
     h << "<div class=\"footer\"><a href=\"#{page.full_url}\">#{I18n.t("cms.visit_article")}</a></div>"
     h << '</div>'
     h << '</div>'
@@ -55,12 +55,22 @@ class Cms::Line::Template::Page < Cms::Line::Template::Base
 
   def thumb_image_full_url
     return if page.blank?
-    if thumb_state == "thumb_carousel"
-      page.thumb.try(:full_url)
-    elsif thumb_state == "body_carousel"
-      page.try(:first_img_full_url)
-    else
-      nil
+    @_thumb_image_full_url ||= begin
+      if thumb_state == "thumb_carousel"
+        page.thumb.try(:full_url)
+      elsif thumb_state == "body_carousel"
+        page.try(:first_img_full_url)
+      else
+        nil
+      end
+    end
+  end
+
+  def thumb_image_url
+    return if thumb_image_full_url.blank?
+    @_thumb_image_url ||= begin
+      site_url = site.full_url.delete_suffix("/")
+      thumb_image_full_url.delete_prefix(site_url)
     end
   end
 

@@ -13,6 +13,8 @@
     <dd><%= @item.send("child#{i}_age_label") %></dd>
   <% end %>
 
-  <dt><%= @item.t :residence_areas %></dt>
-  <dd><%= @item.residence_areas.map { |k| t("pippi.options.residence_areas.#{k}") }.join(", ") %></dd>
+  <% @item.each_deliver_categories do |root, children| %>
+    <dt><%= root.name %></dt>
+    <dd><%= children.map(&:name).join(", ") %></dd>
+  <% end %>
 </dl>

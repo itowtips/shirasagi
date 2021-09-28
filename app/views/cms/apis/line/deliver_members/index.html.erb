@@ -31,7 +31,7 @@ $('#ajax-box .btn-csv').on('click', function() {
         <td><%= item.oauth_id %></td>
         <td>
           <% if item.allowed?(:read, @cur_user, site: @cur_site) %>
-            <%= link_to t("ss.links.show"), cms_member_path(id: item), target: :_blank, rel: "noopener" %>
+            <%= link_to t("ss.links.show"), item.private_show_path, target: :_blank, rel: "noopener" %>
           <% else %>
             <%= t("ss.links.show") %>
           <% end %>

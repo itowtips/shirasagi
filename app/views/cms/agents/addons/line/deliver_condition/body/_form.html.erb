@@ -14,14 +14,20 @@
     </dd>
   <% end %>
 
-  <dt><%= @model.t(:residence_areas) %></dt>
-  <dd>
-    <%= hidden_field_tag "#{f.object_name}[residence_areas][]", nil %>
-    <% @item.residence_areas_options.each do |k, v| %>
-      <label>
-        <%= check_box_tag "#{f.object_name}[residence_areas][]", v, @item.residence_areas.include?(v.to_s) %>
-        <%= k %>
-      </label>
-    <% end %>
-  </dd>
+  <%= hidden_field_tag "item[deliver_category_ids][]" %>
+  <% @item.deliver_categories.and_closed.each do |item| %>
+    <%= hidden_field_tag "item[deliver_category_ids][]", item.id %>
+  <% end %>
+
+  <% Cms::Line::DeliverCategory.site(@cur_site).each_public do |root, children| %>
+    <dt><%= root.name %></dt>
+    <dd>
+      <% children.each do |category| %>
+        <label>
+          <%= check_box_tag "#{f.object_name}[deliver_category_ids][]", category.id, @item.deliver_category_ids.include?(category.id) %>
+          <%= category.name %>
+        </label>
+      <% end %>
+    </dd>
+  <% end %>
 </dl>
