@@ -15,10 +15,10 @@ describe "cms/line/messages deliver multicast_with_no_condition", type: :feature
     create :cms_member, cur_site: site, oauth_id: unique_id, oauth_type: "line", subscribe_line_message: "active",
       child1_birthday: Date.parse("2000/11/11"), child2_birthday: Date.parse("2001/1/1")
   end
-  let!(:member3) do
-    create :cms_member, cur_site: site, oauth_id: unique_id, oauth_type: "line", subscribe_line_message: "active",
-      residence_areas: %w(nakaku higashiku)
-  end
+  #let!(:member3) do
+  #  create :cms_member, cur_site: site, oauth_id: unique_id, oauth_type: "line", subscribe_line_message: "active",
+  #    residence_areas: %w(nakaku higashiku)
+  #end
 
   # expired members
   let!(:member4) do
@@ -31,8 +31,8 @@ describe "cms/line/messages deliver multicast_with_no_condition", type: :feature
     create :cms_member, cur_site: site, oauth_id: unique_id, oauth_type: "line", subscribe_line_message: "active", state: "disabled"
   end
 
-  let(:active_members_count) { "#{I18n.t("cms.member")}3#{I18n.t("ss.units.count")}" }
-  let(:active_members_user_ids) { [member1, member2, member3].map(&:oauth_id) }
+  let(:active_members_count) { "#{I18n.t("cms.member")}#{active_members_user_ids.size}#{I18n.t("ss.units.count")}" }
+  let(:active_members_user_ids) { [member1, member2].map(&:oauth_id) }
   let(:message) { Cms::Line::Message.site(site).first }
 
   def add_template
@@ -63,8 +63,8 @@ describe "cms/line/messages deliver multicast_with_no_condition", type: :feature
       expect(page).to have_css(".list-item", text: member1.oauth_id)
       expect(page).to have_css(".list-item", text: member2.name)
       expect(page).to have_css(".list-item", text: member2.oauth_id)
-      expect(page).to have_css(".list-item", text: member3.name)
-      expect(page).to have_css(".list-item", text: member3.oauth_id)
+      #expect(page).to have_css(".list-item", text: member3.name)
+      #expect(page).to have_css(".list-item", text: member3.oauth_id)
       expect(page).to have_no_css(".list-item", text: member4.name)
       expect(page).to have_no_css(".list-item", text: member5.name)
       expect(page).to have_no_css(".list-item", text: member5.oauth_id)

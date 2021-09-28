@@ -116,6 +116,7 @@ module Cms
     Cms::Role.permission :unlock_other_cms_pages
     Cms::Role.permission :use_other_cms_line_messages
     Cms::Role.permission :use_private_cms_line_messages
+    Cms::Role.permission :use_cms_line_deliver_categories
     Cms::Role.permission :use_cms_line_services
 
     if SS.config.michecker && SS.config.michecker['disable'].blank?

@@ -12,7 +12,7 @@ class Cms::Line::Template::Image < Cms::Line::Template::Base
 
     h = []
     h << '<div class="talk-balloon">'
-    h << "<div class=\"img-warp\"><img src=\"#{image.full_url}#{query}\"></div>"
+    h << "<div class=\"img-warp\"><img src=\"#{image.url}#{query}\"></div>"
     h << '</div>'
     h.join
   end

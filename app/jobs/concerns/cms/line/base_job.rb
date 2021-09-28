@@ -55,14 +55,13 @@ module Cms::Line::BaseJob
     members.each_slice(MAX_MEMBERS_TO).with_index do |members_to, idx|
       names = members_to.map(&:name)
       user_ids = members_to.map(&:oauth_id)
-      member_ids = members_to.map(&:id)
 
       Cms::SnsPostLog::LineDeliver.create_with(item) do |log|
         begin
           log.action = item.deliver_action
           log.multicast_user_ids = user_ids
-          log.member_ids = member_ids
           log.deliver_mode = deliver_mode
+          log.in_members = members_to
 
           Rails.logger.info("multicast to members #{idx * user_ids.size}..#{(idx * user_ids.size) + user_ids.size}")
           names.each_with_index { |name, idx| Rails.logger.info("- #{user_ids[idx]} #{name}") }

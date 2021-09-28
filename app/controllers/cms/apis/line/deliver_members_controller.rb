@@ -28,7 +28,7 @@ class Cms::Apis::Line::DeliverMembersController < ApplicationController
 
   def download
     set_items
-    send_enum @items.line_members_enum, type: 'text/csv; charset=Shift_JIS',
+    send_enum @items.line_members_enum(@cur_site), type: 'text/csv; charset=Shift_JIS',
       filename: "members_#{Time.zone.now.strftime("%Y%m%d_%H%M")}.csv"
   end
 end
