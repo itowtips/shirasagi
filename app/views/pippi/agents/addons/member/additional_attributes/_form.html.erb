@@ -5,11 +5,17 @@
 
 <dl class="see mod-pippi-member-additional-attributes">
   <dt><%= @item.t(:subscribe_line_message) %></dt>
-  <dd><%= f.select :subscribe_line_message, @item.subscribe_line_message_options %></dd>
+  <dd style="margin-bottom: 10px;"><%= f.select :subscribe_line_message, @item.subscribe_line_message_options %></dd>
 
   <% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
-    <dt><%= @model.t("child#{i}_birthday") %></dt>
-    <dd>
+    <dt style="margin-top: 5px;"><%= @model.t("child#{i}") %></dt>
+    <dd style="margin-top: 5px;"></dd>
+
+    <dt class="depth-2" style="margin-top: 5px;"><%= @model.t("child_name") %></dt>
+    <dd style="margin-top: 5px;"><%= f.text_field "child#{i}_name", style: "width: 60%;" %></dd>
+
+    <dt class="depth-2" style="margin-top: 5px;"><%= @model.t("child_birthday") %></dt>
+    <dd style="margin-top: 5px;">
       <%= f.fields_for "in_child#{i}_birth" do |birth_f| %>
         <% era, year, month, day = @item.send("parse_in_child#{i}_birth") %>
         <%= birth_f.select :era, @item.wareki_options, selected: era, include_blank: true %>

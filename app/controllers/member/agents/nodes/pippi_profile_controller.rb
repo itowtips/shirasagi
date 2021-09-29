@@ -64,6 +64,9 @@ class Member::Agents::Nodes::PippiProfileController < ApplicationController
   def index
   end
 
+  def show
+  end
+
   # 退会
   def leave
   end

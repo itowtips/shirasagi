@@ -62,13 +62,12 @@ module Member::Part
     default_scope ->{ where(route: "member/invited_group") }
   end
 
-  class FavoritePage
+  class Bookmark
     include Cms::Model::Part
-    include Member::Addon::FavoritePage
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 
-    default_scope ->{ where(route: "member/favorite_page") }
+    default_scope ->{ where(route: "member/bookmark") }
   end
 end

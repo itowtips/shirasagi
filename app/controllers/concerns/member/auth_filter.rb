@@ -21,4 +21,16 @@ module Member::AuthFilter
     return false if !@cur_site
     session[session_member_key]["last_logged_in"] = timestamp if session[session_member_key]
   end
+
+  def member_login_node
+    @member_login_node ||= begin
+      node = Member::Node::Login.site(@cur_site).and_public.first
+      node.present? ? node : false
+    end
+  end
+
+  def member_login_path
+    return false unless member_login_node
+    "#{member_login_node.url}login.html"
+  end
 end

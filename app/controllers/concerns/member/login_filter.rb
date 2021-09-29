@@ -57,18 +57,6 @@ module Member::LoginFilter
     @cur_member = nil
   end
 
-  def member_login_node
-    @member_login_node ||= begin
-      node = Member::Node::Login.site(@cur_site).and_public.first
-      node.present? ? node : false
-    end
-  end
-
-  def member_login_path
-    return false unless member_login_node
-    "#{member_login_node.url}login.html"
-  end
-
   def translate_redirect_option(opts)
     case opts[:redirect]
     when true

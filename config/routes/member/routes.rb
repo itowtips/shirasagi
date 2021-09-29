@@ -43,7 +43,7 @@ Rails.application.routes.draw do
     resources :blogs, concerns: :deletion
     resources :blog_pages, concerns: :deletion
     resources :blog_page_locations, concerns: :deletion
-    resources :favorite_pages, concerns: :deletion
+    resources :bookmarks, concerns: :deletion
 
     resources :photos, concerns: [:deletion, :command] do
       get :index_listable, on: :collection
@@ -60,6 +60,7 @@ Rails.application.routes.draw do
     #   resources :members, controller: :group_members, concerns: :deletion
     # end
 
+    resources :pippi_mypages, concerns: :deletion
     resources :pippi_profiles, concerns: :deletion
   end
 
@@ -101,9 +102,7 @@ Rails.application.routes.draw do
     post "my_profile/confirm_password(.:format)" => "public#confirm_password", cell: "nodes/my_profile"
     get "my_profile/complete_password(.:format)" => "public#complete_password", cell: "nodes/my_profile"
     post "my_profile/postal_code(.:format)" => "public#postal_code", cell: "nodes/my_profile"
-
-    get "favorite_page/(index.:format)" => "public#index", cell: "nodes/favorite_page"
-    post "favorite_page/(index.:format)" => "public#index", cell: "nodes/favorite_page"
+    post "bookmark/(index.:format)" => "public#index", cell: "nodes/bookmark"
 
     scope "my_blog" do
       resource :setting, controller: "public", cell: "nodes/my_blog/setting", except: [:index, :show, :destroy]
@@ -147,6 +146,7 @@ Rails.application.routes.draw do
     post "registration/postal_code(.:format)" => "public#postal_code", cell: "nodes/registration"
 
     ## pippi contents
+    get "pippi_mypage/(index.:format)" => "public#index", cell: "nodes/pippi_mypage"
     get "pippi_profile(index.:format)" => "public#index", cell: "nodes/pippi_profile"
     resource :pippi_profile, controller: "public", cell: "nodes/pippi_profile", only: [:edit, :update]
     get "pippi_profile/leave(.:format)" => "public#leave", cell: "nodes/pippi_profile"
@@ -168,7 +168,7 @@ Rails.application.routes.draw do
     get "photo_slide" => "public#index", cell: "parts/photo_slide"
     get "photo_search" => "public#index", cell: "parts/photo_search"
     get "invited_group" => "public#index", cell: "parts/invited_group"
-    get "favorite_page" => "public#index", cell: "parts/favorite_page"
+    get "bookmark" => "public#index", cell: "parts/bookmark"
   end
 
   namespace "member", path: ".m:member", member: /\d+/ do

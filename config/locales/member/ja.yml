@@ -98,7 +98,6 @@ ja:
       slide: スライド
       search: 検索
       create_unregisted_anpi: 未登録者安否作成
-      add_favorite: お気に入りに登録
     notice:
       accepted: 参加しました。
       rejected: 辞退しました。
@@ -156,7 +155,6 @@ ja:
       member/group_invitation_setting: グループ招待メール設定
       member/member_invitation_setting: 会員招待メール
       member/login_link: ログイン
-      member/favorite_page: お気に入りページ
       member/editor_setting: エディタ設定
 
   cms:
@@ -176,7 +174,8 @@ ja:
       member/photo_location: フォトロケーション
       member/photo_search: フォトサーチ
       member/photo_spot: フォトスポット
-      member/favorite_page: お気に入りページ
+      member/bookmark: お気に入りページ
+      member/pippi_mypage: ぴっぴマイページ
       member/pippi_profile: ぴっぴプロフィール
 
     parts:
@@ -186,7 +185,7 @@ ja:
       member/photo_slide: フォトスライド
       member/login: ログイン
       member/invited_group: 招待されたグループ
-      member/favorite_page: お気に入りページ
+      member/bookmark: お気に入りページ
 
   mongoid:
     models:
@@ -344,8 +343,6 @@ ja:
         member_joins_to_invited_group: 招待グループへの参加
       member/addon/login_link:
         login_link_url: ログインURL
-      member/addon/favorite_page:
-        link_name: リンク名
 
   cms_role:
     read_other_member_blogs: メンバーブログの閲覧（全て）

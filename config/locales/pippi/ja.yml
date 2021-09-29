@@ -22,9 +22,20 @@ ja:
     attributes:
       pippi/member/addon/additional_attributes:
         subscribe_line_message: LINEメッセージ
-        child_ages: 子供の年齢
-        child1_birthday: "子供の年齢 1"
-        child2_birthday: "子供の年齢 2"
-        child3_birthday: "子供の年齢 3"
-        child4_birthday: "子供の年齢 4"
-        child5_birthday: "子供の年齢 5"
+        child_name: お名前
+        child_birthday: 誕生日
+        child1: "子供の情報.1"
+        child2: "子供の情報.2"
+        child3: "子供の情報.3"
+        child4: "子供の情報.4"
+        child5: "子供の情報.5"
+        child1_name: "子供の情報.1 お名前"
+        child2_name: "子供の情報.2 お名前"
+        child3_name: "子供の情報.3 お名前"
+        child4_name: "子供の情報.4 お名前"
+        child5_name: "子供の情報.5 お名前"
+        child1_birthday: "子供の情報.1 誕生日"
+        child2_birthday: "子供の情報.2 誕生日"
+        child3_birthday: "子供の情報.3 誕生日"
+        child4_birthday: "子供の情報.4 誕生日"
+        child5_birthday: "子供の情報.5 誕生日"

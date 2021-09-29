@@ -322,7 +322,7 @@ module Member::Node
     default_scope ->{ where(route: "member/my_group") }
   end
 
-  class FavoritePage
+  class Bookmark
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
@@ -330,7 +330,18 @@ module Member::Node
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 
-    default_scope ->{ where(route: "member/favorite_page") }
+    default_scope ->{ where(route: "member/bookmark") }
+  end
+
+  class PippiMypage
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "member/pippi_profile") }
   end
 
   class PippiProfile

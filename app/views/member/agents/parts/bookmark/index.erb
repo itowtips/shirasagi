@@ -1,0 +1,16 @@
+<% return unless @node %>
+
+<% if controller.preview_path? %>
+
+<%= link_to @cur_part.name, @cur_path, class: "add-favorite" %>
+
+<% else %>
+
+<%= jquery do %>
+if (location.search === "?registered_favorite=1") {
+  alert("お気に入りに登録しました。\nお気に入りページはマイページで確認できます。");
+}
+<% end %>
+<%= link_to @cur_part.name, "#{@node.url}?#{ { path: @cur_path }.to_query }", { method: :post, class: "add-favorite" } %>
+
+<% end %>

@@ -15,11 +15,14 @@ module Pippi::Member::Addon
       permit_params deliver_category_ids: []
 
       1.upto(CHILD_MAX_SIZE) do |i|
+        field :"child#{i}_name", type: String
         field :"child#{i}_birthday", type: Date
         attr_accessor :"in_child#{i}_birth"
 
         permit_params :"in_child#{i}_birth" => [:era, :year, :month, :day]
+        permit_params :"child#{i}_name"
         validate :"set_child#{i}_birthday"
+        validate :"validate_child#{i}"
       end
     end
 
@@ -58,32 +61,38 @@ module Pippi::Member::Addon
       ages.compact
     end
 
-    def child_ages_labels
-      (1..Cms::Member::CHILD_MAX_SIZE).map { |i| send("child#{i}_age_label") }.compact
+    def child_birthday_labels
+      (1..Cms::Member::CHILD_MAX_SIZE).map { |i| send("child#{i}_birthday_label") }.compact
     end
 
     1.upto(CHILD_MAX_SIZE) do |i|
       accessor_key = :"in_child#{i}_birth"
-      field_key = :"child#{i}_birthday"
+      birthday_key = :"child#{i}_birthday"
+      name_key = :"child#{i}_name"
 
       define_method("child#{i}_age") do
-        child_birthday = send(field_key)
+        child_birthday = send(birthday_key)
         return if child_birthday.blank?
         calculate_age(Time.zone.today, child_birthday)
       end
 
       define_method("child#{i}_age_label") do
-        birthday = send("child#{i}_birthday")
-        return if birthday.blank?
         y, m = send("child#{i}_age")
-        label = I18n.l(birthday.to_date, format: :long)
-        label += "（#{y}歳#{m}ヶ月）" if y && m
-        label
+        return if !(y && m)
+        "#{y}歳#{m}ヶ月"
+      end
+
+      define_method("child#{i}_birthday_label") do
+        birthday = send(birthday_key)
+        return if birthday.blank?
+        birthday = I18n.l(birthday.to_date, format: :long)
+        age = send("child#{i}_age_label")
+        age.present? ? "#{birthday}（#{age}）" : birthday
       end
 
       define_method("parse_in_child#{i}_birth") do
         in_child_birth = send(accessor_key)
-        child_birthday = send(field_key)
+        child_birthday = send(birthday_key)
 
         if in_child_birth
           era   = in_child_birth["era"]
@@ -108,10 +117,10 @@ module Pippi::Member::Addon
         day = in_child_birth[:day]
 
         if era.blank? && year.blank? && month.blank? && day.blank?
-          send("#{field_key}=", nil)
+          send("#{birthday_key}=", nil)
           return
         elsif era.blank? || year.blank? || month.blank? || day.blank?
-          errors.add field_key, :invalid
+          errors.add birthday_key, :invalid
           return
         end
 
@@ -123,9 +132,18 @@ module Pippi::Member::Addon
           wareki = I18n.t("ss.wareki")[era.to_sym]
           min = Date.parse(wareki[:min])
           date = Date.new(min.year + year - 1, month, day)
-          send("#{field_key}=", date)
+          send("#{birthday_key}=", date)
         rescue
-          errors.add field_key, :invalid
+          errors.add brithday_key, :invalid
+        end
+      end
+
+      define_method ("validate_child#{i}") do
+        if send(birthday_key).present? && send(name_key).blank?
+          errors.add name_key, :empty
+        end
+        if send(name_key).present? && send(birthday_key).blank?
+          errors.add birthday_key, :empty
         end
       end
     end
@@ -161,7 +179,7 @@ module Pippi::Member::Addon
             row << item.id
             row << item.name
             row << item.oauth_id
-            row << item.child_ages_labels.join("\n")
+            row << item.child_birthday_labels.join("\n")
             category_ids.each do |ids|
               row << item.deliver_categories.select { |category| ids.include?(category.id) }.map(&:name).join("\n")
             end

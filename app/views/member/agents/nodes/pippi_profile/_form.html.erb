@@ -22,11 +22,16 @@
 </fieldset>
 
 <% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
-  <fieldset class="column child-birthday child-birthday<%= i %>">
+  <fieldset class="column child child-<%= i %>">
     <legend>
-      <%= @model.t("child#{i}_birthday") %>
+      <%= @model.t("child#{i}") %>
     </legend>
-    <div>
+    <div class="chlid-name">
+      <span><%= @model.t("child_name") %></span>
+      <%= f.text_field "child#{i}_name" %>
+    </div>
+    <div class="chlid-birthday">
+      <span><%= @model.t("child_birthday") %></span>
       <%= f.fields_for "in_child#{i}_birth" do |birth_f| %>
         <% era, year, month, day = @item.send("parse_in_child#{i}_birth") %>
         <%= birth_f.select :era, @item.wareki_options, selected: era, include_blank: true %>

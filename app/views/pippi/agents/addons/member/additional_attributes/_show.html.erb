@@ -5,12 +5,19 @@
 
 <dl class="see mod-pippi-member-additional-attributes">
   <dt><%= @item.t(:subscribe_line_message) %></dt>
-  <dd><%= @item.label :subscribe_line_message %></dd>
+  <dd style="margin-bottom: 10px;"><%= @item.label :subscribe_line_message %></dd>
 
   <% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
-    <% next if @item.send("child#{i}_birthday").blank? %>
-    <dt><%= @model.t "child#{i}_birthday" %></dt>
-    <dd><%= @item.send("child#{i}_age_label") %></dd>
+    <% next if @item.send("child#{i}_name").blank? %>
+
+    <dt style="margin-top: 5px;"><%= @model.t("child#{i}") %></dt>
+    <dd style="margin-top: 5px;"></dd>
+
+    <dt class="depth-2" style="margin-top: 5px;"><%= @model.t("child_name") %></dt>
+    <dd style="margin-top: 5px;"><%= @item.send("child#{i}_name") %></dd>
+
+    <dt class="depth-2" style="margin-top: 5px;"><%= @model.t("child_birthday") %></dt>
+    <dd style="margin-top: 5px;"><%= @item.send("child#{i}_birthday_label") %></dd>
   <% end %>
 
   <% @item.each_deliver_categories do |root, children| %>

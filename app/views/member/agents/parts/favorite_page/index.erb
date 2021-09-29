@@ -1,5 +1,0 @@
-<% if controller.preview_path? %>
-  <%= link_to (@cur_part.link_name.presence || t("member.links.add_favorite")), @cur_path %>
-<% else %>
-  <%= link_to (@cur_part.link_name.presence || t("member.links.add_favorite")), "#{@node.url}?#{ { path: @cur_main_path }.to_query }", method: :post %>
-<% end %>

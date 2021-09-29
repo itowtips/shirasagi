@@ -20,7 +20,7 @@ module Member
     Cms::Node.plugin "member/photo_category"
     Cms::Node.plugin "member/photo_location"
     Cms::Node.plugin "member/photo_spot"
-    Cms::Node.plugin "member/favorite_page"
+    Cms::Node.plugin "member/bookmark"
 
     # anpi
     Cms::Node.plugin "member/my_anpi_post"
@@ -32,9 +32,10 @@ module Member
     Cms::Part.plugin "member/photo_search"
     Cms::Part.plugin "member/photo_slide"
     Cms::Part.plugin "member/invited_group"
-    Cms::Part.plugin "member/favorite_page"
+    Cms::Part.plugin "member/bookmark"
 
     # pippi
+    Cms::Node.plugin "member/pippi_mypage"
     Cms::Node.plugin "member/pippi_profile"
 
     Cms::Role.permission :read_other_member_blogs
