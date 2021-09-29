@@ -1,17 +1,11 @@
 require 'spec_helper'
 
-describe "cms/line/templates image", type: :feature, dbscope: :example, js: true do
+describe "cms/line/templates json_body", type: :feature, dbscope: :example, js: true do
   let(:site) { cms_site }
   let(:item) { create :cms_line_message }
   let(:show_path) { cms_line_message_path site, item }
-  let!(:file1) do
-    tmp_ss_file(
-      Cms::TempFile, user: cms_user, site: site, contents: "#{Rails.root}/spec/fixtures/ss/logo.png")
-  end
-  let!(:file2) do
-    tmp_ss_file(
-      Cms::TempFile, user: cms_user, site: site, contents: "#{Rails.root}/spec/fixtures/ss/file/keyvisual.jpg")
-  end
+  let(:json_body) { '{ "type": "text", "text": "hello" }' }
+  let(:json_body_invalid) { "hello" }
 
   describe "basic crud" do
     before { login_cms_user }
@@ -26,18 +20,23 @@ describe "cms/line/templates image", type: :feature, dbscope: :example, js: true
         click_on "テンプレートを追加する（最大5個）"
       end
       within ".line-select-message-type" do
-        first(".message-type.image").click
+        first(".message-type.json_body").click
       end
 
-      # input image
+      # input invalid json
       expect(page).to have_css(".line-select-message-type")
-      within "#addon-cms-agents-addons-line-template-image" do
-        expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/template/image"))
-        first(".btn-file-upload").click
+      within "#addon-cms-agents-addons-line-template-json_body" do
+        expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/template/json_body"))
+        fill_in "item[json_body]", with: json_body_invalid
       end
-      wait_for_cbox do
-        expect(page).to have_css(".file-view", text: file1.name)
-        click_on file1.name
+      within "footer.send" do
+        click_on I18n.t("ss.buttons.save")
+      end
+      expect(page).to have_css("#errorExplanation ul li", text: "JSONは不正な値です。")
+
+      # input valid json
+      within "#addon-cms-agents-addons-line-template-json_body" do
+        fill_in "item[json_body]", with: json_body
       end
       within "footer.send" do
         click_on I18n.t("ss.buttons.save")
@@ -49,21 +48,18 @@ describe "cms/line/templates image", type: :feature, dbscope: :example, js: true
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/message/body"))
         expect(page).to have_no_css("div", text: "テンプレートが設定されていません。")
         within ".line-talk-view" do
-          expect(page.find('img')[:src]).to start_with file1.full_url
+          expect(page).to have_css(".talk-balloon", text: "{JSONテンプレート;}")
           first(".actions .edit-template").click
         end
       end
 
       # edit talk-balloon
       expect(page).to have_no_css(".line-select-message-type")
-      within "#addon-cms-agents-addons-line-template-image" do
-        expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/template/image"))
-        first(".btn-file-upload").click
+      within "#addon-cms-agents-addons-line-template-json_body" do
+        expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/template/json_body"))
+        fill_in "item[json_body]", with: json_body
       end
-      wait_for_cbox do
-        expect(page).to have_css(".file-view", text: file2.name)
-        click_on file2.name
-      end
+
       within "footer.send" do
         click_on I18n.t("ss.buttons.save")
       end
@@ -73,7 +69,7 @@ describe "cms/line/templates image", type: :feature, dbscope: :example, js: true
       within "#addon-cms-agents-addons-line-message-body" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/message/body"))
         within ".line-talk-view" do
-          expect(page.find('img')[:src]).to start_with file2.full_url
+          expect(page).to have_css(".talk-balloon", text: "{JSONテンプレート;}")
           page.accept_confirm do
             first(".actions .remove-template").click
           end

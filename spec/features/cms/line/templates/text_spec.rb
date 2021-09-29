@@ -12,29 +12,29 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
 
     it "#show" do
       visit show_path
+
+      # add template
       within "#addon-cms-agents-addons-line-message-body" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/message/body"))
         expect(page).to have_css("div", text: "テンプレートが設定されていません。")
         click_on "テンプレートを追加する（最大5個）"
       end
-
       within ".line-select-message-type" do
         first(".message-type.text").click
       end
 
+      # input text
+      expect(page).to have_css(".line-select-message-type")
       within "#addon-cms-agents-addons-line-template-text" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/template/text"))
         fill_in "item[text]", with: text1
       end
-      expect(page).to have_css(".line-select-message-type")
-      expect(page).to have_no_css("#addon-cms-agents-addons-line-template-image")
-      expect(page).to have_no_css("#addon-cms-agents-addons-line-template-page")
-
       within "footer.send" do
         click_on I18n.t("ss.buttons.save")
       end
       expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
+      # check talk-balloon
       within "#addon-cms-agents-addons-line-message-body" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/message/body"))
         expect(page).to have_no_css("div", text: "テンプレートが設定されていません。")
@@ -44,19 +44,18 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
         end
       end
 
+      # edit talk-balloon
+      expect(page).to have_no_css(".line-select-message-type")
       within "#addon-cms-agents-addons-line-template-text" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/template/text"))
         fill_in "item[text]", with: text2
       end
-      expect(page).to have_no_css(".line-select-message-type")
-      expect(page).to have_no_css("#addon-cms-agents-addons-line-template-image")
-      expect(page).to have_no_css("#addon-cms-agents-addons-line-template-page")
-
       within "footer.send" do
         click_on I18n.t("ss.buttons.save")
       end
       expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
+      # delete talk-balloon
       within "#addon-cms-agents-addons-line-message-body" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/message/body"))
         within ".line-talk-view" do

@@ -11,13 +11,11 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
 
   let!(:file1) do
     tmp_ss_file(
-      Cms::TempFile, user: cms_user, site: site, node: node, contents: "#{Rails.root}/spec/fixtures/ss/logo.png"
-    )
+      Cms::TempFile, user: cms_user, site: site, node: node, contents: "#{Rails.root}/spec/fixtures/ss/logo.png")
   end
   let!(:file2) do
     tmp_ss_file(
-      Cms::TempFile, user: cms_user, site: site, node: node, contents: "#{Rails.root}/spec/fixtures/ss/file/keyvisual.jpg"
-    )
+      Cms::TempFile, user: cms_user, site: site, node: node, contents: "#{Rails.root}/spec/fixtures/ss/file/keyvisual.jpg")
   end
 
   let!(:summary1) { unique_id }
@@ -36,16 +34,19 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
 
     it "#show" do
       visit show_path
+
+      # add template
       within "#addon-cms-agents-addons-line-message-body" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/message/body"))
         expect(page).to have_css("div", text: "テンプレートが設定されていません。")
         click_on "テンプレートを追加する（最大5個）"
       end
-
       within ".line-select-message-type" do
         first(".message-type.page").click
       end
 
+      # input page with no image
+      expect(page).to have_css(".line-select-message-type")
       within "#addon-cms-agents-addons-line-template-page" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/template/page"))
         click_on I18n.t("cms.apis.pages.index")
@@ -57,15 +58,12 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
       within "#addon-cms-agents-addons-line-template-page" do
         fill_in "item[summary]", with: summary1
       end
-      expect(page).to have_css(".line-select-message-type")
-      expect(page).to have_no_css("#addon-cms-agents-addons-line-template-text")
-      expect(page).to have_no_css("#addon-cms-agents-addons-line-template-image")
-
       within "footer.send" do
         click_on I18n.t("ss.buttons.save")
       end
       expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
+      # check talk-balloon
       within "#addon-cms-agents-addons-line-message-body" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/message/body"))
         expect(page).to have_no_css("div", text: "テンプレートが設定されていません。")
@@ -79,6 +77,8 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
         end
       end
 
+      # edit talk-balloon
+      expect(page).to have_no_css(".line-select-message-type")
       within "#addon-cms-agents-addons-line-template-page" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/template/page"))
         click_on I18n.t("cms.apis.pages.index")
@@ -90,15 +90,12 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
       within "#addon-cms-agents-addons-line-template-page" do
         fill_in "item[summary]", with: summary2
       end
-      expect(page).to have_no_css(".line-select-message-type")
-      expect(page).to have_no_css("#addon-cms-agents-addons-line-template-text")
-      expect(page).to have_no_css("#addon-cms-agents-addons-line-template-image")
-
       within "footer.send" do
         click_on I18n.t("ss.buttons.save")
       end
       expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
+      # delete talk-balloon
       within "#addon-cms-agents-addons-line-message-body" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/message/body"))
         expect(page).to have_no_css("div", text: "テンプレートが設定されていません。")
@@ -126,10 +123,11 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
 
     it "#show" do
       visit show_path
+
+      # add template
       within "#addon-cms-agents-addons-line-message-body" do
         click_on "テンプレートを追加する（最大5個）"
       end
-
       within ".line-select-message-type" do
         first(".message-type.page").click
       end
@@ -167,6 +165,7 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
       end
       expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
+      # check talk-balloon
       within "#addon-cms-agents-addons-line-message-body" do
         within ".line-talk-view" do
           expect(page).to have_css(".talk-balloon .title", text: page2.name)
@@ -187,10 +186,11 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
 
     it "#show" do
       visit show_path
+
+      # add template
       within "#addon-cms-agents-addons-line-message-body" do
         click_on "テンプレートを追加する（最大5個）"
       end
-
       within ".line-select-message-type" do
         first(".message-type.page").click
       end
@@ -211,10 +211,10 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
         click_on I18n.t("ss.buttons.save")
       end
 
+      # add template
       within "#addon-cms-agents-addons-line-message-body" do
         click_on "テンプレートを追加する（最大5個）"
       end
-
       within ".line-select-message-type" do
         first(".message-type.page").click
       end
@@ -236,6 +236,7 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
       end
       expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
+      # check talk-balloon
       within "#addon-cms-agents-addons-line-message-body" do
         within ".line-talk-view" do
           within ".template0" do
