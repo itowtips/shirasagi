@@ -39,14 +39,8 @@ module Cms::Addon
           lower_to_upper = (lower_year..upper_year)
           size = lower_to_upper.size
           lower_to_upper.each_with_index do |y, i|
-            lm = 0
-            rm = 11
-
-            if i == 0
-              lm = lower_month
-            elsif i == size - 1
-              rm = upper_month
-            end
+            lm = (i == 0) ? lower_month : 0
+            rm = (i == (size - 1)) ? upper_month : 11
             years += (lm..rm).map { |m| [y, m] }
           end
         end
