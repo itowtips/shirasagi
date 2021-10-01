@@ -54,7 +54,7 @@ class Article::PagesController < ApplicationController
 
     enumerable = criteria.enum_csv(csv_params)
 
-    filename = @model.to_s.tableize.gsub(/\//, "_")
+    filename = @model.to_s.tableize.tr("/", "_")
     filename = "#{filename}_#{Time.zone.now.to_i}.csv"
 
     response.status = 200

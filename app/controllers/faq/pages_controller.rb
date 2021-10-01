@@ -33,7 +33,7 @@ class Faq::PagesController < ApplicationController
     criteria = @model.site(@cur_site).node(@cur_node)
     criteria = criteria.allow(:read, @cur_user, site: @cur_site, node: @cur_node)
     csv = criteria.to_csv.encode("SJIS", invalid: :replace, undef: :replace)
-    filename = @model.to_s.tableize.gsub(/\//, "_")
+    filename = @model.to_s.tableize..tr("/", "_")
     send_data csv, filename: "#{filename}_#{Time.zone.now.to_i}.csv"
   end
 
