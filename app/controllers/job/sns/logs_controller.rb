@@ -8,8 +8,8 @@ class Job::Sns::LogsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("job.task_manager"), action: :index]
-    @crumbs << [t("job.log"), action: :index]
+    @crumbs << [t("job.task_manager"), { action: :index }]
+    @crumbs << [t("job.log"), { action: :index }]
   end
 
   def filter_permission

@@ -9,7 +9,7 @@ class Cms::NodesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("cms.node"), action: :index]
+    @crumbs << [t("cms.node"), { action: :index }]
   end
 
   def fix_params

@@ -8,7 +8,7 @@ class Gws::StaffRecord::PublicRecordsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("gws/staff_record.staff_records"), action: :index]
+    @crumbs << [t("gws/staff_record.staff_records"), { action: :index }]
   end
 
   public

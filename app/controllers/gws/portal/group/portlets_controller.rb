@@ -19,7 +19,7 @@ class Gws::Portal::Group::PortletsController < ApplicationController
   def set_crumbs
     set_portal_setting
     @crumbs << [@portal.name, gws_portal_group_path]
-    @crumbs << [t("gws/portal.links.manage_portlets"), action: :index]
+    @crumbs << [t("gws/portal.links.manage_portlets"), { action: :index }]
   end
 
   def check_portal_permission

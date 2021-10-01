@@ -14,7 +14,7 @@ class Gws::Workflow::TrashesController < ApplicationController
 
   def set_crumbs
     @crumbs << [@cur_site.menu_workflow_label || t('modules.gws/workflow'), gws_workflow_files_main_path]
-    @crumbs << [t('ss.links.trash'), action: :index]
+    @crumbs << [t('ss.links.trash'), { action: :index }]
   end
 
   def set_forms

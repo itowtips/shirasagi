@@ -27,7 +27,7 @@ class Gws::Notice::ReadablesController < ApplicationController
 
   def set_crumbs
     @crumbs << [@cur_site.menu_notice_label || t('modules.gws/notice'), gws_notice_main_path]
-    @crumbs << [t('ss.navi.readable'), action: :index, folder_id: '-', category_id: '-']
+    @crumbs << [t('ss.navi.readable'), { action: :index, folder_id: '-', category_id: '-' }]
   end
 
   def set_folders

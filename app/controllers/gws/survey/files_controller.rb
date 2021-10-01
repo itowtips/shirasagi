@@ -18,7 +18,7 @@ class Gws::Survey::FilesController < ApplicationController
     set_cur_form
     @crumbs << [@cur_site.menu_survey_label || t('modules.gws/survey'), gws_survey_main_path]
     @crumbs << [t('ss.navi.readable'), gws_survey_readables_path]
-    @crumbs << [@cur_form.name, action: :edit]
+    @crumbs << [@cur_form.name, { action: :edit }]
   end
 
   def set_forms

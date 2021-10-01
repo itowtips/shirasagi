@@ -24,7 +24,7 @@ class Gws::Chorg::RevisionsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t('modules.gws/chorg'), action: :index]
+    @crumbs << [t('modules.gws/chorg'), { action: :index }]
   end
 
   def fix_params

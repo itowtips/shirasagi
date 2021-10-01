@@ -15,7 +15,7 @@ class Sys::Diag::ServersController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << ["Server Info", action: :show]
+    @crumbs << ["Server Info", { action: :show }]
   end
 
   def uptime

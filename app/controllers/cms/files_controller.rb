@@ -10,7 +10,7 @@ class Cms::FilesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("cms.file"), action: :index]
+    @crumbs << [t("cms.file"), { action: :index }]
   end
 
   def fix_params

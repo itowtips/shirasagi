@@ -9,7 +9,7 @@ class Cms::EditorTemplatesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("cms.editor_template"), action: :index]
+    @crumbs << [t("cms.editor_template"), { action: :index }]
   end
 
   def fix_params

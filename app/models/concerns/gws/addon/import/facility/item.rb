@@ -114,7 +114,7 @@ module Gws::Addon::Import::Facility
 
         columns_max.times.flat_map do |i|
           headers.map do |header|
-            ["columns.#{header}", n: i + 1]
+            ["columns.#{header}", { n: (i + 1) }]
           end
         end
       end

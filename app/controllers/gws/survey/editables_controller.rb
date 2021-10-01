@@ -33,7 +33,7 @@ class Gws::Survey::EditablesController < ApplicationController
 
   def set_crumbs
     @crumbs << [@cur_site.menu_survey_label || t('modules.gws/survey'), gws_survey_main_path]
-    @crumbs << [t('ss.navi.editable'), action: :index, folder_id: '-', category_id: '-']
+    @crumbs << [t('ss.navi.editable'), { action: :index, folder_id: '-', category_id: '-' }]
   end
 
   def permit_fields

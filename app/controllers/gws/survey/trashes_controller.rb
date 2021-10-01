@@ -14,7 +14,7 @@ class Gws::Survey::TrashesController < ApplicationController
 
   def set_crumbs
     @crumbs << [@cur_site.menu_survey_label || t('modules.gws/survey'), gws_survey_main_path]
-    @crumbs << [t('ss.navi.trash'), action: :index]
+    @crumbs << [t('ss.navi.trash'), { action: :index }]
   end
 
   def fix_params

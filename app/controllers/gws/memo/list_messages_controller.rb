@@ -20,7 +20,7 @@ class Gws::Memo::ListMessagesController < ApplicationController
   def set_crumbs
     @crumbs << [@cur_site.menu_memo_label || t('mongoid.models.gws/memo/message'), gws_memo_messages_path ]
     @crumbs << [t('mongoid.models.gws/memo/list'), gws_memo_lists_path ]
-    @crumbs << [@cur_list.name, action: :index ]
+    @crumbs << [@cur_list.name, { action: :index }]
   end
 
   def set_search_params

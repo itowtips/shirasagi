@@ -334,8 +334,8 @@ class Gws::Memo::MessagesController < ApplicationController
 
     if result
       notice = opts[:notice].presence
-      notice ||= t("gws/memo/message.notice.#{action}", default: nil)
-      notice ||= t("ss.notice.#{action}", default: nil)
+      notice ||= t("gws/memo/message.notice.#{action}", { default: nil })
+      notice ||= t("ss.notice.#{action}", { default: nil })
       notice ||= t("ss.notice.saved")
 
       respond_to do |format|
@@ -354,8 +354,8 @@ class Gws::Memo::MessagesController < ApplicationController
     location = params[:redirect].presence || opts[:redirect] || { action: :index }
     action = opts[:action] || params[:action]
     notice = opts[:notice].presence
-    notice ||= t("gws/memo/message.notice.#{action}", default: nil)
-    notice ||= t("ss.notice.#{action}", default: nil)
+    notice ||= t("gws/memo/message.notice.#{action}", { default: nil })
+    notice ||= t("ss.notice.#{action}", { default: nil })
     notice ||= t("ss.notice.saved")
     errors = @items.select { |item| item.errors.present? }.map { |item| [ item.id.to_s, item.errors.full_messages ] }
 

@@ -8,7 +8,7 @@ if Rails.env.development?
     private
 
     def set_crumbs
-      @crumbs << ["HTTTP Test", action: :index]
+      @crumbs << ["HTTTP Test", { action: :index }]
     end
 
     public

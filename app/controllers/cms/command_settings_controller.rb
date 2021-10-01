@@ -11,7 +11,7 @@ class Cms::CommandSettingsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t('mongoid.models.cms/command'), action: :index]
+    @crumbs << [t('mongoid.models.cms/command'), { action: :index }]
   end
 
   def fix_params

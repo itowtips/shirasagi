@@ -12,7 +12,7 @@ class Inquiry::SiteAnswersController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("mongoid.models.inquiry/answer"), action: :index]
+    @crumbs << [t("mongoid.models.inquiry/answer"), { action: :index }]
   end
 
   def fix_params

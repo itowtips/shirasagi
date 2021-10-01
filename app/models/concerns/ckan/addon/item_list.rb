@@ -45,7 +45,7 @@ module Ckan::Addon::ItemList
       [
         I18n.t("cms.sort_options.#{k}.title"),
         k.sub("_desc", " -1"),
-        "data-description" => I18n.t("cms.sort_options.#{k}.description", default: nil)
+        { "data-description" => I18n.t("cms.sort_options.#{k}.description", { default: nil }) }
       ]
     end
   end

@@ -15,12 +15,12 @@ class Rdf::VocabsController < ApplicationController
   end
 
   def set_crumbs
-    @crumbs << [t("rdf.links.vocabs"), action: :index]
+    @crumbs << [t("rdf.links.vocabs"), { action: :index }]
   end
 
   def set_extra_crumbs
     set_item
-    @crumbs << [@item.labels.preferred_value, action: :show, id: @item] if @item.present?
+    @crumbs << [@item.labels.preferred_value, { action: :show, id: @item }] if @item.present?
   end
 
   def save_file

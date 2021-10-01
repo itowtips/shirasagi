@@ -8,7 +8,7 @@ class Guide::QuestionsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("guide.question"), action: :index]
+    @crumbs << [t("guide.question"), { action: :index }]
   end
 
   def fix_params

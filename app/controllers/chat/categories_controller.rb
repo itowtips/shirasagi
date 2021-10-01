@@ -9,7 +9,7 @@ class Chat::CategoriesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [@model.model_name.human, action: :index]
+    @crumbs << [@model.model_name.human, { action: :index }]
   end
 
   def fix_params

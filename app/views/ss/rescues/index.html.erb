@@ -1,8 +1,8 @@
 <div class="addon-views">
   <% status_symbol = status_code_to_symbol(@ss_rescue[:status]) %>
-  <%= render "ss/crud/addon", addon: { id: "addon-basic", head: I18n.t("ss.rescues.#{status_symbol}.head", default: nil) || I18n.t("ss.rescues.default.head") } do %>
+  <%= render "ss/crud/addon", addon: { id: "addon-basic", head: I18n.t("ss.rescues.#{status_symbol}.head", { default: nil }) || I18n.t("ss.rescues.default.head") } do %>
     <div>
-      <%== I18n.t("ss.rescues.#{status_symbol}.body", default: nil) || I18n.t("ss.rescues.default.body") %>
+      <%== I18n.t("ss.rescues.#{status_symbol}.body", { default: nil }) || I18n.t("ss.rescues.default.body") %>
     </div>
   <% end %>
 

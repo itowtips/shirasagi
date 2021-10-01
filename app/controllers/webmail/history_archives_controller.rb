@@ -9,7 +9,7 @@ class Webmail::HistoryArchivesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("mongoid.models.webmail/history"), action: :index]
+    @crumbs << [t("mongoid.models.webmail/history"), { action: :index }]
   end
 
   public

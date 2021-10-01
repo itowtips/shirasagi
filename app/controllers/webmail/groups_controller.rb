@@ -13,7 +13,7 @@ class Webmail::GroupsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t('mongoid.models.webmail/group'), action: :index]
+    @crumbs << [t('mongoid.models.webmail/group'), { action: :index }]
   end
 
   def reload_nginx

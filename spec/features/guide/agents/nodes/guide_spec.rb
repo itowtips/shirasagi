@@ -56,7 +56,7 @@ describe "guide_agents_nodes_guide", type: :feature, dbscope: :example, js: true
       def in_edges(point)
         [
           { value: I18n.t("guide.links.applicable"), question_type: "yes_no", point_ids: [point.id] },
-          { value: I18n.t("guide.links.not_applicable"), question_type: "yes_no", point_ids: [] }
+          { value: I18n.t("guide.links.not_applicable"), question_type: "yes_no", { point_ids: [] } }
         ]
       end
 

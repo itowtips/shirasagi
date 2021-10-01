@@ -18,7 +18,7 @@ class Cms::PageSearchContentsController < ApplicationController
 
   def set_crumbs
     set_item
-    @crumbs << [ @item.name, action: :show ]
+    @crumbs << [@item.name, { action: :show }]
   end
 
   def fix_params

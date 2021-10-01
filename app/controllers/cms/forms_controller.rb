@@ -8,7 +8,7 @@ class Cms::FormsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [Cms::Form.model_name.human, action: :index]
+    @crumbs << [Cms::Form.model_name.human, { action: :index }]
   end
 
   def fix_params

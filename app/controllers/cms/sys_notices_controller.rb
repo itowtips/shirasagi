@@ -17,7 +17,7 @@ class Cms::SysNoticesController < ApplicationController
   end
 
   def set_crumbs
-    @crumbs << [t("mongoid.models.sys/notice"), action: :index]
+    @crumbs << [t("mongoid.models.sys/notice"), { action: :index }]
   end
 
   public

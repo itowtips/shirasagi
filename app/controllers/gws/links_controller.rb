@@ -9,7 +9,7 @@ class Gws::LinksController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("mongoid.models.gws/link"), action: :index]
+    @crumbs << [t("mongoid.models.gws/link"), { action: :index }]
   end
 
   def fix_params

@@ -14,7 +14,7 @@ class Cms::GenerateLocksController < ApplicationController
   end
 
   def set_crumbs
-    @crumbs << [t("cms.site_info"), action: :show]
+    @crumbs << [t("cms.site_info"), { action: :show }]
   end
 
   def set_item

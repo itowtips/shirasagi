@@ -68,7 +68,7 @@ class Gws::Board::NotificationJob < Gws::ApplicationJob
     path = Rails.application.routes.url_helpers.gws_board_topic_path(site: site, mode: '-', category: '-', id: item)
 
     i18n_key = Gws::Board::Topic.model_name.i18n_key
-    subject = I18n.t("gws_notification.#{i18n_key}.subject", name: item.name, default: nil)
+    subject = I18n.t("gws_notification.#{i18n_key}.subject", name: item.name, { default: nil })
     subject ||= item.name
 
     message = SS::Notification.new

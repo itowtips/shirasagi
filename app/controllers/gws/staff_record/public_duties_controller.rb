@@ -14,7 +14,7 @@ class Gws::StaffRecord::PublicDutiesController < ApplicationController
   end
 
   def set_crumbs
-    @crumbs << [t("gws/staff_record.divide_duties"), action: :index]
+    @crumbs << [t("gws/staff_record.divide_duties"), { action: :index }]
   end
 
   def get_charge_params

@@ -16,7 +16,7 @@ class Gws::Chorg::EntityLogsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("chorg.revision"), controller: :revisions, action: :index]
+    @crumbs << [t("chorg.revision"), { controller: :revisions, action: :index }]
     @crumbs << [@cur_revision.name, gws_chorg_revision_path(id: @cur_revision.id)]
   end
 

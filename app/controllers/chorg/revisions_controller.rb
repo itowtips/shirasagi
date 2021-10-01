@@ -22,7 +22,7 @@ class Chorg::RevisionsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("chorg.revision"), action: :index]
+    @crumbs << [t("chorg.revision"), { action: :index }]
   end
 
   def fix_params

@@ -11,7 +11,7 @@ class Cms::UsersController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("cms.user"), action: :index]
+    @crumbs << [t("cms.user"), { action: :index }]
   end
 
   def fix_params

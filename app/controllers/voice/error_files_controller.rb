@@ -6,7 +6,7 @@ class Voice::ErrorFilesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("voice.error_file"), action: :index]
+    @crumbs << [t("voice.error_file"), { action: :index }]
   end
 
   def set_search

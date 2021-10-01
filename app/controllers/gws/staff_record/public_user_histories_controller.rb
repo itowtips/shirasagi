@@ -10,7 +10,7 @@ class Gws::StaffRecord::PublicUserHistoriesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("gws/staff_record.user_histories"), action: :index]
+    @crumbs << [t("gws/staff_record.user_histories"), { action: :index }]
   end
 
   def set_target_user

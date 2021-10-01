@@ -23,7 +23,7 @@ module Cms::Addon
         [
           I18n.t("event.sort_options.#{k}.title".to_sym, default: "cms.sort_options.#{k}.title".to_sym),
           k.sub("_desc", " -1"),
-          "data-description" => description
+          { "data-description" => description }
         ]
       end
     end

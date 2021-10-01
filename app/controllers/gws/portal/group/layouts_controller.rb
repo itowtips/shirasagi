@@ -17,7 +17,7 @@ class Gws::Portal::Group::LayoutsController < ApplicationController
   def set_crumbs
     set_portal_setting
     @crumbs << [@portal.name, gws_portal_group_path]
-    @crumbs << [t("gws/portal.links.arrange_portlets"), action: :show]
+    @crumbs << [t("gws/portal.links.arrange_portlets"), { action: :show }]
   end
 
   def fix_params

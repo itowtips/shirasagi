@@ -9,7 +9,7 @@ class Cms::LoopSettingsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t('mongoid.models.cms/loop_setting'), action: :index]
+    @crumbs << [t('mongoid.models.cms/loop_setting'), { action: :index }]
   end
 
   def fix_params

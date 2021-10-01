@@ -244,16 +244,16 @@ class Gws::Memo::Notifier
 
     message.subject = subject
     if action.present?
-      message.subject ||= I18n.t("gws_notification.#{i18n_key}/#{action}.subject", name: item_title, default: nil)
+      message.subject ||= I18n.t("gws_notification.#{i18n_key}/#{action}.subject", name: item_title, { default: nil })
     end
-    message.subject ||= I18n.t("gws_notification.#{i18n_key}.subject", name: item_title, default: nil)
+    message.subject ||= I18n.t("gws_notification.#{i18n_key}.subject", name: item_title, { default: nil })
     message.subject ||= item_title
     message.format = 'text'
     message.url = text
     if action.present?
-      message.url ||= I18n.t("gws_notification.#{i18n_key}/#{action}.text", name: item_title, text: url, default: nil)
+      message.url ||= I18n.t("gws_notification.#{i18n_key}/#{action}.text", name: item_title, text: url, { default: nil })
     end
-    message.url ||= I18n.t("gws_notification.#{i18n_key}.text", name: item_title, text: url, default: nil)
+    message.url ||= I18n.t("gws_notification.#{i18n_key}.text", name: item_title, text: url, { default: nil })
     message.url ||= item_text
 
     message.record_timestamps = false

@@ -7,7 +7,7 @@ class Ldap::ServerController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("ldap.server"), action: :index]
+    @crumbs << [t("ldap.server"), { action: :index }]
   end
 
   def set_exclude_groups

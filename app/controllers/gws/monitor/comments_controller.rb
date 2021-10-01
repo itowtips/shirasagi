@@ -23,11 +23,11 @@ class Gws::Monitor::CommentsController < ApplicationController
       @crumbs << [@category.name, gws_monitor_topics_path]
     end
     if params[:topic_id].present?
-      @crumbs << [t('gws/monitor.tabs.unanswer'), action: :index]
+      @crumbs << [t('gws/monitor.tabs.unanswer'), { action: :index }]
     elsif params[:answer_id].present?
-      @crumbs << [t('gws/monitor.tabs.answer'), action: :index]
+      @crumbs << [t('gws/monitor.tabs.answer'), { action: :index }]
     elsif params[:admin_id].present?
-      @crumbs << [t('gws/monitor.tabs.admin'), action: :index]
+      @crumbs << [t('gws/monitor.tabs.admin'), { action: :index }]
     end
   end
 

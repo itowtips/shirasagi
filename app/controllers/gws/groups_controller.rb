@@ -11,7 +11,7 @@ class Gws::GroupsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("mongoid.models.gws/group"), action: :index]
+    @crumbs << [t("mongoid.models.gws/group"), { action: :index }]
   end
 
   def fix_params

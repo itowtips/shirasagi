@@ -11,7 +11,7 @@ class Gws::Workflow::RoutesController < ApplicationController
 
   def set_crumbs
     @crumbs << [@cur_site.menu_workflow_label || t('modules.gws/workflow'), gws_workflow_setting_path]
-    @crumbs << [@model.model_name.human, action: :index]
+    @crumbs << [@model.model_name.human, { action: :index }]
   end
 
   def fix_params

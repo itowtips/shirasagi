@@ -8,7 +8,7 @@ class Gws::StaffRecord::PublicSeatingsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("mongoid.models.gws/staff_record/seating"), action: :index]
+    @crumbs << [t("mongoid.models.gws/staff_record/seating"), { action: :index }]
   end
 
   public

@@ -34,7 +34,7 @@ class Cms::ColumnsController < ApplicationController
     set_form
     @crumbs << [Cms::Form.model_name.human, cms_forms_path]
     @crumbs << [@cur_form.name, cms_form_path(id: @cur_form)]
-    @crumbs << [Cms::Column::Base.model_name.human, action: :index]
+    @crumbs << [Cms::Column::Base.model_name.human, { action: :index }]
   end
 
   def fix_params

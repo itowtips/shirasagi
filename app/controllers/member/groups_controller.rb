@@ -10,7 +10,7 @@ class Member::GroupsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("member.group"), action: :index]
+    @crumbs << [t("member.group"), { action: :index }]
   end
 
   def fix_params

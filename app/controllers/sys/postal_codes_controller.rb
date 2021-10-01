@@ -8,7 +8,7 @@ class Sys::PostalCodesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("sys.postal_code"), action: :index]
+    @crumbs << [t("sys.postal_code"), { action: :index }]
   end
 
   public

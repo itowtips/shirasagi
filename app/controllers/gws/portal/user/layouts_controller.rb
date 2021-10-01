@@ -21,7 +21,7 @@ class Gws::Portal::User::LayoutsController < ApplicationController
     else
       @crumbs << [@portal_user.name, gws_portal_user_path]
     end
-    @crumbs << [t("gws/portal.links.arrange_portlets"), action: :show]
+    @crumbs << [t("gws/portal.links.arrange_portlets"), { action: :show }]
   end
 
   def fix_params

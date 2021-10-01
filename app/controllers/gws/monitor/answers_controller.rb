@@ -15,7 +15,7 @@ class Gws::Monitor::AnswersController < ApplicationController
     if @category.present?
       @crumbs << [@category.name, gws_monitor_topics_path]
     end
-    @crumbs << [t('gws/monitor.tabs.answer'), action: :index]
+    @crumbs << [t('gws/monitor.tabs.answer'), { action: :index }]
   end
 
   def set_items

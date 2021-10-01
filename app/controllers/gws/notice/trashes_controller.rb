@@ -14,7 +14,7 @@ class Gws::Notice::TrashesController < ApplicationController
 
   def set_crumbs
     @crumbs << [@cur_site.menu_notice_label || t('modules.gws/notice'), gws_notice_main_path]
-    @crumbs << [t('ss.navi.trash'), action: :index]
+    @crumbs << [t('ss.navi.trash'), { action: :index }]
   end
 
   def fix_params

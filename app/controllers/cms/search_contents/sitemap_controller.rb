@@ -7,7 +7,7 @@ class Cms::SearchContents::SitemapController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("cms.search_contents_sitemap"), action: :index]
+    @crumbs << [t("cms.search_contents_sitemap"), { action: :index }]
   end
 
   def check_permission

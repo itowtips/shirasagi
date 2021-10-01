@@ -15,7 +15,7 @@ module Job::LogsFilter
   private
 
   def set_crumbs
-    @crumbs << [t("job.log"), action: :index]
+    @crumbs << [t("job.log"), { action: :index }]
   end
 
   def set_ymd

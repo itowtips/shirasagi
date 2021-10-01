@@ -9,7 +9,7 @@ class Gws::ContrastsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t('mongoid.models.gws/contrast'), action: :index]
+    @crumbs << [t('mongoid.models.gws/contrast'), { action: :index }]
   end
 
   def fix_params

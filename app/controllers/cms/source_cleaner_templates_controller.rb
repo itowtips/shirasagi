@@ -10,7 +10,7 @@ class Cms::SourceCleanerTemplatesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("cms.source_cleaner"), action: :index]
+    @crumbs << [t("cms.source_cleaner"), { action: :index }]
   end
 
   def fix_params

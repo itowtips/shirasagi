@@ -9,7 +9,7 @@ class Cms::PublicNoticesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("cms.notice"), action: :index]
+    @crumbs << [t("cms.notice"), { action: :index }]
   end
 
   public

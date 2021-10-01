@@ -22,7 +22,7 @@ class Gws::Portal::User::SettingsController < ApplicationController
     else
       @crumbs << [@portal_user.name, gws_portal_user_path]
     end
-    @crumbs << [t("gws/portal.links.settings"), action: :show]
+    @crumbs << [t("gws/portal.links.settings"), { action: :show }]
   end
 
   def fix_params

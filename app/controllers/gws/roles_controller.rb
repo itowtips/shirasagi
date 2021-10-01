@@ -10,7 +10,7 @@ class Gws::RolesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("mongoid.models.gws/role"), action: :index]
+    @crumbs << [t("mongoid.models.gws/role"), { action: :index }]
   end
 
   def fix_params

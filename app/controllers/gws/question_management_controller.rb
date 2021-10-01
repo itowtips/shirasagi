@@ -6,7 +6,7 @@ class Gws::QuestionManagementController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("gws.question_management"), action: :index]
+    @crumbs << [t("gws.question_management"), { action: :index }]
   end
 
   public

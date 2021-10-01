@@ -21,7 +21,7 @@ class Gws::Notice::EditablesController < ApplicationController
 
   def set_crumbs
     @crumbs << [@cur_site.menu_notice_label || t('modules.gws/notice'), gws_notice_main_path]
-    @crumbs << [t('ss.navi.editable'), action: :index, folder_id: '-', category_id: '-']
+    @crumbs << [t('ss.navi.editable'), { action: :index, folder_id: '-', category_id: '-' }]
   end
 
   def pre_params

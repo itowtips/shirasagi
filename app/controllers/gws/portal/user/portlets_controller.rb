@@ -23,7 +23,7 @@ class Gws::Portal::User::PortletsController < ApplicationController
     else
       @crumbs << [@portal_user.name, gws_portal_user_path]
     end
-    @crumbs << [t("gws/portal.links.manage_portlets"), action: :index]
+    @crumbs << [t("gws/portal.links.manage_portlets"), { action: :index }]
   end
 
   def check_portal_permission

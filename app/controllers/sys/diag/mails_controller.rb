@@ -8,7 +8,7 @@ class Sys::Diag::MailsController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << ["MAIL Test", action: :index]
+    @crumbs << ["MAIL Test", { action: :index }]
   end
 
   def permit_fields

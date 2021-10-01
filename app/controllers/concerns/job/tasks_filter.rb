@@ -9,7 +9,7 @@ module Job::TasksFilter
   private
 
   def set_crumbs
-    @crumbs << [t("job.log"), action: :index]
+    @crumbs << [t("job.log"), { action: :index }]
   end
 
   def item_criteria

@@ -13,7 +13,7 @@ class Gws::SitesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [t("gws.site_info"), action: :show]
+    @crumbs << [t("gws.site_info"), { action: :show }]
   end
 
   def set_item

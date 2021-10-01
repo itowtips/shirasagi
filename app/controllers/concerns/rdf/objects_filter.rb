@@ -23,7 +23,7 @@ module Rdf::ObjectsFilter
   def set_crumbs
     set_vocab
     @crumbs << [t("rdf.links.vocabs"), rdf_vocabs_path]
-    @crumbs << [@vocab.labels.preferred_value, controller: :vocabs, action: :show, id: @vocab]
+    @crumbs << [@vocab.labels.preferred_value, { controller: :vocabs, action: :show, id: @vocab }]
   end
 
   def set_item

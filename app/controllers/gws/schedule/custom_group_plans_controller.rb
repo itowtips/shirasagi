@@ -18,7 +18,7 @@ class Gws::Schedule::CustomGroupPlansController < ApplicationController
   def set_crumbs
     set_group
     @crumbs << [@cur_site.menu_schedule_label || t('modules.gws/schedule'), gws_schedule_main_path]
-    @crumbs << [@group.name, action: :index]
+    @crumbs << [@group.name, { action: :index }]
   end
 
   def set_users

@@ -17,7 +17,7 @@ class Chorg::RunController < ApplicationController
 
   def set_crumbs
     set_revision
-    @crumbs << [t("chorg.revision"), controller: :revisions, action: :index]
+    @crumbs << [t("chorg.revision"), { controller: :revisions, action: :index }]
     @crumbs << [@cur_revision.name, chorg_revision_path(id: @cur_revision.id)]
   end
 

@@ -13,8 +13,8 @@ class Gws::Report::TrashesController < ApplicationController
   private
 
   def set_crumbs
-    @crumbs << [@cur_site.menu_report_label || t('modules.gws/report'), action: :index]
-    @crumbs << [t('ss.links.trash'), action: :index]
+    @crumbs << [@cur_site.menu_report_label || t('modules.gws/report'), { action: :index }]
+    @crumbs << [t('ss.links.trash'), { action: :index }]
   end
 
   def set_forms
