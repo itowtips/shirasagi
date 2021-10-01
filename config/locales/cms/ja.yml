@@ -39,6 +39,8 @@ ja:
     line_deliver_log: 配信ログ
     line_deliver_condition: 配信条件
     line_deliver_category: 配信カテゴリー
+    line_deliver_category_setting: カテゴリー
+    line_deliver_age_setting: 年齢設定
     line_test_member: テストメンバー
     line_event_session: セッション
     form_check: 制約チェック
@@ -1250,6 +1252,11 @@ ja:
         order: 並び順
       cms/line/deliver_category:
         name: タイトル
+        order: 並び順
+        state: ステータス
+      cms/line/deliver_age:
+        name: タイトル
+        year1: 年齢
         order: 並び順
         state: ステータス
       cms/line/test_member:
@@ -2532,6 +2539,17 @@ ja:
       order:
        - 並び順を入力します。
        - 数字が小さいほど上位に表示されます。
+      state:
+       - 公開、非公開を選択します。
+
+    cms/line/deliver_age:
+      name:
+       - タイトルを入力します。
+      order:
+       - 並び順を入力します。
+       - 数字が小さいほど上位に表示されます。
+      state:
+       - 公開、非公開を選択します。
 
   all_content:
     page_id: ページID

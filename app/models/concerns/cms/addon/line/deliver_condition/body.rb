@@ -15,7 +15,5 @@ module Cms::Addon
     def extract_deliver_members
       extract_conditional_members
     end
-
-    private
   end
 end

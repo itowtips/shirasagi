@@ -191,9 +191,12 @@ Rails.application.routes.draw do
       end
       resources :event_sessions, only: [:index, :show, :destroy], concerns: :deletion
       resources :deliver_conditions, concerns: :deletion
+
+      get "deliver_category" => redirect { |p, req| req.path.sub("deliver_category", "deliver_categories") }, as: :deliver_category_main
       resources :deliver_categories, concerns: :deletion do
         resources :categories, concerns: :deletion, controller: "deliver_category/categories"
       end
+      resources :deliver_ages, concerns: :deletion
       resources :test_members, concerns: :deletion
       resources :deliver_logs, only: [:index, :show, :destroy], concerns: [:deletion]
     end
