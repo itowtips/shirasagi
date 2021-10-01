@@ -1,0 +1,9 @@
+<dl class="see">
+  <dt><%= @item.t :date %></dt>
+  <dd><%= @item.date.strftime("%Y/%m/%d") %></dd>
+
+  <dt class="wide">
+    <%= html_editor "#mod-cms-body", height: "400px", readonly: true %>
+    <%= text_area_tag "mod-cms-body", @item.html, style: "height: 400px;" %>
+  </dt>
+</dl>

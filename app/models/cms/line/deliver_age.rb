@@ -9,7 +9,7 @@ class Cms::Line::DeliverAge
   set_permission_name "cms_line_deliver_categories", :use
 
   seqid :id
-  field :name
+  field :name, type: String
   field :order, type: Integer, default: 0
   field :state, type: String, default: 'public'
 

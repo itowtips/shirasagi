@@ -1,0 +1,10 @@
+<%= node_navi :pippi do %>
+
+<h3><%= link_to t("pippi.tips"), pippi_tips_path %></h3>
+<ul class="narrow-page">
+  <% @years.each do |year| %>
+    <li><%= link_to "#{year}#{t("datetime.prompts.year")}", { action: :index, ymd: @cur_date.change(year: year).strftime("%Y%m%d") } %></li>
+  <% end %>
+</ul>
+
+<% end %>

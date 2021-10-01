@@ -1,0 +1,75 @@
+<%
+  def year_month_options
+    12.downto(1).map do |month|
+      date = Date.new(@year, month, @day)
+      [l(date, format: :year_month), date.strftime('%Y%m%d')]
+    end
+  end
+
+  def holiday?(date)
+    HolidayJapan.check(date)
+  end
+
+  last_month = @cur_date.last_month
+  next_month = @cur_date.next_month
+%>
+
+<style>
+.main-box tr.saturday td.date {
+  color: #00f;
+}
+.main-box tr.sunday td.date, .main-box tr.holiday td.date {
+  color: #f00;
+}
+</style>
+
+<%= jquery do %>
+  var baseUrl = <%== url_for({ action: :index, ymd: ':YEAR_MONTH_DAY' }).to_json %>;
+  $('.main-box .nav-menu select[name=ymd]').on('change', function() {
+    var val = $(this).val();
+    location.href = baseUrl.replace(':YEAR_MONTH_DAY', val);
+  });
+<% end %>
+
+<div class="main-box">
+  <nav class="nav-menu" style="margin-bottom: 10px;">
+    <%= select_tag(:ymd, options_for_select(year_month_options, params[:ymd])) %>
+    <% if @years.include?(last_month.year) %>
+      <%= link_to("前月", { action: :index, ymd: @cur_date.last_month.strftime('%Y%m%d') }, class: :btn) %>
+    <% end %>
+    <% if @years.include?(next_month.year) %>
+      <%= link_to("翌月", { action: :index, ymd: @cur_date.next_month.strftime('%Y%m%d') }, class: :btn) %>
+    <% end %>
+  </nav>
+
+  <table class="index">
+    <thead>
+      <tr>
+        <th style="width: 180px;"><%= @model.t :date %></th>
+        <th><%= @model.t :html %></th>
+        <th style="width: 100px;"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% (@start_of_month..@end_of_month).each do |date| %>
+        <% item = @items[date] %>
+        <% tr_css_classes = [ "day-#{date.day}" ] %>
+        <% tr_css_classes << (Time.zone.now.beginning_of_day == date ? 'current' : nil) %>
+        <% tr_css_classes << if holiday?(date); 'holiday' elsif date.wday == 0; 'sunday' elsif date.wday == 6; 'saturday' end %>
+        <tr class="<%= tr_css_classes.compact.join(' ') %>" data-day="<%= date.day %>">
+          <td class="date"><%= l(date, format: :month_day) %></td>
+          <td><%= item.try(:summary) %></td>
+          <td>
+            <% if !@model.allowed?(:edit, @cur_user, site: @cur_site) %>
+              <%= t("ss.links.edit") %>
+            <% elsif item %>
+              <%= link_to t("ss.links.edit"), { action: :edit, id: item.id, ymd: date.strftime("%Y%m%d") } %>
+            <% else %>
+              <%= link_to t("ss.links.edit"), { action: :new, ymd: date.strftime("%Y%m%d") } %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
