@@ -3,7 +3,6 @@ require 'spec_helper'
 describe "cms/line/deliver_conditions", type: :feature, dbscope: :example, js: true do
   let(:site) { cms_site }
   let(:item) { create(:cms_line_deliver_condition, lower_year1: 1, upper_year1: 1) }
-
   let(:name) { unique_id }
 
   let(:index_path) { cms_line_deliver_conditions_path site }
