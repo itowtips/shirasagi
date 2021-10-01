@@ -1,7 +1,7 @@
 module Cms::Line::BaseJob
   extend ActiveSupport::Concern
 
-  MAX_MEMBERS_TO = 300.freeze
+  MAX_MEMBERS_TO = 400.freeze
 
   def deliver_message(item)
     Rails.logger.info("start deliver #{item.name}")
