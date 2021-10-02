@@ -21,7 +21,9 @@ module Cms::PublicFilter::ConditionalTag
   end
 
   def interpret_conditional_tag(matchdata)
-    interpret_condition_if(matchdata).presence || interpret_condition_elsif(matchdata).presence || interpret_condition_else(matchdata)
+    interpret_condition_if(matchdata).presence ||
+      interpret_condition_elsif(matchdata).presence ||
+      interpret_condition_else(matchdata)
   end
 
   def conditional_tag_data(cond = 'if')

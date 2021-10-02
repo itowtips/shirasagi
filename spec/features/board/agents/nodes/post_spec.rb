@@ -6,6 +6,11 @@ describe 'board_agents_nodes_anpi_post', type: :feature, dbscope: :example do
   let(:node) { create :board_node_post, cur_site: site, layout_id: layout.id, deny_url: 'allow' }
   let(:board) { create :board_post, node_id: node.id }
 
+  let(:poster_blank) { "#{I18n.t("mongoid.attributes.board/post.poster")}#{I18n.t("errors.messages.blank")}" }
+  let(:key_invalid) { "#{I18n.t("mongoid.attributes.board/post.delete_key")}#{I18n.t("board.errors.invalid_delete_key")}" }
+  let(:text_blank) { "#{I18n.t("mongoid.attributes.board/post.text")}#{I18n.t("errors.messages.blank")}" }
+  let(:captcha_message) { "#{I18n.t("mongoid.attributes.cms/addon/captcha.captcha")}#{I18n.t("simple_captcha.message.default")}" }
+  
   context 'usual case' do
     let!(:item) { create :board_post, cur_site: site, cur_node: node }
 
@@ -79,10 +84,10 @@ describe 'board_agents_nodes_anpi_post', type: :feature, dbscope: :example do
         click_button '投稿'
       end
 
-      expect(page).to have_content "#{I18n.t("mongoid.attributes.board/post.poster")}#{I18n.t("errors.messages.blank")}"
-      expect(page).to have_content "#{I18n.t("mongoid.attributes.board/post.delete_key")}#{I18n.t("board.errors.invalid_delete_key")}"
-      expect(page).to have_content "#{I18n.t("mongoid.attributes.board/post.text")}#{I18n.t("errors.messages.blank")}"
-      expect(page).to have_content "#{I18n.t("mongoid.attributes.cms/addon/captcha.captcha")}#{I18n.t("simple_captcha.message.default")}"
+      expect(page).to have_content poster_blank
+      expect(page).to have_content key_invalid
+      expect(page).to have_content text_blank
+      expect(page).to have_content captcha_message
     end
   end
 
@@ -124,10 +129,10 @@ describe 'board_agents_nodes_anpi_post', type: :feature, dbscope: :example do
         click_button '投稿'
       end
 
-      expect(page).to have_content "#{I18n.t("mongoid.attributes.board/post.poster")}#{I18n.t("errors.messages.blank")}"
-      expect(page).to have_content "#{I18n.t("mongoid.attributes.board/post.delete_key")}#{I18n.t("board.errors.invalid_delete_key")}"
-      expect(page).to have_content "#{I18n.t("mongoid.attributes.board/post.text")}#{I18n.t("errors.messages.blank")}"
-      expect(page).to have_content "#{I18n.t("mongoid.attributes.cms/addon/captcha.captcha")}#{I18n.t("simple_captcha.message.default")}"
+      expect(page).to have_content poster_blank
+      expect(page).to have_content key_invalid
+      expect(page).to have_content text_blank
+      expect(page).to have_content captcha_message
     end
   end
 
@@ -163,8 +168,8 @@ describe 'board_agents_nodes_anpi_post', type: :feature, dbscope: :example do
         click_button '削除'
       end
 
-      expect(page).to have_content "#{I18n.t("mongoid.attributes.board/post.delete_key")}#{I18n.t("board.errors.invalid_delete_key")}"
-      expect(page).to have_content "#{I18n.t("mongoid.attributes.cms/addon/captcha.captcha")}#{I18n.t("simple_captcha.message.default")}"
+      expect(page).to have_content key_invalid
+      expect(page).to have_content captcha_message
     end
   end
 end

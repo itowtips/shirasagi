@@ -60,11 +60,13 @@ end
 puts "# users"
 sys = save_user(
   { name: "システム管理者", uid: "sys", email: "sys@example.jp", in_password: "pass", kana: "システムカンリシャ" },
-  { group_ids: [g11.id], sys_role_ids: [sys_r01.id], organization_id: g00.id, organization_uid: "0000001", deletion_lock_state: "locked" }
+  { group_ids: [g11.id], sys_role_ids: [sys_r01.id], organization_id: g00.id, organization_uid: "0000001", 
+    deletion_lock_state: "locked" }
 )
 adm = save_user(
   { name: "サイト管理者", uid: "admin", email: "admin@example.jp", in_password: "pass", kana: "サイトカンリシャ " },
-  { group_ids: [g11.id], sys_role_ids: [sys_r02.id], organization_id: g00.id, organization_uid: "0000000", deletion_lock_state: "locked" }
+  { group_ids: [g11.id], sys_role_ids: [sys_r02.id], organization_id: g00.id, organization_uid: "0000000", 
+    deletion_lock_state: "locked" }
 )
 u01 = save_user(
   { name: "鈴木 茂", uid: "user1", email: "user1@example.jp", in_password: "pass", kana: "スズキ シゲル" },
@@ -116,9 +118,12 @@ def load_gws_permissions(path)
 end
 
 puts "# gws roles"
-gws_r01 = save_gws_role name: I18n.t('gws.roles.admin'), site_id: g00.id, permissions: Gws::Role.permission_names, permission_level: 3
-gws_r02 = save_gws_role name: I18n.t('gws.roles.user'), site_id: g00.id, permissions: load_gws_permissions('gws/roles/user_permissions.txt'), permission_level: 1
-gws_r03 = save_gws_role name: '部課長', site_id: g00.id, permissions: load_gws_permissions('gws/roles/manager_permissions.txt'), permission_level: 1
+gws_r01 = save_gws_role(name: I18n.t('gws.roles.admin'), site_id: g00.id, 
+  permissions: Gws::Role.permission_names, permission_level: 3)
+gws_r02 = save_gws_role(name: I18n.t('gws.roles.user'), site_id: g00.id,
+  permissions: load_gws_permissions('gws/roles/user_permissions.txt'), permission_level: 1)
+gws_r03 = save_gws_role(name: '部課長', site_id: g00.id, 
+  permissions: load_gws_permissions('gws/roles/manager_permissions.txt'), permission_level: 1)
 
 Gws::User.find_by(uid: "sys").add_to_set(gws_role_ids: gws_r01.id)
 Gws::User.find_by(uid: "admin").add_to_set(gws_role_ids: gws_r01.id)
@@ -150,12 +155,10 @@ def load_webmail_permissions(path)
 end
 
 puts "# webmail roles"
-webmail_r01 = save_webmail_role(
-  name: I18n.t('webmail.roles.admin'), permissions: Webmail::Role.permission_names, permission_level: 3
-)
-webmail_r02 = save_webmail_role(
-  name: I18n.t('webmail.roles.user'), permissions: load_webmail_permissions('webmail/roles/user_permissions.txt'), permission_level: 1
-)
+webmail_r01 = save_webmail_role(name: I18n.t('webmail.roles.admin'), 
+  permissions: Webmail::Role.permission_names, permission_level: 3)
+webmail_r02 = save_webmail_role(name: I18n.t('webmail.roles.user'), 
+  permissions: load_webmail_permissions('webmail/roles/user_permissions.txt'), permission_level: 1)
 
 Webmail::User.find_by(uid: "sys").add_to_set(webmail_role_ids: webmail_r01.id)
 Webmail::User.find_by(uid: "admin").add_to_set(webmail_role_ids: webmail_r01.id)

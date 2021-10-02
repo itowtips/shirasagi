@@ -104,7 +104,9 @@ class Cms::Agents::Nodes::ArchiveController < ApplicationController
     render_url = "#{@cur_site.full_url}#{archive_path}"
 
     if preview_path?
-      render_url = "#{cms_preview_path(site: @cur_site, path: @cur_main_path[1..-1].sub('/index.html', ''))}/#{Time.zone.now.strftime('%Y%m')}"
+      render_url = ::File.join(
+        cms_preview_path(site: @cur_site, path: @cur_main_path[1..-1].sub('/index.html', '')),
+        Time.zone.now.strftime('%Y%m'))
     end
 
     redirect_to render_url

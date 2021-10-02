@@ -62,7 +62,8 @@ class Webmail::ImportMailsController < ApplicationController
     @item.in_file = file
     @item.import_mails
 
-    render_create @item.errors.blank?, location: { action: :index }, render: { file: :index }, notice: I18n.t("webmail.import.start_import")
+    render_create @item.errors.blank?, location: { action: :index }, render: { file: :index },
+      notice: I18n.t("webmail.import.start_import")
   end
 
   def start_import

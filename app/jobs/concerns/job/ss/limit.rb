@@ -14,7 +14,8 @@ module Job::SS::Limit
     end
 
     def check_size_limit_per_user!(user_id)
-      raise Job::SizeLimitPerUserExceededError, I18n.t('job.notice.size_limit_exceeded') unless check_size_limit_per_user?(user_id)
+      return if check_size_limit_per_user?(user_id)
+      raise Job::SizeLimitPerUserExceededError, I18n.t('job.notice.size_limit_exceeded')
     end
   end
 end

@@ -141,7 +141,8 @@ class Facility::Node::Importer
       after_changing_data = change_data[1][1]
       next if changed_field == "additional_info" && before_changing_data.nil? && after_changing_data == []
 
-      field_name = "update #{row_num}#{I18n.t("cms.row_num")}:  #{I18n.t("mongoid.attributes.facility/node/page.#{changed_field}")}："
+      label = I18n.t("mongoid.attributes.facility/node/page.#{changed_field}")
+      field_name = "update #{row_num}#{I18n.t("cms.row_num")}:  #{label}："
 
       if item.fields[changed_field].options[:metadata].nil?
         put_log("#{field_name}#{before_changing_data} → #{after_changing_data}")
@@ -199,7 +200,8 @@ class Facility::Node::Importer
     item.changes.each do |change_data|
       before_changing_data = change_data[1][0]#[0][:loc]
       after_changing_data = change_data[1][1]#[0][:loc]
-      put_log("update #{row_num}#{I18n.t("cms.row_num")}:  #{I18n.t("mongoid.attributes.facility/node/page.#{change_data[0]}")}：#{before_changing_data} → #{after_changing_data}")
+      label = I18n.t("mongoid.attributes.facility/node/page.#{change_data[0]}")
+      put_log("update #{row_num}#{I18n.t("cms.row_num")}:  #{label}：#{before_changing_data} → #{after_changing_data}")
     end
   end
 end

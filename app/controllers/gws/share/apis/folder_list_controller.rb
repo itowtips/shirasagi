@@ -86,8 +86,15 @@ class Gws::Share::Apis::FolderListController < ApplicationController
   end
 
   def item_url(item)
-    return gws_share_folder_files_path(folder: item.id, category: params[:category]) if @type == 'gws/share/files'
-    return gws_share_management_folder_files_path(folder: item.id, category: params[:category]) if @type == 'gws/share/management/files'
-    return gws_share_folder_path(id: item.id) if @type == 'gws/share/folders'
+    case @type
+    when 'gws/share/files'
+      gws_share_folder_files_path(folder: item.id, category: params[:category])
+    when 'gws/share/management/files'
+      gws_share_management_folder_files_path(folder: item.id, category: params[:category])
+    when 'gws/share/folders'
+      gws_share_folder_path(id: item.id) 
+    else
+      nil
+    end
   end
 end

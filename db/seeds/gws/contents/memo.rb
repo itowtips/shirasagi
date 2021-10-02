@@ -501,7 +501,19 @@ create_message(
 #
 # create_message(
 #   cur_user: u("user3"), subject: "地域振興イベント資料", state: "public", format: "text",
-#   text: "地域振興イベント関係者各位\n\nお疲れ様です。\n\nイベント資料を作成しましたので、ご確認をお願いします。\n\n ----------------------------------------------------\n#{@site_name}市　企画政策部　広報課\n斎藤　拓也\n電話番号：00−0000−0000\n----------------------------------------------------",
+#   text: [
+#      "地域振興イベント関係者各位"
+#      "",
+#      "お疲れ様です。",
+#      "",
+#      "イベント資料を作成しましたので、ご確認をお願いします。"
+#      "",
+#      "----------------------------------------------------",
+#      "#{@site_name}市　企画政策部　広報課",
+#      "斎藤　拓也",
+#      "電話番号：00−0000−0000",
+#      "----------------------------------------------------"
+#    ].join("\n"),
 #   to_member_name: "地域振興イベント",
 #   member_ids: [u("sys").id, u("admin").id, u("user1").id, u("user3").id, u("user5").id],
 #   path: {
@@ -521,7 +533,8 @@ create_message(
 # end
 #
 # @sh_files2 = []
-# Fs::UploadedFile.create_from_file(Rails.root.join('db/seeds/gws/files/file.pdf'), filename: 'file2.pdf', content_type: 'application/pdf') do |f|
+# Fs::UploadedFile.create_from_file(Rails.root.join('db/seeds/gws/files/file.pdf'), 
+#   filename: 'file2.pdf', content_type: 'application/pdf') do |f|
 #   @sh_files2 << create_file(in_file: f, name: 'file.pdf', folder_id: @sh_folders[0].id, category_ids: [@sh_cate[3].id])
 # end
 #

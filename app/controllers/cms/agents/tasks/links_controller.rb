@@ -240,7 +240,8 @@ class Cms::Agents::Tasks::LinksController < ApplicationController
 
     begin
       Timeout.timeout(@head_request_timeout) do
-        ::URI.open url, proxy: true, redirect: false, http_basic_authentication: http_basic_authentication, progress_proc: ->(size) { raise "200" }
+        ::URI.open(url, proxy: true, redirect: false, http_basic_authentication: http_basic_authentication, 
+          progress_proc: ->(size) { raise "200" })
       end
       false
     rescue OpenURI::HTTPRedirect => e

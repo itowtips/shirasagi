@@ -9,7 +9,8 @@ module SS::Addon::Elasticsearch::SiteSetting
     field :elasticsearch_outside, type: String, default: 'disabled'
     embeds_ids :elasticsearch_sites, class_name: "Cms::Site"
 
-    permit_params :elasticsearch_hosts, :elasticsearch_deny, :elasticsearch_indexes, :elasticsearch_outside, elasticsearch_site_ids: []
+    permit_params :elasticsearch_hosts, :elasticsearch_deny, :elasticsearch_indexes
+    permit_params :elasticsearch_outside, elasticsearch_site_ids: []
 
     after_save :deny_elasticsearch_paths, if: ->{ @db_changes["elasticsearch_deny"] }
   end

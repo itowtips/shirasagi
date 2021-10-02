@@ -25,7 +25,9 @@ module SS
       return url if relative_path?(request, uri)
       return url if translate_path?(request, uri)
       return url if fs_path?(request, uri)
-      uri.path = ::File.join(cur_site(request).translate_url, translate_target(request), uri.path.to_s.sub(cur_site(request).url, ""))
+      uri.path = ::File.join(cur_site(request).translate_url, 
+        translate_target(request), 
+        uri.path.to_s.sub(cur_site(request).url, ""))
       uri.to_s
     end
 

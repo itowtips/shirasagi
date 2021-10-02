@@ -16,7 +16,8 @@ module Guide::Importer::Procedure
 
   def procedures_enum
     Enumerator.new do |y|
-      headers = %w(id_name name link_url order procedure_location belongings procedure_applicant remarks).map { |v| Guide::Procedure.t(v) }
+      headers = %w(id_name name link_url order procedure_location belongings procedure_applicant remarks).
+        map { |v| Guide::Procedure.t(v) }
       y << encode_sjis(headers.to_csv)
       Guide::Procedure.site(cur_site).node(cur_node).each do |item|
         row = []

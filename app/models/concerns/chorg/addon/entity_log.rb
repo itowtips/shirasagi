@@ -181,7 +181,8 @@ module Chorg::Addon::EntityLog
   end
 
   def store_entity_errors(entity, site)
-    hash = { 'id' => entity.id.to_s, 'model' => entity_model(entity), 'class' => entity.class.name, 'errors' => entity.errors.full_messages }
+    hash = { 'id' => entity.id.to_s, 'model' => entity_model(entity), 'class' => entity.class.name,
+      'errors' => entity.errors.full_messages }
 
     hash['site'] = { 'id' => site.id, 'model' => entity_model(site), 'class' => site.class.name, 'name' => site.name } if site
     hash["name"] = entity.try(:name)

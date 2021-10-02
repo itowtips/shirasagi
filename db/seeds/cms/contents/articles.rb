@@ -251,7 +251,8 @@ file_18 = save_ss_files "ss_files/article/file_5.pdf", filename: "file_5.pdf", n
 file_19 = save_ss_files "ss_files/article/file_6.pdf", filename: "file_6.pdf", name: "フォトニュース", model: "ss/temp_file"
 file_20 = save_ss_files "ss_files/article/file_7.pdf", filename: "file_7.pdf", name: "保健だより", model: "ss/temp_file"
 file_21 = save_ss_files "ss_files/article/file_8.pdf", filename: "file_8.pdf", name: "図書だより", model: "ss/temp_file"
-file_22 = save_ss_files "ss_files/article/file_9.pdf", filename: "file_9.pdf", name: "広報SHIRASAGI 2019年1月号 ", model: "ss/temp_file"
+file_22 = save_ss_files "ss_files/article/file_9.pdf", filename: "file_9.pdf", name: "広報SHIRASAGI 2019年1月号 ",
+  model: "ss/temp_file"
 file_23 = save_ss_files "ss_files/article/file_10.pdf", filename: "file_10.pdf", name: "新年のご挨拶", model: "ss/temp_file"
 file_24 = save_ss_files "ss_files/article/file_11.pdf", filename: "file_11.pdf", name: "議会だより", model: "ss/temp_file"
 
@@ -259,27 +260,36 @@ save_page route: "article/page", filename: "docs/page29.html", name: "シラサ�
           layout_id: @layouts["pages"].id, form_id: @form.id, category_ids: [@categories["kanko/geijyutsu"].id],
           keywords: "記事, 文化・芸術", description: "説明文を入力します。" * 6,
           column_values: [
-            @form_columns[0].value_type.new(column: @form_columns[0], file_id: file_10_1.id, file_label: "メイン写真",
-                                            image_html_type: "image"),
-            @form_columns[1].value_type.new(column: @form_columns[1], value: "説明文を入力します。" * 6),
-            @form_columns[2].value_type.new(column: @form_columns[2], value: "大鷺県シラサギ市小鷺町1丁目1番地1号"),
-            @form_columns[3].value_type.new(column: @form_columns[3], value: "シラサギ駅から徒歩5分"),
-            @form_columns[4].value_type.new(column: @form_columns[4], value: "午前10時から午後4時"),
-            @form_columns[5].value_type.new(column: @form_columns[5], value: "毎週水曜日"),
-            @form_columns[6].value_type.new(column: @form_columns[6], value: "大人600円、中高生500円、小学生300円"),
-            @form_columns[7].value_type.new(column: @form_columns[7], value: "00-0000-0000"),
-            @form_columns[8].value_type.new(column: @form_columns[8], value: "shirasagi@example.jp"),
-            @form_columns[9].value_type.new(column: @form_columns[9], link_url: "http://demo.ss-proj.org/", link_target: "_blank"),
-            @form_columns[10].value_type.new(column: @form_columns[10], file_id: file_10_2.id, file_label: "写真1",
-                                             image_html_type: "image"),
-            @form_columns[11].value_type.new(column: @form_columns[11], file_id: file_10_3.id, file_label: "写真2",
-                                             image_html_type: "image"),
-            @form_columns[12].value_type.new(column: @form_columns[12], file_id: file_10_4.id, file_label: "写真3",
-                                             image_html_type: "image"),
-            @form_columns[13].value_type.new(column: @form_columns[13], file_id: file_10_5.id, file_label: "写真4",
-                                             image_html_type: "image"),
-            @form_columns[14].value_type.new(column: @form_columns[14], file_id: file_10_6.id, file_label: "写真5",
-                                             image_html_type: "image"),
+            @form_columns[0].value_type.new(
+              column: @form_columns[0], file_id: file_10_1.id, file_label: "メイン写真", image_html_type: "image"),
+            @form_columns[1].value_type.new(
+              column: @form_columns[1], value: "説明文を入力します。" * 6),
+            @form_columns[2].value_type.new(
+              column: @form_columns[2], value: "大鷺県シラサギ市小鷺町1丁目1番地1号"),
+            @form_columns[3].value_type.new(
+              column: @form_columns[3], value: "シラサギ駅から徒歩5分"),
+            @form_columns[4].value_type.new(
+              column: @form_columns[4], value: "午前10時から午後4時"),
+            @form_columns[5].value_type.new(
+              column: @form_columns[5], value: "毎週水曜日"),
+            @form_columns[6].value_type.new(
+              column: @form_columns[6], value: "大人600円、中高生500円、小学生300円"),
+            @form_columns[7].value_type.new(
+              column: @form_columns[7], value: "00-0000-0000"),
+            @form_columns[8].value_type.new(
+              column: @form_columns[8], value: "shirasagi@example.jp"),
+            @form_columns[9].value_type.new(
+              column: @form_columns[9], link_url: "http://demo.ss-proj.org/", link_target: "_blank"),
+            @form_columns[10].value_type.new(
+              column: @form_columns[10], file_id: file_10_2.id, file_label: "写真1", image_html_type: "image"),
+            @form_columns[11].value_type.new(
+              column: @form_columns[11], file_id: file_10_3.id, file_label: "写真2", image_html_type: "image"),
+            @form_columns[12].value_type.new(
+              column: @form_columns[12], file_id: file_10_4.id, file_label: "写真3", image_html_type: "image"),
+            @form_columns[13].value_type.new(
+              column: @form_columns[13], file_id: file_10_5.id, file_label: "写真4", image_html_type: "image"),
+            @form_columns[14].value_type.new(
+              column: @form_columns[14], file_id: file_10_6.id, file_label: "写真5",image_html_type: "image"),
           ],
           map_points: [{ "name" => "", "loc" => [35.7186823, 139.7741203], "text" => "" }],
           group_ids: [@g_seisaku.id]

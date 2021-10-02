@@ -74,6 +74,12 @@ describe "chorg_import_revision", type: :feature, dbscope: :example do
     ]
   end
 
+  let(:add_template_path) { Rails.root.join("spec", "fixtures", "chorg", "add_revision_template.csv").to_s }
+  let(:move_template_path) { Rails.root.join("spec", "fixtures", "chorg", "move_revision_template.csv").to_s }
+  let(:unify_template_path) { Rails.root.join("spec", "fixtures", "chorg", "unify_revision_template.csv").to_s }
+  let(:division_template_path) {  Rails.root.join("spec", "fixtures", "chorg", "division_revision_template.csv").to_s }
+  let(:delete_template_path) { Rails.root.join("spec", "fixtures", "chorg", "delete_revision_template.csv").to_s }
+
   context "revision in new path" do
     before { login_cms_user }
 
@@ -95,7 +101,7 @@ describe "chorg_import_revision", type: :feature, dbscope: :example do
 
       within "form#item-form" do
         fill_in "item[name]", with: "sample"
-        attach_file "item[in_revision_csv_file]", Rails.root.join("spec", "fixtures", "chorg", "add_revision_template.csv").to_s
+        attach_file "item[in_revision_csv_file]", add_template_path
         click_button I18n.t('ss.buttons.save')
       end
 
@@ -126,7 +132,7 @@ describe "chorg_import_revision", type: :feature, dbscope: :example do
 
       within "form#item-form" do
         fill_in "item[name]", with: "sample"
-        attach_file "item[in_revision_csv_file]", Rails.root.join("spec", "fixtures", "chorg", "move_revision_template.csv").to_s
+        attach_file "item[in_revision_csv_file]", move_template_path
         click_button I18n.t('ss.buttons.save')
       end
 
@@ -165,7 +171,7 @@ describe "chorg_import_revision", type: :feature, dbscope: :example do
 
       within "form#item-form" do
         fill_in "item[name]", with: "sample"
-        attach_file "item[in_revision_csv_file]", Rails.root.join("spec", "fixtures", "chorg", "unify_revision_template.csv").to_s
+        attach_file "item[in_revision_csv_file]", unify_template_path
         click_button I18n.t('ss.buttons.save')
       end
 
@@ -213,7 +219,7 @@ describe "chorg_import_revision", type: :feature, dbscope: :example do
 
       within "form#item-form" do
         fill_in "item[name]", with: "sample"
-        attach_file "item[in_revision_csv_file]", Rails.root.join("spec", "fixtures", "chorg", "division_revision_template.csv").to_s
+        attach_file "item[in_revision_csv_file]", division_template_path
         click_button I18n.t('ss.buttons.save')
       end
 
@@ -254,7 +260,7 @@ describe "chorg_import_revision", type: :feature, dbscope: :example do
 
       within "form#item-form" do
         fill_in "item[name]", with: "sample"
-        attach_file "item[in_revision_csv_file]", Rails.root.join("spec", "fixtures", "chorg", "delete_revision_template.csv").to_s
+        attach_file "item[in_revision_csv_file]", delete_template_path
         click_button I18n.t('ss.buttons.save')
       end
 

@@ -11,7 +11,12 @@ module Opendata::Addon::CmsRef::Page
     validates :assoc_method, inclusion: { in: %w(none auto) }
 
     scope :and_associated_page, ->(page) do
-      where(assoc_site_id: page.site_id, assoc_node_id: page.parent.id).where("$and" => [{ "$or" => [ { assoc_page_id: page.id }, { assoc_page_ids: { '$in' => [page.id] } } ] }])
+      where(assoc_site_id: page.site_id, assoc_node_id: page.parent.id).
+      where("$and" => [
+        { "$or" => [
+          { assoc_page_id: page.id }, { assoc_page_ids: { '$in' => [page.id] } }
+        ]}
+      ])
     end
   end
 

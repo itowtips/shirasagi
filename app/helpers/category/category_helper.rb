@@ -46,7 +46,9 @@ module Category::CategoryHelper
         @caller.output_buffer << @caller.content_tag("div", class: "parent") do
           cc = children.map { |c| children(categories, c).size }.max != 0
           @caller.output_buffer << @caller.content_tag("label", class: "parent") do
-            @caller.output_buffer << @caller.check_box_tag("item[#{@item_name}][]", item.id, @item.send(@item_name).include?(item.id), {data: {url: item.filename}})
+            @caller.output_buffer << @caller.check_box_tag("item[#{@item_name}][]", item.id,
+              @item.send(@item_name).include?(item.id),
+              {data: {url: item.filename}})
             @caller.output_buffer << " "
             @caller.output_buffer << item.name
           end
@@ -58,7 +60,9 @@ module Category::CategoryHelper
       else
         @caller.output_buffer << @caller.content_tag("div", class: "parent") do
           @caller.output_buffer << @caller.content_tag("label") do
-            @caller.output_buffer << @caller.check_box_tag("item[#{@item_name}][]", item.id, @item.send(@item_name).include?(item.id), {data: {url: item.filename}})
+            @caller.output_buffer << @caller.check_box_tag("item[#{@item_name}][]", item.id,
+              @item.send(@item_name).include?(item.id), 
+              {data: {url: item.filename}})
             @caller.output_buffer << " "
             @caller.output_buffer << item.name
           end
@@ -79,7 +83,9 @@ module Category::CategoryHelper
       elsif children.present?
         cc = children.map { |c| children(categories, c).size }.max != 0
         @caller.output_buffer << @caller.content_tag("label", class: "parent") do
-          @caller.output_buffer << @caller.check_box_tag("item[#{@item_name}][]", item.id, @item.send(@item_name).include?(item.id), {data: {url: item.filename}})
+          @caller.output_buffer << @caller.check_box_tag("item[#{@item_name}][]", item.id,
+            @item.send(@item_name).include?(item.id),
+            {data: {url: item.filename}})
           @caller.output_buffer << " "
           @caller.output_buffer << item.name
         end
@@ -89,7 +95,9 @@ module Category::CategoryHelper
         end
       else
         @caller.output_buffer << @caller.content_tag("label") do
-          @caller.output_buffer << @caller.check_box_tag("item[#{@item_name}][]", item.id, @item.send(@item_name).include?(item.id), {data: {url: item.filename}})
+          @caller.output_buffer << @caller.check_box_tag("item[#{@item_name}][]", item.id,
+            @item.send(@item_name).include?(item.id),
+            {data: {url: item.filename}})
           @caller.output_buffer << " "
           @caller.output_buffer << item.name
         end
@@ -102,7 +110,9 @@ module Category::CategoryHelper
       @caller.output_buffer << @caller.content_tag("div", class: "unreadable", style: "display:none;") do
         @unreadable_categories.each do |item|
           @caller.output_buffer << @caller.content_tag("label") do
-            @caller.output_buffer << @caller.check_box_tag("item[#{@item_name}][]", item.id, @item.send(@item_name).include?(item.id), {data: {url: item.filename}})
+            @caller.output_buffer << @caller.check_box_tag("item[#{@item_name}][]", item.id,
+              @item.send(@item_name).include?(item.id),
+              {data: {url: item.filename}})
             @caller.output_buffer << " "
             @caller.output_buffer << item.name
           end
