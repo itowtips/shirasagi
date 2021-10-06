@@ -40,7 +40,7 @@ ja:
     line_deliver_condition: 配信条件
     line_deliver_category: 配信カテゴリー
     line_deliver_category_setting: カテゴリー
-    line_deliver_age_setting: 年齢設定
+    line_deliver_age_setting: 年齢区分
     line_test_member: テストメンバー
     line_event_session: セッション
     form_check: 制約チェック

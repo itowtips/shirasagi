@@ -21,6 +21,9 @@
 .main-box tr.sunday td.date, .main-box tr.holiday td.date {
   color: #f00;
 }
+.main-box tr.current {
+  background-color: #fdfdb3 !important;
+}
 </style>
 
 <%= jquery do %>
@@ -54,7 +57,7 @@
       <% (@start_of_month..@end_of_month).each do |date| %>
         <% item = @items[date] %>
         <% tr_css_classes = [ "day-#{date.day}" ] %>
-        <% tr_css_classes << (Time.zone.now.beginning_of_day == date ? 'current' : nil) %>
+        <% tr_css_classes << (Time.zone.today == date ? 'current' : nil) %>
         <% tr_css_classes << if holiday?(date); 'holiday' elsif date.wday == 0; 'sunday' elsif date.wday == 6; 'saturday' end %>
         <tr class="<%= tr_css_classes.compact.join(' ') %>" data-day="<%= date.day %>">
           <td class="date"><%= l(date, format: :month_day) %></td>

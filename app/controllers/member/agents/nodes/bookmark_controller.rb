@@ -1,27 +1,44 @@
 class Member::Agents::Nodes::BookmarkController < ApplicationController
   include Cms::NodeFilter::View
-  include Member::AuthFilter
+  include Member::LoginFilter
+  include Cms::PublicFilter::FindContent
 
-  protect_from_forgery except: [:index]
+  protect_from_forgery except: [:register, :cancel]
+
+  before_action :logged_in?, if: -> { member_login_path }, only: :index
+  before_action :set_path, only: [:register, :cancel]
+  before_action :set_member, only: [:register, :cancel]
+
+  private
+
+  def set_path
+    @path = params[:path]
+    raise "404" if @path.blank?
+  end
+
+  def set_member
+    raise "404" unless member_login_path
+    @cur_member = get_member_by_session rescue nil
+    redirect_to "#{member_login_path}?ref=#{CGI.escape(@path)}" if @cur_member.nil?
+  end
+
+  public
 
   def index
-    raise "404" unless member_login_path
+    @cur_member.squish_bookmarks
+    @items = @cur_member.bookmarks.and_public.
+      page(params[:page]).per(50)
+  end
 
-    path = params[:path]
-    raise "404" if path.blank?
+  def register
+    item = find_content(@cur_site, @path)
+    @cur_member.register_bookmark(item) if item
+    redirect_to(params[:ref].presence || @path)
+  end
 
-    @cur_member = get_member_by_session rescue nil
-    if @cur_member.nil?
-      redirect_to "#{member_login_path}?ref=#{CGI.escape(path)}"
-      return
-    end
-
-    filename = path.delete_prefix(@cur_site.url)
-    page = Cms::Page.site(@cur_site).where(filename: filename).first
-    raise "404" if page.nil?
-
-    cond = { site_id: @cur_site.id, member_id: @cur_member.id, page_id: page.id }
-    Member::Bookmark.find_or_create_by(cond)
-    redirect_to "#{page.url}?registered_favorite=1"
+  def cancel
+    item = find_content(@cur_site, @path)
+    @cur_member.cancel_bookmark(item) if item
+    redirect_to(params[:ref].presence || @path)
   end
 end

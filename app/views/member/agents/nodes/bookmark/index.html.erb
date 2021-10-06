@@ -1,0 +1,13 @@
+<div class="mypage-show member-bookmarks">
+  <% @items.each do |item| %>
+    <article class="item-bookmark">
+      <header>
+        <h2><%= link_to item.content.name, item.content.url %></h2>
+        <% url = @cur_node.url + "cancel?" + { path: item.content.url, ref: @cur_node.url }.to_query %>
+        <%= link_to("お気に入りを解除", url, { method: :post, class: "favorite-cancel" } ) %>
+      </header>
+    </article>
+  <% end %>
+</div>
+
+<%= paginate @items if @items.try(:current_page) %>

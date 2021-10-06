@@ -98,6 +98,8 @@ ja:
       slide: スライド
       search: 検索
       create_unregisted_anpi: 未登録者安否作成
+      register_bookmark: お気に入りを登録
+      cancel_bookmark: お気に入りを解除
     notice:
       accepted: 参加しました。
       rejected: 辞退しました。
@@ -177,6 +179,8 @@ ja:
       member/bookmark: お気に入りページ
       member/pippi_mypage: ぴっぴマイページ
       member/pippi_profile: ぴっぴプロフィール
+      member/deliver_category_page: LINE配信ページリスト（カテゴリー）
+      member/deliver_age_page: LINE配信ページリスト（年齢）
 
     parts:
       member/blog_page: ブログページ一覧

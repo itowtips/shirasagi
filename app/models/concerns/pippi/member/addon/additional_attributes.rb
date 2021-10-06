@@ -33,6 +33,14 @@ module Pippi::Member::Addon
       end
     end
 
+    def deliver_ages
+      @deliver_ages ||= begin
+        Cms::Line::DeliverAge.site(site).select do |year|
+          (year.condition_ages & child_ages).present?
+        end
+      end
+    end
+
     def subscribe_line_message_options
       %w(active expired).map { |m| [ I18n.t("pippi.options.subscribe_line_message.#{m}"), m ] }.to_a
     end

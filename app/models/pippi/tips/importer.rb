@@ -42,22 +42,12 @@ class Pippi::Tips::Importer
   end
 
   def update_row(row)
-    date = row[t("date")]
-    html = row[t("html")]
+    date = row[t("date")].to_s.strip
+    html = row[t("html")].to_s
     raise "日付が入力されていません。" if date.blank?
 
     begin
-      ary = date.split("/").map(&:to_i)
-      if ary.size != 2 && ary.size != 3
-        raise ArgumentError.new
-      end
-
-      month = ary[-2]
-      day = ary[-1]
-      if month.nil? || day.nil? || month == 0 || day == 0
-        raise ArgumentError.new
-      end
-      date = Date.new(year, month, day)
+      date = parse_date(date)
     rescue ArgumentError => e
       raise "日付が不正です。(#{date})"
     end
@@ -67,5 +57,22 @@ class Pippi::Tips::Importer
     item.html = html
     raise item.errors.full_messages.join(", ") if !item.save
     item
+  end
+
+  def parse_date(date)
+    format1 = /^(\d+)\/(\d+)$/
+    format2 = /^(\d+)#{I18n.t("datetime.prompts.month")}(\d+)#{I18n.t("datetime.prompts.day")}$/
+
+    m = nil
+    d = nil
+    [format1, format2].each do |format|
+      m, d = date.scan(format).flatten
+      break if (m.numeric? && d.numeric?)
+    end
+
+    if !(m.numeric? && d.numeric?)
+      raise ArgumentError.new
+    end
+    Date.new(year, m.to_i, d.to_i)
   end
 end

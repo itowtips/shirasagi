@@ -1,6 +1,5 @@
 <div class="mypage-show member-profile">
   <section class="profile">
-    <h2>登録情報</h2>
     <div class="children">
       <% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
         <% next if @item.send("child#{i}_name").blank? %>
@@ -13,29 +12,51 @@
     <%= link_to "登録情報を見る", @profile_node.url if @profile_node %>
   </section>
 
-  <section class="bookmarks">
-    <h2>お気に入り登録したページ</h2>
-    <div class="pages">
-      <ul>
-        <% @bookmarks.each do |item| %>
-          <li><%= link_to item.page.name, item.page.url %></li>
-        <% end %>
-      </ul>
-    </div>
-  </section>
+  <% if @bookmark_node %>
+    <section class="bookmarks">
+      <header><h2>お気に入り登録したページ</h2></header>
+      <% if @bookmarks.present? %>
+        <div class="bookmarks-content">
+          <% @bookmarks.each do |item| %>
+            <article class="item-bookmark">
+              <header>
+                <h3><%= link_to item.content.name, item.content.url %></h2>
+                <% url = @bookmark_node.url + "cancel?" + { path: item.content.url, ref: @cur_node.url }.to_query %>
+                <%= link_to("お気に入りを解除", url, { method: :post, class: "favorite-cancel" } ) %>
+              </header>
+            </article>
+          <% end %>
+        </div>
+        <nav><%= link_to "一覧", @bookmark_node.url, class: "more" %></nav>
+      <% else %>
+        <div class="empty">お気に入りはありません。</div>
+      <% end %>
+    </section>
+  <% end %>
 
-  <section class="events">
-    <h2>イベント</h2>
-    <div class="pages"></div>
-  </section>
+  <% @deliver_category_nodes.each do |node| %>
+    <%
+      @cur_node = node
+      @items = Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date).
+        where(@deliver_category_cond).
+        order_by(node.sort_hash).
+        limit(4)
+    %>
+    <section class="<%= node.basename %>">
+      <%= render_page_list %>
+    </section>
+  <% end %>
 
-  <section class="blogs">
-    <h2>ブログ</h2>
-    <div class="pages"></div>
-  </section>
-
-  <section class="child-ages">
-    <h2>ブログ</h2>
-    <div class="pages"></div>
-  </section>
+  <% @deliver_age_nodes.each do |node| %>
+    <%
+      @cur_node = node
+      @items = Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date).
+        where(@deliver_age_cond).
+        order_by(node.sort_hash).
+        limit(4)
+    %>
+    <section class="<%= node.basename %>">
+      <%= render_page_list %>
+    </section>
+  <% end %>
 </div>

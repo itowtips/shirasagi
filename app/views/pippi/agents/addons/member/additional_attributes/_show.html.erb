@@ -24,4 +24,7 @@
     <dt><%= root.name %></dt>
     <dd><%= children.map(&:name).join(", ") %></dd>
   <% end %>
+
+  <dt><%= t("cms.line_deliver_age_setting") %></dt>
+  <dd><%= @item.deliver_ages.map(&:name).join(", ") %></dd>
 </dl>
