@@ -51,7 +51,7 @@ class Member::Agents::Nodes::LoginController < ApplicationController
 
   def logout
     # discard all session info
-    reset_session
+    reset_session if SS.config.sns.logged_in_reset_session
     flash.discard(:ref)
     redirect_to member_login_path
   end
