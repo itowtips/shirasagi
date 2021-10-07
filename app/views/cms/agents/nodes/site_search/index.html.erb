@@ -43,15 +43,17 @@ new Cms_Site_Search_History("<%= ".cms-site-search .search-form" %>", "<%= @cur_
       <ul class="site-search-history" style="display: none;"></ul>
     </dl>
 
-    <dl class="site-search-categories">
-      <dt><%= f.label(:category_id, t("category.node")) %></dt>
-      <dd><%= f.select(:category_id, options_from_collection_for_select( @categories, :id, :name, params.dig(:s, :category_id)), include_blank: "", "aria-label" => t("category.node")) %></dd>
-    </dl>
+    <% if tryb { @aggregate_result['aggregations']['group_by_categories']['buckets'] }.present? %>
+      <dl class="site-search-categories">
+        <dt><%= f.label(:category_name, t("category.node")) %></dt>
+        <dd><%= f.select(:category_name, @aggregate_result['aggregations']['group_by_categories']['buckets'].collect { |bucket| ["#{bucket['key']}(#{bucket['doc_count']})", bucket['key']] }, include_blank: "", "aria-label" => t("category.node")) %></dd>
+      </dl>
+    <% end %>
 
     <% if @cur_site.elasticsearch_outside_enabled? %>
       <dl class="site-search-target">
         <dt><%= f.label(:target, t("cms.search_target")) %></dt>
-        <dd><%= select_tag 'target', options_for_select([[t('ss.search_on', name: @cur_site.name), 'inside'], [t('ss.search_on', name: SS.Config.cms.elasticsearch['label']), 'outside']], selected: params[:target]), "aria-label" => t("cms.search_target") %></dd>
+        <dd><%= select_tag 'target', options_for_select([[t('ss.search_on', name: @cur_site.name), 'inside'], [t('ss.search_on', name: SS.config.cms.elasticsearch['label']), 'outside']], selected: params[:target]), "aria-label" => t("cms.search_target") %></dd>
       </dl>
     <% end %>
 
