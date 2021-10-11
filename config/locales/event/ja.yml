@@ -103,14 +103,18 @@ ja:
       event/ical_link: iCal情報
       event/facility: 施設
       event/calendar: カレンダー
+      event/pippi_category: カテゴリー
 
   cms:
     nodes:
       event/page: イベントリスト
       event/search: イベント検索
+      event/pippi_page: ぴっぴイベントリスト
+      event/pippi_search: ぴっぴイベント検索
     parts:
       event/calendar: カレンダー
       event/search: イベント検索
+      event/pippi_search: ぴっぴイベント検索
 
   cms_role:
     read_other_event_pages: ページの閲覧（全て）
@@ -178,6 +182,11 @@ ja:
         facility_ids: 施設
       event/addon/calendar:
         event_display: 表示形式
+      event/addon/pippi_category:
+        st_location_ids: 地域
+        st_facility_ids: 施設
+        st_genre_ids: ジャンル
+        st_age_ids: 子どもの年齢
 
   datetime:
     prompts:

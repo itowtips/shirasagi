@@ -35,4 +35,13 @@ module Event::Part
       find_search_node.parent.st_category_ids
     end
   end
+
+  class PippiSearch
+    include Cms::Model::Part
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "event/pippi_search") }
+  end
 end

@@ -1,0 +1,13 @@
+<dl class="see">
+  <dt><%= @item.t :st_location_ids %></dt>
+  <dd><%=br @item.send(:st_locations).pluck(:name) %></dd>
+
+  <dt><%= @item.t :st_facility_ids %></dt>
+  <dd><%=br @item.send(:st_facilities).pluck(:name) %></dd>
+
+  <dt><%= @item.t :st_genre_ids %></dt>
+  <dd><%=br @item.send(:st_genres).pluck(:name) %></dd>
+
+  <dt><%= @item.t :st_age_ids %></dt>
+  <dd><%=br @item.send(:st_ages).pluck(:name) %></dd>
+</dl>

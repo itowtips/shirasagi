@@ -1,0 +1,95 @@
+<%= javascript_include_tag "/assets/js/jquery.colorbox.js" %>
+<%= stylesheet_link_tag "/assets/css/colorbox/colorbox.css", media: 'all' %>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<%= jquery do %>
+  $(".ajax-box.location").on("click", function () {
+    $.colorbox({
+      html: "<%=j render(partial: 'location', locals: { search_path: @search_node.url }) %>",
+      fixed: true,
+      width: "90%",
+      height: "90%"
+    });
+    return false;
+  });
+  $(".ajax-box.genre").on("click", function () {
+    $.colorbox({
+      html: "<%=j render(partial: 'genre', locals: { search_path: @search_node.url }) %>",
+      fixed: true,
+      width: "90%",
+      height: "90%"
+    });
+    return false;
+  });
+  $(".ajax-box.age").on("click", function () {
+    $.colorbox({
+      html: "<%=j render(partial: 'age', locals: { search_path: @search_node.url }) %>",
+      fixed: true,
+      width: "90%",
+      height: "90%"
+    });
+    return false;
+  });
+<% end %>
+
+<%= form_for(:item, url: @search_node.url, method: "get", html: { class: 'event-search' }) do %>
+  <fieldset class="keyword">
+    <legend><%= "キーワードで探す" %></legend>
+    <%= text_field_tag :search_keyword, @keyword %>
+  </fieldset>
+  <input type="submit" value="&#xf002">
+  <fieldset class="location">
+    <legend><%= "地域または施設から探す" %></legend>
+    <% if @location.present? || @facility.present? %>
+      <ul>
+        <% if @location.present? %>
+          <li>
+            <%= hidden_field_tag 'location_id', @location_id %>
+            <%= @location.name %>
+          </li>
+        <% end %>
+        <% if @facility.present? %>
+          <li>
+            <%= hidden_field_tag 'facility_id', @facility_id %>
+            <%= @facility.name %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <%= "指定なし" %>
+    <% end %>
+    <%= link_to "変更する", "#", class: "ajax-box location" %>
+  </fieldset>
+  <fieldset class="genre">
+    <legend><%= "ジャンルから探す" %></legend>
+    <% if @genres.present? %>
+      <ul>
+        <% @genres.each do |genre| %>
+          <li>
+            <%= hidden_field_tag 'genre_ids[]', @genre_ids.include?(genre.id) ? genre.id : nil %>
+            <%= genre.name %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <%= "指定なし" %>
+    <% end %>
+    <%= link_to "変更する", "#", class: "ajax-box genre" %>
+  </fieldset>
+  <fieldset class="age">
+    <legend><%= "子どもの年齢から探す" %></legend>
+    <% if @ages.present? %>
+      <ul>
+        <% @ages.each do |age| %>
+          <li>
+            <%= hidden_field_tag 'age_ids[]', @age_ids.include?(age.id) ? age.id : nil %>
+            <%= age.name %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <%= "指定なし" %>
+    <% end %>
+    <%= link_to "変更する", "#", class: "ajax-box age" %>
+  </fieldset>
+<% end %>

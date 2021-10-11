@@ -1,0 +1,105 @@
+<dl class="see mod-location">
+  <dt><%= @model.t :st_location_ids %><%= @model.tt :st_location_ids %></dt>
+  <dd>
+    <%= f.hidden_field "st_location_ids[]", value: "", class: "hidden-ids" %>
+    <%= link_to "地域を選択する", cms_apis_categories_path, class: "ajax-box" %>
+  </dd>
+  <dd>
+    <table class="index ajax-selected">
+      <thead>
+        <tr>
+          <th class="name"><%= @model.t :name %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @item.st_locations.each do |location| %>
+        <tr data-id="<%= location.id %>">
+          <td><%= f.hidden_field "st_location_ids[]", value: location.id %> <%= location.name %></td>
+          <td><%= link_to t("ss.buttons.delete"), "#", class: "deselect btn" %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>
+
+<dl class="see mod-facility">
+  <dt><%= @model.t :st_facility_ids %><%= @model.tt :st_facility_ids %></dt>
+  <dd>
+    <%= f.hidden_field "st_facility_ids[]", value: "", class: "hidden-ids" %>
+    <%= link_to "施設を選択する", cms_apis_nodes_path(model: 'Facility::Node::Page'), class: "ajax-box" %>
+  </dd>
+  <dd>
+    <table class="index ajax-selected">
+      <thead>
+      <thead>
+      <tr>
+        <th class="name"><%= @model.t :name %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @item.st_facilities.each do |fac| %>
+        <tr data-id="<%= fac.id %>">
+          <td><%= f.hidden_field "st_facility_ids[]", value: fac.id %> <%= fac.name %></td>
+          <td><%= link_to t("ss.buttons.delete"), "#", class: "deselect btn" %></td>
+        </tr>
+      <% end %>
+      <tr style="display:none" <%= raw(@item.present? ? "data-id=#{@item.id}" : "") %>></tr>
+      </tbody>
+    </table>
+  </dd>
+</dl>
+
+<dl class="see mod-genre">
+  <dt><%= @model.t :st_genre_ids %><%= @model.tt :st_genre_ids %></dt>
+  <dd>
+    <%= f.hidden_field "st_genre_ids[]", value: "", class: "hidden-ids" %>
+    <%= link_to "ジャンルを選択する", cms_apis_categories_path, class: "ajax-box" %>
+  </dd>
+  <dd>
+    <table class="index ajax-selected">
+      <thead>
+      <tr>
+        <th class="name"><%= @model.t :name %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @item.st_genres.each do |genre| %>
+        <tr data-id="<%= genre.id %>">
+          <td><%= f.hidden_field "st_genre_ids[]", value: genre.id %> <%= genre.name %></td>
+          <td><%= link_to t("ss.buttons.delete"), "#", class: "deselect btn" %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>
+
+<dl class="see mod-age">
+  <dt><%= @model.t :st_age_ids %><%= @model.tt :st_age_ids %></dt>
+  <dd>
+    <%= f.hidden_field "st_age_ids[]", value: "", class: "hidden-ids" %>
+    <%= link_to "子どもの年齢を選択する", cms_apis_categories_path, class: "ajax-box" %>
+  </dd>
+  <dd>
+    <table class="index ajax-selected">
+      <thead>
+      <tr>
+        <th class="name"><%= @model.t :name %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @item.st_ages.each do |age| %>
+        <tr data-id="<%= age.id %>">
+          <td><%= f.hidden_field "st_age_ids[]", value: age.id %> <%= age.name %></td>
+          <td><%= link_to t("ss.buttons.delete"), "#", class: "deselect btn" %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>

@@ -53,6 +53,8 @@ Rails.application.routes.draw do
     get "/" => redirect { |p, req| "#{req.path}/pages" }, as: :main
     resources :pages, concerns: [:deletion, :crud, :download, :import, :ical_refresh, :command, :contains_urls, :tag, :michecker]
     resources :searches, only: [:index]
+    resources :pippi_pages, only: [:index]
+    resources :pippi_searches, only: [:index]
   end
 
   node "event" do
@@ -63,11 +65,19 @@ Rails.application.routes.draw do
     get "page/:year:month:day/(index.:format)" => "public#daily", cell: "nodes/page",
       year: /\d{4}/, month: /\d{2}/, day: /\d{2}/
     get "search/(index.:format)" => "public#index", cell: "nodes/search"
+    get "pippi_page/(index.:format)" => "public#index", cell: "nodes/pippi_page"
+    get "pippi_page/(:display.:format)" => "public#index", cell: "nodes/pippi_page", display: /[a-z]*/
+    get "pippi_page/:year:month/(:display.:format)" => "public#index", cell: "nodes/pippi_page",
+        year: /\d{4}/, month: /\d{2}/, display: /[a-z]*/
+    get "pippi_page/:year:month:day/(index.:format)" => "public#daily", cell: "nodes/pippi_page",
+        year: /\d{4}/, month: /\d{2}/, day: /\d{2}/
+    get "pippi_search/(index.:format)" => "public#index", cell: "nodes/pippi_search"
   end
 
   part "event" do
     get "calendar" => "public#index", cell: "parts/calendar"
     get "search" => "public#index", cell: "parts/search"
+    get "pippi_search" => "public#index", cell: "parts/pippi_search"
   end
 
   page "event" do
