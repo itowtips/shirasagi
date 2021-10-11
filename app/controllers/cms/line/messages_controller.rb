@@ -23,6 +23,18 @@ class Cms::Line::MessagesController < ApplicationController
 
   public
 
+  def copy
+    set_item
+    if request.get?
+      prefix = I18n.t("workflow.cloned_name_prefix")
+      @item.name = "[#{prefix}] #{@item.name}" unless @item.cloned_name?
+      return
+    end
+
+    @copy = @item.copy_and_save(name: get_params["name"])
+    render_update @copy.errors.empty?, location: { action: :index }, render: { file: :copy }
+  end
+
   def deliver
     set_item
     return if request.get?

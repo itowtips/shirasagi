@@ -2494,6 +2494,8 @@ ja:
     cms/line/message:
       name:
        - タイトルを入力します。
+      title:
+       - タイトルを入力します。
 
     cms/addon/line/message/deliver_condition:
       deliver_condition_state:

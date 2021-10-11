@@ -5,6 +5,7 @@ class Cms::Line::Message
   include Cms::Addon::Line::Message::Body
   include Cms::Addon::Line::Message::DeliverCondition
   include Cms::Addon::Line::Message::DeliverPlan
+  include Cms::Addon::Line::Message::Cloneable
   include Cms::Addon::GroupPermission
   #include History::Addon::Backup
 

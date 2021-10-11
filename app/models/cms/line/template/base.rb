@@ -52,10 +52,18 @@ class Cms::Line::Template::Base
     message.allowed?(action, user, opts)
   end
 
+  def new_clone
+    item = self.class.new
+    item.site = site
+    item.user = user
+    item.order = order
+    item
+  end
+
   private
 
   def set_name
-    self.name ||= message.try(:name)
+    self.name = message.try(:name)
   end
 
   class << self
