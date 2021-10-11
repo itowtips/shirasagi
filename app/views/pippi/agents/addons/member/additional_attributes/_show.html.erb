@@ -4,6 +4,9 @@
 <% end %>
 
 <dl class="see mod-pippi-member-additional-attributes">
+  <dt><%= @item.t(:first_registered) %></dt>
+  <dd><%= tryb{ @item.first_registered.strftime("%Y/%m/%d %H:%M") } %></dd>
+
   <dt><%= @item.t(:subscribe_line_message) %></dt>
   <dd style="margin-bottom: 10px;"><%= @item.label :subscribe_line_message %></dd>
 
@@ -25,6 +28,8 @@
     <dd><%= children.map(&:name).join(", ") %></dd>
   <% end %>
 
+  <!--
   <dt><%= t("cms.line_deliver_age_setting") %></dt>
   <dd><%= @item.deliver_ages.map(&:name).join(", ") %></dd>
+  -->
 </dl>

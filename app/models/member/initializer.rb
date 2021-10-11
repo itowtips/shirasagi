@@ -39,6 +39,7 @@ module Member
     # pippi
     Cms::Node.plugin "member/pippi_mypage"
     Cms::Node.plugin "member/pippi_profile"
+    Cms::Node.plugin "member/pippi_first_registration"
 
     Cms::Role.permission :read_other_member_blogs
     Cms::Role.permission :read_private_member_blogs

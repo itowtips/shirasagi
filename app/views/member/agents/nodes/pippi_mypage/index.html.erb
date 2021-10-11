@@ -9,7 +9,7 @@
         </div>
       <% end %>
     </div>
-    <%= link_to "登録情報を見る", @profile_node.url if @profile_node %>
+    <%= link_to "#{@profile_node.name}を見る", @profile_node.url if @profile_node %>
   </section>
 
   <% if @bookmark_node %>

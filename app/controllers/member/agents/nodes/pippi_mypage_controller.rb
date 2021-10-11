@@ -1,6 +1,6 @@
 class Member::Agents::Nodes::PippiMypageController < ApplicationController
   include Cms::NodeFilter::View
-  include Member::LoginFilter
+  include Pippi::LoginFilter
   include Cms::NodeFilter::ListView
 
   def index

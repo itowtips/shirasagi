@@ -1,6 +1,6 @@
 class Member::Agents::Nodes::DeliverAgePageController < ApplicationController
   include Cms::NodeFilter::View
-  include Member::LoginFilter
+  include Pippi::LoginFilter
   include Cms::NodeFilter::ListView
 
   helper Cms::ListHelper

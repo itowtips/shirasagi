@@ -365,18 +365,28 @@ module Member::Node
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 
-    default_scope ->{ where(route: "member/pippi_profile") }
+    default_scope ->{ where(route: "member/pippi_mypage") }
   end
 
   class PippiProfile
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
-    include Member::Addon::Registration::RequiredFields
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
 
     default_scope ->{ where(route: "member/pippi_profile") }
+  end
+
+  class PippiFirstRegistration
+    include Cms::Model::Node
+    include Cms::Addon::NodeSetting
+    include Cms::Addon::Meta
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "member/pippi_first_registration") }
   end
 end

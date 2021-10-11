@@ -6,11 +6,13 @@ module Pippi::Member::Addon
     CHILD_MAX_SIZE = 5
 
     included do
+      field :first_registered, type: DateTime
       field :subscribe_line_message, type: String, default: "active"
       embeds_ids :deliver_categories, class_name: "Cms::Line::DeliverCategory"
 
       validates :subscribe_line_message, inclusion: { in: %w(active expired) }
 
+      permit_params :first_registered
       permit_params :subscribe_line_message
       permit_params deliver_category_ids: []
 
