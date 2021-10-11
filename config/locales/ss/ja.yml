@@ -724,6 +724,7 @@ ja:
         opengraph_type: OpenGraph
         opengraph_defaul_image_url: 既定の画像URL
       ss/addon/twitter_setting:
+        twitter_poster_state: ページ連携
         twitter_card: カード形式
         twitter_username: ユーザー名
         twitter_default_image_url: 既定の画像URL
@@ -732,6 +733,7 @@ ja:
         twitter_access_token: アクセストークン
         twitter_access_token_secret: トークンシークレット
       ss/addon/line_setting:
+        line_poster_state: ページ連携
         line_channel_secret: チャネルシークレット
         line_channel_access_token: チャネルアクセストークン
       ss/addon/site_auto_post_setting:
@@ -1152,6 +1154,9 @@ ja:
         - ページに画像が含まれていない場合、ここで設定した URL が og:image として使用されます。
         - ページに画像が含まれている場合、ここで設定した URL は使用されません。
     ss/addon/twitter_setting:
+      twitter_poster_state:
+        - 有効にすると、ページ編集時にTwitter連携が表示されます。
+        - コンシューマーキーとアクセストークン、それぞれのシークレットキーを設定する必要があります。
       twitter_card:
         - Twitter のカード形式を選択します。
         - Twitter でどのような見え方をするかは「Twitter Card Validator（https://cards-dev.twitter.com/validator）」で確認することができます。
@@ -1175,6 +1180,9 @@ ja:
         - アクセストークンシークレット(Access Token Secret)を設定します。
         - Twitterへの自動投稿に必須です。
     ss/addon/line_setting:
+      line_poster_state:
+        - 有効にすると、ページ編集時にLINE連携が表示されます。
+        - チャネルシークレットとチャネルアクセストークンを設定する必要があります。
       line_channel_secret:
         - Lineのチャネルシークレットを設定します。
         - Lineとの連携に必須です。
