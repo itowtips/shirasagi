@@ -46,7 +46,7 @@ module Cms::Addon
     end
 
     def line_post_enabled?
-      token_enabled = (site || @cur_site).try(:line_token_enabled?)
+      token_enabled = (site || @cur_site).try(:line_poster_enabled?)
 
       return false if !token_enabled
       return false if skip_line_post.present?
