@@ -2,8 +2,6 @@
   <dt><%= @model.t :no_image_id %></dt>
   <dd><%= tryb { image_tag(@item.no_image.url, alt: @item.name) } %></dd>
 
-  <%= @item.no_image.state %>
-
   <dt><%= @model.t :conditions %></dt>
   <dd><%=br @item.conditions %></dd>
 
