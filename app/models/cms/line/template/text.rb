@@ -9,6 +9,14 @@ class Cms::Line::Template::Text < Cms::Line::Template::Base
     "text"
   end
 
+  def balloon_html
+    h = []
+    h << '<div class="talk-balloon">'
+    h << ApplicationController.helpers.br(text)
+    h << '</div>'
+    h.join
+  end
+
   def body
     {
       type: "text",
@@ -16,11 +24,9 @@ class Cms::Line::Template::Text < Cms::Line::Template::Base
     }
   end
 
-  def balloon_html
-    h = []
-    h << '<div class="talk-balloon">'
-    h << ApplicationController.helpers.br(text)
-    h << '</div>'
-    h.join
+  def new_clone
+    item = super
+    item.text = text
+    item
   end
 end

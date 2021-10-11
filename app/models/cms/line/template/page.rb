@@ -16,16 +16,22 @@ class Cms::Line::Template::Page < Cms::Line::Template::Base
 
   def balloon_html
     h = []
+    query = "?_=#{Time.zone.now.to_i}"
+    h << '<div class="talk-balloon">'
 
     if page.blank?
-      h << '<div class="talk-balloon" style="color: red;">'
-      h << "※ページが削除されています。<br>※メッセージは配信されません。"
+      h << '<div class="error">'
+      h << '※ページが削除されています。<br>このメッセージは配信されません。'
       h << '</div>'
       return h.join
     end
 
-    query = "?_=#{Time.zone.now.to_i}"
-    h << '<div class="talk-balloon">'
+    if !page.public?
+      h << '<div class="error"">'
+      h << "※ページが非公開です。<br>配信時点に非公開の場合、このメッセージは配信されません。"
+      h << '</div>'
+    end
+
     h << '<div class="message-type page">'
     if thumb_image_url
       h << "<div class=\"img-warp\"><img src=\"#{thumb_image_url}#{query}\"></div>"
@@ -76,6 +82,15 @@ class Cms::Line::Template::Page < Cms::Line::Template::Base
 
   def thumb_state_options
     I18n.t("cms.options.line_template_thumb_state").map { |k, v| [v, k] }
+  end
+
+  def new_clone
+    item = super
+    item.title = title
+    item.summary = summary
+    item.thumb_state = thumb_state
+    item.page = page
+    item
   end
 
   private

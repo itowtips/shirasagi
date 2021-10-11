@@ -5,12 +5,12 @@ describe "cms/line/templates image", type: :feature, dbscope: :example, js: true
   let(:item) { create :cms_line_message }
   let(:show_path) { cms_line_message_path site, item }
   let!(:file1) do
-    tmp_ss_file(
-      Cms::TempFile, user: cms_user, site: site, contents: "#{Rails.root}/spec/fixtures/ss/logo.png")
+    tmp_ss_file(Cms::TempFile, user: cms_user, site: site,
+      contents: "#{Rails.root}/spec/fixtures/ss/logo.png")
   end
   let!(:file2) do
-    tmp_ss_file(
-      Cms::TempFile, user: cms_user, site: site, contents: "#{Rails.root}/spec/fixtures/ss/file/keyvisual.jpg")
+    tmp_ss_file(Cms::TempFile, user: cms_user, site: site,
+      contents: "#{Rails.root}/spec/fixtures/ss/file/keyvisual.jpg")
   end
 
   describe "basic crud" do

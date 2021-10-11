@@ -172,6 +172,8 @@ Rails.application.routes.draw do
         post :deliver, on: :member
         get :test_deliver, on: :member
         post :test_deliver, on: :member
+        get :copy, on: :member
+        put :copy, on: :member
         resources :templates, path: "template/:type/templates", defaults: { type: '-' }, concerns: :deletion do
           get :select_type, on: :collection
         end

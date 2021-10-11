@@ -26,6 +26,15 @@ class Cms::Line::Template::Image < Cms::Line::Template::Base
     }
   end
 
+  def new_clone
+    item = super
+    if image
+      item.image = image.copy
+      item.image.state = "closed"
+    end
+    item
+  end
+
   private
 
   def validate_image

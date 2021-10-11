@@ -21,6 +21,12 @@ class Cms::Line::Template::JsonBody < Cms::Line::Template::Base
     ::JSON.parse(json_body)
   end
 
+  def new_clone
+    item = super
+    item.json_body = json_body
+    item
+  end
+
   private
 
   def validate_json_body
