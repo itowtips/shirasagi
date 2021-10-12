@@ -12,50 +12,21 @@
     <%= link_to "#{@profile_node.name}を見る", @profile_node.url if @profile_node %>
   </section>
 
-  <% if @bookmark_node %>
-    <section class="bookmarks">
-      <header><h2>お気に入り登録したページ</h2></header>
-      <% if @bookmarks.present? %>
-        <div class="bookmarks-content">
-          <% @bookmarks.each do |item| %>
-            <article class="item-bookmark">
-              <header>
-                <h3><%= link_to item.content.name, item.content.url %></h2>
-                <% url = @bookmark_node.url + "cancel?" + { path: item.content.url, ref: @cur_node.url }.to_query %>
-                <%= link_to("お気に入りを解除", url, { method: :post, class: "favorite-cancel" } ) %>
-              </header>
-            </article>
-          <% end %>
-        </div>
-        <nav><%= link_to "一覧", @bookmark_node.url, class: "more" %></nav>
-      <% else %>
-        <div class="empty">お気に入りはありません。</div>
-      <% end %>
-    </section>
-  <% end %>
-
-  <% @deliver_category_nodes.each do |node| %>
+  <% @loop_delegates.each do |delegate| %>
     <%
-      @cur_node = node
-      @items = Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date).
-        where(@deliver_category_cond).
-        order_by(node.sort_hash).
-        limit(4)
+      @cur_node = delegate.node
+      @cur_node.attributes = delegate.attributes
+      context = OpenStruct.new(
+        cur_site: @cur_site,
+        cur_node: @cur_node,
+        cur_date: @cur_date,
+        cur_member: @cur_member,
+        deliver_category_cond: @deliver_category_cond,
+        deliver_age_cond: @deliver_age_cond,
+      )
+      @items = delegate.criteria_proc.call(context)
     %>
-    <section class="<%= node.basename %>">
-      <%= render_page_list %>
-    </section>
-  <% end %>
-
-  <% @deliver_age_nodes.each do |node| %>
-    <%
-      @cur_node = node
-      @items = Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date).
-        where(@deliver_age_cond).
-        order_by(node.sort_hash).
-        limit(4)
-    %>
-    <section class="<%= node.basename %>">
+    <section class="<%= @cur_node.basename %>">
       <%= render_page_list %>
     </section>
   <% end %>

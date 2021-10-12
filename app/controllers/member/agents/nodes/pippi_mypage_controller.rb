@@ -1,7 +1,8 @@
 class Member::Agents::Nodes::PippiMypageController < ApplicationController
   include Cms::NodeFilter::View
   include Pippi::LoginFilter
-  include Cms::NodeFilter::ListView
+
+  helper Member::BookmarkHelper
 
   def index
     @item = @cur_member
@@ -24,5 +25,7 @@ class Member::Agents::Nodes::PippiMypageController < ApplicationController
 
     @deliver_age_ids = @cur_member.deliver_ages.pluck(:st_category_ids).flatten
     @deliver_age_cond = { category_ids: { "$in" => @deliver_age_ids } }
+
+    @loop_delegates = @cur_node.loop_delegates
   end
 end

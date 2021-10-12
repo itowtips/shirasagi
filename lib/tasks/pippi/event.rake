@@ -5,7 +5,7 @@ namespace :pippi do
 
         @site = site
         @user = SS::User.find_by(uid: "sys")
-        @layout = Cms::Layout.site(@site).find_by(name: "記事レイアウト")
+        @layout = Cms::Layout.site(@site).find_by(name: "イベントページ")
         @form = Cms::Form.where(name: "イベントカレンダー").first
         @form_columns = @form.columns.order_by(order: 1).to_a
 

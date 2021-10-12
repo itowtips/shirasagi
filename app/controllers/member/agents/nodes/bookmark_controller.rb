@@ -3,6 +3,8 @@ class Member::Agents::Nodes::BookmarkController < ApplicationController
   include Member::LoginFilter
   include Cms::PublicFilter::FindContent
 
+  helper Member::BookmarkHelper
+
   protect_from_forgery except: [:register, :cancel]
 
   before_action :logged_in?, if: -> { member_login_path }, only: :index
@@ -26,8 +28,8 @@ class Member::Agents::Nodes::BookmarkController < ApplicationController
 
   def index
     @cur_member.squish_bookmarks
-    @items = @cur_member.bookmarks.and_public.
-      page(params[:page]).per(50)
+    @items = @cur_member.bookmarks.and_public.order_by(@cur_node.sort_hash).
+      page(params[:page]).per(@cur_node.limit)
   end
 
   def register

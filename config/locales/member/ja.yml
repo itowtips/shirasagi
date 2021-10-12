@@ -158,6 +158,7 @@ ja:
       member/member_invitation_setting: 会員招待メール
       member/login_link: ログイン
       member/editor_setting: エディタ設定
+      member/bookmark_list: ブックマーク表示
 
   cms:
     nodes:
@@ -684,6 +685,30 @@ ja:
         - 未設定の場合、次の順にログイン URL を検索し最初に見つかった URL を使用します。
         - 1) 親フォルダーのリダイレクトURL
         - 2) メンバー/マイページフォルダーの URL
+
+    member/addon/bookmark_list:
+      loop_html:
+        - 自動生成されたページのリスト表示部分のHTMLを指定することが可能です。
+        - ループHTMLを選択または直接記入することが可能です。
+        - |-
+          下記のように記述します。
+          #{class}　"bookmark" が表示されます。
+          #{url}　ブックマークのURLが表示されます。
+          #{name}　ブックマークのタイトルが表示されます。
+          #{index_name}　ブックマークのタイトルが表示されます。
+          #{cancel_link}　ブックマークの登録解除リンクが表示されます。
+      loop_liquid: &loop_liquid
+        - Liquid 形式で記述します。
+        - |-
+          使用例：
+          {% for page in pages %}
+          &lt;article class="item-{{ page.css_class }}">
+            &lt;header>
+              &lt;h2>&lt;a href="{{ page.url }}">{{ page.name }}&lt;/a>&lt;/h2>
+              {{ page.cancel_link }}
+            &lt;/header>
+          &lt;/article>
+          {% endfor %}
 
   remarks:
     cms/model/member:

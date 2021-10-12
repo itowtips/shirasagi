@@ -1,0 +1,60 @@
+<%= code_editor "##{addon[:id]} .html", mode: :html %>
+<%= jquery do %>
+  var $addon = $("<%= "##{addon[:id]}" %>");
+  var loop_format_name = "item[<%= name %>_loop_format]";
+  $addon.find("select[name='item[sort]']").on("change", function() {
+    var $selected = $(this).find("option:selected");
+    if (!$selected[0] || !$selected.data("description")) {
+      $addon.find(".sort-description").html("").addClass("hide");
+    } else {
+      $addon.find(".sort-description").html($selected.data("description")).removeClass("hide");
+    }
+  }).trigger("change");
+
+  var changeLoopFormat = function() {
+    var format = $addon.find("select[name='" + loop_format_name + "']").val();
+    if (format === "liquid") {
+      $addon.find(".loop-format-shirasagi").addClass("hide");
+      $addon.find(".loop-format-liquid").removeClass("hide");
+      $("#addon-cms-agents-addons-child_list").addClass("hide");
+    } else {
+      $addon.find(".loop-format-shirasagi").removeClass("hide");
+      $addon.find(".loop-format-liquid").addClass("hide");
+      $("#addon-cms-agents-addons-child_list").removeClass("hide");
+    }
+  };
+
+  changeLoopFormat();
+
+  $addon.find("select[name='" + loop_format_name + "']").on("change", changeLoopFormat);
+<% end %>
+
+<dl class="see">
+  <dt class="limit"><%= @model.t "#{name}_limit" %><%= @model.tt "#{name}_limit" %></dt>
+  <dd class="limit"><%= f.number_field "#{name}_limit" %></dd>
+
+  <dt class="loop_format"><%= @model.t "#{name}_loop_format" %><%= @model.tt "#{name}_loop_format" %></dt>
+  <dd class="loop_format"><%= f.select "#{name}_loop_format", @item.send("#{name}_loop_format_options") %></dd>
+</dl>
+
+<dl class="see loop-format-shirasagi">
+  <dt><%= @model.t "#{name}_upper_html" %><%= @model.tt "#{name}_upper_html" %></dt>
+  <dd><%= f.text_area "#{name}_upper_html", class: :html %></dd>
+
+  <dt><%= @model.t "#{name}_loop_html" %><%= @model.tt "#{name}_loop_html" %></dt>
+  <dd><%= f.text_area "#{name}_loop_html", class: :html, style: "height: 100px;" %></dd>
+
+  <dt><%= @model.t "#{name}_lower_html" %><%= @model.tt "#{name}_lower_html" %></dt>
+  <dd><%= f.text_area "#{name}_lower_html", class: :html %></dd>
+
+  <dt><%= @model.t "#{name}_no_items_display_state" %><%= @model.tt "#{name}_no_items_display_state" %></dt>
+  <dd><%= f.select "#{name}_no_items_display_state", @item.send("#{name}_no_items_display_state_options"), include_blank: true %></dd>
+
+  <dt><%= @model.t "#{name}_substitute_html" %><%= @model.tt "#{name}_substitute_html" %></dt>
+  <dd><%= f.text_area "#{name}_substitute_html", class: :html %></dd>
+</dl>
+
+<dl class="see loop-format-liquid">
+  <dt><%= @model.t "#{name}_loop_liquid" %><%= @model.tt "#{name}_loop_liquid" %></dt>
+  <dd><%= f.text_area "#{name}_loop_liquid", class: :html, style: "height: 300px;" %></dd>
+</dl>

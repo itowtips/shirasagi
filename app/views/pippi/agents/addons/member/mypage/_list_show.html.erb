@@ -1,0 +1,47 @@
+<% addon ||= local_assigns.fetch(:addon, {}) %>
+<%= code_editor "##{addon[:id]} .html", mode: :html, readonly: true %>
+
+<dl class="see">
+  <dt><%= @model.t "#{name}_limit" %></dt>
+  <dd><%= @item.send("#{name}_limit") %></dd>
+
+  <% if @item.send("#{name}_loop_format_liquid?") %>
+    <dt><%= @model.t "#{name}_loop_liquid" %></dt>
+    <dd>
+      <% if @item.send("#{name}_loop_liquid").present? %>
+        <%= text_area_tag "#{name}_loop_liquid", @item.send("#{name}_loop_liquid"), class: "html", style: "height: 100px;" %>
+      <% end %>
+    </dd>
+  <% else %>
+    <dt><%= @model.t "#{name}_upper_html" %></dt>
+    <dd>
+      <% if @item.send("#{name}_upper_html").present? %>
+      <%= text_area_tag "#{name}_upper_html", @item.send("#{name}_upper_html"), class: "html" %>
+      <% end %>
+    </dd>
+
+    <dt><%= @model.t "#{name}_loop_html" %></dt>
+    <dd>
+      <% if @item.send("#{name}_loop_html").present? %>
+      <%= text_area_tag :loop_html, @item.send("#{name}_loop_html"), class: "html", style: "height: 100px;"  %>
+      <% end %>
+    </dd>
+
+    <dt><%= @model.t "#{name}_lower_html" %></dt>
+    <dd>
+      <% if @item.send("#{name}_lower_html").present? %>
+      <%= text_area_tag "#{name}_lower_html", @item.send("#{name}_lower_html"), class: "html" %>
+      <% end %>
+    </dd>
+
+    <dt><%= @model.t "#{name}_no_items_display_state" %></dt>
+    <dd><%= @item.label("#{name}_no_items_display_state") %></dd>
+
+    <dt><%= @model.t "#{name}_substitute_html" %></dt>
+    <dd>
+      <% if @item.send("#{name}_substitute_html").present? %>
+      <%= text_area_tag "#{name}_substitute_html", @item.send("#{name}_substitute_html"), class: "html" %>
+      <% end %>
+    </dd>
+  <% end %>
+</dl>
