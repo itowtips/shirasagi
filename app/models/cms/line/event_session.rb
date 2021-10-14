@@ -17,6 +17,10 @@ class Cms::Line::EventSession
 
   validates :channel_user_id, presence: true
 
+  def member
+    @_member ||= Cms::Member.site(site).where(oauth_id: channel_user_id).first
+  end
+
   def set_data(key, value)
     self.data[mode] ||= {}
     self.data[mode][key] = value

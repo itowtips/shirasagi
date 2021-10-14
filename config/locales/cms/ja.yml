@@ -687,6 +687,7 @@ ja:
       cms/line/service/hub: HUB
       cms/line/service/facility_search: 施設検索
       cms/line/service/gd_chat: GDチャットボット
+      cms/line/service/page_list: ページリスト
       cms/line/deliver_condition/body: 配信条件
       cms/line/message/body: 本文
       cms/line/message/deliver_condition: 配信条件
@@ -1240,6 +1241,10 @@ ja:
         category_ids: 施設カテゴリー
       cms/addon/line/service/gd_chat:
         api_url: "API URL"
+      cms/addon/line/service/page_list:
+        no_image_id: NO IMAGE画像
+        conditions: 検索条件
+        limit: 表示件数
       cms/line/facility_search/category:
         name: タイトル
         image_id: サムネイル画像

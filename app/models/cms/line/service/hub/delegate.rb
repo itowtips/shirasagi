@@ -29,17 +29,15 @@ class Cms::Line::Service::Hub::Delegate
     processor.event_session.mode = service_name
     processor.event_session.update
 
-    if service.switch_messages.present?
-      processor.client.reply_message(event["replyToken"], service.switch_messages)
-    end
+    service.delegate_processor(processor, event).start
     return true
   end
 
-  def delegate(processor, events)
+  def delegate(processor, event)
     return false if service.blank?
     return false if processor.event_session.mode != service_name
 
-    service.delegate_processor(processor, events).call
+    service.delegate_processor(processor, event).call
     true
   end
 end

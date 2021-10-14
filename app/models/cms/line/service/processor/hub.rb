@@ -40,7 +40,7 @@ class Cms::Line::Service::Processor::Hub < Cms::Line::Service::Processor::Base
 
           # delegate event
           service.delegates.each do |delegate|
-            if delegate.delegate(self, events)
+            if delegate.delegate(self, event)
               delegated = true
               break
             end

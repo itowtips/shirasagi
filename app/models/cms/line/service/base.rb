@@ -21,15 +21,6 @@ class Cms::Line::Service::Base
     self.class.service_options
   end
 
-  def switch_messages
-    [
-      {
-        type: "text",
-        text: "「#{name}」に切り替わりました。"
-      }
-    ]
-  end
-
   def processor(site, node, client, request)
     klass = "Cms::Line::Service::Processor::#{service.classify}".constantize rescue nil
     item = klass.new(
@@ -42,7 +33,7 @@ class Cms::Line::Service::Base
     item
   end
 
-  def delegate_processor(delegator, events)
+  def delegate_processor(delegator, event)
     klass = "Cms::Line::Service::Processor::#{service.classify}".constantize rescue nil
     item = klass.new(
       service: self,
@@ -53,7 +44,7 @@ class Cms::Line::Service::Base
     )
     item.signature = delegator.signature
     item.body = delegator.body
-    item.events = events
+    item.events = [event]
     item.event_session = delegator.event_session
     item
   end
