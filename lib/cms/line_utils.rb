@@ -12,6 +12,7 @@ class Cms::LineUtils
         name = opts[:name].to_s
         text = opts[:text].to_s
         action = opts[:action]
+        bookmark = opts[:bookmark]
 
         content = { type: "bubble", size: "kilo" }
 
@@ -47,6 +48,30 @@ class Cms::LineUtils
           weight: "bold",
           margin: "none"
         }
+
+        # bookmark
+        if bookmark
+          content[:body][:contents] << {
+            type: "box",
+            layout: "baseline",
+            margin: "md",
+            contents: [
+              {
+                type: "icon",
+                size: "sm",
+                url: "https://26e8-110-5-18-212.ngrok.io/img/ic-heart_28_2.png"
+              },
+              {
+                type: "text",
+                text: "お気に入り",
+                wrap: true,
+                size: "sm",
+                weight: "bold",
+                margin: "sm",
+              }
+            ]
+          }
+        end
 
         # text
         text.split("\n").each_with_index do |line, idx|

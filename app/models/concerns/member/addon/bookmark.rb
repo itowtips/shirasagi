@@ -7,6 +7,10 @@ module Member::Addon
       has_many :bookmarks, class_name: "Member::Bookmark", foreign_key: :member_id, dependent: :destroy
     end
 
+    def page_bookmarks
+      bookmarks.where(content_type: /::Page$/)
+    end
+
     def bookmark_condition(content)
       { site_id: content.site_id, member_id: id, content_id: content.id, content_type: content.class.name }
     end
