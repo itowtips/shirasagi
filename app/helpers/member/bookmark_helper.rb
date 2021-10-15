@@ -45,7 +45,7 @@ module Member::BookmarkHelper
         item.cur_site = @cur_site if item.respond_to?(:cur_site=) && item.site_id == @cur_site.id
 
         ih = cur_item.render_loop_html(item, html: loop_html)
-        ih.gsub!('#{cancel_link}', item.cancel_link(@cur_node)) if item.respond_to?(:cancel_link)
+        ih.gsub!('#{cancel_link}', item.cancel_link(@cur_node, @cur_path)) if item.respond_to?(:cancel_link)
         ih.gsub!('#{current}', current_url?(item.url).to_s) if item.respond_to?(:url)
         h << ih
       end

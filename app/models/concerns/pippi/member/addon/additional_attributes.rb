@@ -8,7 +8,7 @@ module Pippi::Member::Addon
     included do
       field :first_registered, type: DateTime
       field :subscribe_line_message, type: String, default: "active"
-      embeds_ids :deliver_categories, class_name: "Cms::Line::DeliverCategory"
+      embeds_ids :deliver_categories, class_name: "Cms::Line::DeliverCategory::Category"
 
       validates :subscribe_line_message, inclusion: { in: %w(active expired) }
 
@@ -29,17 +29,41 @@ module Pippi::Member::Addon
     end
 
     def each_deliver_categories
-      Cms::Line::DeliverCategory.site(site).each_public do |root, children|
+      Cms::Line::DeliverCategory::Category.site(site).each_public do |root, children|
         categories = children.select { |child| deliver_category_ids.include?(child.id) }
         yield(root, categories) if categories.present?
       end
     end
 
-    def deliver_ages
-      @deliver_ages ||= begin
-        Cms::Line::DeliverAge.site(site).select do |year|
-          (year.condition_ages & child_ages).present?
+    def deliver_category_conditions
+      @_deliver_category_conditions ||= begin
+        cond = []
+        each_deliver_categories do |root, children|
+          st_category_ids = children.map(&:st_category_ids).flatten
+          st_category_ids << -1 if st_category_ids.blank?
+          cond << { category_ids: { "$in" => st_category_ids } }
         end
+        cond.present? ? { "$and" => cond } : { id: -1 }
+      end
+    end
+
+    def deliver_child_ages
+      @_deliver_child_ages ||= begin
+        items = []
+        child_ages = Cms::Line::DeliverCategory::ChildAge.site(site).to_a
+        1.upto(CHILD_MAX_SIZE) do |i|
+          name = send("child#{i}_name")
+          age = send("child#{i}_age")
+          next if name.blank?
+
+          item = { name: name, child_ages: [] }
+          child_ages.each do |child_age|
+            next if !child_age.condition_ages.include?(age)
+            item[:child_ages] << child_age
+          end
+          items << item
+        end
+        items
       end
     end
 
@@ -175,7 +199,7 @@ module Pippi::Member::Addon
 
         roots = []
         category_ids = []
-        Cms::Line::DeliverCategory.site(site).each_public do |root, children|
+        Cms::Line::DeliverCategory::Category.site(site).each_public do |root, children|
           roots << root
           category_ids << children.map(&:id)
         end

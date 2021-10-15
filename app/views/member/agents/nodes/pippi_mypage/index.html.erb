@@ -12,22 +12,7 @@
     <%= link_to "#{@profile_node.name}を見る", @profile_node.url if @profile_node %>
   </section>
 
-  <% @loop_delegates.each do |delegate| %>
-    <%
-      @cur_node = delegate.node
-      @cur_node.attributes = delegate.attributes
-      context = OpenStruct.new(
-        cur_site: @cur_site,
-        cur_node: @cur_node,
-        cur_date: @cur_date,
-        cur_member: @cur_member,
-        deliver_category_cond: @deliver_category_cond,
-        deliver_age_cond: @deliver_age_cond,
-      )
-      @items = delegate.criteria_proc.call(context)
-    %>
-    <section class="<%= @cur_node.basename %>">
-      <%= render_page_list %>
-    </section>
+  <% @cur_node.addons.each do |addon| %>
+    <%= render template: addon.view_template_path if addon.view_template_path %>
   <% end %>
 </div>

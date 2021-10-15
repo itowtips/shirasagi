@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "cms/line/deliver_category", type: :feature, dbscope: :example, js: true do
   let(:site) { cms_site }
-  let(:item) { create :cms_line_deliver_category }
+  let(:item) { create :cms_line_deliver_category_category }
   let(:name) { unique_id }
 
   let(:index_path) { cms_line_deliver_categories_path site }
@@ -12,7 +12,7 @@ describe "cms/line/deliver_category", type: :feature, dbscope: :example, js: tru
   let(:delete_path) { delete_cms_line_deliver_category_path site, item }
 
   def root_categories
-    Cms::Line::DeliverCategory.site(site).and_root
+    Cms::Line::DeliverCategory::Category.site(site).and_root
   end
 
   describe "basic crud" do

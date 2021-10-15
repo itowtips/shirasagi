@@ -11,15 +11,15 @@ describe "cms/line/messages test_deliver", type: :feature, dbscope: :example, js
   let(:today) { Time.zone.today }
   let(:child1_birth) { { era: "seireki", year: (today.year - 1), month: today.month, day: today.day } }
 
-  let!(:deliver_category1) { create :cms_line_deliver_category }
-  let!(:deliver_category1_1) { create :cms_line_deliver_category, parent: deliver_category1 }
-  let!(:deliver_category1_2) { create :cms_line_deliver_category, parent: deliver_category1 }
-  let!(:deliver_category1_3) { create :cms_line_deliver_category, parent: deliver_category1 }
+  let!(:deliver_category1) { create :cms_line_deliver_category_category }
+  let!(:deliver_category1_1) { create :cms_line_deliver_category_category, parent: deliver_category1 }
+  let!(:deliver_category1_2) { create :cms_line_deliver_category_category, parent: deliver_category1 }
+  let!(:deliver_category1_3) { create :cms_line_deliver_category_category, parent: deliver_category1 }
 
-  let!(:deliver_category2) { create :cms_line_deliver_category }
-  let!(:deliver_category2_1) { create :cms_line_deliver_category, parent: deliver_category2 }
-  let!(:deliver_category2_2) { create :cms_line_deliver_category, parent: deliver_category2 }
-  let!(:deliver_category2_3) { create :cms_line_deliver_category, parent: deliver_category2 }
+  let!(:deliver_category2) { create :cms_line_deliver_category_category }
+  let!(:deliver_category2_1) { create :cms_line_deliver_category_category, parent: deliver_category2 }
+  let!(:deliver_category2_2) { create :cms_line_deliver_category_category, parent: deliver_category2 }
+  let!(:deliver_category2_3) { create :cms_line_deliver_category_category, parent: deliver_category2 }
 
   # active members
   let!(:member1) { create(:cms_line_member, name: "member1") }

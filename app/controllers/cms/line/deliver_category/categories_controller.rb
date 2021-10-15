@@ -2,7 +2,7 @@ class Cms::Line::DeliverCategory::CategoriesController < ApplicationController
   include Cms::BaseFilter
   include Cms::CrudFilter
 
-  model Cms::Line::DeliverCategory
+  model Cms::Line::DeliverCategory::Base
 
   navi_view "cms/line/main/navi"
 
@@ -11,7 +11,8 @@ class Cms::Line::DeliverCategory::CategoriesController < ApplicationController
   private
 
   def set_parent
-    @parent ||= Cms::Line::DeliverCategory.site(@cur_site).find(params[:deliver_category_id])
+    @parent = @model.site(@cur_site).find(params[:deliver_category_id])
+    @model = @parent.class
   end
 
   def set_crumbs

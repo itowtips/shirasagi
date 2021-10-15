@@ -39,8 +39,6 @@ ja:
     line_deliver_log: 配信ログ
     line_deliver_condition: 配信条件
     line_deliver_category: 配信カテゴリー
-    line_deliver_category_setting: カテゴリー
-    line_deliver_age_setting: 年齢区分
     line_test_member: テストメンバー
     line_event_session: セッション
     form_check: 制約チェック
@@ -396,6 +394,9 @@ ja:
         none: 表示しない
         thumb_carousel: 記事のサムネイル画像
         body_carousel: 本文内の最初の画像
+      line_deliver_category_type:
+        category: カテゴリー
+        child_age: 子どもの年齢
       deliver_state:
         draft: 下書き
         ready: 配信待ち
@@ -683,6 +684,8 @@ ja:
       cms/line/template/image: テンプレート：画像
       cms/line/template/page: テンプレート：記事ページ
       cms/line/template/json_body: テンプレート：JSON
+      cms/line/deliver_category/child_age: 子どもの年齢
+      cms/line/deliver_category/pickup: ピックアップ
 
   mongoid:
     models:
@@ -1233,15 +1236,17 @@ ja:
       cms/line/deliver_condition:
         name: タイトル
         order: 並び順
-      cms/line/deliver_category:
+      cms/line/deliver_category/base:
+        type: 種別
         name: タイトル
         order: 並び順
         state: ステータス
-      cms/line/deliver_age:
-        name: タイトル
+      cms/addon/line/deliver_category/child_age:
         year1: 年齢
-        order: 並び順
-        state: ステータス
+        lower_year1: 年齢1（下限）
+        upper_year1: 年齢1（上限）
+      cms/addon/line/deliver_category/pick_up:
+        st_page_ids: ページ
       cms/line/test_member:
         name: 名前
         oauth_id: OAuth ID (ユーザーID)
@@ -2567,16 +2572,7 @@ ja:
        - 並び順を入力します。
        - 数字が小さいほど上位に表示されます。
 
-    cms/line/deliver_category:
-      name:
-       - タイトルを入力します。
-      order:
-       - 並び順を入力します。
-       - 数字が小さいほど上位に表示されます。
-      state:
-       - 公開、非公開を選択します。
-
-    cms/line/deliver_age:
+    cms/line/deliver_category/base:
       name:
        - タイトルを入力します。
       order:

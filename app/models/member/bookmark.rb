@@ -34,13 +34,14 @@ class Member::Bookmark
       content.try(:url)
     end
     export :cancel_link do |context|
+      cur_path = context.registers[:cur_path]
       node = context.registers[:cur_node]
-      cancel_link(node)
+      cancel_link(node, cur_path)
     end
   end
 
-  def cancel_link(node)
-    url = node.url + "cancel?" + { path: content.url, ref: node.url }.to_query
+  def cancel_link(node, ref)
+    url = node.url + "cancel?" + { path: content.url, ref: ref }.to_query
     ApplicationController.helpers.link_to("お気に入りを解除", url, { method: :post, class: "favorite-cancel" })
   end
 
