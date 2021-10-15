@@ -16,15 +16,15 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
   let(:child1_birth) { { era: "seireki", year: brithday1.year, month: brithday1.month, day: brithday1.day } }
   let(:child2_birth) { { era: "seireki", year: brithday2.year, month: brithday2.month, day: brithday2.day } }
 
-  let!(:deliver_category1) { create :cms_line_deliver_category }
-  let!(:deliver_category1_1) { create :cms_line_deliver_category, parent: deliver_category1 }
-  let!(:deliver_category1_2) { create :cms_line_deliver_category, parent: deliver_category1 }
-  let!(:deliver_category1_3) { create :cms_line_deliver_category, parent: deliver_category1 }
+  let!(:deliver_category1) { create :cms_line_deliver_category_category }
+  let!(:deliver_category1_1) { create :cms_line_deliver_category_category, parent: deliver_category1 }
+  let!(:deliver_category1_2) { create :cms_line_deliver_category_category, parent: deliver_category1 }
+  let!(:deliver_category1_3) { create :cms_line_deliver_category_category, parent: deliver_category1 }
 
-  let!(:deliver_category2) { create :cms_line_deliver_category }
-  let!(:deliver_category2_1) { create :cms_line_deliver_category, parent: deliver_category2 }
-  let!(:deliver_category2_2) { create :cms_line_deliver_category, parent: deliver_category2 }
-  let!(:deliver_category2_3) { create :cms_line_deliver_category, parent: deliver_category2 }
+  let!(:deliver_category2) { create :cms_line_deliver_category_category }
+  let!(:deliver_category2_1) { create :cms_line_deliver_category_category, parent: deliver_category2 }
+  let!(:deliver_category2_2) { create :cms_line_deliver_category_category, parent: deliver_category2 }
+  let!(:deliver_category2_3) { create :cms_line_deliver_category_category, parent: deliver_category2 }
 
   # active members
   let!(:member1) { create(:cms_line_member, name: "member1") }

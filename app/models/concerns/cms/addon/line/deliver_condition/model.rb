@@ -13,12 +13,12 @@ module Cms::Addon
         permit_params :"lower_year#{i}", :"upper_year#{i}"
         permit_params :"lower_month#{i}", :"upper_month#{i}"
       end
-      embeds_ids :deliver_categories, class_name: "Cms::Line::DeliverCategory"
+      embeds_ids :deliver_categories, class_name: "Cms::Line::DeliverCategory::Category"
       permit_params deliver_category_ids: []
     end
 
     def each_deliver_categories
-      Cms::Line::DeliverCategory.site(site).each_public do |root, children|
+      Cms::Line::DeliverCategory::Category.site(site).each_public do |root, children|
         categories = children.select { |child| deliver_category_ids.include?(child.id) }
         yield(root, categories) if categories.present?
       end
@@ -65,7 +65,7 @@ module Cms::Addon
       end.compact.join(", ")
 
       # category condition
-      Cms::Line::DeliverCategory.site(site).and_root.and_public.each do |root|
+      Cms::Line::DeliverCategory::Category.site(site).and_root.and_public.each do |root|
         categories = root.children.and_public.select { |category| deliver_category_ids.include?(category.id) }
         h << categories.map(&:name).join(", ") if categories.present?
       end

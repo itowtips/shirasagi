@@ -43,7 +43,6 @@ Rails.application.routes.draw do
     resources :blogs, concerns: :deletion
     resources :blog_pages, concerns: :deletion
     resources :blog_page_locations, concerns: :deletion
-
     resources :photos, concerns: [:deletion, :command] do
       get :index_listable, on: :collection
       get :index_slideable, on: :collection

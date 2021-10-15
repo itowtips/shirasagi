@@ -46,7 +46,7 @@
   <%= hidden_field_tag "item[deliver_category_ids][]", item.id %>
 <% end %>
 
-<% Cms::Line::DeliverCategory.site(@cur_site).each_public do |root, children| %>
+<% Cms::Line::DeliverCategory::Category.site(@cur_site).each_public do |root, children| %>
   <fieldset class="column deliver-category deliver-category-<%= root.order %>">
     <legend>
       <%= root.name %>

@@ -1,0 +1,12 @@
+<%
+  @cur_node = @mypage.child_blog_node
+  return if @cur_node.blank?
+
+  @cur_node.attributes = @mypage.blog_context
+  @items = Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date).
+    where(@cur_member.deliver_category_conditions).
+    limit(@cur_node.limit)
+%>
+<section class="blog">
+  <%= render_page_list %>
+</section>

@@ -1,7 +1,4 @@
 <dl class="see">
-  <dt><%= @model.t :name %><%= @model.tt :name %></dt>
-  <dd><%= f.text_field :name %></dd>
-
   <% 1.upto(1) do |i| %>
     <dt><%= @model.t("year#{i}") %></dt>
     <dd>
@@ -16,10 +13,4 @@
       <%= "ヶ月" %>
     </dd>
   <% end %>
-
-  <dt><%= @model.t :order %><%= @model.tt :order %></dt>
-  <dd><%= f.number_field :order %></dd>
-
-  <dt><%= @model.t :state %><%= @model.tt :state %></dt>
-  <dd><%= f.select :state, @item.state_options %></dd>
 </dl>

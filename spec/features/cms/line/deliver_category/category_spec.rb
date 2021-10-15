@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe "cms/line/deliver_category", type: :feature, dbscope: :example, js: true do
   let(:site) { cms_site }
-  let!(:parent) { create :cms_line_deliver_category }
-  let(:item) { create :cms_line_deliver_category, parent: parent }
+  let!(:parent) { create :cms_line_deliver_category_category }
+  let(:item) { create :cms_line_deliver_category_category, parent: parent }
   let(:name) { unique_id }
 
   let(:index_path) { cms_line_deliver_category_categories_path site, parent }
@@ -13,7 +13,7 @@ describe "cms/line/deliver_category", type: :feature, dbscope: :example, js: tru
   let(:delete_path) { delete_cms_line_deliver_category_category_path site, parent, item }
 
   def root_categories
-    Cms::Line::DeliverCategory.site(site).and_root
+    Cms::Line::DeliverCategory::Category.site(site).and_root
   end
 
   def child_categories
