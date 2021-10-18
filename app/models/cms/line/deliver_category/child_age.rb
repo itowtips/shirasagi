@@ -7,7 +7,7 @@ class Cms::Line::DeliverCategory::ChildAge < Cms::Line::DeliverCategory::Base
   embeds_ids :st_pages, class_name: "Cms::Page"
   permit_params st_page_ids: []
 
-  validate :validate_condition_body
+  validate :validate_condition_body, if: ->{ parent }
 
   class << self
     def page_condition
