@@ -55,6 +55,10 @@ class Pippi::TipsController < ApplicationController
     { cur_user: @cur_user, cur_site: @cur_site, cur_node: @cur_node, date: @cur_date }
   end
 
+  def crud_redirect_url
+    { action: :edit, id: @item.id }
+  end
+
   public
 
   def index
