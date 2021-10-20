@@ -1,5 +1,5 @@
 <div id="map-sidebar" style="height: 400px;">
   <% @items.each do |item| %>
-    <%== item.sidebar_html %>
+    <%== item.try(:sidebar_html) || render_map_sidebar(item) %>
   <% end %>
 </div>

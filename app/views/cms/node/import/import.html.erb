@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+=======
+<%= jquery do %>
+  $('#task-form').submit(function(){
+    if($('#item_in_file').val()) {
+      alert(`<%= I18n.t('cms.confirm.check_accessibility_manually') %>`);
+    }
+  });
+<% end %>
+
+>>>>>>> a3bf8504d ([add] cms/form/db)
 <%= form_for :item, url: { action: :import }, html: { id: "task-form", method: :post, multipart: true } do |f| %>
   <%= error_messages_for :item %>
 

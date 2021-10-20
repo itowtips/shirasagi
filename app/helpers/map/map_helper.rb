@@ -191,7 +191,7 @@ module Map::MapHelper
     h = []
     h << %(<div class="maker-info" data-id="#{item.id}">)
     h << %(<p class="name">#{item.name}</p>)
-    h << %(<p class="address">#{item.address}</p>)
+    h << %(<p class="address">#{item.address}</p>) if item.try(:address)
     h << %(<p class="show"><a href="#{item.url}">#{I18n.t('ss.links.show')}</a></p>)
     h << %(</div>)
 
@@ -203,7 +203,7 @@ module Map::MapHelper
 
     h << %(<div class="column" data-id="#{item.id}">)
     h << %(<p><a href="#{item.url}">#{item.name}</a></p>)
-    h << %(<p>#{item.address}</p>)
+    h << %(<p>#{item.address}</p>) if item.try(:address)
     h << %(<p><a href="#" class="click-marker">#{I18n.t("facility.sidebar.click_marker")}</a></p>)
     h << %(</div>)
 
