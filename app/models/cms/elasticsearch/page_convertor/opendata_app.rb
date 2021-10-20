@@ -1,6 +1,7 @@
 class Cms::Elasticsearch::PageConvertor::OpendataApp < Cms::Elasticsearch::PageConvertor
-  def initialize(item)
-    @item = item
+  def initialize(item, opts = {})
+    super
+    @item = item.becomes_with_route
   end
 
   def convert_appfile_to_doc(appfile)

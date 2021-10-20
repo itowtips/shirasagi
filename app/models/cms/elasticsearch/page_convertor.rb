@@ -1,8 +1,10 @@
 class Cms::Elasticsearch::PageConvertor
   attr_reader :item
+  attr_writer :index_item_id
 
-  def initialize(item)
+  def initialize(item, opts = {})
     @item = item
+    @index_item_id = opts[:index_item_id]
   end
 
   def enum_es_docs
@@ -60,7 +62,8 @@ class Cms::Elasticsearch::PageConvertor
   end
 
   def index_item_id
-    "page-#{item.id}"
+    @index_item_id ||= "page-#{item.id}"
+    @index_item_id
   end
 
   def item_text
@@ -80,9 +83,11 @@ class Cms::Elasticsearch::PageConvertor
   end
 
   class << self
-    def with_route(item)
+    def with_route(item, opts = {})
       klass = "#{self.name}::#{item.route.classify.gsub("::", "")}".constantize rescue self
-      klass.new(item)
+      convertor = klass.new(item)
+      convertor.index_item_id = opts[:index_item_id] if opts[:index_item_id].present?
+      convertor
     end
   end
 end
