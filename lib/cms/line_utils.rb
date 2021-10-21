@@ -51,25 +51,29 @@ class Cms::LineUtils
 
         # bookmark
         if bookmark
+          icon_url = ::File.join(item.site.full_url, "/assets/img/line/bookmark.png") rescue nil
+          bookmark_contents = []
+          bookmark_contents << {
+            type: "text",
+            text: "お気に入り",
+            wrap: true,
+            size: "sm",
+            weight: "bold",
+            margin: "sm",
+            flex: 0
+          }
+          if icon_url.present?
+            bookmark_contents << {
+              type: "icon",
+              size: "10px",
+              url: icon_url
+            }
+          end
           content[:body][:contents] << {
             type: "box",
             layout: "baseline",
             margin: "md",
-            contents: [
-              {
-                type: "icon",
-                size: "sm",
-                url: "https://26e8-110-5-18-212.ngrok.io/img/ic-heart_28_2.png"
-              },
-              {
-                type: "text",
-                text: "お気に入り",
-                wrap: true,
-                size: "sm",
-                weight: "bold",
-                margin: "sm",
-              }
-            ]
+            contents: bookmark_contents
           }
         end
 
