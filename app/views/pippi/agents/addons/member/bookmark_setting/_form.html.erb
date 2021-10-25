@@ -1,2 +1,6 @@
 <% addon ||= local_assigns.fetch(:addon, {}) %>
-<%= render template: "pippi/agents/addons/member/mypage/_list_form", locals: { f: f, addon: addon, name: "bookmark" } %>
+<% conditions = Proc.new do |name| %>
+  <dt><%= @model.t "#{name}_conditions" %><%= @model.tt "#{name}_conditions" %></dt>
+  <dd>イベント表示とブログ表示以外</dd>
+<% end %>
+<%= render template: "pippi/agents/addons/member/mypage/_list_form", locals: { f: f, addon: addon, name: "bookmark", conditions: conditions } %>

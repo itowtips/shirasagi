@@ -19,8 +19,8 @@ ja:
     addons:
       pippi/member/additional_attributes: 追加情報
       pippi/member/bookmark_setting: ブックマーク表示
-      pippi/member/event_page_setting: イベント表示
-      pippi/member/blog_page_setting: ブログ表示
+      pippi/member/event_bookmark_setting: イベント表示
+      pippi/member/blog_bookmark_setting: ブログ表示
       pippi/member/child_age_page_setting: 年齢別表示
 
   cms:
@@ -55,6 +55,7 @@ ja:
         child4_birthday: "子供の情報.4 誕生日"
         child5_birthday: "子供の情報.5 誕生日"
       pippi/member/addon/bookmark_setting:
+        bookmark_conditions: 検索条件
         bookmark_limit: 表示件数
         bookmark_loop_html: ループHTML
         bookmark_upper_html: 上部HTML
@@ -63,7 +64,8 @@ ja:
         bookmark_loop_liquid: ループHTML
         bookmark_no_items_display_state: ページ未検出時表示
         bookmark_substitute_html: 代替HTML
-      pippi/member/addon/event_page_setting:
+      pippi/member/addon/event_bookmark_setting:
+        event_conditions: 検索条件
         event_limit: 表示件数
         event_loop_html: ループHTML
         event_upper_html: 上部HTML
@@ -72,7 +74,8 @@ ja:
         event_loop_liquid: ループHTML
         event_no_items_display_state: ページ未検出時表示
         event_substitute_html: 代替HTML
-      pippi/member/addon/blog_page_setting:
+      pippi/member/addon/blog_bookmark_setting:
+        blog_conditions: 検索条件
         blog_limit: 表示件数
         blog_loop_html: ループHTML
         blog_upper_html: 上部HTML
@@ -82,6 +85,7 @@ ja:
         blog_no_items_display_state: ページ未検出時表示
         blog_substitute_html: 代替HTML
       pippi/member/addon/child_age_page_setting:
+        child_age_conditions: 検索条件
         child_age_limit: 表示件数
         child_age_loop_html: ループHTML
         child_age_upper_html: 上部HTML

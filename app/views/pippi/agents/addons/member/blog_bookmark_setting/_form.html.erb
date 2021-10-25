@@ -1,0 +1,6 @@
+<% addon ||= local_assigns.fetch(:addon, {}) %>
+<% conditions = Proc.new do |name| %>
+  <dt><%= @model.t "#{name}_conditions" %><%= @model.tt "#{name}_conditions" %></dt>
+  <dd><%= f.text_area "#{name}_conditions", value: @item.send("#{name}_conditions").to_a.join("\n"), style: "height: 100px;" %></dd>
+<% end %>
+<%= render template: "pippi/agents/addons/member/mypage/_list_form", locals: { f: f, addon: addon, name: "blog", conditions: conditions } %>

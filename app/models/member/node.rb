@@ -339,26 +339,14 @@ module Member::Node
     default_scope ->{ where(route: "member/bookmark") }
   end
 
-  class DeliverCategoryPage
-    include Cms::Model::Node
-    include Cms::Addon::NodeSetting
-    include Cms::Addon::Meta
-    include Event::Addon::PageList
-    include Cms::Addon::Release
-    include Cms::Addon::GroupPermission
-    include History::Addon::Backup
-
-    default_scope ->{ where(route: "member/deliver_category_page") }
-  end
-
   class PippiMypage
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
     include Pippi::Member::MypageSetting
     include Pippi::Member::Addon::BookmarkSetting
-    include Pippi::Member::Addon::EventPageSetting
-    include Pippi::Member::Addon::BlogPageSetting
+    include Pippi::Member::Addon::EventBookmarkSetting
+    include Pippi::Member::Addon::BlogBookmarkSetting
     include Pippi::Member::Addon::ChildAgePageSetting
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission

@@ -44,7 +44,6 @@ Rails.application.routes.draw do
     resources :blog_pages, concerns: :deletion
     resources :blog_page_locations, concerns: :deletion
     resources :bookmarks, concerns: :deletion
-    resources :deliver_category_pages, concerns: :deletion
 
     resources :photos, concerns: [:deletion, :command] do
       get :index_listable, on: :collection
@@ -107,7 +106,6 @@ Rails.application.routes.draw do
     get "bookmark/(index.:format)" => "public#index", cell: "nodes/bookmark"
     post "bookmark/register(index.:format)" => "public#register", cell: "nodes/bookmark"
     post "bookmark/cancel(index.:format)" => "public#cancel", cell: "nodes/bookmark"
-    get "deliver_category_page/(index.:format)" => "public#index", cell: "nodes/deliver_category_page"
 
     scope "my_blog" do
       resource :setting, controller: "public", cell: "nodes/my_blog/setting", except: [:index, :show, :destroy]

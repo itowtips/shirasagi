@@ -1,0 +1,6 @@
+<% addon ||= local_assigns.fetch(:addon, {}) %>
+<% conditions = Proc.new do |name| %>
+  <dt><%= @model.t "#{name}_conditions" %></dt>
+  <dd><%=br @item.send("#{name}_conditions").to_a.join("\n") %></dd>
+<% end %>
+<%= render template: "pippi/agents/addons/member/mypage/_list_show", locals: { addon: addon, name: "blog", conditions: conditions } %>

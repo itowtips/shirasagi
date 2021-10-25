@@ -1,5 +1,5 @@
 module Pippi::Member::Addon
-  module EventPageSetting
+  module EventBookmarkSetting
     extend SS::Addon
     extend ActiveSupport::Concern
 

@@ -25,7 +25,7 @@ class Member::Bookmark
       content.try(:name)
     end
     export :index_name do
-      content.try(:name)
+      content.try(:index_name).presence || content.try(:name)
     end
     export :css_class do
       "bookmark"
@@ -33,7 +33,10 @@ class Member::Bookmark
     export :url do
       content.try(:url)
     end
-    export :cancel_link do |context|
+    export :content do
+      content
+    end
+    export as: :cancel_link do |context|
       cur_path = context.registers[:cur_path]
       node = context.registers[:cur_node]
       cancel_link(node, cur_path)
@@ -42,7 +45,7 @@ class Member::Bookmark
 
   def cancel_link(node, ref)
     url = node.url + "cancel?" + { path: content.url, ref: ref }.to_query
-    ApplicationController.helpers.link_to("お気に入りを解除", url, { method: :post, class: "favorite-cancel" })
+    ApplicationController.helpers.link_to(I18n.t("member.links.cancel_bookmark"), url, { method: :post, class: "favorite-cancel" })
   end
 
   def becomes_with_route
@@ -78,6 +81,10 @@ class Member::Bookmark
   class << self
     def and_public
       where(:deleted.exists => false)
+    end
+
+    def and_pages
+      where(content_type: /::Page$/)
     end
   end
 end

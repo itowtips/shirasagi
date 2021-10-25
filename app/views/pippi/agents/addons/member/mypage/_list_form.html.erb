@@ -30,6 +30,10 @@
 <% end %>
 
 <dl class="see">
+  <% if conditions %>
+    <% conditions.call(name) %>
+  <% end %>
+
   <dt class="limit"><%= @model.t "#{name}_limit" %><%= @model.tt "#{name}_limit" %></dt>
   <dd class="limit"><%= f.number_field "#{name}_limit" %></dd>
 

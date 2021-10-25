@@ -181,8 +181,6 @@ ja:
       member/pippi_mypage: ぴっぴマイページ
       member/pippi_profile: ぴっぴプロフィール
       member/pippi_first_registration: ぴっぴマイページ初回登録
-      member/deliver_category_page: LINE配信ページリスト（カテゴリー）
-      member/deliver_age_page: LINE配信ページリスト（年齢）
 
     parts:
       member/blog_page: ブログページ一覧

@@ -21,7 +21,6 @@ module Member
     Cms::Node.plugin "member/photo_location"
     Cms::Node.plugin "member/photo_spot"
     Cms::Node.plugin "member/bookmark"
-    Cms::Node.plugin "member/deliver_category_page"
 
     # anpi
     Cms::Node.plugin "member/my_anpi_post"

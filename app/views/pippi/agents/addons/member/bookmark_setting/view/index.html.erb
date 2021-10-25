@@ -1,10 +1,7 @@
 <%
-  @cur_node = @mypage.child_bookmark_node
-  return if @cur_node.blank?
-
+  @cur_node = @bookmark_node
   @cur_node.attributes = @mypage.bookmark_context
-  @cur_member.squish_bookmarks
-  @items = @cur_member.bookmarks.and_public.limit(@cur_node.limit)
+  @items = @other_bookmarks
 %>
 <section class="bookmarks">
   <%= render_page_list %>

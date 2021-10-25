@@ -1,5 +1,5 @@
 module Pippi::Member::Addon
-  module BlogPageSetting
+  module BlogBookmarkSetting
     extend SS::Addon
     extend ActiveSupport::Concern
 

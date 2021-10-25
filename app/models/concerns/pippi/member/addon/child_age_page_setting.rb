@@ -6,16 +6,5 @@ module Pippi::Member::Addon
     included do
       define_list("child_age").call
     end
-
-    #def child_age_criteria_proc
-    #  proc do |context|
-    #    site = context.cur_site
-    #    node = context.cur_node
-    #    cond = context.deliver_age_cond
-    #    return Cms::Page.none if cond.blank?
-    #    Cms::Page.public_list(site: site, node: node).where(cond).
-    #      order_by(node.sort_hash).limit(node.limit)
-    #  end
-    #end
   end
 end

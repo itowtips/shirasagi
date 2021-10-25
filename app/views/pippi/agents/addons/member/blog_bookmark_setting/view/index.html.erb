@@ -1,0 +1,8 @@
+<%
+  @cur_node = @bookmark_node
+  @cur_node.attributes = @mypage.blog_context
+  @items = @blog_bookmarks
+%>
+<section class="blog">
+  <%= render_page_list %>
+</section>

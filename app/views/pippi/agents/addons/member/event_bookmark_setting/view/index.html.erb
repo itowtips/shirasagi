@@ -1,0 +1,8 @@
+<%
+  @cur_node = @bookmark_node
+  @cur_node.attributes = @mypage.event_context
+  @items = @event_bookmarks
+%>
+<section class="events">
+  <%= render_page_list %>
+</section>
