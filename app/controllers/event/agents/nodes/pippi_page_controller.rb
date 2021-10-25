@@ -1,6 +1,7 @@
 class Event::Agents::Nodes::PippiPageController < ApplicationController
   include Cms::NodeFilter::View
   include Cms::ForMemberFilter::Node
+  include Cms::NodeFilter::ListView
   include Event::EventHelper
   helper Event::EventHelper
   helper Event::IcalHelper
@@ -9,23 +10,7 @@ class Event::Agents::Nodes::PippiPageController < ApplicationController
   before_action :set_calendar_year_month, only: [:index]
 
   def index
-    @items = Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date).
-      where('event_dates.0' => { "$exists" => true })
-
-    respond_to do |format|
-      format.html do
-        case @cur_display
-        when "list"
-          index_monthly_list
-        else # when "table"
-          index_monthly_table
-        end
-      end
-      format.ics do
-        index_ics
-      end
-    end
-
+    @items = Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date)
   end
 
   def daily

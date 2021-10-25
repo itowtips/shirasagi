@@ -59,6 +59,9 @@ ja:
       event_deadline:
         title: イベント日(締切日間近)
         description: 申込み締め切り日が近い順に表示されます。
+      event_dates_weekend:
+        title: イベント日(週末)
+        description: 一週間以内の週末のイベントが古い順に表示されます。
 
     options:
       event_display:
@@ -104,6 +107,7 @@ ja:
       event/facility: 施設
       event/calendar: カレンダー
       event/pippi_category: カテゴリー
+      event/pippi_page_list: リスト表示
 
   cms:
     nodes:

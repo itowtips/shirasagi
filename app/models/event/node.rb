@@ -59,7 +59,7 @@ module Event::Node
     include Cms::Addon::NodeLinePostSetting
     include Category::Addon::Setting
     include Event::Addon::PippiCategory
-    include Event::Addon::CalendarList
+    include Event::Addon::PippiPageList
     include Event::Addon::IcalImport
     include Cms::Addon::TagSetting
     include Cms::Addon::ForMemberNode
@@ -73,11 +73,6 @@ module Event::Node
     default_scope ->{ where(route: "event/pippi_page") }
 
     after_save :purge_pages, if: ->{ ical_refresh_enabled? && @db_changes && @db_changes["ical_max_docs"] }
-
-    def condition_hash(options = {})
-      cond = super
-      cond.merge "event_dates.0" => { "$exists" => true }
-    end
 
     private
 
