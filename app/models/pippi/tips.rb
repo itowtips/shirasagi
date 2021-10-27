@@ -21,8 +21,30 @@ class Pippi::Tips
   before_save :set_ymd
 
   def summary
-    ApplicationController.helpers.sanitize(html.presence || '', tags: []).squish.truncate(120)
+    ApplicationController.helpers.sanitize(html.presence || '', tags: []).squish.html_safe.truncate(120)
   end
+
+  def layout
+    @_layout ||= begin
+      self.class.find_layout(site, node, date) || "nil"
+    end
+    (@_layout == "nil") ? nil : @_layout
+  end
+
+  def render_layout
+    return html if layout.nil?
+    rendered = layout.html.presence || "{{ yield }}"
+    rendered.gsub!("{{ yield }}", html)
+
+    %w(image1 image2 image3).each do |key|
+      image = layout.send(key)
+      img_tag = image ? "<img src=\"#{image.url}\" alt=\"#{image.name}\">" : ""
+      rendered.gsub!("{{ #{key} }}", img_tag)
+    end
+    rendered
+  end
+
+  private
 
   def set_name
     self.name = "#{date.strftime("%Y/%m/%d")} のひとこと"
@@ -35,6 +57,10 @@ class Pippi::Tips
   end
 
   class << self
+    def find_layout(site, node, date)
+      Pippi::TipsLayout.site(site).node(node).where(start_date: { "$lte" => date }, end_date: { "$gte" => date }).first
+    end
+
     def search(params)
       criteria = all
       return criteria if params.blank?

@@ -1,0 +1,33 @@
+.pippi-tips {
+  table.index {
+    th {
+      padding: 5px 8px;
+      &.date {
+        width: 100px;
+      }
+      &.action {
+        width: 60px;
+        text-align: center;
+      }
+    }
+    td {
+      padding: 5px 8px;
+      border-bottom: solid 1px #dcdcdc;
+    }
+    tr:nth-child(2n) {
+      background-color: transparent;
+      &:hover {
+        background-color: #f2f2f2;
+      }
+    }
+    tr.saturday td.date {
+      color: #00f;
+    }
+    tr.sunday td.date, .main-box tr.holiday td.date {
+      color: #f00;
+    }
+    tr.current {
+      background-color: #fdfdb3;
+    }
+  }
+}

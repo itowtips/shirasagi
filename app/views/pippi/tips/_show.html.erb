@@ -2,6 +2,18 @@
   <dt><%= @item.t :date %></dt>
   <dd><%= @item.date.strftime("%Y/%m/%d") %></dd>
 
+  <dt><%= @item.t :layout %></dt>
+  <dd>
+    <% layout = @model.find_layout(@cur_site, @cur_node, @cur_date) %>
+    <% if layout %>
+      <% if layout.allowed?(:read, @cur_user, site: @cur_site) %>
+        <%= link_to layout.name, pippi_tips_layout_path(id: layout), target: "_blank", rel: "noopener" %>
+      <% else %>
+        <%= layout.name %>
+      <% end %>
+    <% end %>
+  </dd>
+
   <dt class="wide">
     <%= html_editor "#mod-cms-body", height: "400px", readonly: true %>
     <%= text_area_tag "mod-cms-body", @item.html, style: "height: 400px;" %>

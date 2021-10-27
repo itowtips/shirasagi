@@ -1,10 +1,10 @@
-module Pippi::Member::Addon
-  module EventBookmarkSetting
+module Pippi::Addon::Member
+  module BlogBookmarkSetting
     extend SS::Addon
     extend ActiveSupport::Concern
 
     included do
-      define_list("event").call
+      define_list("blog").call
     end
   end
 end

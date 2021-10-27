@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
     get "tips" => "tips#index"
     resources :tips, path: "tips/:ymd", concerns: [:deletion, :download_all, :import]
+    resources :tips_layouts, concerns: [:deletion]
   end
 
   node "pippi" do

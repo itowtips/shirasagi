@@ -1,0 +1,10 @@
+<dl class="see mod-pippi-tips_file">
+  <dt><%= @model.t :image1_id %></dt>
+  <dd><%= image_tag(@item.image1.url, style: "width: 84px;") if @item.image1 %></dd>
+
+  <dt><%= @model.t :image2_id %></dt>
+  <dd><%= image_tag(@item.image2.url, style: "width: 84px;") if @item.image2 %></dd>
+
+  <dt><%= @model.t :image3_id %></dt>
+  <dd><%= image_tag(@item.image3.url, style: "width: 84px;") if @item.image3 %></dd>
+</dl>

@@ -2,7 +2,7 @@ class Cms::Line::Poster::Delivery
   include SS::Document
   include SS::Reference::Site
   include SS::Reference::User
-  include Pippi::Member::Addon::AdditionalAttributes
+  include Pippi::Addon::Member::AdditionalAttributes
   include Cms::SitePermission
 
   set_permission_name "cms_line_event_sessions", :use

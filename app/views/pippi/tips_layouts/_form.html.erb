@@ -1,0 +1,10 @@
+<dl class="see">
+  <dt><%= @model.t :name %><%= @model.tt :name %></dt>
+  <dd><%= f.text_field :name %></dd>
+
+  <dt><%= @model.t :start_date %><%= @model.tt :start_date %></dt>
+  <dd><%= f.text_field :start_date, class: "date js-date", value: tryb { @item.start_date.strftime("%Y/%m/%d") } %></dd>
+
+  <dt><%= @model.t :end_date %><%= @model.tt :end_date %></dt>
+  <dd><%= f.text_field :end_date, class: "date js-date", value: tryb { @item.end_date.strftime("%Y/%m/%d") } %></dd>
+</dl>

@@ -15,7 +15,7 @@ class Pippi::Tips::Exporter
   end
 
   def headers
-    %w(date html).map { |k| Pippi::Tips.t(k) }
+    %w(date html layout).map { |k| Pippi::Tips.t(k) }
   end
 
   def draw_header
@@ -26,6 +26,7 @@ class Pippi::Tips::Exporter
     row = []
     row << day.strftime("%m/%d")
     row << item.try(:html)
+    row << item.layout.try(:name)
     (@encoding == "Shift_JIS") ? encode_sjis(row.to_csv) : row.to_csv
   end
 

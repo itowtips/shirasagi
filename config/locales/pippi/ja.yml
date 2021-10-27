@@ -1,6 +1,7 @@
 ja:
   pippi:
     tips: 今日のひとこと
+    tips_layouts: レイアウト
     options:
       subscribe_line_message:
         active: LINEメッセージを受信する
@@ -22,6 +23,7 @@ ja:
       pippi/member/event_bookmark_setting: イベント表示
       pippi/member/blog_bookmark_setting: ブログ表示
       pippi/member/child_age_page_setting: 年齢別表示
+      pippi/tips_file: ファイル
 
   cms:
     nodes:
@@ -34,7 +36,12 @@ ja:
       pippi/tips:
         date: 日付
         html: 本文
-      pippi/member/addon/additional_attributes:
+        layout: レイアウト
+      pippi/tips_layout:
+        name: タイトル
+        start_date: 開始日
+        end_date: 終了日
+      pippi/addon/member/additional_attributes:
         first_registered: 初回登録日時
         subscribe_line_message: LINEメッセージ
         child_name: お名前
@@ -54,7 +61,7 @@ ja:
         child3_birthday: "子供の情報.3 誕生日"
         child4_birthday: "子供の情報.4 誕生日"
         child5_birthday: "子供の情報.5 誕生日"
-      pippi/member/addon/bookmark_setting:
+      pippi/addon/member/bookmark_setting:
         bookmark_conditions: 検索条件
         bookmark_limit: 表示件数
         bookmark_loop_html: ループHTML
@@ -64,7 +71,7 @@ ja:
         bookmark_loop_liquid: ループHTML
         bookmark_no_items_display_state: ページ未検出時表示
         bookmark_substitute_html: 代替HTML
-      pippi/member/addon/event_bookmark_setting:
+      pippi/addon/member/event_bookmark_setting:
         event_conditions: 検索条件
         event_limit: 表示件数
         event_loop_html: ループHTML
@@ -74,7 +81,7 @@ ja:
         event_loop_liquid: ループHTML
         event_no_items_display_state: ページ未検出時表示
         event_substitute_html: 代替HTML
-      pippi/member/addon/blog_bookmark_setting:
+      pippi/addon/member/blog_bookmark_setting:
         blog_conditions: 検索条件
         blog_limit: 表示件数
         blog_loop_html: ループHTML
@@ -84,7 +91,7 @@ ja:
         blog_loop_liquid: ループHTML
         blog_no_items_display_state: ページ未検出時表示
         blog_substitute_html: 代替HTML
-      pippi/member/addon/child_age_page_setting:
+      pippi/addon/member/child_age_page_setting:
         child_age_conditions: 検索条件
         child_age_limit: 表示件数
         child_age_loop_html: ループHTML
@@ -94,7 +101,32 @@ ja:
         child_age_loop_liquid: ループHTML
         child_age_no_items_display_state: ページ未検出時表示
         child_age_substitute_html: 代替HTML
+      pippi/addon/tips_file:
+        image1_id: 画像1
+        image2_id: 画像2
+        image3_id: 画像3
 
   cms_role:
     read_pippi_tips: 今日のひとことの閲覧
     edit_pippi_tips: 今日のひとことの編集
+
+  tooltip:
+    pippi/tips_layout:
+      name:
+       - タイトルを入力します。
+      start_date:
+       - 開始日を入力します。
+      end_date:
+       - 終了日を入力します。
+      html:
+       - レイアウトのHTMLを記述します。
+       - 下記のテンプレートが使用可能です。
+       - ""
+       - "{{ yield }}"
+       - 本文の呼び出しが行われます。
+       - "{{ image1 }}"
+       - 画像1のimgタグが出力されます。
+       - "{{ image2 }}"
+       - 画像2のimgタグが出力されます。
+       - "{{ image3 }}"
+       - 画像3のimgタグが出力されます。

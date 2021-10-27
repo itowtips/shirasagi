@@ -1,4 +1,4 @@
-module Pippi::Member::Addon
+module Pippi::Addon::Member
   module AdditionalAttributes
     extend SS::Addon
     extend ActiveSupport::Concern

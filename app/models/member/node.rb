@@ -344,10 +344,10 @@ module Member::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
     include Pippi::Member::MypageSetting
-    include Pippi::Member::Addon::BookmarkSetting
-    include Pippi::Member::Addon::EventBookmarkSetting
-    include Pippi::Member::Addon::BlogBookmarkSetting
-    include Pippi::Member::Addon::ChildAgePageSetting
+    include Pippi::Addon::Member::BookmarkSetting
+    include Pippi::Addon::Member::EventBookmarkSetting
+    include Pippi::Addon::Member::BlogBookmarkSetting
+    include Pippi::Addon::Member::ChildAgePageSetting
     include Cms::Addon::Release
     include Cms::Addon::GroupPermission
     include History::Addon::Backup
