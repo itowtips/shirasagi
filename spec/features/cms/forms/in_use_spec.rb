@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Cms::FormsController, type: :feature, dbscope: :example, js: true do
+describe Cms::Form::FormsController, type: :feature, dbscope: :example, js: true do
   let!(:site) { cms_site }
   let!(:form) { create :cms_form, cur_site: site, state: "public" }
   let!(:page_item) { create :cms_page, form: form }
