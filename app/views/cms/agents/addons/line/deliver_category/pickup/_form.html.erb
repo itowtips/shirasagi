@@ -4,6 +4,7 @@
     <%
       page_params = {}
       page_params[:s] = { statuses: %w(public) }
+      page_params[:category_parent_id] = @item.child_page_node if @item.child_page_node
     %>
     <%= link_to t("cms.apis.pages.index"), cms_apis_pages_path(page_params), class: "ajax-box" %>
     <table class="index ajax-selected" style="margin-top: 10px;">

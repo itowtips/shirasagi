@@ -220,7 +220,18 @@ module Cms::Model::Page
 
     cond
   end
+
   module ClassMethods
+    def search(params)
+      criteria = super
+
+      if params[:category_ids].present?
+        criteria = criteria.in(category_ids: params[:category_ids])
+      end
+
+      criteria
+    end
+
     def and_linking_pages(item)
       where(:id.ne => item.id).where("$and" => [{ "$or" => item.get_linking_cond }])
     end

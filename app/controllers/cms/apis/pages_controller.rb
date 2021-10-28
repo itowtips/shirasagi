@@ -5,7 +5,9 @@ class Cms::Apis::PagesController < ApplicationController
 
   before_action :set_search_params
   before_action :set_selected_node
+  before_action :set_category_node
   helper_method :statuses_option
+  helper_method :categories_option
 
   KNOWN_STATUSES = %w(public ready request remand edit closed).freeze
 
@@ -25,6 +27,8 @@ class Cms::Apis::PagesController < ApplicationController
         s.statuses &= KNOWN_STATUSES
       end
 
+      s.category_ids = Array(s.category_ids).flatten.select(&:present?).map(&:to_i)
+
       s
     end
   end
@@ -36,10 +40,23 @@ class Cms::Apis::PagesController < ApplicationController
     end
   end
 
+  def set_category_node
+    return if params[:category_parent_id].blank?
+    @category_parent ||= Category::Node::Base.site(@cur_site).find(params[:category_parent_id]) rescue nil
+
+    return if @category_parent.nil?
+    @category_nodes ||= @category_parent.children.order_by(order: 1).to_a
+  end
+
   def statuses_option
     KNOWN_STATUSES.map do |v|
       [ t("ss.state.#{v}"), v ]
     end
+  end
+
+  def categories_option
+    return if @category_nodes.blank?
+    @category_nodes.map { |cate| [cate.name, cate.id] }
   end
 
   public
