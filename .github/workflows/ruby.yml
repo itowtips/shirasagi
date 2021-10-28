@@ -20,8 +20,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parallelism: [2]
-        id: [0,1]
+        parallelism: [5]
+        id: [0,1,2,3,4]
     steps:
     - uses: actions/checkout@v2
     - name: Docker Login
