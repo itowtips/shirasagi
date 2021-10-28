@@ -4,7 +4,7 @@
     addon_options[:id] = "addon-basic"
     addon_options[:head] = @addon_basic_name || t("ss.basic_info")
   %>
-  <% buf = render file: "_select_type" %>
+  <% buf = render template: "_select_type" %>
   <%= render "ss/crud/addon", addon: addon_options do %>
     <%= buf %>
   <% end %>

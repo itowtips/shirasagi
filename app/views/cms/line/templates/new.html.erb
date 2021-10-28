@@ -3,4 +3,4 @@
   <%= f.button t("ss.buttons.cancel"), class: 'btn-default', type: :reset, onclick: "location.href='#{url_for(action: :select_type, type: "-")}'; return false;" %>
 <% end %>
 
-<%= render file: "ss/crud/new" %>
+<%= render template: "ss/crud/new" %>
