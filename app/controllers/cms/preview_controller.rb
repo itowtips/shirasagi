@@ -75,7 +75,7 @@ class Cms::PreviewController < ApplicationController
     preview_item.delete("id")
     column_values = preview_item.delete("column_values")
 
-    page.attributes = preview_item
+    page.attributes = preview_item.select { |k, v| page.respond_to?("#{k}=") }
     page.site = @cur_site
     page.lock_owner_id = nil if page.respond_to?(:lock_owner_id)
     page.lock_until = nil if page.respond_to?(:lock_until)
