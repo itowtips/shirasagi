@@ -93,14 +93,14 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
       it "#new" do
         visit new_path
         within "form#item-form" do
+          fill_in "item[deliver_date]", with: deliver_date
           fill_in "item[name]", with: name
           select I18n.t("cms.options.line_deliver_condition_state.multicast_with_no_condition"), from: 'item[deliver_condition_state]'
-
-          fill_in "item[deliver_date]", with: deliver_date
-          page.evaluate_script('$(".xdsoft_datetimepicker").hide();') # hide datetimepicker
-
-          click_on I18n.t("ss.buttons.save")
         end
+
+        first('input[name="item[name]"]').click
+        expect(page).to have_no_selector('.xdsoft_datetimepicker', visible: true)
+        click_on I18n.t("ss.buttons.save")
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
         within "#addon-basic" do
@@ -172,14 +172,14 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
       it "#new" do
         visit new_path
         within "form#item-form" do
+          fill_in "item[deliver_date]", with: deliver_date
           fill_in "item[name]", with: name
           select I18n.t("cms.options.line_deliver_condition_state.multicast_with_no_condition"), from: 'item[deliver_condition_state]'
-
-          fill_in "item[deliver_date]", with: deliver_date
-          page.evaluate_script('$(".xdsoft_datetimepicker").hide();') # hide datetimepicker
-
-          click_on I18n.t("ss.buttons.save")
         end
+
+        first('input[name="item[name]"]').click
+        expect(page).to have_no_selector('.xdsoft_datetimepicker', visible: true)
+        click_on I18n.t("ss.buttons.save")
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
         within "#addon-basic" do
@@ -253,16 +253,16 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
       it "#new" do
         visit new_path
         within "form#item-form" do
+          fill_in "item[deliver_date]", with: deliver_date
           fill_in "item[name]", with: name
           select I18n.t("cms.options.line_deliver_condition_state.multicast_with_input_condition"), from: 'item[deliver_condition_state]'
           fill_in "item[lower_year1]", with: 1
           fill_in "item[upper_year1]", with: 1
-
-          fill_in "item[deliver_date]", with: deliver_date
-          page.evaluate_script('$(".xdsoft_datetimepicker").hide();') # hide datetimepicker
-
-          click_on I18n.t("ss.buttons.save")
         end
+
+        first('input[name="item[name]"]').click
+        expect(page).to have_no_selector('.xdsoft_datetimepicker', visible: true)
+        click_on I18n.t("ss.buttons.save")
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
         within "#addon-basic" do
@@ -337,14 +337,14 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
       it "#new" do
         visit new_path
         within "form#item-form" do
+          fill_in "item[deliver_date]", with: deliver_date
           fill_in "item[name]", with: name
           select I18n.t("cms.options.line_deliver_condition_state.multicast_with_no_condition"), from: 'item[deliver_condition_state]'
-
-          fill_in "item[deliver_date]", with: deliver_date
-          page.evaluate_script('$(".xdsoft_datetimepicker").hide();') # hide datetimepicker
-
-          click_on I18n.t("ss.buttons.save")
         end
+
+        first('input[name="item[name]"]').click
+        expect(page).to have_no_selector('.xdsoft_datetimepicker', visible: true)
+        click_on I18n.t("ss.buttons.save")
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
         within "#addon-basic" do
@@ -423,16 +423,16 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
       it "#new" do
         visit new_path
         within "form#item-form" do
+          fill_in "item[deliver_date]", with: deliver_date
           fill_in "item[name]", with: name
           select I18n.t("cms.options.line_deliver_condition_state.multicast_with_input_condition"), from: 'item[deliver_condition_state]'
           fill_in "item[lower_year1]", with: 1
           fill_in "item[upper_year1]", with: 1
-
-          fill_in "item[deliver_date]", with: deliver_date
-          page.evaluate_script('$(".xdsoft_datetimepicker").hide();') # hide datetimepicker
-
-          click_on I18n.t("ss.buttons.save")
         end
+
+        first('input[name="item[name]"]').click
+        expect(page).to have_no_selector('.xdsoft_datetimepicker', visible: true)
+        click_on I18n.t("ss.buttons.save")
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
         within "#addon-basic" do
