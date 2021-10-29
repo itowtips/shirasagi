@@ -1,5 +1,4 @@
 <%= jquery do %>
-<<<<<<< HEAD
 $(".file").on("change", function() {
   var basename = $(this).val().split('\\').pop();
   var ext = basename.split('.').pop();
@@ -7,20 +6,6 @@ $(".file").on("change", function() {
   $(".name").val(name);
   $(".filename").val(name);
 });
-=======
-  $(".file").on("change", function() {
-    var basename = $(this).val().split('\\').pop();
-    var ext = basename.split('.').pop();
-    var name = ext.match(/zip/i) ? basename.replace(/\.[^.]+?$/, "") : "";
-    $(".name").val(name);
-    $(".filename").val(name);
-  });
-  $('#task-form').submit(function(){
-    if($('#item_in_file').val() && $('#item_name').val() && $('#item_basename').val()) {
-      alert(`<%= I18n.t('cms.confirm.check_accessibility_manually') %>`);
-    }
-  });
->>>>>>> a3bf8504d ([add] cms/form/db)
 <% end %>
 
 <%= form_for :item, url: { action: :import }, html: { id: "task-form", method: :post, multipart: true } do |f| %>
