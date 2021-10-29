@@ -224,6 +224,7 @@ module Cms::Model::Page
   module ClassMethods
     def search(params)
       criteria = super
+      return criteria if params.blank?
 
       if params[:category_ids].present?
         criteria = criteria.in(category_ids: params[:category_ids])
