@@ -34,7 +34,6 @@ module Pippi::Member::MypageSetting
           !send("#{name}_loop_format_liquid?")
         end
         define_method("#{name}_context") do
-          conditions = send("#{name}_conditions")
           context = OpenStruct.new(
             limit: send("#{name}_limit"),
             loop_html: send("#{name}_loop_html"),
@@ -44,8 +43,8 @@ module Pippi::Member::MypageSetting
             loop_liquid: send("#{name}_loop_liquid"),
             no_items_display_state: send("#{name}_no_items_display_state"),
             substitute_html: send("#{name}_substitute_html"),
+            conditions: send("#{name}_conditions")
           )
-          context[:conditions] = conditions if conditions.present?
           context
         end
       end
