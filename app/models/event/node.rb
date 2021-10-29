@@ -74,6 +74,11 @@ module Event::Node
 
     after_save :purge_pages, if: ->{ ical_refresh_enabled? && @db_changes && @db_changes["ical_max_docs"] }
 
+    def condition_hash(options = {})
+      cond = super
+      cond.merge "event_dates.0" => { "$exists" => true }
+    end
+
     private
 
     def purge_pages

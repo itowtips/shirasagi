@@ -125,6 +125,26 @@ module Event::Addon
       html.join("<br>")
     end
 
+    def event_dates_cluster(dates)
+      return unless dates
+
+      dates = dates.collect do |date|
+        date.try(:to_date) || date
+      end
+      event_dates.clustered.find do |cluster|
+        (cluster & dates).present?
+      end
+    end
+
+    def event_dates_difference(dates)
+      return unless event_dates_cluster(dates)
+
+      today = Time.zone.today
+      start_date_difference = (today - event_dates_cluster(dates).first).abs
+      end_date_difference = (event_dates_cluster(dates).last - today).abs
+      [start_date_difference, end_date_difference].min
+    end
+
     private
 
     def validate_event

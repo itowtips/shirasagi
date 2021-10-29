@@ -10,7 +10,10 @@ class Event::Agents::Nodes::PippiPageController < ApplicationController
   before_action :set_calendar_year_month, only: [:index]
 
   def index
-    @items = Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date)
+    @items = Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date).
+      order_by(@cur_node.sort_hash).
+      limit(@cur_node.limit)
+    @items = @cur_node.sort_event_page_by_difference(@items)
   end
 
   def daily
