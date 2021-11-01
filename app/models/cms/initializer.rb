@@ -18,6 +18,7 @@ module Cms
     Cms::Part.plugin "cms/sns_share"
     Cms::Part.plugin "cms/calendar_nav"
     Cms::Part.plugin "cms/monthly_nav"
+    Cms::Part.plugin "cms/node_tabs"
     Cms::Column.plugin 'cms/text_field'
     Cms::Column.plugin 'cms/date_field'
     Cms::Column.plugin 'cms/url_field2'

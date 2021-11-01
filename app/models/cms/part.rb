@@ -110,4 +110,14 @@ class Cms::Part
 
     default_scope ->{ where(route: "cms/history_list") }
   end
+
+  class NodeTabs
+    include Cms::Model::Part
+    include Cms::Addon::Tabs
+    include Cms::Addon::Release
+    include Cms::Addon::GroupPermission
+    include History::Addon::Backup
+
+    default_scope ->{ where(route: "cms/node_tabs") }
+  end
 end

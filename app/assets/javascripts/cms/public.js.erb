@@ -281,7 +281,11 @@ this.SS_Tabs = (function () {
       }
       html = "<article id='" + view_id + "' class='" + body_css + "' " + disp + ">";
       html += "<h2 style='display: none'>" + name + "</h2>";
-      html += "<div class='pages'>" + tab.find(".pages").html() + "</div>";
+      if (tab.find(".pages").html()) {
+        html += "<div class='pages'>" + tab.find(".pages").html() + "</div>";
+      } else if (tab.find(".nodes").html()) {
+        html += "<div class='nodes'>" + tab.find(".nodes").html() + "</div>";
+      }
       if (tab.find('nav').length) {
         html += "<nav>" + tab.find('nav').html() + "</nav>";
       }

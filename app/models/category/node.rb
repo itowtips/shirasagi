@@ -12,6 +12,7 @@ module Category::Node
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
+    include Cms::Addon::Thumb
     include Cms::Addon::NodeList
     include Cms::Addon::ChildList
     include Cms::Addon::Release
@@ -30,6 +31,7 @@ module Category::Node
     include Cms::Model::Node
     include Cms::Addon::NodeSetting
     include Cms::Addon::Meta
+    include Cms::Addon::Thumb
     include Event::Addon::PageList
     include Cms::Addon::Release
     include Cms::Addon::DefaultReleasePlan

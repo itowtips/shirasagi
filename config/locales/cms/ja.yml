@@ -450,6 +450,7 @@ ja:
       cms/monthly_nav: アーカイブナビ（月次）
       cms/site_search_history: サイト内検索(検索履歴)
       cms/history_list: 閲覧履歴
+      cms/node_tabs: フォルダータブ
     columns:
       cms/text_field: 一行入力
       cms/date_field: 日付入力
@@ -707,6 +708,7 @@ ja:
       cms/part/tabs: 新着タブ
       cms/part/crumb: パンくずリスト
       cms/part/history_list: 閲覧履歴
+      cms/part/node_tabs: フォルダータブ
       cms/layout: レイアウト
       cms/body_layout: レイアウト
       cms/workflow/route: 承認経路
