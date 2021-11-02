@@ -92,7 +92,7 @@ module Event::Addon
       when "event_dates_today"
         dates = [today]
       when "event_dates_weekend"
-        dates = (today..1.week.since(today)).select do |date|
+        dates = ((today + 1.day)..(today + 6.days)).select do |date|
           date.saturday? || date.sunday?
         end
       else
@@ -105,11 +105,18 @@ module Event::Addon
         next unless item.event_dates_cluster(dates)
 
         event_sort_hash[item.id.to_s]['difference'] = item.event_dates_difference(dates)
+        event_sort_hash[item.id.to_s]['start_date'] = item.event_dates_cluster(dates).first
         event_sort_hash[item.id.to_s]['end_date'] = item.event_dates_cluster(dates).last
       end
       i = 0
       criteria.sort_by do |item|
-        [event_sort_hash[item.id.to_s]['difference'], event_sort_hash[item.id.to_s]['end_date'], i += 1]
+        [
+          event_sort_hash[item.id.to_s]['difference'].zero? ? 0 : 1,
+          event_sort_hash[item.id.to_s]['start_date'],
+          event_sort_hash[item.id.to_s]['end_date'],
+          item.released.try(:to_i) * -1,
+          i += 1
+        ]
       end
     end
   end
