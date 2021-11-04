@@ -23,8 +23,8 @@
     <dd style="margin-top: 5px;"><%= @item.send("child#{i}_birthday_label") %></dd>
   <% end %>
 
-  <% @item.each_deliver_categories do |root, children| %>
+  <% Cms::Line::DeliverCategory::Category.site(@cur_site).each_public do |root, children| %>
     <dt><%= root.name %></dt>
-    <dd><%= children.map(&:name).join(", ") %></dd>
+    <dd><%= children.select { |category| @item.deliver_category_ids.include?(category.id) }.map(&:name).join(", ") %></dd>
   <% end %>
 </dl>

@@ -2,34 +2,33 @@
 
 <div class="mypage-show member-profile">
   <div class="columns">
-    <dl class="column">
-      <dt><%= @model.t :name %></dt>
+    <dl class="column name">
+      <dt><%= @model.t :line_name %></dt>
       <dd><%= @item.name %></dd>
     </dl>
 
-    <dl class="column">
+    <dl class="column subscribe-line-message">
       <dt><%= @item.t :subscribe_line_message %></dt>
       <dd><%= @item.label :subscribe_line_message %></dd>
     </dl>
 
     <% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
       <% next if @item.send("child#{i}_name").blank? %>
-      <dl class="column">
-        <dt><%= @model.t("child#{i}") %></dt>
-        <dd></dd>
-
-        <dt class="depth-2"><%= @model.t("child_name") %></dt>
+      <dl class="column child-name child-<%= i %>">
+        <dt><%= @model.t("child#{i}_name") %></dt>
         <dd><%= @item.send("child#{i}_name") %></dd>
+      </dl>
 
-        <dt class="depth-2"><%= @model.t("child_birthday") %></dt>
+      <dl class="column child-birthday child-<%= i %>">
+        <dt><%= @model.t("child#{i}_birthday") %></dt>
         <dd><%= @item.send("child#{i}_birthday_label") %></dd>
       </dl>
     <% end %>
 
-    <% @item.each_deliver_categories do |root, children| %>
+    <% Cms::Line::DeliverCategory::Category.site(@cur_site).each_public do |root, children| %>
       <dl class="column">
         <dt><%= root.name %></dt>
-        <dd><%= children.map(&:name).join(", ") %></dd>
+        <dd><%= children.select { |category| @item.deliver_category_ids.include?(category.id) }.map(&:name).join(", ") %></dd>
       </dl>
     <% end %>
   </div>
