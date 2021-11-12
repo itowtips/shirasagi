@@ -1,0 +1,18 @@
+﻿account,state,name,name_en,email,auth_no,password,ldap,ldap_version,group_code
+kiji,disabled,記事作成ユーザ,kiji sakusei user,webstaff@hamamatsu-pippi.net,2,kijitest,0,,1
+blog01,disabled,ブログ担当,blog01,,2,kijitest,0,,1
+blog02,disabled,ブログ担当,blog02,,2,mori%8993,0,,1
+event01,enabled,イベント担当 國井,event01,mi_o0225@ta2.so-net.ne.jp,2,kuni%3900,0,,1
+pippi_harada,enabled,ぴっぴ 原田,,pippi@hamamatsu-pippi.net,5,hara%5572,0,,1
+pippi_rieko,enabled,ぴっぴ 鈴木,,rieko@hamamatsu-pippi.net,5,rie%1581,0,,1
+pippi_muramatsu,enabled,ぴっぴ 村松,,muramatsu@hamamatsu-pippi.net,5,mura%7716,0,,1
+pippi_nakanoko,enabled,ぴっぴ 仲子,,nakanoko@hamamatsu-pippi.net,5,naka(^^)5489,0,,1
+pippi_terauchi,disabled,ぴっぴ ブログ＆イベント担当,,blog@hamamatsu-pippi.net,2,hpnk@2020,0,,1
+pippi_horinouchi,enabled,ぴっぴ 堀之内,,horinouchi@hamamatsu-pippi.net,2,hori%2298,0,,1
+pippi_miwa,enabled,ぴっぴ 三輪,,miwa@hamamatsu-pippi.net,5,miwa%3156,0,,1
+kaihatsu,disabled,開発用,,,5,kaihatsu$pass,0,,1
+event02,enabled,イベント担当 木下,event02,mr_phrase@yahoo.co.jp,2,mari(^^)1173,0,,1
+pippi_fujita,disabled, ぴっぴ 藤田,,fujita@hamamatsu-pippi.net,5,fuji%0656,0,,1
+pippi_tokida,enabled,ぴっぴ 時田祐子,,tokida@hamamatsu-pippi.net,5,yuko&6186,0,,1
+pippi_moriguchi,enabled,ぴっぴ 森口,,moriguchi@hamamatsu-pippi.net,5,mori(^^)8993,0,,1
+pippi_kurasaki,enabled,ぴっぴ 倉崎,,kurasaki@hamamatsu-pippi.net,5,miki(^^)1173,0,,1

@@ -1,0 +1,37 @@
+﻿code,parent_code,state,web_state,level_no,sort_no,layout_id,ldap,ldap_version,name,name_en,tel,outline_uri,email,order
+1,root,enabled,public,2,0,15,0,,認定NPO法人はままつ子育てネットワークぴっぴ,pippi,053-457-3418,,pippi@hamamatsu-pippi.net,10
+2,root,enabled,public,2,1,15,1,,子育て支援課,kosodate,053-457-2792,,kosodate@city.hamamatsu.shizuoka.jp,20
+27,root,enabled,public,2,2,15,0,,幼児教育・保育課,yojihoiku,053-457-2827,,youho@city.hamamatsu.shizuoka.jp,30
+30,root,enabled,public,2,2,15,0,,幼児教育・保育課/就園グループ,yojihoiku_syuen,053-457-2118,,youho@city.hamamatsu.shizuoka.jp,40
+33,root,enabled,public,2,2,15,0,,幼児教育・保育課/施設給付・収納グループ,youho_shisetsukyufu,053-457-2826,,youho@city.hamamatsu.shizuoka.jp,50
+34,root,enabled,public,2,2,15,0,,幼児教育・保育課/入所管理グループ,youho_nyusyo,053-457-2867,,youho@city.hamamatsu.shizuoka.jp,60
+50,root,enabled,public,2,3,15,0,,幼児教育・保育課/入所調整グループ,youho_nyusyo_tyousei,053-457-2833,,youho@city.hamamatsu.shizuoka.jp,70
+4,root,enabled,public,2,3,15,0,,次世代育成課,jisedai,053-457-2795,,katei@city.hamamatsu.shizuoka.jp,80
+6,root,enabled,public,2,5,15,0,,健康増進課,kenkozoshin,053-453-6117,,kenko@city.hamamatsu.shizuoka.jp,90
+7,root,enabled,public,2,6,15,0,,健康増進課/口腔保健医療センター,kohko,053-453-6129,,kenko@city.hamamatsu.shizuoka.jp,100
+11,root,enabled,public,2,10,15,0,,国保年金課,kokuminnenkin,053-457-2637,,kokuho@city.hamamatsu.shizuoka.jp,110
+29,root,enabled,public,2,28,15,0,,障害保健福祉課,shogaihoken,053-457-2034,,syoghuku@city.hamamatsu.shizuoka.jp,120
+5,root,enabled,public,2,26,15,0,,障害保健福祉課/医療・就労支援グループ,shogaihoken-iryo,053-457-2212,,kokoro@city.hamamatsu.shizuoka.jp,130
+26,root,enabled,public,2,27,15,0,,障害保健福祉課/生活支援第2グループ,shogaihoken-seikatsu,053-457-2863,,syoghuku@city.hamamatsu.shizuoka.jp,140
+32,root,enabled,public,2,27,15,0,,障害保健福祉課/生活支援第1グループ,shogaihoken-seikatsu1,053-457-2864,,syoghuku@city.hamamatsu.shizuoka.jp,150
+,root,enabled,public,2,11,15,0,,教育委員会,,,,,160
+12,root,enabled,public,2,11,15,0,,教育委員会/教職員課,kyoshokuin,053-457-2408,,kyoshoku@city.hamamatsu-szo.ed.jp,170
+13,root,enabled,public,2,12,15,0,,教育委員会/教育総務課,kyoikusomu,053-457-2406,,somu@city.hamamatsu-szo.ed.jp,180
+14,root,enabled,public,2,13,15,0,,教育委員会/教育総務課/放課後対策グループ,kyo-hokago,053-457-2406,,renkei@city.hamamatsu-szo.ed.jp,190
+28,root,enabled,public,2,14,15,0,,教育委員会/教育総務課/支援グループ,kyo-shien,053-457-2406,,somu@city.hamamatsu-szo.ed.jp,200
+25,root,enabled,public,2,15,15,0,,教育委員会/教育総務課/地域連携グループ,kyo-chiiki,053-457-2401,,,210
+15,root,enabled,public,2,15,15,0,,教育委員会/学校施設課,gakkoshisetsu,053-457-2403,,shisetsu@city.hamamatsu-szo.ed.jp,220
+16,root,enabled,public,2,16,15,0,,教育委員会/教育総合支援センター,kyoikusogoshien, 053-457-2428,,sogo@city.hamamatsu-szo.ed.jp,230
+17,root,enabled,public,2,17,15,0,,教育委員会/健康安全課,kenkoanzenka,053-457-2422,,kenkou@city.hamamatsu-szo.ed.jp,240
+18,root,enabled,public,2,18,15,0,,中区　歯の健康センター,nakakuhanokenko,053-453-6129,,,250
+19,root,enabled,public,2,19,15,0,,東区　健康づくり課,higashiku_kenko,053-424-0125,,,260
+20,root,enabled,public,2,20,15,0,,西区　健康づくり課,nishiku_kenko,053-597-1174,,,270
+21,root,enabled,public,2,21,15,0,,南区　健康づくり課,minamiku_kenko,053-425-1590,,,280
+22,root,enabled,public,2,22,15,0,,北区　引佐健康センター,kitaku_inasakenko,053-542-0857,,,290
+23,root,enabled,public,2,23,15,0,,浜北区　健康づくり課,hamakitaku_kenko,053-585-1120,,,300
+24,root,enabled,public,2,24,15,0,,天竜区　健康づくり課,tenryuku_kenko,053-922-0075,,,310
+8,root,enabled,public,2,7,15,0,,ファミリー・サポート・センター,family,053-457-2900,受付時間：月～金 午前9時から午後5時 祝日年末年始を除く,famisapo@mild.ocn.ne.jp,320
+9,root,enabled,public,2,8,15,0,,子育て情報センター,jyoho,053-457-3415,,k-jouhou@mild.ocn.ne.jp,330
+40,root,enabled,public,2,40,,0,,浜松市防災学習センター「はま防～家」,hamaboya,053-474-8555,,hamaboya@hamamatsu-pippi.net,340
+10,root,enabled,public,2,9,15,0,,児童相談所,jido,053-457-2703,,jidosodan@city.hamamatsu.shizuoka.jp,350
+31,root,enabled,public,2,29,15,0,,子ども・子育て新制度専用ダイヤル（保育課）,hoiku-shinseido,053-457-2117,,hoiku@city.hamamatsu.shizuoka.jp,360
