@@ -21,6 +21,27 @@ namespace :pippi do
       importer.destroy_hint_docs
     end
 
+    task import_bousai_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Blog.new(site)
+      importer.import_bousai_docs
+    end
+
+    task restore_relations_bousai_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Blog.new(site)
+      importer.restore_relations_bousai_docs
+    end
+
+    task destroy_bousai_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Blog.new(site)
+      importer.destroy_bousai_docs
+    end
+
     task import_groups: :environment do
       puts "Please input site: site=[www]" or exit if ENV['site'].blank?
       site = ::Cms::Site.where(host: ENV['site']).first

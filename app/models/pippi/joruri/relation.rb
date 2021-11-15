@@ -13,4 +13,7 @@ module Pippi::Joruri::Relation
 
   class Hint < Doc
   end
+
+  class Bousai < Doc
+  end
 end
