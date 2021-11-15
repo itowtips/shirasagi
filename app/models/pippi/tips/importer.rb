@@ -3,7 +3,7 @@ class Pippi::Tips::Importer
   include Cms::CsvImportBase
 
   cattr_accessor(:model) { Pippi::Tips }
-  self.required_headers = %w(date html).map { |k| model.t(k) }
+  self.required_headers = %w(date html ssml).map { |k| model.t(k) }
 
   attr_reader :site, :node, :user, :year
 
@@ -44,6 +44,7 @@ class Pippi::Tips::Importer
   def update_row(row)
     date = row[t("date")].to_s.strip
     html = row[t("html")].to_s
+    ssml = row[t("ssml")].to_s
     raise "日付が入力されていません。" if date.blank?
 
     begin
@@ -55,6 +56,7 @@ class Pippi::Tips::Importer
     item = Pippi::Tips.find_or_initialize_by(site_id: site.id, node_id: node.id, date: date)
     item.user = user
     item.html = html
+    item.ssml = ssml
     raise item.errors.full_messages.join(", ") if !item.save
     item
   end

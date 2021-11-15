@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
   node "pippi" do
     get "tips/(index.:format)" => "public#index", cell: "nodes/tips"
+    get "tips/:ymd/(index.:format)" => "public#index", cell: "nodes/tips", ymd: /\d{8}/
   end
 
   part "pippi" do

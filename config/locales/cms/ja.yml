@@ -689,6 +689,7 @@ ja:
       cms/line/template/json_body: テンプレート：JSON
       cms/line/deliver_category/child_age: 子どもの年齢
       cms/line/deliver_category/pickup: ピックアップ
+      cms/ssml: SSML
 
   mongoid:
     models:
@@ -1304,6 +1305,8 @@ ja:
         summary: メッセージ
         thumb_state: サムネイル画像
         json_body: JSON
+      cms/addon/ssml:
+        ssml: SSLM
 
   activemodel:
     attributes:

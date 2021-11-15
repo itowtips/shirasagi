@@ -3,6 +3,7 @@ class Pippi::Tips
   include SS::Reference::User
   include SS::Reference::Site
   include Cms::Reference::Node
+  include Cms::Addon::Ssml
   include Cms::SitePermission
 
   set_permission_name "pippi_tips"
