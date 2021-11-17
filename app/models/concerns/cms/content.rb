@@ -165,6 +165,7 @@ module Cms::Content
 
           false
         end
+        export :public?
       end
     end
   end
