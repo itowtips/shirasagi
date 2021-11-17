@@ -27,6 +27,10 @@ module Pippi::Joruri::Importer
 
       @bousai_node = Article::Node::Page.site(@site).find_by(filename: /^blog\/hint\//, name: "防災豆知識")
       @bousai_category =  Category::Node::Base.site(@site).find_by(filename: /^blog\/hint\//, name: "防災豆知識")
+      @bousai_tags = {}
+      ["忘れない3.11"].each do |name|
+        @bousai_tags[name] = Category::Node::Base.site(@site).find_by(filename: /^blog\/hint\//, name: name)
+      end
     end
 
     def import_hint_docs
@@ -112,9 +116,9 @@ module Pippi::Joruri::Importer
 
         # save files
         if is_author
-          save_html_and_files(item, item, files_paths, files_filenames, files_names)
+          save_html_and_files(item, user, item, files_paths, files_filenames, files_names)
         else
-          save_html_and_files(item, item.column_values[0], files_paths, files_filenames, files_names)
+          save_html_and_files(item, user, item.column_values[0], files_paths, files_filenames, files_names)
         end
 
         csv << [::File.join(site.full_url, item.private_show_path), item.full_url, category, rel_Joruri.joruri_url]
@@ -122,7 +126,7 @@ module Pippi::Joruri::Importer
       end
     end
 
-    def save_html_and_files(item, embedder, files_paths, files_filenames, files_names)
+    def save_html_and_files(item, user, embedder, files_paths, files_filenames, files_names)
       return if files_paths.blank?
 
       files = []
@@ -141,8 +145,8 @@ module Pippi::Joruri::Importer
         raise "not found joruri file!" if !::File.exists?(path)
         ss_file = SS::File.new
         ss_file.in_file = Fs::UploadedFile.create_from_file(path)
-        ss_file.site = @site
-        ss_file.user = @user
+        ss_file.site = site
+        ss_file.user = user
         ss_file.filename = filename
         ss_file.name = name
         ss_file.model = item.class.name
@@ -302,16 +306,15 @@ module Pippi::Joruri::Importer
         item.state = (state == "draft") ? "closed" : "public"
         item.category_ids = [category_node.id]
 
-        #if is_author
-          item.html = body
-        #else
-        #  # column values
-        #  column_values = form.columns.map { |column| column.value_type.new(column: column) }
-        #  column_values[0].value = body
-        #
-        #  item.form = form
-        #  item.column_values = column_values
-        #end
+        if zokusei == "忘れない3.11"
+          item.category_ids = item.category_ids.to_a + [@bousai_tags["忘れない3.11"].id]
+        end
+
+        column_values = form.columns.map { |column| column.value_type.new(column: column) }
+        column_values[0].value = body
+
+        item.form = form
+        item.column_values = column_values
 
         puts "#{idx}.[#{category_node.name}] #{item.name}"
         def item.set_updated; end
@@ -325,11 +328,7 @@ module Pippi::Joruri::Importer
         rel_Joruri.save!
 
         # save files
-        #if is_author
-          save_html_and_files(item, item, files_paths, files_filenames, files_names)
-        #else
-        #  save_html_and_files(item, item.column_values[0], files_paths, files_filenames, files_names)
-        #end
+        save_html_and_files(item, user, item.column_values[0], files_paths, files_filenames, files_names)
 
         csv << [::File.join(site.full_url, item.private_show_path), item.full_url, category_node.name, rel_Joruri.joruri_url]
         csv.flush
@@ -342,7 +341,7 @@ module Pippi::Joruri::Importer
       Pippi::Joruri::Relation::Bousai.each_with_index do |rel_Joruri, idx|
         item = rel_Joruri.owner_item
         dir = rel_Joruri.joruri_url.sub(joruri_base_url, "")
-        html = item.html
+        html = item.column_values[0].value
         puts "#{idx}.#{item.name}"
 
         # generic links
@@ -351,7 +350,7 @@ module Pippi::Joruri::Importer
           csv.flush
         end
 
-        item.html = html
+        item.column_values[0].value = html
         def item.set_updated; end
         item.save!
       end
@@ -364,37 +363,5 @@ module Pippi::Joruri::Importer
         item.destroy
       end
     end
-
-=begin
-  select_options = item.column_values[1].column.select_options.to_h.invert
-  author_doc = nil
-  ndoc = Nokogiri::HTML::DocumentFragment.parse(html, "UTF-8")
-  ndoc.css("[style]").each do |doc|
-    next if doc.attr("style") !~ /text-align:\s+right/
-    next if doc.text.squish.blank?
-    author_doc = doc
-  end
-
-  if author_doc
-    path = nil
-    author_doc.css("a[href]").each do |doc|
-      path = doc.attr("href")
-    end
-
-    url = ::File.join(joruri_base_url, Pathname(dir).join(path)) if path
-    rel = Pippi::JoruriMigration::Base.where(joruri_url: url).first
-
-    if rel && select_options[rel.owner_item_id]
-      csv << [::File.join(site.full_url, item.private_show_path), item.full_url, path, rel.owner_item.name, "執筆者として取り込み"]
-      item.column_values[1].page = rel.owner_item
-    else
-      csv << [::File.join(site.full_url, item.private_show_path), item.full_url, path, author_doc.text, "執筆者として取り込み（手動入力）"]
-      item.column_values[2].value = author_doc.text
-    end
-
-    author_doc.remove
-  end
-html = ndoc.to_html
-=end
   end
 end

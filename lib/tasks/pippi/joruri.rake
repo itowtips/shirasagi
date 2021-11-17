@@ -1,5 +1,12 @@
 namespace :pippi do
   namespace :joruri do
+    task import_nodes: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Node.new(site)
+      importer.import_nodes
+    end
+
     task import_hint_docs: :environment do
       puts "Please input site: site=[www]" or exit if ENV['site'].blank?
       site = ::Cms::Site.where(host: ENV['site']).first
@@ -55,29 +62,5 @@ namespace :pippi do
       importer = Pippi::Joruri::Importer::User.new(site)
       importer.import_users
     end
-
-=begin
-  task hint2: :environment do
-    hint2 = {}
-    path = ::File.join(Rails.root, "lib/tasks/pippi/blog/hint2.csv")
-    csv = ::CSV.read(path, headers: true, encoding: 'BOM|UTF-8')
-    csv.each_with_index do |row, idx|
-      id = row["id"].to_i
-      files_names = row["ファイル表記（内部）"]
-      hint2[id] = [files_names]
-    end
-
-    path = ::File.join(Rails.root, "lib/tasks/pippi/blog/hint.csv")
-    csv = ::CSV.read(path, headers: true, encoding: 'BOM|UTF-8')
-    CSV.open('hint3.csv','w') do |f|
-      f << csv.headers
-      csv.each_with_index do |row, idx|
-        fields = csv.headers.map { |head| row[head] }
-        id = row["id"].to_i
-        f << (fields + hint2[id])
-      end
-    end
-  end
-=end
   end
 end

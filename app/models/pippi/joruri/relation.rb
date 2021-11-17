@@ -16,4 +16,7 @@ module Pippi::Joruri::Relation
 
   class Bousai < Doc
   end
+
+  class Node < Doc
+  end
 end
