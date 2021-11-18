@@ -15,8 +15,7 @@
     <div class="chlid-birthday">
       <%= f.fields_for "in_child#{i}_birth" do |birth_f| %>
         <% era, year, month, day = @item.send("parse_in_child#{i}_birth") %>
-        <%= birth_f.select :era, @item.wareki_options, selected: era, include_blank: true %>
-        <%= birth_f.number_field :year, value: year %>
+        <%= birth_f.number_field :year, value: (year || Time.zone.today.year) %>
         <%= t("datetime.prompts.year") %>
         <%= birth_f.select :month, options_for_select((1..12).to_a, month), include_blank: true  %>
         <%= t("datetime.prompts.month") %>

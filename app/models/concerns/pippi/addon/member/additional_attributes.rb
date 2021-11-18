@@ -128,13 +128,12 @@ module Pippi::Addon::Member
         in_child_birth = send(accessor_key)
         child_birthday = send(birthday_key)
 
+        era = "seireki"
         if in_child_birth
-          era   = in_child_birth["era"]
           year  = in_child_birth["year"]
           month = in_child_birth["month"]
           day   = in_child_birth["day"]
         else
-          era   = child_birthday ? "seireki" : nil
           year  = child_birthday.try(:year)
           month = child_birthday.try(:month)
           day   = child_birthday.try(:day)
@@ -144,17 +143,22 @@ module Pippi::Addon::Member
       end
 
       define_method("set_child#{i}_birthday") do
+        if send(name_key).blank?
+          send("#{birthday_key}=", nil)
+          return
+        end
+
         in_child_birth = send(accessor_key).presence || {}
-        era = in_child_birth[:era]
+        era = "seireki"
         year = in_child_birth[:year]
         month = in_child_birth[:month]
         day = in_child_birth[:day]
 
-        if era.blank? && year.blank? && month.blank? && day.blank?
+        if year.blank? && month.blank? && day.blank?
           send("#{birthday_key}=", nil)
           return
-        elsif era.blank? || year.blank? || month.blank? || day.blank?
-          errors.add birthday_key, :invalid
+        elsif year.blank? || month.blank? || day.blank?
+          errors.add birthday_key, :incorrectly
           return
         end
 
@@ -168,7 +172,7 @@ module Pippi::Addon::Member
           date = Date.new(min.year + year - 1, month, day)
           send("#{birthday_key}=", date)
         rescue
-          errors.add brithday_key, :invalid
+          errors.add brithday_key, :incorrectly
         end
       end
 
