@@ -117,13 +117,12 @@ module Pippi::Member::Addon
         in_child_birth = send(accessor_key)
         child_birthday = send(field_key)
 
+        era = "seireki"
         if in_child_birth
-          era   = in_child_birth["era"]
           year  = in_child_birth["year"]
           month = in_child_birth["month"]
           day   = in_child_birth["day"]
         else
-          era   = child_birthday ? "seireki" : nil
           year  = child_birthday.try(:year)
           month = child_birthday.try(:month)
           day   = child_birthday.try(:day)
@@ -133,17 +132,22 @@ module Pippi::Member::Addon
       end
 
       define_method("set_child#{i}_birthday") do
+        if send(name_key).blank?
+          send("#{birthday_key}=", nil)
+          return
+        end
+
         in_child_birth = send(accessor_key).presence || {}
-        era = in_child_birth[:era]
+        era = "seireki"
         year = in_child_birth[:year]
         month = in_child_birth[:month]
         day = in_child_birth[:day]
 
-        if era.blank? && year.blank? && month.blank? && day.blank?
-          send("#{field_key}=", nil)
+        if year.blank? && month.blank? && day.blank?
+          send("#{birthday_key}=", nil)
           return
-        elsif era.blank? || year.blank? || month.blank? || day.blank?
-          errors.add field_key, :invalid
+        elsif year.blank? || month.blank? || day.blank?
+          errors.add birthday_key, :incorrectly
           return
         end
 
@@ -157,7 +161,16 @@ module Pippi::Member::Addon
           date = Date.new(min.year + year - 1, month, day)
           send("#{field_key}=", date)
         rescue
-          errors.add field_key, :invalid
+          errors.add brithday_key, :incorrectly
+        end
+      end
+
+      define_method ("validate_child#{i}") do
+        if send(birthday_key).present? && send(name_key).blank?
+          errors.add name_key, :empty
+        end
+        if send(name_key).present? && send(birthday_key).blank?
+          errors.add birthday_key, :empty
         end
       end
     end
