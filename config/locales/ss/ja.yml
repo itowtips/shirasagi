@@ -44,7 +44,8 @@ ja:
     auto_reload: 自動更新
     input_example: 記入例
     csv_file: CSVファイル
-    disable_image_resizes: 自動画像リサイズを無効にする
+    quality: 画質
+    resize_image_auto: 画像リサイズ(自動)
 
     views:
       login/login:
@@ -438,9 +439,9 @@ ja:
         "3_months": ３ヶ月
         "6_months": ６ヶ月
         "1_year": １年
-      action:
-        validation: 制限
-        resize: リサイズ
+      image_resizes_disabled:
+        enabled: 自動リサイズ有効
+        disabled: 自動リサイズ無効
 
     tasks:
       started: 開始しました。
@@ -739,7 +740,7 @@ ja:
       ss/model/image_resize:
         max_width: 横幅
         max_height: 縦幅
-        quality: 品質
+        quality: 画質
       ss/model/postal_code:
         code: 郵便番号
         prefecture: 都道府県
@@ -993,6 +994,17 @@ ja:
         - ファイル名（英数）を入力します。
       geo_location:
         - 緯度・経度を10進で入力します。
+      image_resizes_disabled:
+        - 管理者によって自動リサイズが設定されています。
+        -
+        - 下記の条件の場合に自動的に画像がリサイズされます。
+        - 容量 %{size}以上
+        - 横幅 %{width}ピクセル以上
+        - 高さ %{height}ピクセル以上
+        -
+        - 容量を超過している場合、あらかじめ設定している画質に変更されます。
+        - 横幅、高さを超過している場合、収まるように縮小されます。
+        - 自動リサイズをしたくない場合は、管理者に権限を付与してもらった後、左の「有効」をクリックし「無効」に設定してください。
     ss/model/user_title:
       code: 役職コードを入力します。
       name: 役職名を入力します。
@@ -1175,9 +1187,9 @@ ja:
       max_height:
         - 画像ファイルの縦幅を設定可能です
       quality:
-        - 画像ファイルの品質を0から100の間で設定可能です
-        - 最大ファイルサイズを超過した場合、品質に基づいて画像を圧縮します
-        - 品質が高い程劣化が少ないです
+        - 画像ファイルの画質を0から100の間で設定可能です
+        - 最大ファイルサイズを超過した場合、画質に基づいて画像を圧縮します
+        - 画質が高い程劣化が少ないです
     ss/model/editor_setting:
       color_button:
         - 文字色変更ボタンの表示を設定します。
