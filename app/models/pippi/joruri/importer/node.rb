@@ -14,6 +14,7 @@ module Pippi::Joruri::Importer
     end
 
     def import_nodes
+=begin
       # 子育てヒント タグ 忘れない3.11
       filename = "blog/hint/tag/wasurenai311"
       name = "忘れない3.11"
@@ -45,6 +46,30 @@ module Pippi::Joruri::Importer
       rel_Joruri.joruri_id = original_id
       rel_Joruri.joruri_url = original_url
       rel_Joruri.save!
+=end
+      # save other relations
+      relations = {}
+      relations[2] = ["/shiritai/blog/", "blog"]
+      relations[3] = ["/shiritai/blog/hint/", "blog/hint"]
+      relations[4] = ["/shiritai/blog/odekake/", "blog/odekake"]
+      relations[5] = ["/shiritai/koza/", "shiritai/koza"]
+      relations[6] = ["/shiritai/ichioshi/hamamatsu/", "blog/report/category/hamamatsu"]
+      relations[7] = ["/shiritai/blog/hint/cat/ryorirecipe/more.html", "blog/hint/category/recipe"]
+      relations[8] = ["/shiritai/blog/hint/cat/ha/more.html", "blog/hint/category/kenkou"]
+      relations.each do |original_id, v|
+        original_path = v[0]
+        filename = v[1]
+        original_url = ::File.join("https://www.hamamatsu-pippi.net/", original_path)
+        item = Cms::Node.site(site).find_by(filename: filename)
+        puts "#{original_id}.#{item.name}"
+
+        rel_Joruri = Pippi::Joruri::Relation::Node.where(joruri_id: original_id).first
+        rel_Joruri ||= Pippi::Joruri::Relation::Node.new
+        rel_Joruri.owner_item = item
+        rel_Joruri.joruri_id = original_id
+        rel_Joruri.joruri_url = original_url
+        rel_Joruri.save!
+      end
     end
   end
 end
