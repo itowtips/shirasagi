@@ -383,6 +383,7 @@ Rails.application.routes.draw do
     get "archive" => "public#redirect_to_archive_index", cell: "nodes/archive"
     get "photo_album" => "public#index", cell: "nodes/photo_album"
     get "site_search/(index.:format)" => "public#index", cell: "nodes/site_search"
+    get "site_search/categories(.:format)" => "public#categories", cell: "nodes/site_search"
     get "line_hub/line" => "public#index", cell: "nodes/line_hub"
     post "line_hub/line" => "public#index", cell: "nodes/line_hub"
   end
