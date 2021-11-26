@@ -67,7 +67,7 @@ class Cms::FormDb
   end
 
   def pages
-    pages = Article::Page.site(site).where(form_id: id)
+    pages = Article::Page.site(site).where(form_id: form_id)
     node ? pages.node(node) : pages
   end
 
