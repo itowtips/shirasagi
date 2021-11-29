@@ -63,6 +63,7 @@ Rails.application.routes.draw do
     ]
     resources :form_tables, only: [:index]
     resources :map_searches, only: [:index]
+    resources :searches, concerns: :deletion
   end
 
   content "article" do
@@ -81,11 +82,13 @@ Rails.application.routes.draw do
     get "map_search/(index.:format)" => "public#index", cell: "nodes/map_search"
     get "map_search/(map.:format)" => "public#map", cell: "nodes/map_search"
     get "map_search/(result.:format)" => "public#result", cell: "nodes/map_search"
+    get "search/(index.:format)" => "public#index", cell: "nodes/search"
   end
 
   part "article" do
     get "page" => "public#index", cell: "parts/page"
     get "page_navi" => "public#index", cell: "parts/page_navi"
+    get "search" => "public#index", cell: "parts/search"
   end
 
   page "article" do
