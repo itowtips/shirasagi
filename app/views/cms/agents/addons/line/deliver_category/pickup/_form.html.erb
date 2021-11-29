@@ -4,9 +4,9 @@
     <%
       page_params = {}
       page_params[:s] = { statuses: %w(public) }
-      page_params[:category_parent_id] = @item.child_page_node if @item.child_page_node
+      page_params[:parent_nodes] = [@item.child_page_node.try(:id)]
     %>
-    <%= link_to t("cms.apis.pages.index"), cms_apis_pages_path(page_params), class: "ajax-box" %>
+    <%= link_to t("cms.apis.pages.index"), cms_apis_pages_categorized_path(page_params), class: "ajax-box" %>
     <table class="index ajax-selected" style="margin-top: 10px;">
       <thead>
         <tr>
