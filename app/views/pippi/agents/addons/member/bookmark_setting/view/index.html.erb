@@ -1,7 +1,7 @@
 <%
   @cur_node = @bookmark_node
-  @cur_node.attributes = @mypage.bookmark_context
-  @items = @other_bookmarks
+  @cur_node.attributes = @mypage_node.bookmark_context
+  @items = @other_bookmarks.limit(@cur_node.limit).to_a
 %>
 <section class="bookmarks">
   <%= render_page_list %>

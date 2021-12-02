@@ -177,9 +177,10 @@ ja:
       member/photo_location: フォトロケーション
       member/photo_search: フォトサーチ
       member/photo_spot: フォトスポット
-      member/bookmark: お気に入りページ
+      member/bookmark: ブックマーク
       member/pippi_mypage: ぴっぴマイページ
       member/pippi_profile: ぴっぴプロフィール
+      member/pippi_bookmark: ぴっぴブックマーク
       member/pippi_first_registration: ぴっぴマイページ初回登録
 
     parts:
@@ -189,7 +190,7 @@ ja:
       member/photo_slide: フォトスライド
       member/login: ログイン
       member/invited_group: 招待されたグループ
-      member/bookmark: お気に入りページ
+      member/bookmark: ブックマーク
 
   mongoid:
     models:

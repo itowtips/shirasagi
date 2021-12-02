@@ -62,6 +62,7 @@ Rails.application.routes.draw do
 
     resources :pippi_mypages, concerns: :deletion
     resources :pippi_profiles, concerns: :deletion
+    resources :pippi_bookmarks, concerns: :deletion
     resources :pippi_first_registrations, concerns: :deletion
   end
 
@@ -155,6 +156,9 @@ Rails.application.routes.draw do
     get "pippi_profile/leave(.:format)" => "public#leave", cell: "nodes/pippi_profile"
     post "pippi_profile/confirm_leave(.:format)" => "public#confirm_leave", cell: "nodes/pippi_profile"
     post "pippi_profile/complete_leave(.:format)" => "public#complete_leave", cell: "nodes/pippi_profile"
+    get "pippi_bookmark/(index.:format)" => "public#index", cell: "nodes/pippi_bookmark"
+    post "pippi_bookmark/register(index.:format)" => "public#register", cell: "nodes/pippi_bookmark"
+    post "pippi_bookmark/cancel(index.:format)" => "public#cancel", cell: "nodes/pippi_bookmark"
     get "pippi_first_registration/(index.:format)" => "public#index", cell: "nodes/pippi_first_registration"
     put "pippi_first_registration/(index.:format)" => "public#index", cell: "nodes/pippi_first_registration"
   end
