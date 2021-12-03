@@ -36,21 +36,13 @@ class Cms::Line::Service::Processor::MyPlan < Cms::Line::Service::Processor::Bas
     member = event_session.member
 
     bookmarked_ids = []
-    bookmarked_ids = member.page_bookmarks.pluck(:content_id) if member
+    bookmarked_ids = member.bookmarks.pluck(:content_id) if member
 
     cond = { "$and" => [ { event_dates: { "$in" => [ date ] } }, service.condition_hash(site: site) ] }
-    pipes = []
-    pipes << { "$match" => cond }
-    pipes << { "$project" => {
-      _id: 1,
-      event_dates: 1,
-      bookmarked: { "$cond" => [ { "$in" => [ "$_id", bookmarked_ids ] }, 1, 0] },
-      event_dates_size: { "$size" => "$event_dates" }
-    }}
-    pipes << { "$sort" => { bookmarked: -1, event_dates_size: 1 } }
-    pipes << { "$limit" => service.limit }
-    item_ids = Cms::Page.collection.aggregate(pipes).to_a.map { |data| data["_id"] }
-    items = Cms::Page.in(id: item_ids).to_a.sort_by { |item| item_ids.index(item.id) }
+    criteria = Cms::Page.site(site).where(cond).limit(service.limit)
+    items = Pippi::EventUtils.sort_event_page_by_difference(criteria, "event_dates_today") do |item, sort_cond|
+      sort_cond.unshift(bookmarked_ids.include?(item.id) ? 0 : 1)
+    end
 
     if items.present?
       template = Cms::LineUtils.flex_carousel_template("今日の予定", items) do |item, opts|
