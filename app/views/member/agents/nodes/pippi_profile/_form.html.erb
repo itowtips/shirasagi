@@ -1,5 +1,12 @@
-<%= stylesheet_link_tag 'member/public', media: 'all' %>
-<%= javascript_include_tag 'member/public' %>
+<% 1.upto(Cms::Member::CHILD_MAX_SIZE) do |i| %>
+  <fieldset class="column child-name child-<%= i %>">
+    <legend>
+      <%= @model.t("child#{i}_name") %>
+    </legend>
+    <div class="chlid-name">
+      <%= f.text_field "child#{i}_name", placeholder: t("pippi.placeholder.member_name") %>
+    </div>
+  </fieldset>
 
 <fieldset class="column name">
   <legend>
