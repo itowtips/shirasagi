@@ -14,6 +14,8 @@ ja:
         1_2year: 1～2歳
         3_5year: 3～5歳
         elder: 小学生以上
+    placeholder:
+      member_name: お子さんの愛称、ニックネームを入力ください
 
   modules:
     pippi: ぴっぴ機能

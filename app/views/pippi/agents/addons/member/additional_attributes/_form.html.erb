@@ -15,7 +15,7 @@
     <dd style="margin-top: 5px;"></dd>
 
     <dt class="depth-2" style="margin-top: 5px;"><%= @model.t("child_name") %></dt>
-    <dd style="margin-top: 5px;"><%= f.text_field "child#{i}_name", style: "width: 60%;" %></dd>
+    <dd style="margin-top: 5px;"><%= f.text_field "child#{i}_name", placeholder: t("pippi.placeholder.member_name"), style: "width: 60%;" %></dd>
 
     <dt class="depth-2" style="margin-top: 5px;"><%= @model.t("child_birthday") %></dt>
     <dd style="margin-top: 5px;">
