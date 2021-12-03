@@ -85,39 +85,5 @@ module Event::Addon
         [ I18n.t("event.options.event_display.#{m}"), m ]
       end
     end
-
-    def sort_event_page_by_difference(criteria)
-      today = Time.zone.today
-      case sort
-      when "event_dates_today"
-        dates = [today]
-      when "event_dates_weekend"
-        dates = ((today + 1.day)..(today + 6.days)).select do |date|
-          date.saturday? || date.sunday?
-        end
-      else
-        return criteria.to_a
-      end
-
-      event_sort_hash = {}
-      criteria.each do |item|
-        event_sort_hash[item.id.to_s] = {}
-        next unless item.event_dates_cluster(dates)
-
-        event_sort_hash[item.id.to_s]['difference'] = item.event_dates_difference(dates)
-        event_sort_hash[item.id.to_s]['start_date'] = item.event_dates_cluster(dates).first
-        event_sort_hash[item.id.to_s]['end_date'] = item.event_dates_cluster(dates).last
-      end
-      i = 0
-      criteria.sort_by do |item|
-        [
-          event_sort_hash[item.id.to_s]['difference'].zero? ? 0 : 1,
-          event_sort_hash[item.id.to_s]['start_date'],
-          event_sort_hash[item.id.to_s]['end_date'],
-          item.released.try(:to_i) * -1,
-          i += 1
-        ]
-      end
-    end
   end
 end

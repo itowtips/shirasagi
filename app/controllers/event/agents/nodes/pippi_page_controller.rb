@@ -13,7 +13,7 @@ class Event::Agents::Nodes::PippiPageController < ApplicationController
     @items = pages.
       order_by(@cur_node.sort_hash).
       limit(@cur_node.limit)
-    @items = @cur_node.sort_event_page_by_difference(@items)
+    @items = Pippi::EventUtils.sort_event_page_by_difference(@items, @cur_node.sort)
   end
 
   def daily
@@ -46,7 +46,7 @@ class Event::Agents::Nodes::PippiPageController < ApplicationController
       return true
     end
 
-    all_pages = @cur_node.sort_event_page_by_difference(pages.order_by(@cur_node.sort_hash))
+    all_pages = Pippi::EventUtils.sort_event_page_by_difference(pages.order_by(@cur_node.sort_hash), @cur_node.sort)
     if all_pages.blank?
       generate_empty_files
       cleanup_index_files(1)
