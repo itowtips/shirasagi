@@ -14,6 +14,7 @@ class Article::Page
   include Cms::Addon::BodyPart
   include Cms::Addon::File
   include Cms::Addon::Form::Page
+  include Cms::Addon::Ssml
   include Category::Addon::Category
   include Cms::Addon::ParentCrumb
   include Event::Addon::Date

@@ -691,6 +691,7 @@ ja:
       cms/line/deliver_category/child_age: 子どもの年齢
       cms/line/deliver_category/pickup: ピックアップ
       cms/ssml: SSML
+      cms/ssml_setting: SSML設定
 
   mongoid:
     models:
@@ -1312,6 +1313,8 @@ ja:
         json_body: JSON
       cms/addon/ssml:
         ssml: SSLM
+      cms/addon/ssml_setting:
+        st_ssml_state: SSLM入力
 
   activemodel:
     attributes:
@@ -2562,6 +2565,10 @@ ja:
       site_search_categories:
         - サイト内検索で使用するカテゴリーを設定します。
         - 設定されていない場合は全カテゴリーが対象となります。
+
+    cms/addon/ssml_setting:
+      st_ssml_state:
+        - 有効にすると記事にSSML入力が表示されます。
 
   all_content:
     page_id: ページID

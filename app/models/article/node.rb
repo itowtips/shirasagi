@@ -15,6 +15,7 @@ module Article::Node
     include Event::Addon::PageList
     include Cms::Addon::Form::Node
     include Category::Addon::Setting
+    include Cms::Addon::SsmlSetting
     include Cms::Addon::TagSetting
     include Cms::Addon::ContentQuota
     include Cms::Addon::ForMemberNode

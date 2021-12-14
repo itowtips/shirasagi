@@ -1,3 +1,8 @@
+<%
+  if @cur_node && @cur_node.respond_to?(:ssml_enabled?) && !@cur_node.ssml_enabled?
+    return
+  end
+%>
 <%= code_editor ".mod-cms-ssml-form textarea", mode: :html %>
 
 <dl class="see mod-cms-ssml-form">

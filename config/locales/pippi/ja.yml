@@ -30,6 +30,7 @@ ja:
   cms:
     nodes:
       pippi/tips: 今日のひとこと
+      pippi/skill_json: スキルJSON
     parts:
       pippi/tips: 今日のひとこと
 

@@ -21,11 +21,13 @@ Rails.application.routes.draw do
     get "tips" => "tips#index"
     resources :tips, path: "tips/:ymd", concerns: [:deletion, :download_all, :import]
     resources :tips_layouts, concerns: [:deletion]
+    resources :skill_jsons, concerns: [:deletion]
   end
 
   node "pippi" do
     get "tips/(index.:format)" => "public#index", cell: "nodes/tips"
     get "tips/:ymd/(index.:format)" => "public#index", cell: "nodes/tips", ymd: /\d{8}/
+    get "skill_json/(index.:format)" => "public#index", cell: "nodes/skill_json"
   end
 
   part "pippi" do
