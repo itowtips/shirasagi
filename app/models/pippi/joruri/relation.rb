@@ -20,6 +20,9 @@ module Pippi::Joruri::Relation
   class Report < Doc
   end
 
+  class Circle < Doc
+  end
+
   class Node < Doc
   end
 end

@@ -70,6 +70,20 @@ namespace :pippi do
       importer.destroy_report_docs
     end
 
+    task import_circles: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Circle.new(site)
+      importer.import_circles
+    end
+
+    task destroy_circles: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Circle.new(site)
+      importer.destroy_circles
+    end
+
     task import_groups: :environment do
       puts "Please input site: site=[www]" or exit if ENV['site'].blank?
       site = ::Cms::Site.where(host: ENV['site']).first
