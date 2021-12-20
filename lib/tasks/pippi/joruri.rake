@@ -84,6 +84,20 @@ namespace :pippi do
       importer.destroy_circles
     end
 
+    task import_seminars: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Seminar.new(site)
+      importer.import_seminars
+    end
+
+    task destroy_seminars: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Seminar.new(site)
+      importer.destroy_seminars
+    end
+
     task import_groups: :environment do
       puts "Please input site: site=[www]" or exit if ENV['site'].blank?
       site = ::Cms::Site.where(host: ENV['site']).first
@@ -96,6 +110,20 @@ namespace :pippi do
       site = ::Cms::Site.where(host: ENV['site']).first
       importer = Pippi::Joruri::Importer::User.new(site)
       importer.import_users
+    end
+
+    task import_map_libraries: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Library.new(site)
+      importer.import_map_libraries
+    end
+
+    task destroy_map_libraries: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Library.new(site)
+      importer.destroy_map_libraries
     end
   end
 end

@@ -23,6 +23,12 @@ module Pippi::Joruri::Relation
   class Circle < Doc
   end
 
+  class Library < Doc
+  end
+
+  class Seminar < Doc
+  end
+
   class Node < Doc
   end
 end
