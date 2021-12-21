@@ -32,6 +32,9 @@ module Pippi::Joruri::Relation
   class Hiroba < Doc
   end
 
+  class Bunka < Doc
+  end
+
   class Node < Doc
   end
 end
