@@ -125,5 +125,19 @@ namespace :pippi do
       importer = Pippi::Joruri::Importer::Library.new(site)
       importer.destroy_map_libraries
     end
+
+    task import_map_hiroba: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Hiroba.new(site)
+      importer.import_map_hiroba
+    end
+
+    task destroy_map_hiroba: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Hiroba.new(site)
+      importer.destroy_map_hiroba
+    end
   end
 end

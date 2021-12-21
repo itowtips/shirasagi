@@ -29,6 +29,9 @@ module Pippi::Joruri::Relation
   class Seminar < Doc
   end
 
+  class Hiroba < Doc
+  end
+
   class Node < Doc
   end
 end
