@@ -57,7 +57,7 @@ class Cms::Line::MessagesController < ApplicationController
     end
 
     if @item.test_deliver(@test_members)
-      redirect_to({ action: :show}, { notice: I18n.t("ss.notice.started_test_deliver") })
+      redirect_to({ action: :show }, { notice: I18n.t("ss.notice.started_test_deliver") })
     end
   end
 end

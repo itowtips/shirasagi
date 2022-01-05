@@ -3819,7 +3819,6 @@ table.check-links-erros {
     }
   }
 }
-
 .line-select-message-type {
   .message-types {
     padding: 5px;
@@ -3860,3 +3859,38 @@ table.check-links-erros {
     }
   }
 }
+.line-crop-area {
+  max-width: 640px;
+  .btn-active {
+    @include btn-active;
+  }
+  .image-warp img {
+    display: block;
+    max-width: 100%;
+  }
+  .area-names {
+    padding: 5px;
+  }
+  .areas {
+    .area {
+      background: #f2f2f2;
+      padding: 5px;
+      div {
+        padding: 5px;
+      }
+      .points {
+        padding-right: 12px;
+        input[type="number"] {
+          width: 80px !important;
+          background: #d0d0d0;
+        }
+      }
+      .actions {
+        input[type="text"] {
+          width: 180px;
+        }
+      }
+    }
+  }
+}
+

@@ -1,4 +1,0 @@
-<dl class="see mod-cms-line-webhook">
-  <dt><%= @item.t :webhook_service_id %><%= @item.tt :webhook_service_id %></dt>
-  <dd><%= f.select :webhook_service_id, Cms::Line::Service::Base.site(@cur_site).pluck(:name, :id), include_blank: true %></dd>
-</dl>

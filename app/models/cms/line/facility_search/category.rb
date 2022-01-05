@@ -8,7 +8,7 @@ class Cms::Line::FacilitySearch::Category
 
   set_permission_name "cms_line_services", :use
 
-  belongs_to :service, class_name: "Cms::Line::Service::Base"
+  belongs_to :hook, class_name: "Cms::Line::Service::Hook::Base"
 
   field :name, type: String
   field :summary, type: String
@@ -18,7 +18,7 @@ class Cms::Line::FacilitySearch::Category
   belongs_to_file2 :image
   embeds_ids :categories, class_name: "Facility::Node::Category"
 
-  validates :service_id, presence: true
+  validates :hook_id, presence: true
   validates :name, presence: true, length: { maximum: 40 }
   validates :summary, presence: true, length: { maximum: 60 }
 

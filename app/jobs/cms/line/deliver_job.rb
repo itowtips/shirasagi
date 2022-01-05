@@ -1,20 +1,19 @@
 class Cms::Line::DeliverJob < Cms::ApplicationJob
-  include Cms::Line::BaseJob
+  include Job::SS::TaskFilter
+
+  self.task_class = Cms::Task
+  self.task_name = "cms:line_deliver"
+  self.controller = Cms::Agents::Tasks::Line::MessagesController
+  self.action = :deliver
 
   def perform(message_id)
-    item = Cms::Line::Message.site(site).where(id: message_id).first
-    raise "message not found! #{message_id}" if item.blank?
+    message = Cms::Line::Message.site(site).where(id: message_id).first
+    task.process self.class.controller, self.class.action, { site: site, user: user, message: message }
+  end
 
-    begin
-      deliver_message(item)
-    rescue => e
-      Rails.logger.error("#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}")
-    ensure
-      item.completed = Time.zone.now
-      item.test_completed = nil
-      item.deliver_state = "completed"
-      item.deliver_date = nil
-      item.save
-    end
+  def task_cond
+    cond = { name: self.class.task_name }
+    cond[:site_id] = site_id
+    cond
   end
 end

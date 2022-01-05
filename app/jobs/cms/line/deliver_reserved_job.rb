@@ -1,28 +1,18 @@
 class Cms::Line::DeliverReservedJob < Cms::ApplicationJob
-  include Cms::Line::BaseJob
+  include Job::SS::TaskFilter
 
-  def perform(opts = {})
-    now = opts[:now]
-    now ||= Time.zone.now
+  self.task_class = Cms::Task
+  self.task_name = "cms:line_reserve_deliver"
+  self.controller = Cms::Agents::Tasks::Line::MessagesController
+  self.action = :reserve_deliver
 
-    items = Cms::Line::Message.site(site).where(
-      :deliver_state => "ready",
-      :deliver_date.ne => nil,
-      :deliver_date.lte => now).to_a
+  def perform
+    task.process self.class.controller, self.class.action, { site: site, user: user }
+  end
 
-    items.each do |item|
-      begin
-        item.publish
-        deliver_message(item)
-      rescue => e
-        Rails.logger.error("#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}")
-      ensure
-        item.completed = Time.zone.now
-        item.test_completed = nil
-        item.deliver_state = "completed"
-        item.deliver_date = nil
-        item.save
-      end
-    end
+  def task_cond
+    cond = { name: self.class.task_name }
+    cond[:site_id] = site_id
+    cond
   end
 end

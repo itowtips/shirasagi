@@ -4,6 +4,12 @@
 <% end %>
 
 <dl class="see mod-pippi-member-additional-attributes">
+  <dt><%= @item.t(:first_registered) %></dt>
+  <dd><%= tryb{ @item.first_registered.strftime("%Y/%m/%d %H:%M") } %></dd>
+
+  <dt><%= @item.t(:subscribe_richmenu_id) %></dt>
+  <dd><%= @item.subscribe_richmenu_id %></dd>
+
   <dt><%= @item.t(:subscribe_line_message) %></dt>
   <dd><%= @item.label :subscribe_line_message %></dd>
 

@@ -6,19 +6,14 @@ class Cms::Agents::Nodes::LineHubController < ApplicationController
   public
 
   def index
-    client ||= Line::Bot::Client.new do |config|
-      config.channel_secret = @cur_site.line_channel_secret
-      config.channel_token = @cur_site.line_channel_access_token
-    end
-
-    service = @cur_node.webhook_service
+    service = Cms::Line::Service::Group.site(@cur_site).active_group
     if !service
       Rails.logger.error("service not registered")
       head :bad_request
       return
     end
 
-    processor = service.processor(@cur_site, @cur_node, client, request)
+    processor = service.processor(@cur_site, @cur_node, @cur_site.line_client, request)
     processor.parse_request
 
     if !processor.valid_signature?

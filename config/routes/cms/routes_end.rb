@@ -175,11 +175,7 @@ Rails.application.routes.draw do
     end
 
     namespace "line" do
-      resources :services, concerns: :deletion do
-        namespace "facility_search" do
-          resources :categories, concerns: :deletion
-        end
-      end
+      # messages
       resources :messages, concerns: :deletion do
         get :deliver, on: :member
         post :deliver, on: :member
@@ -191,13 +187,34 @@ Rails.application.routes.draw do
           get :select_type, on: :collection
         end
       end
-      resources :event_sessions, only: [:index, :show, :destroy], concerns: :deletion
+      resources :test_members, concerns: :deletion
+      resources :deliver_logs, only: [:index, :show, :destroy], concerns: [:deletion]
       resources :deliver_conditions, concerns: :deletion
       resources :deliver_categories, concerns: :deletion do
         resources :categories, concerns: :deletion, controller: "deliver_category/categories"
       end
-      resources :test_members, concerns: :deletion
-      resources :deliver_logs, only: [:index, :show, :destroy], concerns: [:deletion]
+
+      # services
+      namespace "richmenu" do
+        resources :groups, concerns: :deletion do
+          get :apply, on: :collection
+          post :apply, on: :collection
+          resources :menus, concerns: :deletion do
+            get :crop, on: :member
+            put :crop, on: :member
+          end
+        end
+      end
+      namespace "service" do
+        resources :groups, concerns: :deletion do
+          resources :hooks, concerns: :deletion do
+            namespace "facility_search" do
+              resources :categories, concerns: :deletion
+            end
+          end
+        end
+      end
+      resources :event_sessions, only: [:index, :show, :destroy], concerns: :deletion
     end
 
     get "check_links" => "check_links#index"
