@@ -58,6 +58,7 @@ ja:
         approved: "承認日時：%{approved}"
         reserved: "予約日時：%{time}"
         delivered: "配信日時：%{time}"
+        term: "期間：%{term}"
     navi:
       readable: 閲覧一覧
       editable: 管理一覧
@@ -217,8 +218,10 @@ ja:
       unable_to_delete: '%{items} を削除できませんでした。'
       copied: 複製しました。
       started_import: インポートを開始しました。
+      started_upload: アップロードを開始しました。
       started_deliver: 配信を開始しました。
       started_test_deliver: テスト配信を開始しました。
+      started_apply: 反映処理を開始しました。
       sent: 送信しました。
       posted: 投稿しました。
       initialized: 初期化しました。

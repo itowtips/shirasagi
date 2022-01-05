@@ -302,7 +302,7 @@ GEM
       kramdown (~> 2.0)
     levenshtein (0.2.2)
     libv8-node (15.14.0.1)
-    line-bot-api (1.21.0)
+    line-bot-api (1.22.0)
     link_header (0.0.8)
     liquid (5.0.1)
     listen (3.7.0)

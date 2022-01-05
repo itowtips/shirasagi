@@ -1,0 +1,21 @@
+<dl class="see">
+  <% if @item.new_record? %>
+    <dt><%= @model.t :service %><%= @model.tt :service %></dt>
+    <dd><%= f.select :service, @item.service_options %></dd>
+  <% else %>
+    <dt><%= @model.t :service %></dt>
+    <dd><%= @item.label :service %></dd>
+  <% end %>
+
+  <dt><%= @model.t :name %><%= @model.tt :name %></dt>
+  <dd><%= f.text_field :name %></dd>
+
+  <dt><%= @model.t :trigger_type %><%= @model.tt :trigger_type %></dt>
+  <dd><%= f.select :trigger_type, @item.trigger_type_options %></dd>
+
+  <dt><%= @model.t :trigger_data %><%= @model.tt :trigger_data %></dt>
+  <dd><%= f.text_field :trigger_data %></dd>
+
+  <dt><%= @model.t :order %><%= @model.tt :order %></dt>
+  <dd><%= f.number_field :order %></dd>
+</dl>

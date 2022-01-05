@@ -9,11 +9,11 @@ module Pippi::Addon::Member
       field :first_registered, type: DateTime
       field :subscribe_line_message, type: String, default: "active"
       embeds_ids :deliver_categories, class_name: "Cms::Line::DeliverCategory::Category"
+      field :subscribe_richmenu_id, type: String
 
       validates :subscribe_line_message, inclusion: { in: %w(active expired) }
 
-      permit_params :first_registered
-      permit_params :subscribe_line_message
+      permit_params :first_registered, :subscribe_richmenu_id, :subscribe_line_message
       permit_params deliver_category_ids: []
 
       1.upto(CHILD_MAX_SIZE) do |i|

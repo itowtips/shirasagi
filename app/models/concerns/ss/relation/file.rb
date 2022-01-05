@@ -86,6 +86,7 @@ module SS::Relation::File
     file = send(name) || class_name.constantize.new
     file.in_file  = send("in_#{name}")
     file.filename = file.in_file.original_filename
+    file.name = file.in_file.original_filename
     # file.model    = class_name.underscore
     file.model    = self.class.to_s.underscore
     file.site_id  = site_id if respond_to?(:site_id)

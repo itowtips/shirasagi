@@ -7,6 +7,9 @@
   <dt><%= @item.t(:first_registered) %></dt>
   <dd><%= f.text_field :first_registered, class: 'datetime js-datetime', value: tryb{ @item.first_registered.strftime("%Y/%m/%d %H:%M") } %></dd>
 
+  <dt><%= @item.t(:subscribe_richmenu_id) %></dt>
+  <dd><%= f.text_field :subscribe_richmenu_id %></dd>
+
   <dt><%= @item.t(:subscribe_line_message) %></dt>
   <dd style="margin-bottom: 10px;"><%= f.select :subscribe_line_message, @item.subscribe_line_message_options %></dd>
 

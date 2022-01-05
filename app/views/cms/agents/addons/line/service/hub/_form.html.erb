@@ -8,32 +8,3 @@
   <dt><%= @item.t :expired_text %></dt>
   <dd><%= f.text_area :expired_text %></dd>
 </dl>
-
-<%
-  delegates = @item.delegates.map do |item|
-    { service_id: item.service_id.to_s, trigger_type: item.trigger_type, trigger_data: item.trigger_data }
-  end
-  services = Cms::Line::Service::Base.site(@cur_site).ne(service: "hub").pluck(:name, :id)
-%>
-<%= jquery do %>
-  var sort = new SS_SortableForm('.mod-cms-addon-line-service-hub .index');
-  sort.renderItems(<%== delegates.to_json %>);
-<% end %>
-<div class="mod-cms-addon-line-service-hub">
-  <table class="index form-index sortable-index">
-    <thead>
-      <tr>
-        <th><%= @item.t('line/service') %></th>
-        <th><%= @item.t('line/trigger_type') %></th>
-        <th><%= @item.t('line/trigger_data') %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr data-base="true">
-        <td><%= select_tag('item[delegates][][service_id]', options_for_select(services), include_blank: true) %></td>
-        <td><%= f.text_field_tag 'item[delegates][][trigger_type]', nil, id: nil %></td>
-        <td><%= f.text_field_tag 'item[delegates][][trigger_data]', nil, id: nil %></td>
-      </tr>
-    </tbody>
-  </table>
-</div>

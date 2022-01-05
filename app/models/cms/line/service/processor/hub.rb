@@ -1,6 +1,6 @@
 class Cms::Line::Service::Processor::Hub < Cms::Line::Service::Processor::Base
   def call
-    return if service.delegates.blank?
+    return if service.hooks.blank?
 
     delegated = false
     events.each do |event|
@@ -15,14 +15,14 @@ class Cms::Line::Service::Processor::Hub < Cms::Line::Service::Processor::Base
 
           # default mode
           if event_session.mode.blank?
-            event_session.mode = service.delegates.first.service_name
+            event_session.mode = service.hooks.first.service_name
             event_session.update
           end
 
           # switch mode
           switched = false
-          service.delegates.each do |delegate|
-            if delegate.switch_mode(self, event)
+          service.hooks.each do |hook|
+            if hook.switch_mode(self, event)
               switched = true
               break
             end
@@ -39,8 +39,8 @@ class Cms::Line::Service::Processor::Hub < Cms::Line::Service::Processor::Base
           end
 
           # delegate event
-          service.delegates.each do |delegate|
-            if delegate.delegate(self, event)
+          service.hooks.each do |hook|
+            if hook.delegate(self, event)
               delegated = true
               break
             end

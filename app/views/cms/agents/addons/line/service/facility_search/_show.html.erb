@@ -6,7 +6,9 @@
   <dd><%=br @item.text_keys %></dd>
 
   <dt><%= @item.t :category_ids %></dt>
-  <dd><%= link_to "カテゴリーを管理する", cms_line_service_facility_search_categories_path(service_id: @item), class: "btn" %></dd>
+  <dd><%=
+    link_to "設定する", cms_line_service_group_hook_facility_search_categories_path(hook_id: @item), class: "btn" %>
+  </dd>
   <dd>
     <% if @item.categories.present? %>
       <table class="index">
@@ -15,7 +17,7 @@
           <th class="order"><%= Cms::Line::FacilitySearch::Category.t(:order) %></th>
           <th class="name"><%= Cms::Line::FacilitySearch::Category.t(:name) %></th>
           <th class="category"><%= Cms::Line::FacilitySearch::Category.t(:category_ids) %></th>
-          <th class="datetime"><%= Cms::Line::FacilitySearch::Category.t(:updated) %></th>
+          <th class="datetime"><%= Cms::Line::FacilitySearch::Category.t(:state) %></th>
         </tr>
         </thead>
         <tbody>
@@ -24,7 +26,7 @@
             <td><%= category.order %></td>
             <td><%= category.name %></td>
             <td><%= category.categories.pluck(:name).join(", ") %></td>
-            <td><%= I18n.l(category.updated) %></td>
+            <td><%= category.label :state %></td>
           </tr>
         <% end %>
         </tbody>
