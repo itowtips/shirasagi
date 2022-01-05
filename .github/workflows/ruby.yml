@@ -20,8 +20,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parallelism: [ 5 ]
-        id: [ 0,1,2,3,4 ]
+        parallelism: [ 2 ]
+        id: [ 0,1 ]
     steps:
       - uses: actions/checkout@v2
       - name: Docker Login
@@ -81,7 +81,7 @@ jobs:
         run: docker ps -a
       - name: Run tests
         run: |
-          file_list=$(bundle exec ruby .travis.d/split_specs.rb -p ${{ matrix.parallelism }} -i ${{ matrix.id }})
+          file_list=$(bundle exec ruby .travis.d/split_specs.rb -p ${{ matrix.parallelism }} -i ${{ matrix.id }} --include /gws/ --include /workflow/)
           if [ $? -ne 0 ]; then
             exit 1
           fi
