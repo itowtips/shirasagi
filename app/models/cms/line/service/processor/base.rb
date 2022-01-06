@@ -43,6 +43,13 @@ class Cms::Line::Service::Processor::Base
     event["source"]["userId"] rescue nil
   end
 
+  def richmenu_switched?(event)
+    return false if event["type"] != "postback"
+    params = event["postback"]["params"]
+    return false if params.blank?
+    params["newRichMenuAliasId"].present?
+  end
+
   def call
   end
 end
