@@ -24,7 +24,6 @@ module Pippi::Addon::Member
         permit_params :"in_child#{i}_birth" => [:era, :year, :month, :day]
         permit_params :"child#{i}_name"
         validate :"set_child#{i}_birthday"
-        validate :"validate_child#{i}"
       end
     end
 
@@ -148,14 +147,16 @@ module Pippi::Addon::Member
           return
         end
 
-        in_child_birth = send(accessor_key).presence || {}
+        in_child_birth = send(accessor_key)
+        return if in_child_birth.blank?
+
         era = "seireki"
         year = in_child_birth[:year]
         month = in_child_birth[:month]
         day = in_child_birth[:day]
 
         if year.blank? && month.blank? && day.blank?
-          send("#{birthday_key}=", nil)
+          errors.add birthday_key, :empty
           return
         elsif year.blank? || month.blank? || day.blank?
           errors.add birthday_key, :incorrectly
@@ -173,15 +174,6 @@ module Pippi::Addon::Member
           send("#{birthday_key}=", date)
         rescue
           errors.add brithday_key, :incorrectly
-        end
-      end
-
-      define_method ("validate_child#{i}") do
-        if send(birthday_key).present? && send(name_key).blank?
-          errors.add name_key, :empty
-        end
-        if send(name_key).present? && send(birthday_key).blank?
-          errors.add birthday_key, :empty
         end
       end
     end
