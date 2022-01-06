@@ -30,6 +30,7 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(capture.update_rich_menus_alias.count).to eq 0
         expect(capture.set_default_rich_menu.count).to eq 0
         expect(capture.bulk_link_rich_menus.count).to eq 0
+        expect(capture.bulk_unlink_rich_menus.count).to eq 0
         expect(capture.delete_rich_menu.count).to eq 0
         expect(registrations.size).to eq 0
       end
@@ -71,6 +72,7 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(capture.set_default_rich_menu.count).to eq 1
         expect(capture.set_default_rich_menu.rich_menu_id).to eq "richMenuId-1"
         expect(capture.bulk_link_rich_menus.count).to eq 0
+        expect(capture.bulk_unlink_rich_menus.count).to eq 0
         expect(capture.delete_rich_menu.count).to eq 0
         expect(registrations.size).to eq 1
         registration = registrations.where(menu_id: richmenu_menu.id).first
@@ -84,6 +86,8 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(capture.update_rich_menus_alias.count).to eq 0
         expect(capture.set_default_rich_menu.count).to eq 2
         expect(capture.set_default_rich_menu.rich_menu_id).to eq "richMenuId-1"
+        expect(capture.bulk_link_rich_menus.count).to eq 0
+        expect(capture.bulk_unlink_rich_menus.count).to eq 0
         expect(capture.delete_rich_menu.count).to eq 0
         expect(registrations.size).to eq 1
         registration = registrations.where(menu_id: richmenu_menu.id).first
@@ -99,6 +103,8 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(capture.update_rich_menus_alias.count).to eq 0
         expect(capture.set_default_rich_menu.count).to eq 3
         expect(capture.set_default_rich_menu.rich_menu_id).to eq "richMenuId-2"
+        expect(capture.bulk_link_rich_menus.count).to eq 0
+        expect(capture.bulk_unlink_rich_menus.count).to eq 0
         expect(capture.delete_rich_menu.count).to eq 1
         expect(capture.delete_rich_menu.rich_menu_id).to eq "richMenuId-1"
         expect(registrations.size).to eq 1
@@ -113,6 +119,8 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(capture.set_rich_menus_alias.count).to eq 0
         expect(capture.update_rich_menus_alias.count).to eq 0
         expect(capture.set_default_rich_menu.count).to eq 3
+        expect(capture.bulk_link_rich_menus.count).to eq 0
+        expect(capture.bulk_unlink_rich_menus.count).to eq 0
         expect(capture.delete_rich_menu.count).to eq 2
         expect(capture.delete_rich_menu.rich_menu_id).to eq "richMenuId-2"
         expect(registrations.size).to eq 0
@@ -183,6 +191,7 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(capture.set_default_rich_menu.count).to eq 1
         expect(capture.set_default_rich_menu.rich_menu_id).to eq "richMenuId-1"
         expect(capture.bulk_link_rich_menus.count).to eq 0
+        expect(capture.bulk_unlink_rich_menus.count).to eq 0
         expect(capture.delete_rich_menu.count).to eq 0
         expect(registrations.size).to eq 2
         expect(registrations.pluck(:menu_id, :line_richmenu_id)).to match_array(
@@ -205,6 +214,7 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(capture.set_default_rich_menu.count).to eq 2
         expect(capture.set_default_rich_menu.rich_menu_id).to eq "richMenuId-3"
         expect(capture.bulk_link_rich_menus.count).to eq 0
+        expect(capture.bulk_unlink_rich_menus.count).to eq 0
         expect(capture.delete_rich_menu.count).to eq 2
         expect(registrations.size).to eq 2
         expect(registrations.pluck(:menu_id, :line_richmenu_id)).to match_array(
@@ -224,6 +234,7 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(capture.set_default_rich_menu.count).to eq 3
         expect(capture.set_default_rich_menu.rich_menu_id).to eq "richMenuId-3"
         expect(capture.bulk_link_rich_menus.count).to eq 0
+        expect(capture.bulk_unlink_rich_menus.count).to eq 0
         expect(capture.delete_rich_menu.count).to eq 3
         expect(registrations.size).to eq 2
         expect(registrations.pluck(:menu_id, :line_richmenu_id)).to match_array(
@@ -291,10 +302,16 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(capture.bulk_link_rich_menus.count).to eq 1
         expect(capture.bulk_link_rich_menus.user_ids).to match_array([member2.oauth_id])
         expect(capture.bulk_link_rich_menus.line_richmenu_id).to eq "richMenuId-2"
+        expect(capture.bulk_unlink_rich_menus.count).to eq 0
         expect(capture.delete_rich_menu.count).to eq 0
+
         expect(registrations.size).to eq 2
-        expect(registrations.pluck(:menu_id, :line_richmenu_id)).to match_array(
-          [[default_menu.id, "richMenuId-1"], [member_menu.id, "richMenuId-2"]])
+        registration1 = registrations.find_by(menu_id: default_menu.id)
+        expect(registration1.line_richmenu_id).to eq "richMenuId-1"
+        expect(registration1.linked_user_ids).to match_array([])
+        registration2 = registrations.find_by(menu_id: member_menu.id)
+        expect(registration2.line_richmenu_id).to eq "richMenuId-2"
+        expect(registration2.linked_user_ids).to match_array([member2.oauth_id])
 
         member1.reload
         member2.reload
@@ -315,10 +332,17 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(capture.bulk_link_rich_menus.count).to eq 2
         expect(capture.bulk_link_rich_menus.user_ids).to match_array([member3.oauth_id, member4.oauth_id])
         expect(capture.bulk_link_rich_menus.line_richmenu_id).to eq "richMenuId-2"
+        expect(capture.bulk_unlink_rich_menus.count).to eq 0
         expect(capture.delete_rich_menu.count).to eq 0
+
         expect(registrations.size).to eq 2
-        expect(registrations.pluck(:menu_id, :line_richmenu_id)).to match_array(
-          [[default_menu.id, "richMenuId-1"], [member_menu.id, "richMenuId-2"]])
+        registration1 = registrations.find_by(menu_id: default_menu.id)
+        expect(registration1.line_richmenu_id).to eq "richMenuId-1"
+        expect(registration1.linked_user_ids).to match_array([])
+        registration2 = registrations.find_by(menu_id: member_menu.id)
+        expect(registration2.line_richmenu_id).to eq "richMenuId-2"
+        expect(registration2.linked_user_ids).to match_array(
+          [member2.oauth_id, member3.oauth_id, member4.oauth_id])
 
         member1.reload
         member2.reload
@@ -330,6 +354,73 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(member3.subscribe_richmenu_id).to eq "richMenuId-2"
         expect(member4.subscribe_richmenu_id).to eq "richMenuId-2"
 
+        # destroy member4
+        member4_user_id = member4.oauth_id
+        member4.destroy
+
+        described_class.bind(site_id: site).perform_now
+        expect(capture.create_rich_menu.count).to eq 2
+        expect(capture.get_rich_menus_alias_list.count).to eq 0
+        expect(capture.set_rich_menus_alias.count).to eq 0
+        expect(capture.update_rich_menus_alias.count).to eq 0
+        expect(capture.set_default_rich_menu.count).to eq 3
+        expect(capture.set_default_rich_menu.rich_menu_id).to eq "richMenuId-1"
+        expect(capture.bulk_link_rich_menus.count).to eq 2
+        expect(capture.bulk_unlink_rich_menus.count).to eq 1
+        expect(capture.bulk_unlink_rich_menus.user_ids).to match_array([member4_user_id])
+        expect(capture.delete_rich_menu.count).to eq 0
+
+        expect(registrations.size).to eq 2
+        registration1 = registrations.find_by(menu_id: default_menu.id)
+        expect(registration1.line_richmenu_id).to eq "richMenuId-1"
+        expect(registration1.linked_user_ids).to match_array([])
+        registration2 = registrations.find_by(menu_id: member_menu.id)
+        expect(registration2.line_richmenu_id).to eq "richMenuId-2"
+        expect(registration2.linked_user_ids).to match_array(
+          [member2.oauth_id, member3.oauth_id])
+
+        member1.reload
+        member2.reload
+        member3.reload
+
+        expect(member1.subscribe_richmenu_id).to eq nil
+        expect(member2.subscribe_richmenu_id).to eq "richMenuId-2"
+        expect(member3.subscribe_richmenu_id).to eq "richMenuId-2"
+
+        # disable member3
+        member3.state = "disabled"
+        member3.save
+
+        described_class.bind(site_id: site).perform_now
+
+        expect(capture.create_rich_menu.count).to eq 2
+        expect(capture.get_rich_menus_alias_list.count).to eq 0
+        expect(capture.set_rich_menus_alias.count).to eq 0
+        expect(capture.update_rich_menus_alias.count).to eq 0
+        expect(capture.set_default_rich_menu.count).to eq 4
+        expect(capture.set_default_rich_menu.rich_menu_id).to eq "richMenuId-1"
+        expect(capture.bulk_link_rich_menus.count).to eq 2
+        expect(capture.bulk_unlink_rich_menus.count).to eq 2
+        expect(capture.bulk_unlink_rich_menus.user_ids).to match_array([member3.oauth_id])
+        expect(capture.delete_rich_menu.count).to eq 0
+
+        expect(registrations.size).to eq 2
+        registration1 = registrations.find_by(menu_id: default_menu.id)
+        expect(registration1.line_richmenu_id).to eq "richMenuId-1"
+        expect(registration1.linked_user_ids).to match_array([])
+        registration2 = registrations.find_by(menu_id: member_menu.id)
+        expect(registration2.line_richmenu_id).to eq "richMenuId-2"
+        expect(registration2.linked_user_ids).to match_array(
+          [member2.oauth_id])
+
+        member1.reload
+        member2.reload
+        member3.reload
+
+        expect(member1.subscribe_richmenu_id).to eq nil
+        expect(member2.subscribe_richmenu_id).to eq "richMenuId-2"
+        expect(member3.subscribe_richmenu_id).to eq nil
+
         # destroy
         richmenu_group.destroy
         described_class.bind(site_id: site).perform_now
@@ -337,7 +428,9 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         expect(capture.get_rich_menus_alias_list.count).to eq 0
         expect(capture.set_rich_menus_alias.count).to eq 0
         expect(capture.update_rich_menus_alias.count).to eq 0
-        expect(capture.set_default_rich_menu.count).to eq 2
+        expect(capture.set_default_rich_menu.count).to eq 4
+        expect(capture.bulk_link_rich_menus.count).to eq 2
+        expect(capture.bulk_unlink_rich_menus.count).to eq 2
         expect(capture.delete_rich_menu.count).to eq 2
         expect(capture.delete_rich_menu.rich_menu_id).to eq "richMenuId-2"
         expect(registrations.size).to eq 0
@@ -345,12 +438,10 @@ describe Cms::Line::ApplyRichmenuJob, dbscope: :example do
         member1.reload
         member2.reload
         member3.reload
-        member4.reload
 
         expect(member1.subscribe_richmenu_id).to eq nil
         expect(member2.subscribe_richmenu_id).to eq nil
         expect(member3.subscribe_richmenu_id).to eq nil
-        expect(member4.subscribe_richmenu_id).to eq nil
       end
     end
   end
