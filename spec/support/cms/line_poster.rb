@@ -63,6 +63,12 @@ def capture_line_bot_client
     capture.bulk_link_rich_menus.line_richmenu_id = args[2]
     OpenStruct.new(code: "200", body: "{}")
   end
+  capture.bulk_unlink_rich_menus = OpenStruct.new(count: 0)
+  allow_any_instance_of(Line::Bot::Client).to receive(:bulk_unlink_rich_menus) do |*args|
+    capture.bulk_unlink_rich_menus.count += 1
+    capture.bulk_unlink_rich_menus.user_ids = args[1]
+    OpenStruct.new(code: "200", body: "{}")
+  end
   capture.delete_rich_menu = OpenStruct.new(count: 0)
   allow_any_instance_of(Line::Bot::Client).to receive(:delete_rich_menu) do |*args|
     capture.delete_rich_menu.count += 1

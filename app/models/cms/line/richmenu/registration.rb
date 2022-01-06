@@ -7,6 +7,7 @@ class Cms::Line::Richmenu::Registration
 
   field :line_richmenu_id, type: String
   field :line_richmenu_alias_id, type: String
+  field :linked_user_ids, type: Array, default: []
   belongs_to :menu, class_name: "Cms::Line::Richmenu::Menu"
 
   validates :line_richmenu_id, presence: true

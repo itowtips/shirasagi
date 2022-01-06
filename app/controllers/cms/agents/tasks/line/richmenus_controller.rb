@@ -20,6 +20,60 @@ class Cms::Agents::Tasks::Line::RichmenusController < ApplicationController
     end
   end
 
+  def ineffective_user_ids(registration)
+    criteria = Cms::Member.site(@site).and_enabled
+    user_ids = criteria.where(:oauth_id.exists => true, oauth_type: "line").pluck(:oauth_id)
+    linked_user_ids = registration ? registration.linked_user_ids : []
+    linked_user_ids - user_ids
+  end
+
+  def link_default_menu(menu, registration)
+    return if menu.nil? || registration.nil?
+
+    @task.log("link default richmenu #{menu.name}:#{registration.line_richmenu_id}")
+    res = @site.line_client.set_default_rich_menu(registration.line_richmenu_id)
+    raise "#{res.code} #{res.body}" if res.code !~ /^2\d\d$/
+  end
+
+  def link_member_menu(menu, registration)
+    return if menu.nil? || registration.nil?
+
+    line_richmenu_id = registration.line_richmenu_id
+    @task.log("link members richmenu #{menu.name}:#{line_richmenu_id}")
+
+    # set subscribed richmenu
+    with_subscribable_members(line_richmenu_id) do |members_to, idx|
+      user_ids = members_to.map(&:oauth_id)
+      @task.log("- link members #{idx * user_ids.size}..#{(idx * user_ids.size) + user_ids.size}")
+      res = @site.line_client.bulk_link_rich_menus(user_ids, line_richmenu_id)
+      raise "#{res.code} #{res.body}" if res.code !~ /^2\d\d$/
+
+      # set linked line_richmenu_id
+      members_to.each { |member| member.set(subscribe_richmenu_id: line_richmenu_id) }
+      # set linked member's user_id
+      registration.add_to_set(linked_user_ids: user_ids)
+    end
+  end
+
+  def unlink_member_menu(registration)
+    unlink_user_ids = ineffective_user_ids(registration)
+    return if unlink_user_ids.blank?
+
+    @task.log("unlink members richmenu")
+    unlink_user_ids.to_a.each_slice(MAX_MEMBERS_TO).with_index do |user_ids, idx|
+      @task.log("- unlink members #{idx * user_ids.size}..#{(idx * user_ids.size) + user_ids.size}")
+      @site.line_client.bulk_unlink_rich_menus(user_ids)
+    end
+
+    # set unlinked line_richmenu_id
+    registration.set(linked_user_ids: (registration.linked_user_ids - unlink_user_ids)) if registration
+
+    # set unlinked member's user_id
+    criteria = Cms::Member.unscoped.site(@site).where(:oauth_id.exists => true, oauth_type: "line")
+    members = criteria.in(oauth_id: unlink_user_ids).to_a
+    members.each { |member| member.unset(:subscribe_richmenu_id) }
+  end
+
   def apply_richmenu_group(group)
     menus = group.menus.to_a
     registrations = {}
@@ -27,6 +81,8 @@ class Cms::Agents::Tasks::Line::RichmenusController < ApplicationController
     use_alias = false
 
     @task.log("start registration richmenu group #{group.name}")
+
+    # create richmenus
     menus.each do |menu|
       use_alias = true if menu.use_richmenu_alias?
 
@@ -46,7 +102,7 @@ class Cms::Agents::Tasks::Line::RichmenusController < ApplicationController
       # create richmenu object
       @task.log("-- create #{menu.name}")
       res = @site.line_client.create_rich_menu(menu.richmenu_object)
-      raise "#{res.code} #{res.body}" if res.code != "200"
+      raise "#{res.code} #{res.body}" if res.code !~ /^2\d\d$/
       line_richmenu_id = (JSON.parse(res.body))['richMenuId']
 
       # upload richmenu image
@@ -57,7 +113,7 @@ class Cms::Agents::Tasks::Line::RichmenusController < ApplicationController
         instance_variable_get("@_content_type")
       end
       res = @site.line_client.create_rich_menu_image(line_richmenu_id, file)
-      raise "#{res.code} #{res.body}" if res.code != "200"
+      raise "#{res.code} #{res.body}" if res.code !~ /^2\d\d$/
 
       registration.line_richmenu_id = line_richmenu_id
       registration.line_richmenu_alias_id = menu.richmenu_alias
@@ -66,13 +122,13 @@ class Cms::Agents::Tasks::Line::RichmenusController < ApplicationController
       update = true
     end
 
-    # richmenu alias
+    # apply richmenu alias
     if use_alias && update
       @task.log("start registration richmenu alias")
 
       # get already registered alias
       res = @site.line_client.get_rich_menus_alias_list
-      raise "#{res.code} #{res.body}" if res.code != "200"
+      raise "#{res.code} #{res.body}" if res.code !~ /^2\d\d$/
       registered_aliases = JSON.parse(res.body)["aliases"].map { |h| [h["richMenuAliasId"], h["richMenuId"]] }.to_h
       created_aliases = {}
 
@@ -93,36 +149,23 @@ class Cms::Agents::Tasks::Line::RichmenusController < ApplicationController
             res = @site.line_client.set_rich_menus_alias(line_richmenu_id, line_richmenu_alias_id)
             created_aliases[line_richmenu_alias_id] = line_richmenu_id
           end
-          raise "#{res.code} #{res.body}" if res.code != "200"
+          raise "#{res.code} #{res.body}" if res.code !~ /^2\d\d$/
         end
       end
     end
 
-    # set all users menu
+    # link all users menu
     menu = menus.select { |menu| menu.target == "default" }.first
-    if menu
-      registration = registrations[menu.id]
-      @task.log("apply default richmenu #{menu.name}:#{registration.line_richmenu_id}")
-      res = @site.line_client.set_default_rich_menu(registration.line_richmenu_id)
-      raise "#{res.code} #{res.body}" if res.code != "200"
-    end
+    registration = menu ? registrations[menu.id] : nil
+    link_default_menu(menu, registration)
 
-    # set members menu
+    # link members menu
     menu = menus.select { |menu| menu.target == "member" }.first
-    if menu
-      registration = registrations[menu.id]
-      line_richmenu_id = registration.line_richmenu_id
-      @task.log("apply members richmenu #{menu.name}:#{line_richmenu_id}")
+    registration = menu ? registrations[menu.id] : nil
+    link_member_menu(menu, registration)
 
-      # set subscribed richmenu
-      with_subscribable_members(line_richmenu_id) do |members_to, idx|
-        user_ids = members_to.map(&:oauth_id)
-        @task.log("- members #{idx * user_ids.size}..#{(idx * user_ids.size) + user_ids.size}")
-        @site.line_client.bulk_link_rich_menus(user_ids, line_richmenu_id)
-        raise "#{res.code} #{res.body}" if res.code != "200"
-        members_to.each { |member| member.set(subscribe_richmenu_id: line_richmenu_id) }
-      end
-    end
+    # unlink ineffective members menu
+    unlink_member_menu(registration)
 
     registrations
   end
