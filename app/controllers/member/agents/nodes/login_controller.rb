@@ -58,7 +58,7 @@ class Member::Agents::Nodes::LoginController < ApplicationController
 
   def callback
     auth = request.env["omniauth.auth"]
-    member = Cms::Member.site(@cur_site).and_enabled.where(oauth_type: auth.provider, oauth_id: auth.uid).first
+    member = Cms::Member.unscoped.site(@cur_site).where(oauth_type: auth.provider, oauth_id: auth.uid).first
     if member.blank?
       # 外部認証していない場合、ログイン情報を保存してから、ログインさせる
       Cms::Member.create_auth_member(auth, @cur_site)
@@ -66,10 +66,11 @@ class Member::Agents::Nodes::LoginController < ApplicationController
     else
       # auth info の名前が変わっていたら上書きする
       name = Cms::Member.name_of(auth.info)
-      if member.name != name
-        member.name = name
-        member.update
-      end
+      member.name = name if member.name != name
+
+      # 無効状態の場合は有効にする
+      member.state = "enabled" if !member.enabled?
+      member.update if member.changed?
     end
 
     set_member_and_redirect member
