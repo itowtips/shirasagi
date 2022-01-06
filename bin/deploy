@@ -2,3 +2,4 @@
 
 `bundle exec rake assets:precompile RAILS_ENV=production`
 `bundle exec rake ss:deploy RAILS_ENV=production`
+`bundle exec rake ss:locale RAILS_ENV=production`

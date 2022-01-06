@@ -447,6 +447,9 @@ ja:
       image_resizes_disabled:
         enabled: 自動リサイズ有効
         disabled: 自動リサイズ無効
+      lang:
+        ja: 日本語
+        en: English
 
     tasks:
       started: 開始しました。
@@ -494,6 +497,7 @@ ja:
       ss/generate_lock: 書き出し停止
       ss/partner_site: 提携サイト設定
       ss/inquiry_setting: お問い合わせフォーム設定
+      ss/locale_setting: 言語設定
 
   activemodel:
     attributes:
@@ -851,6 +855,9 @@ ja:
         partner_site_ids: 提携サイト
       ss/addon/inquiry_setting:
         inquiry_form_id: お問い合わせフォーム
+      ss/addon/locale_setting:
+        lang: 言語
+        timezone: タイムゾーン
 
   tooltip:
     ss/model/site:
@@ -1243,6 +1250,12 @@ ja:
     ss/addon/inquiry_setting:
       inquiry_form_id:
         - グループ共通のお問い合わせフォームを設定します。
+
+    ss/addon/locale_setting:
+      lang:
+        - 言語を選択してください。
+      timezone:
+        - タイムゾーンを選択してください。
 
     ss:
       contrast_ratio:

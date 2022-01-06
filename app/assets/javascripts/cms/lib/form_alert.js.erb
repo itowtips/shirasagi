@@ -128,7 +128,7 @@ this.Form_Alert = (function () {
         $(this).closest("dl").show();
         addonName = $(this).closest(".addon-view").find("header").text();
         fieldName = Form_Alert.justText($(this).closest("dd").prev("dt"));
-        return Form_Alert.add(addonName, this, fieldName + "<%= I18n.t('errors.messages.blank') %>");
+        return Form_Alert.add(addonName, this, fieldName + <%= I18n.t('errors.messages.blank').to_json %>);
       }
     });
   };

@@ -65,6 +65,7 @@ Rails.application.routes.draw do
     resources :history_archives, concerns: [:deletion], only: [:index, :show, :destroy]
     resource :user_profile, only: [:show]
     resource :user_setting, only: [:show, :edit, :update]
+    resource :user_locale_setting, only: [:show, :edit, :update]
     resource :user_form, concerns: [:deletion] do
       resources :user_form_columns, concerns: :deletion, path: '/columns'
     end

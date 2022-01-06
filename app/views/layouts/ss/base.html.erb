@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja">
+<html lang="<%= I18n.locale %>">
 <head>
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -354,10 +354,6 @@
   <div class="wrap"><%= notice %></div>
 </aside>
 
-<% if notice %>
-  <%= jquery do %>SS.notice('<%= br notice %>', <%== flash[:notice_options].to_json %>);<% end %>
-<% end %>
-
 <div id="wrap">
   <div class="wrap">
     <div id="navi">
@@ -459,8 +455,16 @@
 
 <!-- /#page --></div>
 
-<% if Rails.env.test? %>
-  <%= jquery do %>SS.disableConfirmUnloading = true;<% end %>
-<% end %>
+<script defer>
+  SS.timezone = <%== Time.zone.name.to_json %>;
+  <% if Rails.env.test? %>
+  SS.disableConfirmUnloading = true;
+  <% end %>
+  <% if notice %>
+  $(function() {
+    SS.notice('<%= br notice %>', <%== flash[:notice_options].to_json %>);
+  });
+  <% end %>
+</script>
 </body>
 </html>

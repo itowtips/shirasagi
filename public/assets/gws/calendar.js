@@ -23558,7 +23558,7 @@ this.Gws_Schedule_Calendar = (function ($) {
       var table = $('<div class="fc-listMonth-view-table"></div>');
       var eventCount = 0;
 
-      var noPlan = $('<div class="td no-plan" style="display: none;">' + Gws_Schedule_Calendar.messages.noPlan + '</div>')
+      var noPlan = $('<div class="td no-plan" style="display: none;">' + i18next.t("gws/schedule.no_plan") + '</div>')
       $('<div class="tr"></div>').appendTo(table).append(noPlan);
 
       for (var i in events) {
@@ -23750,7 +23750,7 @@ this.Gws_Schedule_Calendar = (function ($) {
     var eventCount = 0;
     var duplicateCheck = [];
 
-    var noPlan = $('<div class="td no-plan" style="display: none;">' + Gws_Schedule_Calendar.messages.noPlan + '</div>');
+    var noPlan = $('<div class="td no-plan" style="display: none;">' + i18next.t("gws/schedule.no_plan") + '</div>');
     $('<div class="tr"></div>').appendTo(table).append(noPlan);
 
     for (var i = 0; i < segs.length; i++) {

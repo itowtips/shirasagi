@@ -90,6 +90,7 @@ module SS::BaseFilter
 
     @cur_user = SS.current_user = get_user_by_session
     if @cur_user
+      set_locale_and_timezone
       set_last_logged_in
       return @cur_user
     end
