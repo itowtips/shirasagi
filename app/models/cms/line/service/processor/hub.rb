@@ -8,6 +8,7 @@ class Cms::Line::Service::Processor::Hub < Cms::Line::Service::Processor::Base
 
       user_id = channel_user_id(event)
       next if user_id.blank?
+      next if richmenu_switched?(event)
 
       Cms::Line::EventSession.lock(site, user_id) do |event_session|
         begin
@@ -31,10 +32,12 @@ class Cms::Line::Service::Processor::Hub < Cms::Line::Service::Processor::Base
 
           # service expired?
           if service.expired_text.present? && service_expired?
-            client.reply_message(event["replyToken"], {
-              type: "text",
-              text: service.expired_text
-            })
+            if client.event["type"] == "message"
+              client.reply_message(event["replyToken"], {
+                type: "text",
+                text: service.expired_text
+              })
+            end
             raise Cms::Line::EventSession::ServiceExpiredError
           end
 
