@@ -2,6 +2,10 @@ class Sns::LoginController < ApplicationController
   include Sns::BaseFilter
   include Sns::LoginFilter
 
+  unless Rails.env.test?
+    include HttpAcceptLanguage::AutoLocale
+  end
+
   skip_before_action :logged_in?, only: [:login, :remote_login, :status, :redirect]
 
   layout "ss/login"

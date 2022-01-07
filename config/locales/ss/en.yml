@@ -1,0 +1,9 @@
+en:
+  ss:
+    login: Login
+    logout: Logout
+    views:
+      login/login:
+        id: UserID or Mail Address
+        password: Password
+        organization_uid: Personal Number or Mail Address
