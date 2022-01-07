@@ -153,5 +153,19 @@ namespace :pippi do
       importer = Pippi::Joruri::Importer::Bunka.new(site)
       importer.destroy_map_bunka
     end
+
+    task import_map_park: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Park.new(site)
+      importer.import_map_park
+    end
+
+    task destroy_map_park: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Park.new(site)
+      importer.destroy_map_park
+    end
   end
 end

@@ -35,6 +35,9 @@ module Pippi::Joruri::Relation
   class Bunka < Doc
   end
 
+  class Park < Doc
+  end
+
   class Node < Doc
   end
 end
