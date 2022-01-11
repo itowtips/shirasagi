@@ -60,6 +60,7 @@ module SS::FileFactory
       item.in_file = file
       item.resizing = resizing
       item.quality = quality
+      item.allow_auto_resizing = allow_auto_resizing
       item.image_resizes_disabled = image_resizes_disabled
       if item.save
         self.saved_files << item

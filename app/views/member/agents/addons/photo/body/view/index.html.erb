@@ -1,14 +1,5 @@
-<% controller.javascript "/assets/js/jquery.colorbox.js" %>
-<% controller.stylesheet "/assets/css/colorbox/colorbox.css" %>
-
-<%= jquery do %>
-$(window).on("load", function(){ $(".photo-body .ajax-box").colorbox(); });
-<% end %>
-
 <article class="photo-body">
-  <%= link_to @cur_page.image.url, alt: @cur_page.name,class: "ajax-box", onclick: "return false;" do %>
-    <%= image_tag @cur_page.image.thumb_url.sub(/\/thumb\//, "/thumb/detail/"), alt: @cur_page.name %>
-  <% end %>
+  <%= image_tag @cur_page.image.thumb_url.sub(/\/thumb\//, "/thumb/detail/"), alt: @cur_page.name %>
   <time class="released" datetime="<%= I18n.l @cur_page.date.to_date, format: :iso %>">
     <%= I18n.l @cur_page.date.to_date, format: :long %>
   </time>
@@ -21,4 +12,6 @@ $(window).on("load", function(){ $(".photo-body .ajax-box").colorbox(); });
   <% if license.present? %>
     <div class="license"><%== license %></div>
   <% end %>
+
+  <%= link_to t('ss.download'), @cur_page.image.download_url, alt: @cur_page.name %>
 </article>

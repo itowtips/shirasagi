@@ -8,4 +8,10 @@ class Member::PhotoFile
   add_thumb_size :detail, [800, 600]
 
   default_scope ->{ where(model: "member/photo") }
+
+  private
+
+  def allow_auto_resizing
+    @allow_auto_resizing = false
+  end
 end

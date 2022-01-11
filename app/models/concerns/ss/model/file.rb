@@ -11,7 +11,7 @@ module SS::Model::File
   include History::Addon::Trash
   include ActiveSupport::NumberHelper
 
-  attr_accessor :in_file, :resizing, :quality, :image_resizes_disabled
+  attr_accessor :in_file, :resizing, :quality, :allow_auto_resizing, :image_resizes_disabled
 
   included do
     store_in collection: "ss_files"
@@ -190,6 +190,10 @@ module SS::Model::File
 
   def thumb_url
     "/fs/" + id.to_s.split(//).join("/") + "/_/thumb/#{filename}"
+  end
+
+  def download_url
+    "/fs/" + id.to_s.split(//).join("/") + "/_/download/#{filename}"
   end
 
   def public?
@@ -383,6 +387,11 @@ module SS::Model::File
 
   private
 
+  def allow_auto_resizing
+    @allow_auto_resizing = true if @allow_auto_resizing.nil?
+    @allow_auto_resizing
+  end
+
   def effective_owner_item
     item = owner_item rescue nil
     return item if item.present?
@@ -496,17 +505,18 @@ module SS::Model::File
 
   def resizing_with_max_file_size
     size = resizing || []
+    return size unless allow_auto_resizing
     max_file_sizes.each do |max_file_size|
-      if size.present?
-        max_file_size.max_width = size[0] if max_file_size.max_width > size[0]
-        max_file_size.max_height = size[1] if max_file_size.max_height > size[1]
-      end
-      size = [max_file_size.max_width, max_file_size.max_height]
+      max_width = [max_file_size.max_width, size[0]].reject(&:blank?).min
+      max_height = [max_file_size.max_height, size[1]].reject(&:blank?).min
+      size = [max_width, max_height]
     end
     size
   end
 
   def quality_with_max_file_size
+    return unless allow_auto_resizing
+
     quality = []
     quality << self.quality.try(:to_i) if self.quality.present?
     max_file_sizes.each do |max_file_size|

@@ -84,6 +84,7 @@ module SS::Relation::Thumb
           file.in_file                = uploaded_file
           file.resizing               = size
           file.quality                = quality
+          file.allow_auto_resizing    = allow_auto_resizing
           file.image_resizes_disabled = image_resizes_disabled
           file.original_id            = id
           file.state                  = state
