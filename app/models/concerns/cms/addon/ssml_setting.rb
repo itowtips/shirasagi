@@ -13,7 +13,7 @@ module Cms::Addon
     end
 
     def st_ssml_state_options
-      %w(enabled disabled).map { |m| [I18n.t("ss.options.state.#{m}"), m] }
+      %w(disabled enabled).map { |m| [I18n.t("ss.options.state.#{m}"), m] }
     end
   end
 end
