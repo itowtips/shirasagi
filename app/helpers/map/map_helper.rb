@@ -145,6 +145,7 @@ module Map::MapHelper
 
       s << 'var opts = {'
       s << '  markers: ' + (markers.try(:to_json) || '[]') + ','
+      s << '  markerCluster: true,' if opts[:markerCluster]
       s << '};'
       s << 'Facility_Search.render("' + selector + '", opts);'
     end
@@ -187,11 +188,14 @@ module Map::MapHelper
     jquery { s.join("\n").html_safe }
   end
 
-  def render_marker_info(item)
+  def render_marker_info(item, point = nil)
     h = []
-    h << %(<div class="maker-info" data-id="#{item.id}">)
+    h << %(<div class="marker-info" data-id="#{item.id}">)
     h << %(<p class="name">#{item.name}</p>)
     h << %(<p class="address">#{item.address}</p>) if item.try(:address)
+    if point
+      h << %(<p class="point-name">#{point[:name]}</p>) if point[:name].present?
+    end
     h << %(<p class="show"><a href="#{item.url}">#{I18n.t('ss.links.show')}</a></p>)
     h << %(</div>)
 

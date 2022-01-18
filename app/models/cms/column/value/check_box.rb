@@ -38,6 +38,11 @@ class Cms::Column::Value::CheckBox < Cms::Column::Value::Base
     h.join(",")
   end
 
+  def search_values(values)
+    return false unless values.instance_of?(Array)
+    (values & self.values).present?
+  end
+
   private
 
   def validate_value

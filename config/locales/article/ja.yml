@@ -82,7 +82,7 @@ ja:
       html: |-
         定型フォームのHTMLを Liquid 形式で設定します。
         {{ page.name }} ... ページのタイトルを表示します。
-        {{ values["項目名"] }} ... 項目の値を表示します。
+        {{ page.values["項目名"] }} ... 項目の値を表示します。
         定型フォームを選択して保存すると、詳細な記入例が表示されます。
     article/addon/form_table:
       form_id: |-
