@@ -167,5 +167,40 @@ namespace :pippi do
       importer = Pippi::Joruri::Importer::Park.new(site)
       importer.destroy_map_park
     end
+
+    task import_odekake_authors: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Odekake.new(site)
+      importer.import_odekake_authors
+    end
+
+    task destroy_odekake_authors: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Odekake.new(site)
+      importer.destroy_authors
+    end
+
+    task import_odekake_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Odekake.new(site)
+      importer.import_odekake_docs
+    end
+
+    task restore_relations_odekake_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Odekake.new(site)
+      importer.restore_relations_odekake_docs
+    end
+
+    task destroy_odekake_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Odekake.new(site)
+      importer.destroy_odekake_docs
+    end
   end
 end

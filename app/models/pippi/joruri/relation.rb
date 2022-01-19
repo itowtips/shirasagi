@@ -38,6 +38,12 @@ module Pippi::Joruri::Relation
   class Park < Doc
   end
 
+  class Odekake < Doc
+  end
+
+  class OdekakeAuthor < Doc
+  end
+
   class Node < Doc
   end
 end

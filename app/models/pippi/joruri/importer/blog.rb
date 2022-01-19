@@ -69,12 +69,12 @@ module Pippi::Joruri::Importer
         raise "unknown category! : #{category}" if node.nil? || category_node.nil?
         raise "unknown group! #{group_name}" if group.nil?
 
-        rel_Joruri = Pippi::Joruri::Relation::Hint.where(joruri_id: original_id).first
+        rel_Joruri = Pippi::Joruri::Relation::OdekakeAuthor.where(joruri_id: original_id).first
         if rel_Joruri
           item = rel_Joruri.owner_item
         else
           item = Article::Page.new
-          rel_Joruri = Pippi::Joruri::Relation::Hint.new
+          rel_Joruri = Pippi::Joruri::Relation::OdekakeAuthor.new
         end
 
         # save article
