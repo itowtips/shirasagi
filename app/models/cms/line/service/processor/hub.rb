@@ -15,15 +15,15 @@ class Cms::Line::Service::Processor::Hub < Cms::Line::Service::Processor::Base
           self.event_session = event_session
 
           # default mode
-          if event_session.mode.blank?
-            event_session.mode = service.hooks.first.service_name
+          if event_session.hook.nil?
+            event_session.hook = service.hooks.first
             event_session.update
           end
 
           # switch mode
           switched = false
           service.hooks.each do |hook|
-            if hook.switch_mode(self, event)
+            if hook.switch_hook(self, event)
               switched = true
               break
             end
@@ -32,7 +32,7 @@ class Cms::Line::Service::Processor::Hub < Cms::Line::Service::Processor::Base
 
           # service expired?
           if service.expired_text.present? && service_expired?
-            if client.event["type"] == "message"
+            if event["type"] == "message"
               client.reply_message(event["replyToken"], {
                 type: "text",
                 text: service.expired_text

@@ -1,7 +1,7 @@
 module Cms::Addon
-  module Line::Template::JsonBody
+  module Line::Service::Area
     extend ActiveSupport::Concern
     extend SS::Addon
-    include Cms::Addon::Line::JsonBody
+    include Cms::Addon::Line::Area
   end
 end

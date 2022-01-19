@@ -66,6 +66,7 @@
         opts[:file_size] = true if params[:file_size].present?
         opts[:owner_item_id] = params[:owner_item_id] if params[:owner_item_id].present?
         opts[:owner_item_type] = params[:owner_item_type] if params[:owner_item_type].present?
+        opts[:select_actions] = params[:select_actions] if params[:select_actions].present?
       %>
       <a class="select" href="<%= url_for opts %>" title="<%= item.humanized_name %>" data-humanized-name="<%= item.humanized_name %>">
         <div class="thumb">

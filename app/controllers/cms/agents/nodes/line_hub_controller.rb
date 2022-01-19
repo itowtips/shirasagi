@@ -31,4 +31,17 @@ class Cms::Agents::Nodes::LineHubController < ApplicationController
     processor.call
     head :ok
   end
+
+  def image_map
+    item = Cms::Line::Service::Hook::ImageMap.find(params[:id]) rescue NodeFilter
+    raise "404" unless item
+
+    size = params[:size]
+    raise "404" unless %w(1040 700 460 300 240).include?(size)
+
+    image = item.try("image#{size}")
+    raise "404" unless image
+
+    send_file image.path, type: image.content_type, filename: size, x_sendfile: true
+  end
 end

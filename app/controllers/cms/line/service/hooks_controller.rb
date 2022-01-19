@@ -2,10 +2,9 @@ class Cms::Line::Service::HooksController < ApplicationController
   include Cms::BaseFilter
   include Cms::CrudFilter
 
-  model Cms::Line::Service::Hook::Base
-
   navi_view "cms/line/main/navi"
 
+  before_action :set_item, only: [:show, :edit, :update, :delete, :destroy]
   before_action :set_service_group
 
   private
@@ -24,13 +23,30 @@ class Cms::Line::Service::HooksController < ApplicationController
   end
 
   def set_model
-    return super if params[:action] != "create"
+    @type = params[:type].presence
+    @type = nil if @type == "-"
+    @model = @type ? "#{Cms::Line::Service::Hook}::#{@type.classify}".constantize : Cms::Line::Service::Hook::Base
+  end
 
-    service = params.dig(:item, :service)
-    @model = "Cms::Line::Service::Hook::#{service.classify}".constantize
+  def set_item
+    super
+    @type = @item.type
+    @model = @item.class
   end
 
   def set_items
     @items = @service_group.hooks
+  end
+
+  public
+
+  def crop
+    set_item
+    return if request.get?
+
+    @item.attributes = get_params
+    @item.in_updated = params[:_updated] if @item.respond_to?(:in_updated)
+    raise "403" unless @item.allowed?(:edit, @cur_user, site: @cur_site, node: @cur_node)
+    render_update @item.update, render: { template: "crop" }
   end
 end

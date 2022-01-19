@@ -10,31 +10,35 @@ module Cms::Line::Service::Hook
     set_permission_name "cms_line_services", :use
 
     field :name, type: String
-    field :service, type: String
-    field :trigger_type, type: String
-    field :trigger_data, type: String
     field :order, type: Integer, default: 0
-    permit_params :name, :service, :trigger_type, :trigger_data, :order
+    field :action_type, type: String
+    field :action_data, type: String
+
+    permit_params :name, :order
+    permit_params :action_type, :action_data
 
     belongs_to :group, class_name: "Cms::Line::Service::Group", inverse_of: :hooks
 
     validates :name, presence: true, length: { maximum: 40 }
+    validates :action_type, presence: true
+    validates :action_data, presence: true
     validates :group_id, presence: true
-    validates :trigger_type, presence: true
-    validates :trigger_data, presence: true
 
     default_scope ->{ order_by(order: 1) }
 
-    def service_options
-      self.class.service_options
+    def type
     end
 
-    def trigger_type_options
+    def type_options
+      self.class.type_options
+    end
+
+    def action_type_options
       %w(message postback).map { |k| [I18n.t("cms.options.line_action_type.#{k}"), k] }
     end
 
     def processor(site, node, client, request)
-      klass = "Cms::Line::Service::Processor::#{service.classify}".constantize rescue nil
+      klass = self.class.to_s.sub("Cms::Line::Service::Hook::", "Cms::Line::Service::Processor::").constantize
       item = klass.new(
         service: self,
         site: site,
@@ -46,7 +50,7 @@ module Cms::Line::Service::Hook
     end
 
     def delegate_processor(delegator, event)
-      klass = "Cms::Line::Service::Processor::#{service.classify}".constantize rescue nil
+      klass = self.class.to_s.sub("Cms::Line::Service::Hook::", "Cms::Line::Service::Processor::").constantize
       item = klass.new(
         service: self,
         site: delegator.site,
@@ -62,23 +66,19 @@ module Cms::Line::Service::Hook
     end
 
     # HUB
-    def service_name
-      name
-    end
+    def switch_hook(processor, event)
+      return false if event["type"] != action_type
 
-    def switch_mode(processor, event)
-      return false if event["type"] != trigger_type
-
-      case trigger_type
+      case action_type
       when "message"
-        return false if event["message"]["text"] != trigger_data
+        return false if event["message"]["text"] != action_data
       when "postback"
-        return false if event["postback"]["data"] != trigger_data
+        return false if event["postback"]["data"] != action_data
       else
         return false
       end
 
-      processor.event_session.mode = service_name
+      processor.event_session.hook = self
       processor.event_session.update
 
       delegate_processor(processor, event).start
@@ -86,7 +86,7 @@ module Cms::Line::Service::Hook
     end
 
     def delegate(processor, event)
-      return false if processor.event_session.mode != service_name
+      return false if processor.event_session.hook_id != id
       delegate_processor(processor, event).call
       true
     end
@@ -94,16 +94,16 @@ module Cms::Line::Service::Hook
     private
 
     class << self
-      def service_options
-        services = [
+      def type_options
+        hooks = [
           Cms::Line::Service::Hook::FacilitySearch,
           Cms::Line::Service::Hook::Chat,
           Cms::Line::Service::Hook::GdChat,
           Cms::Line::Service::Hook::MyPlan,
+          Cms::Line::Service::Hook::ImageMap,
           Cms::Line::Service::Hook::JsonTemplate,
-        ].map { |klass| klass.name.sub(/^#{Cms::Line::Service::Hook}(\:\:)?/, "").underscore }
-
-        services.map { |k| [I18n.t("cms.options.line_services.#{k}"), k] }
+        ].map { |klass| klass.new.type }
+        hooks.map { |k| [I18n.t("cms.options.line_service_type.#{k}"), k] }
       end
 
       def search(params)

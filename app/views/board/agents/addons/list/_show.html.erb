@@ -1,8 +1,8 @@
 <%= code_editor ".mod-board-list .html", mode: :html, readonly: true %>
 
 <dl class="see mod-board-list">
-  <dt><%= @model.t :mode %></dt>
-  <dd><%= @item.label :mode %></dd>
+  <dt><%= @model.t :hook %></dt>
+  <dd><%= @item.hook.try(:name) %></dd>
 
   <dt><%= @model.t :limit %></dt>
   <dd><%= @item.send :limit %></dd>

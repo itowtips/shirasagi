@@ -208,7 +208,9 @@ Rails.application.routes.draw do
       end
       namespace "service" do
         resources :groups, concerns: :deletion do
-          resources :hooks, concerns: :deletion do
+          resources :hooks, path: "hook/:type/hooks", defaults: { type: '-' }, concerns: :deletion do
+            get :crop, on: :member
+            put :crop, on: :member
             namespace "facility_search" do
               resources :categories, concerns: :deletion
             end
@@ -347,6 +349,7 @@ Rails.application.routes.draw do
       namespace "line" do
         get "deliver_members/:model/:id" => "deliver_members#index", model: /message|deliver_condition|line_deliver/, as: :deliver_members
         get "deliver_members/:model/:id/download" => "deliver_members#download", model: /message|deliver_condition|line_deliver/
+        get "temp_files/:id" => "temp_files#select", as: :select_temp_file
       end
     end
   end
@@ -406,6 +409,7 @@ Rails.application.routes.draw do
     get "site_search/categories(.:format)" => "public#categories", cell: "nodes/site_search"
     get "line_hub/line" => "public#index", cell: "nodes/line_hub"
     post "line_hub/line" => "public#index", cell: "nodes/line_hub"
+    get "line_hub/image-map/:id/:size" => "public#image_map", cell: "nodes/line_hub"
   end
 
   part "cms" do

@@ -184,6 +184,7 @@ ja:
       file_histories: ファイル履歴
       translate: 翻訳
       replace_save: 差し替え保存
+      copy_url: URLをコピー
     confirm:
       delete: 削除してよろしいですか？
       soft_delete: 削除してよろしいですか？
