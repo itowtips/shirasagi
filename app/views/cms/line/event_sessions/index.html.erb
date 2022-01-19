@@ -5,7 +5,7 @@
 
 <% @index_meta = proc do |item| %>
   <span class="id"><%= item.channel_user_id %></span>
-  <span class="mode"><%= item.mode %></span>
+  <span class="hook"><%= item.hook.try(:name) %></span>
   <span class="datetime"><%= tryb { item.locked_at.strftime("%Y/%m/%d %H:%M") } %></span>
 <% end %>
 

@@ -1,4 +1,4 @@
-class Cms::Line::Richmenu::File
+class Cms::Line::File
   include SS::Model::File
   include SS::Reference::Site
 

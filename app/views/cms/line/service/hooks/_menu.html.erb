@@ -1,9 +1,14 @@
 <nav class="nav-menu">
   <% if params[:action] =~ /index/ %>
     <%= link_to t('ss.links.back'), cms_line_service_group_path(id: @service_group.id), class: "back-to-index" %>
-    <% if @model.allowed?(:edit, @cur_user, site: @cur_site, node: @cur_node) %>
-      <%= link_to t('ss.links.new'), { action: :new }, class: :new %>
+    <% if @model.allowed?(:new, @cur_user, site: @cur_site, node: @cur_node) %>
+      <%= dropdown_link(t('ss.links.new')) do %>
+        <% @model.type_options.each do |name, type| %>
+          <%= link_to name, { action: :new, type: type }, class: 'dropdown-item' %>
+        <% end %>
+      <% end %>
     <% end %>
+
   <% elsif params[:action] =~ /new|create|destroy_all/ %>
     <%= link_to t('ss.links.back_to_index'), { action: :index }, class: "back-to-index" %>
   <% elsif params[:action] =~ /edit|update|delete/ %>

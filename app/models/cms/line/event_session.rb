@@ -10,10 +10,10 @@ class Cms::Line::EventSession
   set_permission_name "cms_line_services", :use
 
   field :channel_user_id, type: String
-  field :mode, type: String
   field :data, type: Hash, default: {}
   field :lock_until, type: DateTime, default: ::Time::EPOCH
   field :locked_at, type: DateTime
+  belongs_to :hook, class_name: "Cms::Line::Service::Hook::Base"
 
   validates :channel_user_id, presence: true
 

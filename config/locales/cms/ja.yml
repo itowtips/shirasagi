@@ -404,12 +404,13 @@ ja:
         thumb_carousel: サムネイル画像とLINEメッセージ
         body_carousel: 本文内の最初の画像とLINEメッセージ
         message_only_carousel: LINEメッセージ
-      line_services:
+      line_service_type:
         hub: サービスHUB
         chat: チャットボット
         gd_chat: AI案内
         my_plan: 今日の予定
         facility_search: 施設検索
+        image_map: イメージマップ
         json_template: JSONテンプレート
       line_deliver_condition_state:
         multicast_with_no_condition: 登録メンバー全員に配信する
@@ -719,6 +720,8 @@ ja:
       cms/line/service/facility_search: 施設検索
       cms/line/service/gd_chat: GDチャットボット
       cms/line/service/page_list: ページリスト
+      cms/line/service/area: タップ領域
+      cms/line/service/json_body: JSONテンプレート
       cms/line/deliver_condition/body: 配信条件
       cms/line/message/body: 本文
       cms/line/message/deliver_condition: 配信条件
@@ -732,6 +735,7 @@ ja:
       cms/line/richmenu/menu: メニュー設定
       cms/line/richmenu/area: タップ領域
       cms/line/deliver_plan/repeat: 繰り返し
+      cms/line/service/image_map: イメージマップ
 
   mongoid:
     models:
@@ -1264,13 +1268,13 @@ ja:
         service: 種別
         name: タイトル
         order: 並び順
-        trigger_type: アクション
-        trigger_data: データ
+        action_type: アクション
+        action_data: データ
         json_body: JSON
       cms/addon/line/service/hub:
         line/service: サービス
-        line/trigger_type: "Trigger Type"
-        line/trigger_data: "Trigger Data"
+        line/action_type: "Trigger Type"
+        line/action_data: "Trigger Data"
         expired_text: 有効期限切れメッセージ
         expired_minutes: 有効期限（分）
       cms/addon/line/service/facility_search:
@@ -1366,7 +1370,7 @@ ja:
         chat_bar_text: メニューテキスト
         state: ステータス
         areas: タップ領域
-      cms/line/richmenu/area:
+      cms/line/area:
         x: X
         y: Y
         width: W
@@ -1387,6 +1391,18 @@ ja:
         name: 配信日時(予約)
         deliver_date: 配信日時（予約）
         state: ステータス
+      cms/addon/line/service/image_map:
+        width: 幅
+        height: 高さ
+        area_size: タップ領域数
+        alt_text: ALTテキスト
+        image1040_id: 画像（幅1040）
+        image700_id: 画像（幅700）
+        image460_id: 画像（幅460）
+        image300_id: 画像（幅300）
+        image240_id: 画像（幅240）
+      cms/addon/line/service/json_body:
+        json_body: JSON
       cms/line/template/base:
         type: テンプレートタイプ
         text: メッセージ
@@ -1780,9 +1796,9 @@ ja:
       order:
         - 並び順を入力します。
         - 値が小さいほど先頭に表示され、優先度が高くなります。
-      trigger_type:
+      action_type:
         - トリガーとなるアクションを設定します。
-      trigger_data:
+      action_data:
         - トリガーとなるデータを入力します。
       json_body:
         - JSONを入力します。

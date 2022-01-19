@@ -21,7 +21,7 @@ module Cms::Line::Richmenu
     permit_params :name, :order, :target, :area_size, :width, :height, :chat_bar_text
 
     belongs_to :group, class_name: "Cms::Line::Richmenu::Group", inverse_of: :richmenus
-    belongs_to_file :image, class_name: "Cms::Line::Richmenu::File"
+    belongs_to_file :image, class_name: "Cms::Line::File"
 
     # https://developers.line.biz/ja/reference/messaging-api/#rich-menu-object
     validates :name, presence: true

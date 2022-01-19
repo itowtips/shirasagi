@@ -1,13 +1,11 @@
 <%= jquery do %>
-new Cms_Line_Area_Cropper(".line-crop-area");
+new Cms_Line_Area_Cropper(".line-crop-area", { readonly: true });
 <% end %>
-<%
-  def menu_options
-    @item.group.menus.select { |menu| menu.id != @item.id }.map do |menu|
-      [menu.name, menu.id]
-    end
-  end
-%>
+
+<% if @item.area_size > 0 %>
+<%= link_to t("ss.links.edit"), { action: :crop }, { class: "btn", style: "margin-bottom: 20px;" } %>
+<% end %>
+
 <div class="line-crop-area">
   <div class="image-warp">
     <%= image_tag(@item.image.url, class: "image") %>
@@ -20,14 +18,9 @@ new Cms_Line_Area_Cropper(".line-crop-area");
     </div>
     <div class="areas">
       <% 1.upto(@item.area_size).each do |i| %>
-        <%
-          area = @item.areas[i - 1]
-          if @item.in_areas.present? && @item.in_areas[i - 1]
-            area = Cms::Line::Area.new(@item.in_areas[i - 1])
-          end
-          area ||= Cms::Line::Area.new
-        %>
+        <% area = @item.areas[i - 1] %>
         <div class="area area<%= i %>" data-area="<%= i %>" style="display: none;">
+          <% if area %>
           <div class="points">
             <label class="point">X <%= number_field_tag "item[in_areas][][x]", area.x, readonly: "readonly" %></label>
             <label class="point">Y <%= number_field_tag "item[in_areas][][y]", area.y, readonly: "readonly" %></label>
@@ -38,29 +31,30 @@ new Cms_Line_Area_Cropper(".line-crop-area");
             <div class="action-type">
               <label class="type">
                 <span>アクション</span>
-                <%= select_tag "item[in_areas][][type]", options_for_select(area.type_options, area.type) %>
+                <span>
+                  <%= t("cms.options.line_action_type.#{area.type}") %>
+                  <%= select_tag "item[in_areas][][type]", options_for_select(area.type_options, area.type), style: "display: none;" %>
+                </span>
               </label>
             </div>
             <div class="action-values">
               <label class="value" data-type="message">
                 <span>メッセージ</span>
-                <%= text_field_tag "item[in_areas][][text]", area.text %>
+                <span><%= area.text %></span>
               </label>
               <label class="value" data-type="uri">
                 <span>URI</span>
-                <%= text_field_tag "item[in_areas][][uri]", area.uri %>
+                <span><%= area.uri %></span>
               </label>
               <label class="value" data-type="postback">
                 <span>データ</span>
-                <%= text_field_tag "item[in_areas][][data]", area.data %>
-              </label>
-              <label class="value" data-type="richmenuswitch">
-                <span>リッチメニュー切替</span>
-                <%= select_tag "item[in_areas][][menu_id]", options_for_select(menu_options, area.menu_id), include_blank: true %>
+                <span><%= area.data %></span>
               </label>
             </div>
           </div>
-          <%= link_to "リセット", "", class: "btn reset-area" %>
+          <% else %>
+            <div style="padding: 5px;">設定されていません。</div>
+          <% end %>
         </div>
       <% end %>
     </div>

@@ -1,5 +1,8 @@
-class Cms::Line::Richmenu::Area
-  include Mongoid::Document
+class Cms::Line::Area
+  include SS::Document
+  #include SS::Reference::Site
+  #include SS::Reference::User
+  include Cms::SitePermission
 
   field :x, type: Integer
   field :y, type: Integer
@@ -21,7 +24,7 @@ class Cms::Line::Richmenu::Area
   validates :text, presence: true, length: { maximum: 300 }, if: -> { type == "message" }
   validates :uri, presence: true, length: { maximum: 1000 }, if: -> { type == "uri" }
   validates :data, presence: true, length: { maximum: 300 }, if: -> { type == "postback" }
-  validates :menu_id, presence: true, if: -> { type == "richmenuswitch" }
+  validates :menu, presence: true, if: -> { type == "richmenuswitch" }
 
   def type_options
     %w(message uri postback richmenuswitch).map { |k| [I18n.t("cms.options.line_action_type.#{k}"), k] }
@@ -56,5 +59,26 @@ class Cms::Line::Richmenu::Area
       bounds: bounds,
       action: action
     }
+  end
+
+  def image_map_object
+    action = {
+      type: type,
+      area: {
+        x: x,
+        y: y,
+        width: width,
+        height: height
+      }
+    }
+    case type
+    when "message"
+      action[:text] = text
+    when "uri"
+      action[:linkUri] = uri
+    when "postback"
+      action[:data] = data
+    end
+    action
   end
 end
