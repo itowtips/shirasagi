@@ -168,6 +168,13 @@ namespace :pippi do
       importer.destroy_map_park
     end
 
+    task import_odekake_author_categories: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Odekake.new(site)
+      importer.import_odekake_author_categories
+    end
+
     task import_odekake_authors: :environment do
       puts "Please input site: site=[www]" or exit if ENV['site'].blank?
       site = ::Cms::Site.where(host: ENV['site']).first

@@ -1,6 +1,6 @@
 module Pippi::Joruri::Importer
   class Odekake < Base
-    attr_reader :groups, :users, :author_node, :odekake_nodes, :odekake_categories, :odekake_areas
+    attr_reader :groups, :users, :author_node, :odekake_nodes, :odekake_categories, :odekake_areas, :author_category, :author_type_categories, :author_category_layout
 
     def initialize(site)
       super(site)
@@ -31,6 +31,14 @@ module Pippi::Joruri::Importer
       %w(中区 東区 西区 南区 北区 浜北区 天竜区 市外 その他).each do |name|
         @odekake_areas[name] = Category::Node::Base.site(@site).find_by(filename: /^blog\/odekake\/chiiki\//, name: name)
       end
+
+      @author_category = Category::Node::Base.site(@site).find_by(filename: "blog/odekake/author-category")
+      @author_type_categories = {}
+      %w(OB 2021メンバー).each do |name|
+        @author_type_categories[name] = Category::Node::Base.site(@site).find_by(filename: /^blog\/odekake\/author-category\//, name: name)
+      end
+
+      @author_category_layout = Cms::Layout.site(@site).find_by(name: "ぴっぴのブログ ＞ ページリスト用")
     end
 
     def import_odekake_authors
@@ -82,6 +90,55 @@ module Pippi::Joruri::Importer
 
         csv << [::File.join(site.full_url, item.private_show_path), item.full_url, rel_Joruri.joruri_url]
         csv.flush
+      end
+    end
+
+    def import_odekake_author_categories
+      node = author_category
+      layout = author_category_layout
+
+      pages = {}
+      Pippi::Joruri::Relation::Odekake.each do |rel|
+        page = rel.owner_item
+        title = page.column_values[3].value
+        pages[title] ||= []
+        pages[title] << page
+      end
+
+      path = ::File.join(csv_path, "odekake/author.csv")
+      hint_csv = ::CSV.read(path, headers: true, encoding: 'BOM|UTF-8')
+      hint_csv.each_with_index do |row, idx|
+        group = groups["認定NPO法人はままつ子育てネットワークぴっぴ"]
+        user = users["システム管理者"]
+        title = row["title"]
+        basename = row["ページ名"]
+        node = author_type_categories[row["区分"]]
+        filename = ::File.join(node.filename, basename)
+
+        item = Category::Node::Page.site(site).where(filename: filename).first
+        item = Category::Node::Page.new if item.nil?
+
+        item.site = site
+        item.user = user
+        item.group_ids = [group.id]
+        item.layout = layout
+        item.name = title
+        item.filename = filename
+        item.loop_format = "liquid"
+        item.limit = 15
+        item.loop_liquid = node.loop_liquid
+        item.sort = "released -1"
+
+        page = author_node.pages.find_by(name: title)
+        item.summary_page = page
+
+        puts item.name
+        item.save!
+
+        pages[title].to_a.each do |page|
+          puts "- #{page.name}"
+          page.add_to_set(category_ids: item.id)
+        end
       end
     end
 
