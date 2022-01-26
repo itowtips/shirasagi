@@ -120,7 +120,7 @@ class Gws::UserCsv::Importer
 
     keys = %i[
       set_name set_password set_title set_type set_initial_password_warning set_organization_id set_group_ids
-      set_main_group_ids set_switch_user_id set_locale set_gws_roles set_sys_roles
+      set_main_group_ids set_switch_user_id set_superior_id set_locale set_gws_roles set_sys_roles
     ]
     keys += %i[set_webmail_roles] if webmail_support
 
@@ -243,7 +243,16 @@ class Gws::UserCsv::Importer
       value = value.split(',', 2)
       user = SS::User.where(id: value[0], name: value[1]).first
     end
-    item.switch_user_id = user ? user.id : nil
+    item.switch_user = user
+  end
+
+  def set_superior_id(item)
+    value = row_value('superior_id')
+    if value.present?
+      value = value.split(',', 2)
+      user = SS::User.where(id: value[0], name: value[1]).first
+    end
+    item.superior = user
   end
 
   def set_locale(item)

@@ -621,6 +621,7 @@ ja:
         switch_user_id: 切り替えユーザー
         login_roles: ログイン種別
         last_loggedin: 最終ログイン日時
+        superior_id: 上長
       ss/model/user/i18n_name_translations:
         ja: 氏名 (JA)
         en: 氏名 (EN)

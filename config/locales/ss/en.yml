@@ -603,6 +603,7 @@ en:
         switch_user_id: Switch user
         login_roles: Login type
         last_loggedin: Last login date and time
+        superior_id: Superior
       ss/model/user/i18n_name_translations:
         ja: Name (JA)
         en: Name (EN)

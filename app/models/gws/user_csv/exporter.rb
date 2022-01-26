@@ -15,7 +15,7 @@ class Gws::UserCsv::Exporter
       headers += %w(
         kana uid organization_uid email password tel tel_ext title_ids type
         account_start_date account_expiration_date initial_password_warning session_lifetime
-        organization_id groups gws_main_group_ids switch_user_id remark
+        organization_id groups gws_main_group_ids switch_user_id superior_id remark
         lang timezone
         ldap_dn gws_roles sys_roles
       )
@@ -73,7 +73,6 @@ class Gws::UserCsv::Exporter
 
   def item_to_csv(item)
     main_group = item.gws_main_group_ids.present? ? item.gws_main_group(site) : nil
-    switch_user = item.switch_user
 
     terms = []
     terms << item.id
@@ -97,7 +96,8 @@ class Gws::UserCsv::Exporter
     terms << (item.organization ? item.organization.name : nil)
     terms << item.groups.where(name: /\A#{Regexp.escape(root_group_name)}/).pluck(:name).join("\n")
     terms << main_group.try(:name)
-    terms << (switch_user ? "#{switch_user.id},#{switch_user.name}" : nil)
+    terms << item.switch_user.try { |switch_user| "#{switch_user.id},#{switch_user.name}" }
+    terms << item.superior.try { |superior| "#{superior.id},#{superior.name}" }
     terms << item.remark
     terms << item.label(:lang)
     terms << item.timezone

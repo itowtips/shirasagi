@@ -61,13 +61,16 @@ module SS::Model::User
     belongs_to :organization, class_name: "SS::Group"
     belongs_to :switch_user, class_name: "SS::User"
 
+    # 上長
+    belongs_to :superior, class_name: "SS::User"
+
     embeds_ids :groups, class_name: "SS::Group"
 
     permit_params :name, :i18n_name, i18n_name_translations: I18n.available_locales
     permit_params :kana, :uid, :email, :tel, :tel_ext, :type, :login_roles, :remark, group_ids: []
     permit_params :account_start_date, :account_expiration_date, :session_lifetime
     permit_params :restriction, :lock_state, :deletion_lock_state
-    permit_params :organization_id, :organization_uid, :switch_user_id
+    permit_params :organization_id, :organization_uid, :switch_user_id, :superior_id
 
     before_validation :synchronize_i18n_name
 

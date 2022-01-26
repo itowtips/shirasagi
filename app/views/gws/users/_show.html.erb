@@ -102,6 +102,9 @@ SS_Clipboard.renderCopy();
   <dd><%= gws_public_user_long_name(@item.switch_user.long_name) %></dd>
   <% end %>
 
+  <dt><%= @model.t :superior_id %></dt>
+  <dd><%= @item.superior.try { |user| user.long_name } %></dd>
+
   <% if @item.remark.present? %>
   <dt><%= @model.t :remark %></dt>
   <dd><%=br @item.send :remark %></dd>
