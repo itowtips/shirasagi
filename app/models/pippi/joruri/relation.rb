@@ -44,6 +44,9 @@ module Pippi::Joruri::Relation
   class OdekakeAuthor < Doc
   end
 
+  class PippiContent < Doc
+  end
+
   class Node < Doc
   end
 end

@@ -209,5 +209,26 @@ namespace :pippi do
       importer = Pippi::Joruri::Importer::Odekake.new(site)
       importer.destroy_odekake_docs
     end
+
+    task import_pippi_contents: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::PippiContent.new(site)
+      importer.import_pippi_contents
+    end
+
+    task restore_relations_pippi_contents: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::PippiContent.new(site)
+      importer.restore_relations_pippi_contents
+    end
+
+    task destroy_pippi_contents: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::PippiContent.new(site)
+      importer.destroy_pippi_contents
+    end
   end
 end
