@@ -447,6 +447,9 @@ en:
       image_resizes_disabled:
         enabled: Auto-resize enabled
         disabled: Auto-resize disabled
+      lang:
+        ja: Japanese
+        en: English
 
     tasks:
       started: Started.
@@ -564,6 +567,7 @@ en:
         upload_policy: Upload restrictions
       ss/model/user:
         name: Name
+        i18n_name: Name
         kana: Kana
         uid: User ID
         email: E-mail address
@@ -599,6 +603,9 @@ en:
         switch_user_id: Switch user
         login_roles: Login type
         last_loggedin: Last login date and time
+      ss/model/user/i18n_name_translations:
+        ja: Name (JA)
+        en: Name (EN)
       ss/model/user_title:
         code: Job title code
         name: Job title
@@ -612,12 +619,16 @@ en:
         title_orders: Job title order
       ss/model/group:
         name: Group name
+        i18n_name: Group name
         order: Display order
         activation_date: Validity period (start)
         expiration_date: Validity period (end)
         domains: Domain
         gws_use: Use of groupware
         upload_policy: Upload restrictions
+      ss/model/group/i18n_name_translations:
+        ja: Group name (JA)
+        en: Group name (EN)
       ss/user_group_history:
         created: Move date and time
         cms_site_id: CMS site

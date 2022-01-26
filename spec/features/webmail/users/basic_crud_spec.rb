@@ -17,7 +17,7 @@ describe "webmail_users", type: :feature, dbscope: :example, js: true do
       visit webmail_users_path
       click_on I18n.t("ss.links.new")
       within "form#item-form" do
-        fill_in "item[name]", with: name
+        fill_in "item[i18n_name_translations][ja]", with: name
         fill_in "item[uid]", with: uid
         fill_in "item[email]", with: email
         expect(page).to have_css('#item_uid_errors', text: '')
@@ -74,7 +74,7 @@ describe "webmail_users", type: :feature, dbscope: :example, js: true do
       visit webmail_users_path
       click_on I18n.t("ss.links.new")
       within "form#item-form" do
-        fill_in "item[name]", with: name
+        fill_in "item[i18n_name_translations][ja]", with: name
         fill_in "item[uid]", with: uid
         fill_in "item[email]", with: email
         expect(page).to have_css('#item_uid_errors', text: '')
@@ -144,7 +144,7 @@ describe "webmail_users", type: :feature, dbscope: :example, js: true do
       visit webmail_users_path
       click_on I18n.t("ss.links.new")
       within "form#item-form" do
-        fill_in "item[name]", with: name
+        fill_in "item[i18n_name_translations][ja]", with: name
         fill_in "item[uid]", with: uid
         fill_in "item[email]", with: email
         expect(page).to have_css('#item_uid_errors', text: '')

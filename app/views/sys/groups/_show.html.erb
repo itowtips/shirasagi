@@ -1,6 +1,19 @@
 <dl class="see">
   <dt><%= @model.t :name %></dt>
-  <dd><%= @item.send :name %></dd>
+  <dd></dd>
+
+  <% I18n.default_locale.tap do |lang| %>
+    <dt class="depth-2 i18n_name"><%= @model.t(:"i18n_name_#{lang}", default: t("ss.options.lang.#{lang}", default: lang.to_s)) %></dt>
+    <dd class="depth-2 i18n_name">
+      <%= tryb { @item.i18n_name_translations[lang] } || @item.name %>
+    </dd>
+  <% end %>
+  <% I18n.available_locales.reject { |lang| lang == I18n.default_locale }.each do |lang| %>
+    <dt class="depth-2 i18n_name"><%= @model.t(:"i18n_name_#{lang}", default: t("ss.options.lang.#{lang}", default: lang.to_s)) %></dt>
+    <dd class="depth-2 i18n_name">
+      <%= tryb { @item.i18n_name_translations[lang] } %>
+    </dd>
+  <% end %>
 
   <% if @item.domains.present? %>
   <dt><%= @model.t :domains %></dt>

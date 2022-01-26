@@ -30,7 +30,7 @@ describe "sys_users", type: :feature, dbscope: :example do
     it "#new" do
       visit new_path
       within "form#item-form" do
-        fill_in "item[name]", with: "sample"
+        fill_in "item[i18n_name_translations][ja]", with: "sample"
         fill_in "item[email]", with: "sample@example.jp"
         expect(page).to have_css('#item_email_errors', text: '')
         fill_in "item[in_password]", with: "sample"
@@ -49,7 +49,7 @@ describe "sys_users", type: :feature, dbscope: :example do
     it "#edit" do
       visit edit_path
       within "form#item-form" do
-        fill_in "item[name]", with: "modify"
+        fill_in "item[i18n_name_translations][ja]", with: "modify"
         click_button I18n.t('ss.buttons.save')
       end
       expect(current_path).not_to eq sns_login_path

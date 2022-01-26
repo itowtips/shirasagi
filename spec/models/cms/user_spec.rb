@@ -64,6 +64,14 @@ describe Cms::User do
     let!(:role) { create(:cms_role, cur_site: site2, name: unique_id, permissions: [ permission ]) }
     let!(:user) { create(:cms_user_base, :cms_user_rand_name, :cms_user_email, group: group2, cms_role_ids: [ role.id ]) }
 
+    before do
+      @save_current_permission_mask = SS.current_permission_mask
+    end
+
+    after do
+      SS.current_permission_mask = @save_current_permission_mask
+    end
+
     it do
       expect(user.cms_role_permissions.length).to eq 1
       expect(user.cms_role_permissions).to include("#{permission}_#{site2.id}")

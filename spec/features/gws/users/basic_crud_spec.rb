@@ -27,7 +27,7 @@ describe "gws_users", type: :feature, dbscope: :example, js: true do
       first('tbody.items a.select-item').click
 
       within "form#item-form" do
-        fill_in "item[name]", with: name
+        fill_in "item[i18n_name_translations][ja]", with: name
         fill_in "item[email]", with: "#{name}@example.jp"
         expect(page).to have_css('#item_email_errors', text: '')
         fill_in "item[in_password]", with: "pass"
@@ -42,7 +42,7 @@ describe "gws_users", type: :feature, dbscope: :example, js: true do
       #edit
       visit edit_path
       within "form#item-form" do
-        fill_in "item[name]", with: "name"
+        fill_in "item[i18n_name_translations][ja]", with: "name"
         click_button I18n.t('ss.buttons.save')
       end
       expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
@@ -92,7 +92,7 @@ describe "gws_users", type: :feature, dbscope: :example, js: true do
       first('tbody.items a.select-item').click
 
       within "form#item-form" do
-        fill_in "item[name]", with: name
+        fill_in "item[i18n_name_translations][ja]", with: name
         fill_in "item[email]", with: "#{name}@example.jp"
         expect(page).to have_css('#item_email_errors', text: '')
         fill_in "item[in_password]", with: "pass"
@@ -148,7 +148,7 @@ describe "gws_users", type: :feature, dbscope: :example, js: true do
       first('tbody.items a.select-item').click
 
       within 'form#item-form' do
-        fill_in 'item[name]', with: name
+        fill_in 'item[i18n_name_translations][ja]', with: name
         fill_in 'item[email]', with: "#{name}@example.jp"
         expect(page).to have_css('#item_email_errors', text: '')
         fill_in 'item[in_password]', with: 'pass'
@@ -166,7 +166,7 @@ describe "gws_users", type: :feature, dbscope: :example, js: true do
       #edit
       click_on I18n.t('ss.links.edit')
       within 'form#item-form' do
-        fill_in 'item[name]', with: new_name
+        fill_in 'item[i18n_name_translations][ja]', with: new_name
         click_button I18n.t('ss.buttons.save')
       end
       expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))

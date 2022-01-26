@@ -22,7 +22,7 @@ describe "gws_groups", type: :feature, dbscope: :example do
     it "#new" do
       visit new_path
       within "form#item-form" do
-        fill_in "item[name]", with: "#{gws_user.groups.first.name}/name"
+        fill_in "item[i18n_name_translations][ja]", with: "#{gws_user.groups.first.name}/name"
         click_button I18n.t('ss.buttons.save')
       end
       expect(status_code).to eq 200
@@ -39,7 +39,7 @@ describe "gws_groups", type: :feature, dbscope: :example do
     it "#edit" do
       visit edit_path
       within "form#item-form" do
-        fill_in "item[name]", with: "#{gws_user.groups.first.name}/name2"
+        fill_in "item[i18n_name_translations][ja]", with: "#{gws_user.groups.first.name}/name2"
         click_button I18n.t('ss.buttons.save')
       end
       expect(status_code).to eq 200

@@ -32,6 +32,7 @@ module SS::Model::User
 
     seqid :id
     field :name, type: String
+    field :i18n_name, type: String, localize: true
     field :kana, type: String
     field :uid, type: String
     field :email, type: String
@@ -62,10 +63,13 @@ module SS::Model::User
 
     embeds_ids :groups, class_name: "SS::Group"
 
-    permit_params :name, :kana, :uid, :email, :tel, :tel_ext, :type, :login_roles, :remark, group_ids: []
+    permit_params :name, :i18n_name, i18n_name_translations: I18n.available_locales
+    permit_params :kana, :uid, :email, :tel, :tel_ext, :type, :login_roles, :remark, group_ids: []
     permit_params :account_start_date, :account_expiration_date, :session_lifetime
     permit_params :restriction, :lock_state, :deletion_lock_state
     permit_params :organization_id, :organization_uid, :switch_user_id
+
+    before_validation :synchronize_i18n_name
 
     validates :name, presence: true, length: { maximum: 40 }
     validates :kana, length: { maximum: 40 }
@@ -89,27 +93,32 @@ module SS::Model::User
     default_scope -> {
       order_by uid: 1, email: 1
     }
-    scope :uid_or_email, ->(id) { self.where("$or" => [{ email: id }, { uid: id }]) }
-    scope :and_enabled, ->(now = Time.zone.now) do
-      self.and(
-        { "$or" => [ { "account_start_date" => nil }, { "account_start_date" => { "$lte" => now } } ] },
-        { "$or" => [ { "account_expiration_date" => nil }, { "account_expiration_date" => { "$gt" => now } } ] })
-    end
-    scope :and_unlocked, -> do
-      self.and('$or' => [{ lock_state: 'unlocked' }, { :lock_state.exists => false }])
-    end
   end
 
   module ClassMethods
     def flex_find(keyword)
-      if keyword =~ /^\d+$/
+      if keyword.numeric?
         cond = { id: keyword }
-      elsif keyword =~ /@/
+      elsif keyword.include?("@")
         cond = { email: keyword }
       else
         cond = { uid: keyword }
       end
       self.where(cond).first
+    end
+
+    def uid_or_email(id)
+      all.where("$or" => [{ email: id }, { uid: id }])
+    end
+
+    def and_enabled(now = Time.zone.now)
+      all.and(
+        { "$or" => [ { "account_start_date" => nil }, { "account_start_date" => { "$lte" => now } } ] },
+        { "$or" => [ { "account_expiration_date" => nil }, { "account_expiration_date" => { "$gt" => now } } ] })
+    end
+
+    def and_unlocked
+      all.and('$or' => [{ lock_state: 'unlocked' }, { :lock_state.exists => false }])
     end
 
     def auth_methods
@@ -163,9 +172,10 @@ module SS::Model::User
       criteria = all
       return criteria if params.blank?
 
-      criteria = criteria.search_name(params)
-      criteria = criteria.search_title_ids(params)
-      criteria = criteria.search_keyword(params)
+      %i[search_name search_title_ids search_keyword].each do |handler|
+        criteria = criteria.send(handler, params)
+      end
+
       criteria
     end
 
@@ -179,14 +189,18 @@ module SS::Model::User
         user_ids = criteria.pluck(:user_id)
       end
 
+      search_fields = %i[name kana uid email]
+      if I18n.available_locales.length > 1
+        I18n.available_locales.each { |lang| search_fields << "i18n_name.#{lang}" }
+      end
       if user_ids.blank?
-        return all.keyword_in(params[:keyword], :name, :kana, :uid, :email)
+        return all.keyword_in(params[:keyword], *search_fields)
       end
 
       # before using `unscope`, we must duplicate current criteria because current contexts are all gone in `unscope`
       base_criteria = all.dup
 
-      selector = all.unscoped.keyword_in(params[:keyword], :name, :kana, :uid, :email).selector
+      selector = all.unscoped.keyword_in(params[:keyword], *search_fields).selector
       base_criteria.where('$or' => [ selector, { :id.in => user_ids } ])
     end
 
@@ -205,26 +219,40 @@ module SS::Model::User
     end
 
     def labels
-      %w(uid email organization_uid organization_id).collect do |key|
-        [key, t(key)]
-      end.to_h
+      %w(uid email organization_uid organization_id).index_with do |key|
+        t(key)
+      end
     end
   end
 
-  def email_address
-    %(#{name} <#{email}>)
+  # def email_address
+  #   %(#{name} <#{email}>)
+  # end
+  def i18n_email_address
+    %(#{i18n_name} <#{email}>)
   end
+  alias email_address i18n_email_address
 
   # detail, descriptive name
-  def long_name
+  # def long_name
+  #   uid = self.uid
+  #   uid ||= email.split("@")[0] if email.present?
+  #   if uid.present?
+  #     "#{name} (#{uid})"
+  #   else
+  #     name.to_s
+  #   end
+  # end
+  def i18n_long_name
     uid = self.uid
     uid ||= email.split("@")[0] if email.present?
     if uid.present?
-      "#{name} (#{uid})"
+      "#{i18n_name} (#{uid})"
     else
-      name.to_s
+      i18n_name.to_s
     end
   end
+  alias long_name i18n_long_name
 
   def tel_label
     str = ""
@@ -365,6 +393,18 @@ module SS::Model::User
     return false unless login_roles.include?(LOGIN_ROLE_DBPASSWD)
     return false if password.blank?
     password == SS::Crypt.crypt(in_passwd)
+  end
+
+  def synchronize_i18n_name
+    if i18n_name_changed? || (name.blank? && i18n_name.present?)
+      self.name = i18n_name_translations[I18n.default_locale]
+      return
+    end
+
+    if name_changed? || (name.present? && i18n_name.blank?)
+      self.i18n_name_translations = I18n.available_locales.index_with { name }
+      # return
+    end
   end
 
   def validate_type

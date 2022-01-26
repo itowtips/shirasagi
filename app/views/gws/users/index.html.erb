@@ -2,6 +2,17 @@
 SS_Clipboard.renderCopy();
 <% end %>
 
+<% @index_title = proc do |item| %>
+  <%
+    titles = [ item.i18n_name_translations[I18n.default_locale] ]
+    I18n.available_locales.reject { |lang| lang == I18n.default_locale }.each do |lang|
+      titles << item.i18n_name_translations[lang]
+    end
+    title = titles.compact.uniq.join(" / ").presence || item.name
+  %>
+  <%= link_to title, { action: :show, id: item }, class: "title" %>
+<% end %>
+
 <% @index_meta = proc do |item| %>
   <% item.cur_site = @cur_site %>
   <%= gws_public_user_profile(item, :uid_or_id, :updated, :main_group_section_name, :user_title, :email, :tel) %>

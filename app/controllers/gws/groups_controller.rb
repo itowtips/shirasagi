@@ -24,7 +24,9 @@ class Gws::GroupsController < ApplicationController
   end
 
   def reload_nginx
-    SS::Nginx::Config.new.write.reload_server
+    if SS.config.ss.updates_and_reloads_nginx_conf
+      SS::Nginx::Config.new.write.reload_server
+    end
   end
 
   public
@@ -57,7 +59,8 @@ class Gws::GroupsController < ApplicationController
   end
 
   def download
-    csv = @model.unscoped.site(@cur_site).order_by(_id: 1).to_csv
+    criteria = @model.unscoped.site(@cur_site).order_by(_id: 1)
+    csv = criteria.to_csv
     send_data csv.encode("SJIS", invalid: :replace, undef: :replace), filename: "gws_groups_#{Time.zone.now.to_i}.csv"
   end
 

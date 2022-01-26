@@ -7,10 +7,16 @@ class Gws::UserCsv::Exporter
 
   class << self
     def csv_basic_headers(opts = {})
-      headers = %w(
-        id name kana uid organization_uid email password tel tel_ext title_ids type
+      headers = %w(id)
+      headers << "i18n_name_translations.#{I18n.default_locale}"
+      I18n.available_locales.reject { |lang| lang == I18n.default_locale }.each do |lang|
+        headers << "i18n_name_translations.#{lang}"
+      end
+      headers += %w(
+        kana uid organization_uid email password tel tel_ext title_ids type
         account_start_date account_expiration_date initial_password_warning session_lifetime
         organization_id groups gws_main_group_ids switch_user_id remark
+        lang timezone
         ldap_dn gws_roles sys_roles
       )
       headers += %w(webmail_roles) if opts[:webmail_support]
@@ -71,7 +77,10 @@ class Gws::UserCsv::Exporter
 
     terms = []
     terms << item.id
-    terms << item.name
+    terms << item.i18n_name_translations[I18n.default_locale]
+    I18n.available_locales.reject { |lang| lang == I18n.default_locale }.each do |lang|
+      terms << item.i18n_name_translations[lang]
+    end
     terms << item.kana
     terms << item.uid
     terms << item.organization_uid
@@ -90,6 +99,8 @@ class Gws::UserCsv::Exporter
     terms << main_group.try(:name)
     terms << (switch_user ? "#{switch_user.id},#{switch_user.name}" : nil)
     terms << item.remark
+    terms << item.label(:lang)
+    terms << item.timezone
     terms << item.ldap_dn
     terms << item_roles(item).map(&:name).join("\n")
     terms << item.sys_roles.and_general.map(&:name).join("\n")

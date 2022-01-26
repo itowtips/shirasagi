@@ -102,7 +102,7 @@ module Cms::Addon::Import
       %w(
         name kana uid organization_uid email tel tel_ext account_start_date account_expiration_date ldap_dn
       ).each do |k|
-        item[k] = row[t(k)].to_s.strip
+        item.send("#{k}=", row[t(k)].to_s.strip)
       end
 
       # password

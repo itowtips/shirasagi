@@ -28,7 +28,7 @@ describe "cms_users", type: :feature, dbscope: :example do
 
       within "#item-form" do
         name = unique_id
-        fill_in "item[name]", with: name
+        fill_in "item[i18n_name_translations][ja]", with: name
         fill_in "item[email]", with: "#{name}@example.jp"
         expect(page).to have_css('#item_email_errors', text: '')
         fill_in "item[in_password]", with: "pass"
@@ -44,7 +44,7 @@ describe "cms_users", type: :feature, dbscope: :example do
       #edit
       visit edit_path
       within "#item-form" do
-        fill_in "item[name]", with: "modify"
+        fill_in "item[i18n_name_translations][ja]", with: "modify"
         click_on I18n.t("ss.buttons.save")
       end
       expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
@@ -121,7 +121,7 @@ describe "cms_users", type: :feature, dbscope: :example do
 
       within "form#item-form" do
         name = unique_id
-        fill_in "item[name]", with: name
+        fill_in "item[i18n_name_translations][ja]", with: name
         fill_in "item[uid]", with: name
         expect(page).to have_css('#item_uid_errors', text: '')
         fill_in "item[ldap_dn]", with: "dc=#{name},dc=city,dc=example,dc=jp"
@@ -141,7 +141,7 @@ describe "cms_users", type: :feature, dbscope: :example do
       login_cms_user
       visit edit_path
       within "form#item-form" do
-        fill_in "item[name]", with: "modify"
+        fill_in "item[i18n_name_translations][ja]", with: "modify"
         click_on I18n.t("ss.buttons.save")
       end
       expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))

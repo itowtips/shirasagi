@@ -21,7 +21,7 @@ describe "cms_groups", type: :feature, dbscope: :example do
     it "#new" do
       visit new_path
       within "form#item-form" do
-        fill_in "item[name]", with: "cms_group/sample"
+        fill_in "item[i18n_name_translations][ja]", with: "cms_group/sample"
         click_button I18n.t('ss.buttons.save')
       end
       expect(status_code).to eq 200
@@ -38,7 +38,7 @@ describe "cms_groups", type: :feature, dbscope: :example do
     it "#edit" do
       visit edit_path
       within "form#item-form" do
-        fill_in "item[name]", with: "cms_group/modify"
+        fill_in "item[i18n_name_translations][ja]", with: "modify"
         click_button I18n.t('ss.buttons.save')
       end
       expect(current_path).not_to eq sns_login_path

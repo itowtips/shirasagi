@@ -459,7 +459,7 @@ ja:
         disabled: 自動リサイズ無効
       lang:
         ja: 日本語
-        en: English
+        en: 英語
 
     tasks:
       started: 開始しました。
@@ -585,6 +585,7 @@ ja:
         upload_policy: アップロード制限
       ss/model/user:
         name: 氏名
+        i18n_name: 氏名
         kana: カナ
         uid: ユーザーID
         email: メールアドレス
@@ -620,6 +621,9 @@ ja:
         switch_user_id: 切り替えユーザー
         login_roles: ログイン種別
         last_loggedin: 最終ログイン日時
+      ss/model/user/i18n_name_translations:
+        ja: 氏名 (JA)
+        en: 氏名 (EN)
       ss/model/user_title:
         code: 役職コード
         name: 役職名
@@ -633,12 +637,16 @@ ja:
         title_orders: 役職並び順
       ss/model/group:
         name: グループ名
+        i18n_name: グループ名
         order: 表示順
         activation_date: 有効期限（開始）
         expiration_date: 有効期限（終了）
         domains: ドメイン
         gws_use: グループウェアの使用
         upload_policy: アップロード制限
+      ss/model/group/i18n_name_translations:
+        ja: グループ名 (JA)
+        en: グループ名 (EN)
       ss/user_group_history:
         created: 異動日時
         cms_site_id: CMSサイト

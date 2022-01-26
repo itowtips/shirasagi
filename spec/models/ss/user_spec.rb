@@ -293,4 +293,55 @@ describe SS::User, dbscope: :example do
       end
     end
   end
+
+  describe "#i18n_name" do
+    context "when only name is given" do
+      it do
+        item = SS::User.new(name: unique_id, email: unique_email, password: unique_id)
+        expect(item.valid?).to be_truthy
+        expect(item.errors).to be_blank
+        expect(item.i18n_name).to be_present
+        I18n.available_locales.each do |lang|
+          expect(item.i18n_name_translations[lang]).to eq item.name
+        end
+      end
+    end
+
+    context "when only i18n_name is given" do
+      it do
+        item = SS::User.new(
+          i18n_name_translations: I18n.available_locales.index_with { unique_id },
+          email: unique_email, password: unique_id
+        )
+        expect(item.valid?).to be_truthy
+        expect(item.errors).to be_blank
+        expect(item.name).to eq item.i18n_name_translations[I18n.default_locale]
+      end
+    end
+
+    context "when only i18n_name of default locale is given" do
+      it do
+        item = SS::User.new(
+          i18n_name_translations: { I18n.default_locale => unique_id },
+          email: unique_email, password: unique_id
+        )
+        expect(item.valid?).to be_truthy
+        expect(item.errors).to be_blank
+        expect(item.name).to eq item.i18n_name_translations[I18n.default_locale]
+      end
+    end
+
+    context "when only i18n_name of alternative locales is given" do
+      it do
+        item = SS::User.new(
+          i18n_name_translations: I18n.available_locales.reject { |lang| lang == I18n.default_locale }.index_with { unique_id },
+          email: unique_email, password: unique_id
+        )
+        expect(item.valid?).to be_falsey
+        expect(item.errors[:name]).to have(1).items
+        expect(item.errors[:name]).to include(I18n.t("errors.messages.blank"))
+        expect(item.name).to be_blank
+      end
+    end
+  end
 end

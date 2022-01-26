@@ -12,20 +12,84 @@ describe SS::Group, type: :model, dbscope: :example do
   end
 
   context "renaming" do
-    let!(:root) { create(:ss_group) }
-    let!(:child) { create(:ss_group, name: "#{root.name}/#{unique_id}") }
-    let!(:new_name) { unique_id }
+    context "backward compatibilities" do
+      let!(:new_name) { unique_id }
 
-    it do
-      old_name = root.name
-      expect(child.name).to start_with("#{old_name}/")
+      it do
+        root = create(:ss_group, name: unique_id)
+        child = create(:ss_group, name: "#{root.name}/#{unique_id}")
 
-      root.name = new_name
-      root.save!
+        old_name = root.name
+        expect(child.name).to start_with("#{old_name}/")
 
-      child.reload
-      expect(child.name).not_to start_with("#{old_name}/")
-      expect(child.name).to start_with(new_name)
+        root = SS::Group.find(root.id)
+        root.name = new_name
+        root.save!
+
+        child = SS::Group.find(child.id)
+        expect(child.name).not_to start_with("#{old_name}/")
+        expect(child.name).to start_with(new_name)
+      end
+    end
+
+    context "with i18n name" do
+      context "both langs are changed" do
+        it do
+          name_ja = unique_id
+          name_en = unique_id
+          root = create(:ss_group, i18n_name_translations: { ja: name_ja, en: name_en })
+          child = create(:ss_group, i18n_name_translations: { ja: "#{name_ja}/#{unique_id}", en: "#{name_en}/#{unique_id}" })
+
+          new_name_ja = unique_id
+          new_name_en = unique_id
+          root = SS::Group.find(root.id)
+          root.i18n_name_translations = { ja: new_name_ja, en: new_name_en }
+          root.save!
+
+          child = SS::Group.find(child.id)
+          expect(child.i18n_name_translations[:ja]).to start_with("#{new_name_ja}/")
+          expect(child.i18n_name_translations[:en]).to start_with("#{new_name_en}/")
+          expect(child.name).to start_with("#{new_name_ja}/")
+        end
+      end
+
+      context "only lang 'ja' is changed" do
+        it do
+          name_ja = unique_id
+          name_en = unique_id
+          root = create(:ss_group, i18n_name_translations: { ja: name_ja, en: name_en })
+          child = create(:ss_group, i18n_name_translations: { ja: "#{name_ja}/#{unique_id}", en: "#{name_en}/#{unique_id}" })
+
+          new_name_ja = unique_id
+          root = SS::Group.find(root.id)
+          root.i18n_name_translations = { ja: new_name_ja, en: name_en }
+          root.save!
+
+          child = SS::Group.find(child.id)
+          expect(child.i18n_name_translations[:ja]).to start_with("#{new_name_ja}/")
+          expect(child.i18n_name_translations[:en]).to start_with("#{name_en}/")
+          expect(child.name).to start_with("#{new_name_ja}/")
+        end
+      end
+
+      context "only lang 'en' is changed" do
+        it do
+          name_ja = unique_id
+          name_en = unique_id
+          root = create(:ss_group, i18n_name_translations: { ja: name_ja, en: name_en })
+          child = create(:ss_group, i18n_name_translations: { ja: "#{name_ja}/#{unique_id}", en: "#{name_en}/#{unique_id}" })
+
+          new_name_en = unique_id
+          root = SS::Group.find(root.id)
+          root.i18n_name_translations = { ja: name_ja, en: new_name_en }
+          root.save!
+
+          child = SS::Group.find(child.id)
+          expect(child.i18n_name_translations[:ja]).to start_with("#{name_ja}/")
+          expect(child.i18n_name_translations[:en]).to start_with("#{new_name_en}/")
+          expect(child.name).to start_with("#{name_ja}/")
+        end
+      end
     end
   end
 
@@ -110,6 +174,54 @@ describe SS::Group, type: :model, dbscope: :example do
         # trailing_name depends on #depth
         expect(group.depth).to eq 2
         expect(subject.trailing_name).to eq names[2..3].join("/")
+      end
+    end
+  end
+
+  describe "#i18n_name" do
+    context "when only name is given" do
+      it do
+        item = SS::Group.new(name: unique_id)
+        expect(item.valid?).to be_truthy
+        expect(item.errors).to be_blank
+        expect(item.i18n_name).to be_present
+        I18n.available_locales.each do |lang|
+          expect(item.i18n_name_translations[lang]).to eq item.name
+        end
+      end
+    end
+
+    context "when only i18n_name is given" do
+      it do
+        item = SS::Group.new(
+          i18n_name_translations: I18n.available_locales.index_with { unique_id }
+        )
+        expect(item.valid?).to be_truthy
+        expect(item.errors).to be_blank
+        expect(item.name).to eq item.i18n_name_translations[I18n.default_locale]
+      end
+    end
+
+    context "when only i18n_name of default locale is given" do
+      it do
+        item = SS::Group.new(
+          i18n_name_translations: { I18n.default_locale => unique_id }
+        )
+        expect(item.valid?).to be_truthy
+        expect(item.errors).to be_blank
+        expect(item.name).to eq item.i18n_name_translations[I18n.default_locale]
+      end
+    end
+
+    context "when only i18n_name of alternative locales is given" do
+      it do
+        item = SS::Group.new(
+          i18n_name_translations: I18n.available_locales.reject { |lang| lang == I18n.default_locale }.index_with { unique_id }
+        )
+        expect(item.valid?).to be_falsey
+        expect(item.errors[:name]).to have(1).items
+        expect(item.errors[:name]).to include(I18n.t("errors.messages.blank"))
+        expect(item.name).to be_blank
       end
     end
   end

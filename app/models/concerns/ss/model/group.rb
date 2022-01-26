@@ -4,7 +4,7 @@ module SS::Model::Group
   include SS::Document
   include SS::Scope::ActivationDate
   include Ldap::Addon::Group
-  include SS::Fields::DependantNaming
+  include SS::Fields::DependantI18nNaming
 
   attr_accessor :in_password
 
@@ -13,17 +13,24 @@ module SS::Model::Group
     index({ name: 1 }, { unique: true })
     index({ domains: 1 }, { unique: true, sparse: true })
 
+    attr_accessor :skip_synchronize_i18n_name
+
     seqid :id
     field :name, type: String
+    field :i18n_name, type: String, localize: true
     field :order, type: Integer
     field :activation_date, type: DateTime
     field :expiration_date, type: DateTime
     field :domains, type: SS::Extensions::Words
     field :gws_use, type: String
     field :upload_policy, type: String
-    permit_params :name, :order, :activation_date, :expiration_date, :domains, :gws_use
+
+    permit_params :name, :i18n_name, i18n_name_translations: I18n.available_locales
+    permit_params :order, :activation_date, :expiration_date, :domains, :gws_use
 
     default_scope -> { order_by(order: 1, name: 1) }
+
+    before_validation :synchronize_i18n_name
 
     validates :name, presence: true, uniqueness: true, length: { maximum: 80 }
     validates :domains, domain: true
@@ -31,7 +38,7 @@ module SS::Model::Group
     validates :activation_date, datetime: true
     validates :expiration_date, datetime: true
     validates :gws_use, inclusion: { in: %w(enabled disabled), allow_blank: true }
-    validate :validate_name
+    validate :validate_name_and_i18n_name
     validate :validate_domains, if: ->{ domains.present? }
 
     scope :in_group, ->(group) {
@@ -58,7 +65,12 @@ module SS::Model::Group
         criteria = criteria.search_text params[:name]
       end
       if params[:keyword].present?
-        criteria = criteria.keyword_in params[:keyword], :name
+        search_fields = %i[name]
+        if I18n.available_locales.length > 1
+          I18n.available_locales.each { |lang| search_fields << "i18n_name.#{lang}" }
+        end
+
+        criteria = criteria.keyword_in params[:keyword], *search_fields
       end
       criteria
     end
@@ -72,18 +84,31 @@ module SS::Model::Group
     end
   end
 
-  def full_name
+  # def full_name
+  #   name.tr("/", " ")
+  # end
+  def i18n_full_name
     name.tr("/", " ")
   end
+  alias full_name i18n_full_name
 
-  def section_name
-    return name unless name.include?('/')
-    name.split("/")[1..-1].join(' ')
+  # def section_name
+  #   return name unless name.include?('/')
+  #   name.split("/")[1..-1].join(' ')
+  # end
+  def i18n_section_name
+    return i18n_name unless i18n_name.include?('/')
+    i18n_name.split("/")[1..-1].join(' ')
   end
+  alias section_name i18n_section_name
 
-  def trailing_name
-    @trailing_name ||= name.split("/")[depth..-1].join("/")
+  # def trailing_name
+  #   @trailing_name ||= name.split("/")[depth..-1].join("/")
+  # end
+  def i18n_trailing_name
+    @trailing_name ||= i18n_name.split("/")[depth..-1].join("/")
   end
+  alias trailing_name i18n_trailing_name
 
   def root
     parts = name.try(:split, "/") || []
@@ -175,9 +200,47 @@ module SS::Model::Group
 
   private
 
-  def validate_name
+  def synchronize_i18n_name
+    return if skip_synchronize_i18n_name
+
+    if i18n_name_changed? || (name.blank? && i18n_name.present?)
+      self.name = i18n_name_translations[I18n.default_locale]
+      return
+    end
+
+    if name_changed? || (name.present? && i18n_name.blank?)
+      self.i18n_name_translations = I18n.available_locales.index_with { name }
+      # return
+    end
+  end
+
+  def validate_name_and_i18n_name
+    return if name.blank?
+
     if name =~ /\/$/ || name =~ /^\// || name =~ /\/\//
       errors.add :name, :invalid
+      return
+    end
+
+    if i18n_name_translations[I18n.default_locale] != name
+      errors.add :name, :invalid
+      return
+    end
+
+    alternative_locales = I18n.available_locales.reject { |lang| lang == I18n.default_locale }
+    alternative_locales.each do |lang|
+      n = i18n_name_translations[lang]
+      next if n.blank?
+
+      if n =~ /\/$/ || n =~ /^\// || n =~ /\/\//
+        errors.add :name, :invalid
+        break
+      end
+
+      if n.count("/") != name.count("/")
+        errors.add :name, :invalid
+        break
+      end
     end
   end
 

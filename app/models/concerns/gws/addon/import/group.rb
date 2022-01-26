@@ -5,6 +5,16 @@ module Gws::Addon::Import
     extend ActiveSupport::Concern
     extend SS::Addon
 
+    CSV_HEADERS = begin
+      headers = %w(id)
+      headers << "i18n_name_translations.#{I18n.default_locale}"
+      I18n.available_locales.reject { |lang| lang == I18n.default_locale }.each do |lang|
+        headers << "i18n_name_translations.#{lang}"
+      end
+      headers += %w(domains order ldap_dn activation_date expiration_date)
+      headers
+    end.freeze
+
     included do
       attr_accessor :in_file, :imported
 
@@ -13,7 +23,7 @@ module Gws::Addon::Import
 
     module ClassMethods
       def csv_headers
-        %w(id name domains order ldap_dn activation_date expiration_date)
+        CSV_HEADERS
       end
 
       def to_csv
@@ -22,7 +32,10 @@ module Gws::Addon::Import
           criteria.each do |item|
             line = []
             line << item.id
-            line << item.name
+            line << item.i18n_name_translations[I18n.default_locale]
+            I18n.available_locales.reject { |lang| lang == I18n.default_locale }.each do |lang|
+              line << item.i18n_name_translations[lang]
+            end
             line << item.domains
             line << item.order
             line << item.ldap_dn
@@ -61,14 +74,37 @@ module Gws::Addon::Import
       in_file.rewind
     end
 
+    def get_value(row, key)
+      column_name = t(key)
+      return row[column_name] if row.key?(column_name)
+
+      I18n.available_locales.reject { |lang| lang == I18n.locale }.each do |lang|
+        column_name = t(key, locale: lang)
+        next if column_name.blank?
+
+        return row[column_name] if row.key?(column_name)
+      end
+
+      nil
+    end
+
     def update_row(row, index)
-      id              = row[t("id")].to_s.strip
-      name            = row[t("name")].to_s.strip
-      domains         = row[t("domains")].to_s.strip
-      order           = row[t("order")].to_s.strip
-      ldap_dn         = row[t("ldap_dn")].to_s.strip
-      activation_date = row[t("activation_date")].to_s.strip
-      expiration_date = row[t("expiration_date")].to_s.strip
+      id              = get_value(row, "id").to_s.strip
+      name            = get_value(row, "name").to_s.strip
+      domains         = get_value(row, "domains").to_s.strip
+      order           = get_value(row, "order").to_s.strip
+      ldap_dn         = get_value(row, "ldap_dn").to_s.strip
+      activation_date = get_value(row, "activation_date").to_s.strip
+      expiration_date = get_value(row, "expiration_date").to_s.strip
+
+      i18n_name_translations = {}
+      I18n.available_locales.each do |lang|
+        i18n_name = get_value(row, "i18n_name_translations.#{lang}")
+        if i18n_name.present?
+          i18n_name_translations[lang] = i18n_name
+        end
+      end
+      name = i18n_name_translations[I18n.default_locale] if name.blank?
 
       if id.present?
         item = self.class.unscoped.site(cur_site).where(id: id).first
@@ -86,10 +122,11 @@ module Gws::Addon::Import
         item = self.class.new
       end
 
-      item.name            = name
-      item.order           = order
-      item.domains         = domains
-      item.ldap_dn         = ldap_dn
+      item.name = name
+      item.i18n_name_translations = i18n_name_translations if i18n_name_translations.present?
+      item.order = order
+      item.domains = domains
+      item.ldap_dn = ldap_dn
       item.activation_date = activation_date
       item.expiration_date = expiration_date
 

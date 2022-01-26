@@ -58,7 +58,7 @@ class Gws::UserCsv::Importer
     begin
       SS::Csv.foreach_row(in_file, headers: true) do |row|
         diff = Gws::UserCsv::Exporter.csv_basic_headers(webmail_support: @webmail_support) - row.headers
-        if diff.present?
+        if diff.length > 6
           errors.add :in_file, :invalid_file_type
         end
         break
@@ -71,10 +71,37 @@ class Gws::UserCsv::Importer
     in_file.rewind
   end
 
+  def normalize_value(value)
+    value = value.presence
+    value.blank? ? value : value.strip.presence
+  end
+
   def row_value(key)
-    v = @row[Gws::User.t(key)].presence
-    return v if v.blank?
-    v.strip.presence
+    column_name = Gws::User.t(key)
+    return normalize_value(@row[column_name]) if @row.key?(column_name)
+
+    I18n.available_locales.reject { |lang| lang == I18n.locale }.each do |lang|
+      column_name = Gws::User.t(key, locale: lang)
+      next if column_name.blank?
+
+      return normalize_value(@row[column_name]) if @row.key?(column_name)
+    end
+
+    nil
+  end
+
+  def translate_options(options_key, option_value)
+    return if option_value.blank?
+
+    key, _value = I18n.t(options_key).find { |_key, value| value == option_value }
+    return key if key
+
+    I18n.available_locales.reject { |lang| lang == I18n.locale }.each do |lang|
+      key, _value = I18n.t(options_key, locale: lang).find { |_key, value| value == option_value }
+      return key if key
+    end
+
+    nil
   end
 
   def build_item
@@ -85,15 +112,15 @@ class Gws::UserCsv::Importer
     item.cur_user = cur_user
 
     %w(
-      name kana uid organization_uid email tel tel_ext
+      kana uid organization_uid email tel tel_ext
       account_start_date account_expiration_date session_lifetime remark ldap_dn
     ).each do |k|
-      item[k] = row_value(k)
+      item.send("#{k}=", row_value(k))
     end
 
     keys = %i[
-      set_password set_title set_type set_initial_password_warning set_organization_id set_group_ids
-      set_main_group_ids set_switch_user_id set_gws_roles set_sys_roles
+      set_name set_password set_title set_type set_initial_password_warning set_organization_id set_group_ids
+      set_main_group_ids set_switch_user_id set_locale set_gws_roles set_sys_roles
     ]
     keys += %i[set_webmail_roles] if webmail_support
 
@@ -129,6 +156,22 @@ class Gws::UserCsv::Importer
     [ nil, false ]
   end
 
+  def set_name(item)
+    name = row_value("name")
+
+    i18n_name_translations = {}
+    I18n.available_locales.each do |lang|
+      i18n_name = row_value("i18n_name_translations.#{lang}")
+      if i18n_name.present?
+        i18n_name_translations[lang] = i18n_name
+      end
+    end
+    name = i18n_name_translations[I18n.default_locale] if name.blank?
+
+    item.name = name
+    item.i18n_name_translations = i18n_name_translations if i18n_name_translations.present?
+  end
+
   def set_password(item)
     password = row_value('password')
     item.in_password = password if password.present?
@@ -155,7 +198,8 @@ class Gws::UserCsv::Importer
 
   def set_initial_password_warning(item)
     initial_password_warning = row_value('initial_password_warning')
-    if initial_password_warning == I18n.t('ss.options.state.enabled')
+    enabled = I18n.available_locales.any? { |lang| initial_password_warning == I18n.t('ss.options.state.enabled', locale: lang) }
+    if enabled
       item.initial_password_warning = 1
     else
       item.initial_password_warning = nil
@@ -200,6 +244,12 @@ class Gws::UserCsv::Importer
       user = SS::User.where(id: value[0], name: value[1]).first
     end
     item.switch_user_id = user ? user.id : nil
+  end
+
+  def set_locale(item)
+    lang = row_value('lang')
+    item.lang = translate_options("ss.options.lang", lang)
+    item.timezone = row_value('timezone')
   end
 
   def set_gws_roles(item)

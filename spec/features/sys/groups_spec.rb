@@ -26,7 +26,7 @@ describe "sys_groups", type: :feature, dbscope: :example do
     it "#new" do
       visit new_path
       within "form#item-form" do
-        fill_in "item[name]", with: "sample"
+        fill_in "item[i18n_name_translations][ja]", with: "sample"
         click_button I18n.t('ss.buttons.save')
       end
       expect(status_code).to eq 200
@@ -43,7 +43,7 @@ describe "sys_groups", type: :feature, dbscope: :example do
     it "#edit" do
       visit edit_path
       within "form#item-form" do
-        fill_in "item[name]", with: "modify"
+        fill_in "item[i18n_name_translations][ja]", with: "modify"
         click_button I18n.t('ss.buttons.save')
       end
       expect(current_path).not_to eq sns_login_path
@@ -71,7 +71,7 @@ describe "sys_groups", type: :feature, dbscope: :example do
         within "form#item-form" do
           expect(page).to have_no_css("select[name='item[gws_use]']")
 
-          fill_in "item[name]", with: name
+          fill_in "item[i18n_name_translations][ja]", with: name
           click_on I18n.t('ss.buttons.save')
         end
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
@@ -101,7 +101,7 @@ describe "sys_groups", type: :feature, dbscope: :example do
         within "form#item-form" do
           expect(page).to have_no_css("select[name='item[gws_use]']")
 
-          fill_in "item[name]", with: name
+          fill_in "item[i18n_name_translations][ja]", with: name
           click_on I18n.t('ss.buttons.save')
         end
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
