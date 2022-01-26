@@ -132,8 +132,13 @@ ja:
       email:
         notify: 転送する
         silence: 転送しない
+      slack:
+        notify: 通知する
+        silence: 通知しない
     send_mail_setting: メール転送
+    send_slack_setting: Slack DM 通知
     send_mail_address: 転送先メールアドレス
+    send_slack_id: 通知先 Slack ID
 
   modules:
     gws/memo: メッセージ
@@ -313,6 +318,7 @@ ja:
         notice_report_email_user_setting: レポート通知メール転送
         notice_announcement_email_user_setting: お知らせ通知メール転送
         send_notice_mail_addresses: 転送先メールアドレス
+        send_notice_slack_id: 通知先 Slack ID
 
   activemodel:
     models:

@@ -15,8 +15,15 @@ module Gws::Memo::NoticeUserSetting
       alias_method("notice_#{name}_email_user_setting_options", "notice_email_user_setting_options")
     end
 
+    %w(circular).each do |name|
+      field "notice_#{name}_slack_user_setting", type: String, default: 'silence'
+      permit_params "notice_#{name}_slack_user_setting".to_sym
+      alias_method("notice_#{name}_slack_user_setting_options", "notice_slack_user_setting_options")
+    end
+
     field :send_notice_mail_addresses, type: SS::Extensions::Words
-    permit_params :send_notice_mail_addresses
+    field :send_notice_slack_id, type: String
+    permit_params :send_notice_mail_addresses, :send_notice_slack_id
     validates :send_notice_mail_addresses, emails: true, length: { maximum: MAX_MAIL_COUNT, message: :too_large }
   end
 
@@ -26,6 +33,10 @@ module Gws::Memo::NoticeUserSetting
 
   def notice_email_user_setting_options
     %w(notify silence).map { |k| [I18n.t("gws/memo/notice_user_settings.options.email.#{k}"), k] }
+  end
+
+  def notice_slack_user_setting_options
+    %w(notify silence).map { |k| [I18n.t("gws/memo/notice_user_settings.options.slack.#{k}"), k] }
   end
 
   def notice_user_setting_default_value

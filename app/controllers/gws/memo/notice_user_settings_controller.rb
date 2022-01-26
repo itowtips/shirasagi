@@ -9,8 +9,12 @@ class Gws::Memo::NoticeUserSettingsController < ApplicationController
       fields << "notice_#{name}_user_setting"
       fields << "notice_#{name}_email_user_setting"
     end
+    %w(circular).each do |name|
+      fields << "notice_#{name}_slack_user_setting"
+    end
     fields.map(&:to_sym)
     fields << :send_notice_mail_addresses
+    fields << :send_notice_slack_id
   end
 
   def update

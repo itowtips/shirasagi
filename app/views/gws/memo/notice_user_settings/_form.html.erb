@@ -9,6 +9,12 @@
   <dd>
     <%= f.select "notice_#{type}_email_user_setting", @item.send("notice_#{type}_email_user_setting_options") %>
   </dd>
+  <% if @item.respond_to?("notice_#{type}_slack_user_setting_options") %>
+    <dt class="depth-3"><%= t("gws/memo/notice_user_settings.send_slack_setting") %></dt>
+    <dd>
+      <%= f.select "notice_#{type}_slack_user_setting", @item.send("notice_#{type}_slack_user_setting_options") %>
+    </dd>
+  <% end %>
 <% end %>
 
 <dl class="see">
@@ -30,5 +36,9 @@
   <dt><%= t "gws/memo/notice_user_settings.send_mail_address" %></dt>
   <dd>
     <%= f.text_field :send_notice_mail_addresses, value: @item.send_notice_mail_addresses.join(", ") %>
+  </dd>
+  <dt><%= t "gws/memo/notice_user_settings.send_slack_id" %></dt>
+  <dd>
+    <%= f.text_field :send_notice_slack_id %>
   </dd>
 </dl>

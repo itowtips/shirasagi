@@ -5,6 +5,10 @@
   <dd><%= @item.label("notice_#{type}_user_setting") %></dd>
   <dt class="depth-3"><%= t("gws/memo/notice_user_settings.send_mail_setting") %></dt>
   <dd><%= @item.label("notice_#{type}_email_user_setting") %></dd>
+  <% if @item.respond_to?("notice_#{type}_slack_user_setting_options") %>
+    <dt class="depth-3"><%= t("gws/memo/notice_user_settings.send_slack_setting") %></dt>
+    <dd><%= @item.label("notice_#{type}_slack_user_setting") %></dd>
+  <% end %>
 <% end %>
 
 <dl class="see">
@@ -25,4 +29,6 @@
   <dt></dt><dd></dd>
   <dt><%= t("gws/memo/notice_user_settings.send_mail_address") %></dt>
   <dd><%= @item.send_notice_mail_addresses.join(", ") %></dd>
+  <dt><%= t("gws/memo/notice_user_settings.send_slack_id") %></dt>
+  <dd><%= @item.send_notice_slack_id %></dd>
 </dl>
