@@ -22,8 +22,10 @@ describe Gws::Schedule::PlanHelper, type: :helper, dbscope: :example do
       item.start_at = '2016-01-01 00:00:00'
       item.end_at   = '2016-01-02 00:00:00'
       term = helper.term(item)
-      expect(term).to include I18n.l(item.start_at.to_date, format: :gws_long)
-      expect(term).not_to include I18n.l(item.end_at.to_date, format: :gws_long)
+
+      start_at = I18n.l(item.start_at.to_date, format: :gws_long)
+      end_at = I18n.l(item.end_at.to_date, format: :gws_long_without_year)
+      expect(term).to eq "#{start_at} - #{end_at}"
     end
 
     it "same timestamp" do
@@ -37,32 +39,40 @@ describe Gws::Schedule::PlanHelper, type: :helper, dbscope: :example do
       item.start_at = '2016-01-01 00:00:00'
       item.end_at   = '2016-01-01 01:00:00'
       term = helper.term(item)
-      expect(term).to include I18n.l(item.start_at, format: :gws_long)
-      expect(term).not_to include I18n.l(item.end_at, format: :gws_long)
+
+      start_at = I18n.l(item.start_at, format: :gws_long)
+      end_at = I18n.l(item.end_at, format: :gws_long_without_year_month_day)
+      expect(term).to eq "#{start_at} - #{end_at}"
     end
 
     it "different day" do
       item.start_at = '2016-01-01 00:00:00'
       item.end_at   = '2016-01-02 00:00:00'
       term = helper.term(item)
-      expect(term).to include I18n.l(item.start_at, format: :gws_long)
-      expect(term).not_to include I18n.l(item.end_at, format: :gws_long)
+
+      start_at = I18n.l(item.start_at, format: :gws_long)
+      end_at = I18n.l(item.end_at, format: :gws_long_without_year)
+      expect(term).to eq "#{start_at} - #{end_at}"
     end
 
     it "different month" do
       item.start_at = '2016-01-01 00:00:00'
       item.end_at   = '2016-02-01 00:00:00'
       term = helper.term(item)
-      expect(term).to include I18n.l(item.start_at, format: :gws_long)
-      expect(term).not_to include I18n.l(item.end_at, format: :gws_long)
+
+      start_at = I18n.l(item.start_at, format: :gws_long)
+      end_at = I18n.l(item.end_at, format: :gws_long_without_year)
+      expect(term).to eq "#{start_at} - #{end_at}"
     end
 
     it "different year" do
       item.start_at = '2016-01-01 00:00:00'
       item.end_at   = '2017-01-01 00:00:00'
       term = helper.term(item)
-      expect(term).to include I18n.l(item.start_at, format: :gws_long)
-      expect(term).to include I18n.l(item.end_at, format: :gws_long)
+
+      start_at = I18n.l(item.start_at, format: :gws_long)
+      end_at = I18n.l(item.end_at, format: :gws_long)
+      expect(term).to eq "#{start_at} - #{end_at}"
     end
   end
 

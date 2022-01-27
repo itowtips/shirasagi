@@ -106,12 +106,13 @@ ja:
     formats:
       gws_long: ! '%Y/%m/%d (%a)'
       gws_long_without_year: ! '%m/%d (%a)'
-      gws_long_without_year_and_month: ! '%m/%d (%a)'
+      gws_long_without_year_month: ! '%m/%d (%a)'
   time:
     formats:
       gws_long: ! '%Y/%m/%d (%a) %H:%M'
       gws_long_without_year: ! '%m/%d (%a) %H:%M'
-      gws_long_without_year_and_month: ! '%m/%d (%a) %H:%M'
+      gws_long_without_year_month: ! '%m/%d (%a) %H:%M'
+      gws_long_without_year_month_day: ! '%H:%M'
       gws_time: ! '%H:%M'
 
   gws_role:

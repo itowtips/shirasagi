@@ -15,15 +15,8 @@ module Gws::Schedule::PlanHelper
     end
     return I18n.l(from, format: :gws_long) if from == to
 
-    format = "gws_long"
-    if from.year == to.year
-      format = "#{format}_without_year"
-      if from.month == to.month
-        format = "#{format}_and_month"
-      end
-    end
-
-    I18n.l(from, format: :gws_long) + ' - ' + I18n.l(to, format: format.to_sym)
+    format = find_term_format(from, to)
+    I18n.l(from, format: :gws_long) + ' - ' + I18n.l(to, format: format)
   end
 
   def calendar_format(plans, opts = {})
@@ -60,5 +53,21 @@ module Gws::Schedule::PlanHelper
       result[:restUrl] = gws_schedule_todo_readables_path(category: Gws::Schedule::TodoCategory::ALL.id)
       result
     end
+  end
+
+  private
+
+  def find_term_format(from, to)
+    format = "gws_long"
+    return format.to_sym if from.year != to.year
+
+    format = "#{format}_without_year"
+    return format.to_sym if from.month != to.month
+
+    format = "#{format}_month"
+    return format.to_sym if !from.respond_to?(:sec) || from.day != to.day
+
+    format = "#{format}_day"
+    format.to_sym
   end
 end
