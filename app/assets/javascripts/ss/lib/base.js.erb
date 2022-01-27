@@ -22,10 +22,6 @@ this.SS = (function () {
 
   SS.siteName = null;
 
-  SS.timeFormatter = {
-    default: "YYYY/M/D HH:mm"
-  };
-
   SS.debug = false;
 
   SS.confirm = {
@@ -603,11 +599,20 @@ this.SS = (function () {
     if (!format) {
       format = "default"
     }
-    if (SS.timeFormatter[format]) {
-      format = SS.timeFormatter[format];
-    }
+    format = i18next.t("time.formats." + format, format);
+    format = SS.convertDateTimeFormat(format);
 
     return moment(time).format(format);
+  };
+
+  SS.formatDate = function (date, format) {
+    if (!format) {
+      format = "default"
+    }
+    format = i18next.t("date.formats." + format, format);
+    format = SS.convertDateTimeFormat(format);
+
+    return moment(date).format(format);
   };
 
   SS.renderFileUploadInitialized = false;
