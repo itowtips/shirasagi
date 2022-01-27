@@ -64,6 +64,7 @@
 //= require ss/lib/button_to
 //= require ss/lib/open_in_new_window
 //= require ss/lib/role
+//= require ss/lib/date_time_picker
 //= require chat/lib/chart
 //= require cms/lib/editor
 //= require cms/lib/form

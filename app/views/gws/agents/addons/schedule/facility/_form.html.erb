@@ -280,5 +280,8 @@
     changeVisibility();
   });
 
-  setTimeout(changeVisibility, 0);
+  $('.gws-schedule-start-end-combo').on('ss:initialized', function() {
+    changeVisibility();
+  });
+  changeVisibility();
 <% end %>

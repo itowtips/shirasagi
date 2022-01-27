@@ -52,8 +52,11 @@
 <%= jquery do %>
   $('.list-head input[name=ymd]').datetimepicker({
     onChangeDateTime: function(dp, $input) {
-      var ymd = $input.val();
-      ymd = ymd.replace(/\//g, '');
+      var ymd = $input.datetimepicker("getValue");
+      if (!ymd) {
+        return;
+      }
+      ymd = moment(ymd).format("YYYYMMDD");
 
       var url = '<%= url_for(action: :index, ymd: ':ymd') %>';
       url = url.replace(':ymd', ymd);

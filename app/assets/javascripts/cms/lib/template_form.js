@@ -109,7 +109,7 @@ Cms_TemplateForm.prototype.loadForm = function(html) {
   this.$formPage.html($(html).html());
   // SS.render();
   SS.renderAjaxBox();
-  SS.renderDateTimePicker();
+  SS_DateTimePicker.render();
 };
 
 Cms_TemplateForm.prototype.showError = function(msg) {
@@ -200,7 +200,7 @@ Cms_TemplateForm.prototype.bindOne = function(el, options) {
         // use "setTimeout" to consume events in browser.
         setTimeout(function() {
           SS.renderAjaxBox();
-          SS.renderDateTimePicker();
+          SS_DateTimePicker.render();
           Cms_Form.activateSyntaxChecks();
 
           setTimeout(function() {
