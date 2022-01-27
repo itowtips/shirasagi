@@ -3,7 +3,7 @@
   return if @item.latest_check_links_report.nil?
 
   error = @item.check_links_error
-  label = t("cms.notices.check_links_report_created", time: @item.latest_check_links_report.created.strftime("%Y/%m/%d %H:%M"))
+  label = t("cms.notices.check_links_report_created", time: I18n.l(@item.latest_check_links_report.created, format: :picker))
 
   return if error.nil?
 %>

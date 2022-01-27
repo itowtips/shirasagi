@@ -26,7 +26,7 @@
       <% if now >= next_day %>
       <%= link_to(t('gws.history.days.next_day'), { ymd: next_day.strftime('%Y%m%d') }, class: :btn, style: 'font-weight: normal;') %>
       <% end %>
-      <%= text_field_tag(:ymd, origin.strftime('%Y/%m/%d'), class: 'datetime js-date', data: { min_date: Webmail::HistoryArchiveJob.threshold_day(now, SS.config.webmail.history['save_days'].days).strftime('%Y/%m/%d'), max_date: 0}) %>
+      <%= ss_date_field_tag(:ymd, origin, min_date: Webmail::HistoryArchiveJob.threshold_day(now, SS.config.webmail.history['save_days'].days), max_date: 0) %>
       <%= link_to(t('gws.history.days.prev_day'), { ymd: prev_day.strftime('%Y%m%d') }, class: :btn, style: 'font-weight: normal;') %>
     </div>
 
@@ -59,7 +59,7 @@
 
         <div class="meta">
           <span class="label"><%= t("gws.history.severity.#{item.severity}") %></span>
-          <span class="datetime"><%= item.created.strftime("%Y/%m/%d %H:%M") %></span>
+          <span class="datetime"><%= ss_time_tag item.created %></span>
           <% if item.mode.present? %>
           <span class="label"><%= item.mode_name %></span>
           <% end %>

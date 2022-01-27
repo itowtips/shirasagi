@@ -113,26 +113,6 @@ this.Gws_Monitor_Topic = (function () {
     return form;
   };
 
-  Gws_Monitor_Topic.renderForm = function (opts) {
-    if (opts == null) {
-      opts = {};
-    }
-    $("input.date").datetimepicker({
-      lang: "ja",
-      timepicker: false,
-      format: 'Y/m/d',
-      closeOnDateSelect: true,
-      scrollInput: false,
-      maxDate: opts["maxDate"]
-    });
-    return $("input.datetime").datetimepicker({
-      lang: "ja",
-      roundTime: 'ceil',
-      step: 30,
-      maxDate: opts["maxDate"]
-    });
-  };
-
   return Gws_Monitor_Topic;
 
 })();

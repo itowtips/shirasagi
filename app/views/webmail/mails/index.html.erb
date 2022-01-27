@@ -13,7 +13,7 @@
       <li class="list-item">
         <div class="info">
           <%= link_to item.name, webmail_sys_notice_path(id: item), class: "title notice-severity-#{item.notice_severity}" %>
-          <span class="datetime"><%= item.released.strftime("%Y/%m/%d %H:%M") %></span>
+          <span class="datetime"><%= ss_time_tag item.released %></span>
         </div>
       </li>
       <% end %>
@@ -82,7 +82,7 @@
           <% end %>
         <% end %>
         <%= link_to item.display_subject, { action: :show, id: item.uid }, class: "field title", title: item.display_subject %>
-        <span class="field datetime"><%= tryb { item.internal_date.strftime("%Y/%m/%d %H:%M") } %></span>
+        <span class="field datetime"><%= ss_time_tag item.internal_date %></span>
         <span class="field size"><%= item.display_size %></span>
       </div>
     </li>

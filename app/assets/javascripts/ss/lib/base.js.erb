@@ -485,42 +485,110 @@ this.SS = (function () {
 
   // datetimepicker
 
+  SS.rubyToMomenFormatMap = [
+    [ "%Y", "YYYY" ],
+    [ "%y", "YY" ],
+    [ "%m", "MM" ],
+    [ "%1m", "M" ],
+    [ "%B", "MMMM" ],
+    [ "%b", "MMM" ],
+    [ "%d", "DD" ],
+    [ "%1d", "D" ],
+    [ "%H", "HH" ],
+    [ "%1H", "H" ],
+    [ "%I", "hh" ],
+    [ "%1I", "h" ],
+    [ "%P", "a" ],
+    [ "%p", "A" ],
+    [ "%M", "mm" ],
+    [ "%A", "dddd" ],
+    [ "%a", "ddd" ],
+  ];
+
+  SS.convertDateTimeFormat = function(format) {
+    $.each(SS.rubyToMomenFormatMap, function() {
+      var from = this[0];
+      var to = this[1];
+
+      from = new RegExp(from, "g");
+      format = format.replace(from, to);
+    });
+    return format;
+  };
+
   SS.renderDateTimePicker = function () {
-    $.datetimepicker.setLocale('ja');
+    $.datetimepicker.setLocale(document.documentElement.lang || 'ja');
+    // setLocale() を呼び出すと dateFormatter がリセットされるので、setLocale() の後に setDateFormatter() を呼び出さなければならない。
+    $.datetimepicker.setDateFormatter('moment');
     $.each($(".js-date"), function () {
-      var data, opts;
-      opts = {
+      var $this = $(this);
+      var data = $this.data();
+      if ("xdsoft_datetimepicker" in data) {
+        // already instantiated
+        return;
+      }
+
+      var opts = {
         timepicker: false,
-        format: 'Y/m/d',
+        format: SS.convertDateTimeFormat(i18next.t("date.formats.picker")),
         closeOnDateSelect: true,
         scrollInput: false
       };
-      data = $(this).data();
+      if (data.format) {
+        opts.format = data.format;
+      }
+      if ("closeOnDateSelect" in data) {
+        opts.closeOnDateSelect = data.closeOnDateSelect;
+      }
+      if ("scrollInput" in data) {
+        opts.scrollInput = data.scrollInput;
+      }
       if (data.minDate) {
         opts.minDate = data.minDate;
       }
       if (data.maxDate) {
         opts.maxDate = data.maxDate;
       }
-      return $(this).attr('autocomplete', 'off').datetimepicker(opts);
+      $this.attr('autocomplete', 'off').datetimepicker(opts);
     });
     $.each($(".js-datetime"), function () {
-      var data, opts;
-      opts = {
+      var $this = $(this);
+      var data = $this.data();
+      if ("xdsoft_datetimepicker" in data) {
+        // already instantiated
+        return;
+      }
+
+      var opts = {
+        format: SS.convertDateTimeFormat(i18next.t("time.formats.picker")),
+        closeOnDateSelect: true,
+        scrollInput: false,
         roundTime: 'ceil',
         step: 30
       };
-      data = $(this).data();
+      if (data.format) {
+        opts.format = data.format;
+      }
       if (data.minDate) {
         opts.minDate = data.minDate;
       }
       if (data.maxDate) {
         opts.maxDate = data.maxDate;
       }
+      if ("closeOnDateSelect" in data) {
+        opts.closeOnDateSelect = data.closeOnDateSelect;
+      }
+      if ("scrollInput" in data) {
+        opts.scrollInput = data.scrollInput;
+      }
+      // time specific options
       if (data.step) {
         opts.step = data.step;
       }
-      return $(this).attr('autocomplete', 'off').datetimepicker(opts);
+      if (data.roundTime) {
+        opts.roundTime = data.roundTime;
+      }
+      $this.attr('autocomplete', 'off').datetimepicker(opts);
     });
   };
 

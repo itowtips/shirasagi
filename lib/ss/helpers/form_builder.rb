@@ -2,10 +2,11 @@ module SS::Helpers
   class FormBuilder < ActionView::Helpers::FormBuilder
     include SS::Helpers::FileFormBuilder
     include SS::Helpers::ColorPickerBuilder
+    include SS::Helpers::DateTimePickerBuilder
 
     def hidden_field(method, options = {})
       method = method.to_s
-      return super if method !~ /\[/
+      return super if !method.include?("[")
 
       object_method = "#{@object_name}[" + method.sub("[", "][")
       value = options[:value] || array_value(method)
@@ -23,7 +24,8 @@ module SS::Helpers
     end
 
     def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
-      return super if method !~ /\[/
+      method = method.to_s
+      return super if !method.include?("[")
 
       object_method = "#{@object_name}[" + method.sub("[", "][")
       if method.end_with?("[]")
@@ -43,7 +45,7 @@ module SS::Helpers
       code = method.sub(/\[\]$/, "").gsub(/\[(\D.*?)\]/, '["\\1"]')
 
       if method.end_with?("[]")
-        eval("item.#{code}") || []
+        eval("item.#{code}") || [] # item.wdays
       else
         eval("item.#{code}")
       end

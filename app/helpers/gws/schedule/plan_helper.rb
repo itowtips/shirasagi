@@ -7,17 +7,23 @@ module Gws::Schedule::PlanHelper
 
   def term(item)
     if item.allday?
-      dates = [item.start_at.to_date, item.end_at.to_date].uniq
+      from = item.start_at.to_date
+      to = item.end_at.to_date
     else
-      dates = [item.start_at, item.end_at].uniq
+      from = item.start_at
+      to = item.end_at
     end
-    dates.map! { |m| I18n.l(m, format: :gws_long) }
-    return dates[0] if dates.size == 1
+    return I18n.l(from, format: :gws_long) if from == to
 
-    dates[1].split(/ /).each_with_index do |s, i|
-      next if s == dates[0].split(/ /)[i]
-      return [dates[0], dates[1].split(/ /)[i..-1].join(' ')].join(' - ')
+    format = "gws_long"
+    if from.year == to.year
+      format = "#{format}_without_year"
+      if from.month == to.month
+        format = "#{format}_and_month"
+      end
     end
+
+    I18n.l(from, format: :gws_long) + ' - ' + I18n.l(to, format: format.to_sym)
   end
 
   def calendar_format(plans, opts = {})

@@ -23,8 +23,8 @@
             <% attend_groups.each do |group| %>
                 <% post = @item.children.where(user_group_id: group.id).last %>
                 <td class="state"><%= @item.answer_state_name(group) %></td>
-                <td class="mark_at"><%= post ? post.try(:created).strftime('%Y/%m/%d %H:%M') : '' %></td>
-                <td class="udpate_at"><%= post ? post.try(:updated).strftime('%Y/%m/%d %H:%M') : '' %></td>
+                <td class="mark_at"><%= ss_time_tag post.try(:created) %></td>
+                <td class="udpate_at"><%= ss_time_tag post.try(:updated) %></td>
                 <td class="group"><%= group.name %></td>
                 <td class="user"><%= post.try { |p| gws_public_user_long_name(p.contributor_name) } || '' %></td>
                 <td class="contents"><%= post ? post.try(:text) : '' %></td>
@@ -46,8 +46,8 @@
             <% attend_groups.each do |group| %>
                 <% post = @item.children.where(user_group_id: group.id).last %>
                 <td class="state"><%= @item.answer_state_name(group) %></td>
-                <td class="mark_at"><%= post ? post.try(:created).strftime('%Y/%m/%d %H:%M') : '' %></td>
-                <td class="udpate_at"><%= post ? post.try(:updated).strftime('%Y/%m/%d %H:%M') : '' %></td>
+                <td class="mark_at"><%= ss_time_tag post.try(:created) %></td>
+                <td class="udpate_at"><%= ss_time_tag post.try(:updated) %></td>
                 <td class="group"><%= group.name %></td>
                 <td class="user"><%= post.try { |p| gws_public_user_long_name(p.contributor_name) } || '' %></td>
                 <td class="contents"><%= post && @item.spec_config != 'other_groups' ? post.try(:text) : '' %></td>

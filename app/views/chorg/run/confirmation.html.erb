@@ -33,7 +33,7 @@
       </dd>
       <% if params[:type] == 'main' || !Rails.env.production? %>
       <dt><%= @model.t :reservation %><%= @model.tt :reservation %></dt>
-      <dd><%= f.text_field :reservation, class: 'datetime js-datetime' %></dd>
+      <dd><%= f.ss_datetime_field :reservation %></dd>
       <% end %>
     </dl>
   </section>
@@ -43,10 +43,4 @@
     <%= f.button t("ss.buttons.cancel"), type: :reset, class: "btn-default",
       onclick: "location.href='#{url_for(controller: :revisions, action: :show, id: @cur_revision)}'; return false;" %>
   </footer>
-<% end %>
-
-<%= jquery do %>
-  $('input[name="item[reservation]"]').datetimepicker({
-    minDate: '+1970/01/02'
-  });
 <% end %>

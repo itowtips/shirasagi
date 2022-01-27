@@ -19,7 +19,7 @@
   <% end %>
   <div class="date">
     <%= t("board.views.date") %>
-    <%= item.updated.strftime(t("date.formats.full")) %>
+    <%= I18n.l(item.updated.to_date, format: :full) %>
   </div>
   <div class="poster">
     <span class="name">

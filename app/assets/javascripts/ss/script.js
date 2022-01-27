@@ -9,7 +9,7 @@
 //= require jquery-ui/widgets/tooltip
 //= require js.cookie
 //= require jquery.form
-//= require jquery.datetimepicker
+//= require jquery-datetimepicker/build/jquery.datetimepicker.full.js
 //= require jquery.multi-select
 //= require jquery.colorbox
 //= require jquery.minicolors
@@ -25,6 +25,7 @@
 //= require mdn-polyfills/String.prototype.startsWith.js
 //= require mdn-polyfills/String.prototype.trim.js
 //= require moment
+//= require moment/ja
 //= require popper.js/dist/umd/popper.js
 //= require tippy.js/dist/tippy-bundle.iife.js
 //= require crypto-js/3.2.0/crypto-js.min.js

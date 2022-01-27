@@ -1,10 +1,10 @@
 <% @index_meta = proc do |item| %>
   <span class="id">#<%= item.id %></span>
   <% if item.try(:updated) %>
-    <span class="datetime"><%= t("ss.views.index.updated", updated: item.updated.strftime("%Y/%m/%d %H:%M")) %></span>
+    <span class="datetime"><%= t("ss.views.index.updated", updated: I18n.l(item.updated, format: :picker)) %></span>
   <% end %>
   <% if item.try(:released) %>
-    <span class="datetime"><%= t("ss.views.index.released", released: item.released.strftime("%Y/%m/%d %H:%M")) %></span>
+    <span class="datetime"><%= t("ss.views.index.released", released: I18n.l(item.released, format: :picker)) %></span>
   <% end %>
   <% if item.try(:filename) %>
     <% if params.dig(:s, :target) == 'descendant' %>

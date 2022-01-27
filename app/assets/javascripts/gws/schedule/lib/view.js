@@ -77,7 +77,7 @@ this.Gws_Schedule_View = (function ($) {
       $("." + name).append("<div class='" + name + "-cal" + i + "'></div>");
       $("." + name + "-cal" + i).datetimepicker({
         timepicker: false,
-        format: 'Y/m/d',
+        format: 'YYYY/mm/dd',
         closeOnDateSelect: true,
         scrollInput: false,
         scrollMonth: false,

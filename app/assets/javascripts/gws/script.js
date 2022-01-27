@@ -1,4 +1,5 @@
 //= require moment
+//= require moment/ja
 //= require sprintf
 //= require gridster/jquery.gridster.min.js
 //= require gws/lib/category

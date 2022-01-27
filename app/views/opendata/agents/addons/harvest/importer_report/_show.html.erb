@@ -6,7 +6,7 @@
       <% @item.reports.order(created: -1).limit(5).each do |report| %>
         <tr>
           <td>
-            <%= link_to report.created.strftime("%Y/%m/%d %H:%M") + " (#{number_to_human_size(report.size)})",
+            <%= link_to I18n.l(report.created, format: :picker) + " (#{number_to_human_size(report.size)})",
               opendata_harvest_importer_report_path(importer_id: @item.id, id: report.id) %>
           </td>
         </tr>

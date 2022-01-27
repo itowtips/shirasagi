@@ -48,7 +48,7 @@ $(".gws-schedule-search-times-result .hour-wrap").on({
       <% @time_search.facilities.each do |facility| %>
       <%# next if hours[1][facility.id].blank? %>
       <div class="date <%= date.strftime('%a').downcase %>">
-        <p class="label"><%= l date, format: :full %></p>
+        <p class="label"><%= I18n.l date, format: :full %></p>
         <p class="facility"><%= facility.name %></p>
         <% @time_search.hours.each do |hour| %>
 

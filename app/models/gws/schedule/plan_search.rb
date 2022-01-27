@@ -3,6 +3,7 @@ class Gws::Schedule::PlanSearch
   include Gws::Reference::User
   include Gws::Reference::Site
 
+  field :allday, type: String
   field :start_on, type: Date, default: ->{ Time.zone.today }
   field :end_on, type: Date, default: ->{ Time.zone.today + 20.days }
   field :wdays, type: Array, default: []
@@ -15,7 +16,7 @@ class Gws::Schedule::PlanSearch
   embeds_ids :members, class_name: "Gws::User"
   embeds_ids :facilities, class_name: "Gws::Facility::Item"
 
-  permit_params :start_on, :end_on, :min_hour, :max_hour
+  permit_params :allday, :start_on, :end_on, :min_hour, :max_hour
   permit_params wdays: [], member_ids: [], facility_ids: []
   permit_params :repeat_type, :interval, :repeat_base
 

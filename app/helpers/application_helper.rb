@@ -3,6 +3,7 @@ module ApplicationHelper
   include SS::AutoLink
   include SS::ButtonToHelper
   include SS::ColorPickerHelper
+  include SS::DateTimePickerHelper
   include SS::ErrorMessagesFor
 
   def tryb(&block)
@@ -152,10 +153,10 @@ module ApplicationHelper
     email_address = email_address.gsub(/@/, "&#64;").gsub(/\./, "&#46;").html_safe if email_address.present?
     html_options["href"] = "mailto:#{email_address}#{extras}".html_safe
 
-    content_tag(:a, name || email_address, html_options, &block)
+    tag.a(name || email_address, html_options, &block)
   end
 
-  def dropdown_link(name = nil, url_options = nil, options = nil, html_options = nil, &block)
+  def dropdown_link(name = nil, url_options: nil, options: nil, html_options: nil, &block)
     options ||= {}
     html_options ||= {}
 
@@ -172,37 +173,32 @@ module ApplicationHelper
     else
       html_options[:class] << 'dropdown-toggle'
     end
-    content_tag(:div, class: 'dropdown') do
+    tag.div(class: 'dropdown') do
       output_buffer << link_to(name, split ? url_options : '#', html_options)
       if split
-        output_buffer << tag(:span, class: %w(dropdown-toggle dropdown-toggle-split))
+        output_buffer << tag.span(class: %w(dropdown-toggle dropdown-toggle-split))
       end
-      output_buffer << content_tag(:div, class: %w(dropdown-menu gws-dropdown-menu cms-dropdown-menu)) do
+      output_buffer << tag.div(class: %w(dropdown-menu gws-dropdown-menu cms-dropdown-menu)) do
         inner
       end
     end
   end
 
-  def content_tag_if(name, content_or_options_with_block = nil, options = nil, escape = true, &block)
-    # content_tag(*args, &block)
-    if block
-      options = content_or_options_with_block if content_or_options_with_block.is_a?(Hash)
-    end
-
+  def content_tag_if(name, escape: true, **options, &block)
     if_condition = options ? options.delete(:if) : nil
     if if_condition.respond_to?(:call)
       if_condition = if_condition.call
     end
 
     if if_condition
-      return content_tag(name, content_or_options_with_block, options, escape, &block)
+      return content_tag(name, nil, options, escape, &block)
     end
 
     if block
       return capture(&block)
     end
 
-    content_or_options_with_block
+    nil
   end
 
   def liquid_registers
@@ -248,17 +244,17 @@ module ApplicationHelper
   def show_image_info(file)
     return nil unless file
 
-    content_tag(:div, class: "file-view", data: { "file-id" => file.id }) do
+    tag.div(class: "file-view", data: { "file-id" => file.id }) do
       output_buffer << sanitizer_status(file)
       output_buffer << link_to(file.url, target: "_blank", rel: "noopener") do
-        output_buffer << content_tag(:div, class: "thumb") do
+        output_buffer << tag.div(class: "thumb") do
           if file.image?
             image_tag(file.thumb_url, alt: file.basename)
           else
-            content_tag(:span, file.extname, class: [ "ext", "icon-#{file.extname}" ])
+            tag.span(file.extname, class: [ "ext", "icon-#{file.extname}" ])
           end
         end
-        output_buffer << content_tag(:div, file.humanized_name, class: "name")
+        output_buffer << tag.div(file.humanized_name, class: "name")
       end
     end
   end
@@ -271,12 +267,12 @@ module ApplicationHelper
     image = site.logo_application_image
     return SS.config.ss.application_logo_html.html_safe if name.blank? && image.blank?
 
-    content_tag(:div, class: "ss-logo-wrap") do
+    tag.div(class: "ss-logo-wrap") do
       if image.present?
         output_buffer << image_tag(image.url, alt: name || SS.config.ss.application_name)
       end
       if name.present?
-        output_buffer << content_tag(:span, name, class: "ss-logo-application-name")
+        output_buffer << tag.span(name, class: "ss-logo-application-name")
       end
     end
   end

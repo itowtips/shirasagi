@@ -31,17 +31,17 @@ en:
       - Friday
       - Saturday
     formats:
-      default: ! '%Y/%1m/%1d'
-      iso: ! '%Y-%m-%d'
-      long: ! '%Y-%1m-%1d'
-      full: ! '%Y-%1m-%1d (%a)'
+      default: ! '%1m/%1d/%Y'
+      # iso: ! '%Y-%m-%d'
+      long: ! '%1m/%1d/%Y'
+      full: ! '%a, %1m/%1d/%Y (%a)'
       short: ! '%1m/%1d'
-      default_full: ! '%Y/%1m/%1d (%a)'
-      iso_full: ! '%Y-%m-%d (%a)'
-      month: ! '%Y/%1m'
-      iso_month: ! '%Y-%m'
-      long_month: ! '%Y-%1m'
-      picker: ! '%Y/%m/%d'
+      default_full: ! '%a, %1m/%1d/%Y'
+      # iso_full: ! '%Y-%m-%d (%a)'
+      # month: ! '%1m/%Y'
+      # iso_month: ! '%Y-%m'
+      long_month: ! '%a %Y'
+      picker: ! '%m/%d/%Y'
     month_names:
       -
       - January
@@ -256,11 +256,11 @@ en:
   time:
     am: AM
     formats:
-      default: ! '%Y/%1m/%1d %H:%M'
-      iso: ! '%Y-%m-%d %H:%M'
-      long: ! '%Y-%1m-%1d %H:%M'
-      short: ! '%y/%m/%d %H:%M'
-      picker: ! '%Y/%m/%d %H:%M'
+      default: ! '%1m/%1d/%Y %H:%M'
+      # iso: ! '%Y-%m-%d %H:%M'
+      long: ! '%1m-%1d-%Y %H:%M'
+      short: ! '%m/%d/%y %H:%M'
+      picker: ! '%m/%d/%Y %H:%M'
     pm: PM
   # remove these aliases after 'activemodel' and 'activerecord' namespaces are removed from Rails repository
   activemodel:

@@ -28,35 +28,57 @@
     var repeatType = $('select[name="item[repeat_type]"]').val();
     var allday = $('input[type=checkbox][name="item[allday]"]').prop('checked');
 
-    var startOn;
+    var $startOnEl;
     if (repeatType) {
-      startOn = $('input[name="item[repeat_start]"]').val();
+      $startOnEl = $('input[name="item[repeat_start]"]');
     } else if (allday) {
-      startOn = $('input[name="item[start_on]"]').val();
+      $startOnEl = $('input[name="item[start_on]"]');
     } else {
-      startOn = $('input[name="item[start_at]"]').val();
+      $startOnEl = $('input[name="item[start_at]"]');
+    }
+    if (! $startOnEl || ! $startOnEl[0]) {
+      return;
+    }
+
+    var startOn;
+    if ("xdsoft_datetimepicker" in $startOnEl.data()) {
+      startOn = $startOnEl.datetimepicker("getValue");
+    } else {
+      startOn = $startOnEl.val();
     }
     if (! startOn) {
       return;
     }
+    startOn = moment(startOn);
+
+    var $endOnEl;
+    if (repeatType) {
+      $endOnEl = $('input[name="item[repeat_end]"]');
+    } else if (allday) {
+      $endOnEl = $('input[name="item[end_on]"]');
+    } else {
+      $endOnEl = $('input[name="item[end_at]"]');
+    }
+    if (! $endOnEl || ! $endOnEl[0]) {
+      return;
+    }
 
     var endOn;
-    if (repeatType) {
-      endOn = $('input[name="item[repeat_end]"]').val();
-    } else if (allday) {
-      endOn = $('input[name="item[end_on]"]').val();
+    if ("xdsoft_datetimepicker" in $endOnEl.data()) {
+      endOn = $endOnEl.datetimepicker("getValue");
     } else {
-      endOn = $('input[name="item[end_at]"]').val();
+      endOn = $endOnEl.val();
     }
     if (! endOn) {
       return;
     }
+    endOn = moment(endOn);
 
-    var facility_ids = [];
+    var facilityIds = [];
     $('.gws-schedule-facility table.ajax-selected tbody tr').each(function() {
-      facility_ids.push($(this).data('id'));
+      facilityIds.push($(this).data('id'));
     });
-    if (facility_ids.length == 0) {
+    if (facilityIds.length == 0) {
       return;
     }
 
@@ -66,9 +88,10 @@
 
     return {
       repeat_type: repeatType,
-      start_on: startOn,
-      end_on: endOn,
-      facility_ids: facility_ids
+      allday: allday ? "allday" : "",
+      start_on: startOn.toISOString(),
+      end_on: endOn.toISOString(),
+      facility_ids: facilityIds
     };
   };
 
@@ -257,5 +280,5 @@
     changeVisibility();
   });
 
-  changeVisibility();
+  setTimeout(changeVisibility, 0);
 <% end %>

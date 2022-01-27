@@ -41,8 +41,8 @@ ja:
 
   date:
     formats:
-      attendance_year_month: ! '%Y年%1m月'
-      attendance_month_day: ! '%1m月%1d日 (%a)'
+      attendance_year_month: ! '%Y年%m月'
+      attendance_month_day: ! '%m月%d日 (%a)'
 
   modules:
     gws/attendance: 出退勤
