@@ -8,7 +8,7 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
   def add_template
     visit show_path
     within "#addon-cms-agents-addons-line-message-body" do
-      click_on "テンプレートを追加する（最大5個）"
+      click_on I18n.t("cms.buttons.add_template")
     end
 
     within ".line-select-message-type" do
@@ -33,7 +33,7 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
       item.class.max_templates.times { add_template }
 
       within "#addon-cms-agents-addons-line-message-body" do
-        expect(page).to have_css("a.btn-disabled", text: "テンプレートを追加する（最大5個）")
+        expect(page).to have_css("a.btn-disabled", text: I18n.t("cms.buttons.add_template"))
       end
     end
   end

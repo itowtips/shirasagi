@@ -38,7 +38,7 @@ describe "cms/line/messages test_deliver", type: :feature, dbscope: :example, js
 
   def add_template
     within "#addon-cms-agents-addons-line-message-body" do
-      click_on "テンプレートを追加する（最大5個）"
+      click_on I18n.t("cms.buttons.add_template")
     end
     within ".line-select-message-type" do
       first(".message-type.text").click

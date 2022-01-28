@@ -1,6 +1,6 @@
 <dl class="see line-service-hook">
   <dd class="wide">
-    <%= link_to "設定する", cms_line_service_group_hooks_path(group_id: @item.id), class: "btn", style: "margin-bottom: 10px;" %>
+    <%= link_to t("cms.buttons.setting"), cms_line_service_group_hooks_path(group_id: @item.id), class: "btn", style: "margin-bottom: 10px;" %>
     <% if @item.hooks.present? %>
       <table class="index">
         <thead>

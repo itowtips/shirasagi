@@ -1,3 +1,30 @@
+this.Cms_Line_Message_Repeat_Plan = (function () {
+  function Cms_Line_Message_Repeat_Plan() {
+  }
+
+  Cms_Line_Message_Repeat_Plan.renderForm = function () {
+    this.changeRepeatForm();
+    $('#item_repeat_type').on("change", function () {
+      Cms_Line_Message_Repeat_Plan.changeRepeatForm();
+    });
+  };
+
+  Cms_Line_Message_Repeat_Plan.changeRepeatForm = function () {
+    var repeat_type;
+    repeat_type = $('#item_repeat_type').val();
+    if (repeat_type === '') {
+      $('.cms-line-message-repeat').addClass("hide");
+    } else {
+      $('.cms-line-message-repeat').removeClass("hide");
+      $(".repeat-daily, .repeat-weekly, .repeat-monthly").hide();
+      $(".repeat-" + repeat_type).show();
+    }
+  };
+
+  return Cms_Line_Message_Repeat_Plan;
+
+})();
+
 this.Cms_Line_Area_Cropper = (function () {
   function Cms_Line_Area_Cropper(el, opts) {
     if (!opts) {

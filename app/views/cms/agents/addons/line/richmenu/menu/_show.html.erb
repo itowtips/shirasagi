@@ -1,6 +1,6 @@
 <dl class="see line-richmenu-menu">
   <dd class="wide">
-    <%= link_to "設定する", cms_line_richmenu_group_menus_path(group_id: @item.id), class: "btn", style: "margin-bottom: 10px;" %>
+    <%= link_to t("cms.buttons.setting"), cms_line_richmenu_group_menus_path(group_id: @item.id), class: "btn", style: "margin-bottom: 10px;" %>
     <% if @item.menus.present? %>
       <table class="index">
         <thead>
