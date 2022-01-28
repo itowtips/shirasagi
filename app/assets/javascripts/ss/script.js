@@ -15,8 +15,11 @@
 //= require jquery.minicolors
 //= require jquery.autosize
 //= require marked
-//= require mdn-polyfills/Object.assign.js
+//= require mdn-polyfills/Array.prototype.find.js
+//= require mdn-polyfills/Array.prototype.findIndex.js
 //= require mdn-polyfills/Array.prototype.includes.js
+//= require mdn-polyfills/Object.assign.js
+//= require mdn-polyfills/Object.values.js
 //= require mdn-polyfills/String.prototype.endsWith.js
 //= require mdn-polyfills/String.prototype.includes.js
 //= require mdn-polyfills/String.prototype.padEnd.js
