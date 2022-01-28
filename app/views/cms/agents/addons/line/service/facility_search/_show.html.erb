@@ -6,9 +6,7 @@
   <dd><%=br @item.text_keys %></dd>
 
   <dt><%= @item.t :category_ids %></dt>
-  <dd><%=
-    link_to "設定する", cms_line_service_group_hook_facility_search_categories_path(hook_id: @item), class: "btn" %>
-  </dd>
+  <dd><%= link_to t("cms.buttons.setting"), cms_line_service_group_hook_facility_search_categories_path(hook_id: @item), class: "btn" %></dd>
   <dd>
     <% if @item.categories.present? %>
       <table class="index">

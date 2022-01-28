@@ -39,7 +39,7 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
       within "#addon-cms-agents-addons-line-message-body" do
         expect(page).to have_css("h2", text: I18n.t("modules.addons.cms/line/message/body"))
         expect(page).to have_css("div", text: "テンプレートが設定されていません。")
-        click_on "テンプレートを追加する（最大5個）"
+        click_on I18n.t("cms.buttons.add_template")
       end
       within ".line-select-message-type" do
         first(".message-type.page").click
@@ -126,7 +126,7 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
 
       # add template
       within "#addon-cms-agents-addons-line-message-body" do
-        click_on "テンプレートを追加する（最大5個）"
+        click_on I18n.t("cms.buttons.add_template")
       end
       within ".line-select-message-type" do
         first(".message-type.page").click
@@ -189,7 +189,7 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
 
       # add template
       within "#addon-cms-agents-addons-line-message-body" do
-        click_on "テンプレートを追加する（最大5個）"
+        click_on I18n.t("cms.buttons.add_template")
       end
       within ".line-select-message-type" do
         first(".message-type.page").click
@@ -213,7 +213,7 @@ describe "cms/line/templates text", type: :feature, dbscope: :example, js: true 
 
       # add template
       within "#addon-cms-agents-addons-line-message-body" do
-        click_on "テンプレートを追加する（最大5個）"
+        click_on I18n.t("cms.buttons.add_template")
       end
       within ".line-select-message-type" do
         first(".message-type.page").click

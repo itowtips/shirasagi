@@ -50,9 +50,9 @@ $(".message-type.page .img-warp img").load(function (){
     <% end %>
 
     <% if @item.templates.size >= @model.max_templates %>
-      <%= link_to "テンプレートを追加する（最大5個）", "", class: "btn btn-disabled", style: "margin-top: 10px;", onclick: "return false;" %>
+      <%= link_to t("cms.buttons.add_template"), "", class: "btn btn-disabled", style: "margin-top: 10px;", onclick: "return false;" %>
     <% else %>
-      <%= link_to "テンプレートを追加する（最大5個）", new_cms_line_message_template_path(message_id: @item), class: "btn", style: "margin-top: 10px;" %>
+      <%= link_to t("cms.buttons.add_template"), new_cms_line_message_template_path(message_id: @item), class: "btn", style: "margin-top: 10px;" %>
     <% end %>
   </dd>
 </dl>

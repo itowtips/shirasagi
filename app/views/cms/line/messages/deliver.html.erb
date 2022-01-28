@@ -22,12 +22,29 @@
 
         <%= render template: "cms/agents/addons/line/deliver_condition/body/_condition" %>
 
-        <dt><%= @model.t :deliver_date %></dt>
+        <dt><%= t("modules.addons.cms/line/message/deliver_plan") %></dt>
         <dd>
-          <% if @item.deliver_date %>
-            <%= @item.deliver_date.strftime("%Y/%m/%d %H:%M") %>
+          <% if @item.ready_plans.present? %>
+            <div style="max-height: 200px; overflow: auto; margin-bottom: 10px;">
+              <table class="index">
+                <thead>
+                  <tr>
+                    <th><%= Cms::Line::DeliverPlan.t :deliver_date %></th>
+                  </tr>
+                </thead>
+                <tbody class="items">
+                  <% @item.ready_plans.each do |item| %>
+                    <% tr_css_classes = [ "day-#{item.date.day}" ] %>
+                    <% tr_css_classes << if item.holiday?; 'holiday' elsif item.date.wday == 0; 'sunday' elsif item.date.wday == 6; 'saturday' end %>
+                    <tr class="<%= tr_css_classes.compact.join(' ') %>">
+                      <td class="date"><%= item.name %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
           <% else %>
-            <%= "即時配信（予約日時無し）" %>
+            <%= I18n.t("cms.notices.line_deliver_directly") %>
           <% end %>
         </dd>
       </dl>

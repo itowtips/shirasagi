@@ -8,16 +8,13 @@ class Cms::Agents::Tasks::Line::MessagesController < ApplicationController
       return
     end
 
+    now = Time.zone.now
     begin
       deliver_message(@message)
     rescue => e
       @task.log("#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}")
     ensure
-      @message.completed = Time.zone.now
-      @message.test_completed = nil
-      @message.deliver_state = "completed"
-      @message.deliver_date = nil
-      @message.save
+      @message.complete_delivery(now)
     end
     head :ok
   end
@@ -29,23 +26,26 @@ class Cms::Agents::Tasks::Line::MessagesController < ApplicationController
       return
     end
 
+    now = Time.zone.now
     begin
       deliver_test_message(@message, @test_members)
     rescue => e
       @task.log("#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}")
     ensure
-      @message.test_completed = Time.zone.now
-      @message.save
+      @message.complete_test_delivery(now)
     end
     head :ok
   end
 
   def reserve_deliver
     now = Time.zone.now
-    messages = Cms::Line::Message.site(@site).where(
-      :deliver_state => "ready",
+    messages = Cms::Line::Message.site(@site).where(deliver_state: "ready")
+    plans = Cms::Line::DeliverPlan.site(@site).in(message_id: messages.pluck(:id)).where(
+      :state => "ready",
       :deliver_date.ne => nil,
-      :deliver_date.lte => now).to_a
+      :deliver_date.lte => now
+    ).to_a
+    messages = plans.map { |plan| plan.message  }.uniq { |message| message.id }
 
     messages.each do |message|
       begin
@@ -54,11 +54,7 @@ class Cms::Agents::Tasks::Line::MessagesController < ApplicationController
       rescue => e
         @task.log("#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}")
       ensure
-        message.completed = now
-        message.test_completed = nil
-        message.deliver_state = "completed"
-        message.deliver_date = nil
-        message.save
+        message.complete_delivery(now)
       end
     end
     head :ok

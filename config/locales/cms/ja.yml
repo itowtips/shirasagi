@@ -162,7 +162,9 @@ ja:
       ignore_alerts_and_save_as_branch: 警告を無視して差替保存
       column_add_list: リストを追加する
       apply: 反映する
+      setting: 設定する
       apply_richmenu: リッチメニューを反映する
+      add_template: "テンプレートを追加する（最大5個）"
     confirm:
       delete_item: 項目を削除してよろしいですか？
       close: 非公開状態で保存しようとしています
@@ -200,6 +202,8 @@ ja:
         - 公開状態のリッチメニューグループが存在しません。
         - この状態で反映処理を行うと、反映されているリッチメニューが取り下げられます。
         - 反映するボタンを押下すると反映処理が開始されます。
+      line_deliver_directly: 即時配信（予約日時無し）
+      line_deliver_plans_empty: 配信日時が設定されていません。
     apis:
       categories:
         index: カテゴリーを選択する
@@ -427,6 +431,7 @@ ja:
         draft: 下書き
         ready: 配信待ち
         completed: 配信完了
+        expired: 期限切れ
       deliver_mode:
         main: 本配信
         test: テスト配信
@@ -716,6 +721,7 @@ ja:
       cms/ssml_setting: SSML設定
       cms/line/richmenu/menu: メニュー設定
       cms/line/richmenu/area: タップ領域
+      cms/line/deliver_plan/repeat: 繰り返し
 
   mongoid:
     models:
@@ -1362,6 +1368,17 @@ ja:
         data: データ
         uri: URI
         menu_id: 切替メニュー
+      cms/addon/line/deliver_plan/repeat:
+        repeat_type: 繰り返し設定
+        interval: 繰り返し間隔
+        repeat_start: 開始日
+        repeat_end: 終了日
+        repeat_base: 繰り返しの基準
+        wdays: 曜日
+      cms/line/deliver_plan:
+        name: 配信日時(予約)
+        deliver_date: 配信日時（予約）
+        state: ステータス
       cms/line/template/base:
         type: テンプレートタイプ
         text: メッセージ
@@ -2699,6 +2716,10 @@ ja:
     cms/addon/ssml_setting:
       st_ssml_state:
         - 有効にすると記事にSSML入力が表示されます。
+
+    cms/line/deliver_plan:
+      deliver_date:
+        - 配信日時（予約）を入力します。
 
   all_content:
     page_id: ページID

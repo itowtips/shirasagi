@@ -38,7 +38,7 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
 
   def add_template
     within "#addon-cms-agents-addons-line-message-body" do
-      click_on "テンプレートを追加する（最大5個）"
+      click_on I18n.t("cms.buttons.add_template")
     end
     within ".line-select-message-type" do
       first(".message-type.text").click
@@ -52,6 +52,26 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
       click_on I18n.t("ss.buttons.save")
     end
     expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
+  end
+
+  def add_deliver_plans(*dates)
+    within "#addon-cms-agents-addons-line-message-deliver_plan" do
+      expect(page).to have_text(I18n.t("cms.notices.line_deliver_plans_empty"))
+      click_on "設定する"
+    end
+    dates.each do |date|
+      within "#menu" do
+        click_on I18n.t("ss.links.new")
+      end
+      within "form#item-form" do
+        fill_in "item[deliver_date]", with: date
+        click_on I18n.t("ss.buttons.save")
+      end
+      expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
+    end
+    within "#menu" do
+      click_on I18n.t("ss.links.back")
+    end
   end
 
   def check_deliver_members(selector)
@@ -93,22 +113,13 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
       it "#new" do
         visit new_path
         within "form#item-form" do
-          fill_in "item[deliver_date]", with: deliver_date
           fill_in "item[name]", with: name
           select I18n.t("cms.options.line_deliver_condition_state.multicast_with_no_condition"), from: 'item[deliver_condition_state]'
+          click_on I18n.t("ss.buttons.save")
         end
-
-        first('input[name="item[name]"]').click
-        expect(page).to have_no_selector('.xdsoft_datetimepicker', visible: true)
-        click_on I18n.t("ss.buttons.save")
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
-        within "#addon-basic" do
-          expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.draft"))
-        end
-        within "#menu" do
-          expect(page).to have_no_link I18n.t("ss.links.deliver")
-        end
+        add_deliver_plans(deliver_date)
 
         add_template
 
@@ -119,7 +130,6 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
 
         within ".main-box" do
           expect(page).to have_css("header", text: I18n.t("cms.options.deliver_mode.main"))
-          expect(page).to have_css("dd", text: deliver_date)
         end
 
         capture_line_bot_client do |capture|
@@ -172,22 +182,13 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
       it "#new" do
         visit new_path
         within "form#item-form" do
-          fill_in "item[deliver_date]", with: deliver_date
           fill_in "item[name]", with: name
           select I18n.t("cms.options.line_deliver_condition_state.multicast_with_no_condition"), from: 'item[deliver_condition_state]'
         end
-
-        first('input[name="item[name]"]').click
-        expect(page).to have_no_selector('.xdsoft_datetimepicker', visible: true)
         click_on I18n.t("ss.buttons.save")
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
-        within "#addon-basic" do
-          expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.draft"))
-        end
-        within "#menu" do
-          expect(page).to have_no_link I18n.t("ss.links.deliver")
-        end
+        add_deliver_plans(deliver_date)
 
         add_template
 
@@ -198,7 +199,6 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
 
         within ".main-box" do
           expect(page).to have_css("header", text: I18n.t("cms.options.deliver_mode.main"))
-          expect(page).to have_css("dd", text: deliver_date)
         end
 
         capture_line_bot_client do |capture|
@@ -219,6 +219,7 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
           end
 
           visit current_path
+
           within "#addon-basic" do
             expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.completed"))
           end
@@ -253,24 +254,15 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
       it "#new" do
         visit new_path
         within "form#item-form" do
-          fill_in "item[deliver_date]", with: deliver_date
           fill_in "item[name]", with: name
           select I18n.t("cms.options.line_deliver_condition_state.multicast_with_input_condition"), from: 'item[deliver_condition_state]'
           fill_in "item[lower_year1]", with: 1
           fill_in "item[upper_year1]", with: 1
+          click_on I18n.t("ss.buttons.save")
         end
-
-        first('input[name="item[name]"]').click
-        expect(page).to have_no_selector('.xdsoft_datetimepicker', visible: true)
-        click_on I18n.t("ss.buttons.save")
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
-        within "#addon-basic" do
-          expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.draft"))
-        end
-        within "#menu" do
-          expect(page).to have_no_link I18n.t("ss.links.deliver")
-        end
+        add_deliver_plans(deliver_date)
 
         add_template
 
@@ -281,7 +273,6 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
 
         within ".main-box" do
           expect(page).to have_css("header", text: I18n.t("cms.options.deliver_mode.main"))
-          expect(page).to have_css("dd", text: deliver_date)
         end
 
         capture_line_bot_client do |capture|
@@ -337,22 +328,13 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
       it "#new" do
         visit new_path
         within "form#item-form" do
-          fill_in "item[deliver_date]", with: deliver_date
           fill_in "item[name]", with: name
           select I18n.t("cms.options.line_deliver_condition_state.multicast_with_no_condition"), from: 'item[deliver_condition_state]'
+          click_on I18n.t("ss.buttons.save")
         end
-
-        first('input[name="item[name]"]').click
-        expect(page).to have_no_selector('.xdsoft_datetimepicker', visible: true)
-        click_on I18n.t("ss.buttons.save")
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
-        within "#addon-basic" do
-          expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.draft"))
-        end
-        within "#menu" do
-          expect(page).to have_no_link I18n.t("ss.links.deliver")
-        end
+        add_deliver_plans(deliver_date)
 
         add_template
 
@@ -363,7 +345,6 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
 
         within ".main-box" do
           expect(page).to have_css("header", text: I18n.t("cms.options.deliver_mode.main"))
-          expect(page).to have_css("dd", text: deliver_date)
         end
 
         capture_line_bot_client do |capture|
@@ -423,24 +404,15 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
       it "#new" do
         visit new_path
         within "form#item-form" do
-          fill_in "item[deliver_date]", with: deliver_date
           fill_in "item[name]", with: name
           select I18n.t("cms.options.line_deliver_condition_state.multicast_with_input_condition"), from: 'item[deliver_condition_state]'
           fill_in "item[lower_year1]", with: 1
           fill_in "item[upper_year1]", with: 1
+          click_on I18n.t("ss.buttons.save")
         end
-
-        first('input[name="item[name]"]').click
-        expect(page).to have_no_selector('.xdsoft_datetimepicker', visible: true)
-        click_on I18n.t("ss.buttons.save")
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
 
-        within "#addon-basic" do
-          expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.draft"))
-        end
-        within "#menu" do
-          expect(page).to have_no_link I18n.t("ss.links.deliver")
-        end
+        add_deliver_plans(deliver_date)
 
         add_template
 
@@ -451,7 +423,6 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
 
         within ".main-box" do
           expect(page).to have_css("header", text: I18n.t("cms.options.deliver_mode.main"))
-          expect(page).to have_css("dd", text: deliver_date)
         end
 
         capture_line_bot_client do |capture|
@@ -495,6 +466,135 @@ describe "cms/line/messages deliver_reserved multicast_with_no_condition", type:
             click_on "[#{I18n.t("cms.options.deliver_mode.main")}] #{name}"
           end
           check_deliver_members("#addon-basic")
+        end
+      end
+    end
+  end
+
+  context "deliver 1,3,5 days ago" do
+    context "multicast_with_no_condition" do
+      let(:deliver_dates) do
+        today = Time.zone.today
+        [-1, 1, 3, 5].map { |days| today.advance(days: days).strftime("%Y/%m/%d %H:%M") }
+      end
+      let(:targets) { [member1, member2, member3] }
+      let(:non_targets) { [member4, member5, member6] }
+      let(:targets_count) { "#{I18n.t("cms.member")}#{targets.size}#{I18n.t("ss.units.count")}" }
+
+      before { login_cms_user }
+
+      it "#new" do
+        visit new_path
+        within "form#item-form" do
+          fill_in "item[name]", with: name
+          select I18n.t("cms.options.line_deliver_condition_state.multicast_with_no_condition"), from: 'item[deliver_condition_state]'
+          click_on I18n.t("ss.buttons.save")
+        end
+        expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
+
+        add_deliver_plans(*deliver_dates)
+
+        add_template
+
+        within "#menu" do
+          expect(page).to have_link I18n.t("ss.links.deliver")
+          click_on I18n.t("ss.links.deliver")
+        end
+
+        within ".main-box" do
+          expect(page).to have_css("header", text: I18n.t("cms.options.deliver_mode.main"))
+        end
+
+        capture_line_bot_client do |capture|
+          within "footer.send" do
+            page.accept_confirm do
+              click_on I18n.t("ss.links.deliver")
+            end
+          end
+          expect(page).to have_css('#notice', text: I18n.t('ss.notice.started_deliver'))
+          expect(enqueued_jobs.size).to eq 0
+
+          Timecop.travel(today.advance(days: 1)) do
+            execute_reserved_job
+            expect(capture.multicast.count).to eq 1
+            expect(capture.multicast.count).to eq 1
+            expect(capture.multicast.user_ids).to match_array targets.map(&:oauth_id)
+            expect(Cms::SnsPostLog::LineDeliver.count).to eq 1
+          end
+          visit current_path
+          within "#addon-basic" do
+            expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.ready"))
+          end
+
+          Timecop.travel(today.advance(days: 2)) do
+            execute_reserved_job
+            expect(capture.multicast.count).to eq 1
+            expect(capture.multicast.count).to eq 1
+            expect(Cms::SnsPostLog::LineDeliver.count).to eq 1
+          end
+          visit current_path
+          within "#addon-basic" do
+            expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.ready"))
+          end
+
+          Timecop.travel(today.advance(days: 3)) do
+            execute_reserved_job
+            expect(capture.multicast.count).to eq 2
+            expect(capture.multicast.count).to eq 2
+            expect(capture.multicast.user_ids).to match_array targets.map(&:oauth_id)
+            expect(Cms::SnsPostLog::LineDeliver.count).to eq 2
+          end
+          visit current_path
+          within "#addon-basic" do
+            expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.ready"))
+          end
+
+          Timecop.travel(today.advance(days: 4)) do
+            execute_reserved_job
+            expect(capture.multicast.count).to eq 2
+            expect(capture.multicast.count).to eq 2
+            expect(Cms::SnsPostLog::LineDeliver.count).to eq 2
+          end
+          visit current_path
+          within "#addon-basic" do
+            expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.ready"))
+          end
+
+          Timecop.travel(today.advance(days: 5)) do
+            execute_reserved_job
+            expect(capture.multicast.count).to eq 3
+            expect(capture.multicast.count).to eq 3
+            expect(capture.multicast.user_ids).to match_array targets.map(&:oauth_id)
+            expect(Cms::SnsPostLog::LineDeliver.count).to eq 3
+          end
+          visit current_path
+          within "#addon-basic" do
+            expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.completed"))
+          end
+
+          Timecop.travel(today.advance(days: 6)) do
+            execute_reserved_job
+            expect(capture.multicast.count).to eq 3
+            expect(capture.multicast.count).to eq 3
+            expect(Cms::SnsPostLog::LineDeliver.count).to eq 3
+          end
+          visit current_path
+          within "#addon-basic" do
+            expect(page).to have_css("dd", text: I18n.t("cms.options.deliver_state.completed"))
+          end
+
+          visit index_path
+          within ".list-items" do
+            expect(page).to have_css(".list-item .title", text: name)
+            expect(page).to have_css(".list-item .meta .state-completed", text: I18n.t("cms.options.deliver_state.completed"))
+          end
+
+          visit logs_path
+          within ".list-items" do
+            expect(page).to have_css(".list-item .title", text: "[#{I18n.t("cms.options.deliver_mode.main")}] #{name}")
+            expect(page).to have_css(".list-item .meta .action", text: "multicast")
+            expect(page).to have_css(".list-item .meta .state", text: I18n.t("cms.options.sns_post_log_state.success"))
+          end
         end
       end
     end

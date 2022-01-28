@@ -186,6 +186,7 @@ Rails.application.routes.draw do
         resources :templates, path: "template/:type/templates", defaults: { type: '-' }, concerns: :deletion do
           get :select_type, on: :collection
         end
+        resources :deliver_plans, concerns: :deletion
       end
       resources :test_members, concerns: :deletion
       resources :deliver_logs, only: [:index, :show, :destroy], concerns: [:deletion]

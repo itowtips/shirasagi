@@ -42,10 +42,6 @@ class Cms::Line::Message
     deliver_state == "ready"
   end
 
-  def completed?
-    deliver_state == "completed"
-  end
-
   def publish
     self.state = "public"
     self.released = Time.zone.now
@@ -69,14 +65,10 @@ class Cms::Line::Message
     return false unless publish
 
     self.deliver_state = "ready"
-    if !(deliver_date && deliver_date > Time.zone.now)
-      self.deliver_date = nil
-    end
     return false unless self.save
 
-    if !deliver_date
-      Cms::Line::DeliverJob.bind(site_id: site.id).perform_later(id)
-    end
+    return true if ready_plans.present?
+    Cms::Line::DeliverJob.bind(site_id: site.id).perform_later(id)
     true
   end
 
@@ -85,6 +77,23 @@ class Cms::Line::Message
 
     Cms::Line::TestDeliverJob.bind(site_id: site.id).perform_later(id, members.map(&:id))
     true
+  end
+
+  def complete_delivery(completed)
+    ready_plans.each do |plan|
+      next if plan.deliver_date > completed
+      plan.state = "completed"
+      plan.save!
+    end
+    self.completed = completed
+    self.test_completed = nil
+    self.deliver_state = next_plan ? "ready" : "completed"
+    self.save
+  end
+
+  def complete_test_delivery(completed)
+    self.test_completed = completed
+    self.save
   end
 
   def deliver_state_options
