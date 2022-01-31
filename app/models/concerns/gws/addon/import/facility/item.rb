@@ -146,7 +146,7 @@ module Gws::Addon::Import::Facility
 
       def datetime_to_text(time)
         return if time.blank?
-        I18n.l(time)
+        I18n.l(time, format: :csv)
       end
 
       def header_value_to_text(header, **options)

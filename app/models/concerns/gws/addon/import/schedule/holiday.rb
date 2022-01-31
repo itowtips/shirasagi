@@ -49,8 +49,8 @@ module Gws::Addon::Import::Schedule
       def add_line(item)
         line = []
         line << item[:name]
-        line << item[:start_on]
-        line << item[:end_on]
+        line << item.start_on.try { |date| I18n.l(date.to_date, format: :csv) }
+        line << item.end_on.try { |date| I18n.l(date.to_date, format: :csv) }
         line << item[:color]
         attrs = %i(
           repeat_type
@@ -78,7 +78,7 @@ module Gws::Addon::Import::Schedule
         when :repeat_base
           I18n.t("gws/schedule.options.repeat_base.#{record.send(attr)}")
         when :repeat_start, :repeat_end
-          I18n.l(record.send(attr))
+          record.send(attr).try { |date| I18n.l(date.to_date, format: :csv) }
         else
           record.send(attr)
         end

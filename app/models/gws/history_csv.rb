@@ -31,7 +31,7 @@ class Gws::HistoryCsv
     terms = []
     CSV_HEADERS.each do |k|
       if k == :created
-        terms << I18n.l(item.created)
+        terms << I18n.l(item.created, format: :csv)
       elsif k == :updated_field_names
         names = item.updated_field_names
         terms << names.join(',')

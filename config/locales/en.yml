@@ -42,6 +42,7 @@ en:
       # iso_month: ! '%Y-%m'
       long_month: ! '%a %Y'
       picker: ! '%m/%d/%Y'
+      csv: ! '%Y/%m/%d'
     month_names:
       -
       - January
@@ -261,6 +262,7 @@ en:
       long: ! '%1m-%1d-%Y %H:%M'
       short: ! '%m/%d/%y %H:%M'
       picker: ! '%m/%d/%Y %H:%M'
+      csv: ! '%Y/%m/%d %H:%M'
     pm: PM
   # remove these aliases after 'activemodel' and 'activerecord' namespaces are removed from Rails repository
   activemodel:

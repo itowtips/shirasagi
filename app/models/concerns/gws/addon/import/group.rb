@@ -39,8 +39,8 @@ module Gws::Addon::Import
             line << item.domains
             line << item.order
             line << item.ldap_dn
-            line << (item.activation_date.present? ? I18n.l(item.activation_date) : nil)
-            line << (item.expiration_date.present? ? I18n.l(item.expiration_date) : nil)
+            line << item.activation_date.try { |time| I18n.l(time, format: :csv) }
+            line << item.expiration_date.try { |time| I18n.l(time, format: :csv) }
             data << line
           end
         end

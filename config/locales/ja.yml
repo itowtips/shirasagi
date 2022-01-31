@@ -40,6 +40,7 @@ ja:
       iso_full: ! '%Y-%m-%d (%a)'
       long_month: ! '%Y-%1m'
       picker: ! '%Y/%m/%d'
+      csv: ! '%Y/%m/%d'
     month_names:
     -
     - 1月
@@ -259,6 +260,7 @@ ja:
       long: ! '%Y年%1m月%1d日 %H時%M分'
       short: ! '%y/%m/%d %H:%M'
       picker: ! '%Y/%m/%d %H:%M'
+      csv: ! '%Y/%m/%d %H:%M'
     pm: 午後
   # remove these aliases after 'activemodel' and 'activerecord' namespaces are removed from Rails repository
   activemodel:

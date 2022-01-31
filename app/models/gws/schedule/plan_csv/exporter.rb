@@ -65,18 +65,18 @@ class Gws::Schedule::PlanCsv::Exporter
     drawer.column :start_at do
       drawer.body do |item|
         if item.allday?
-          I18n.l(item.start_on)
+          I18n.l(item.start_on, format: :csv)
         else
-          I18n.l(item.start_at)
+          I18n.l(item.start_at, format: :csv)
         end
       end
     end
     drawer.column :end_at do
       drawer.body do |item|
         if item.allday?
-          I18n.l(item.end_on)
+          I18n.l(item.end_on, format: :csv)
         else
-          I18n.l(item.end_at)
+          I18n.l(item.end_at, format: :csv)
         end
       end
     end

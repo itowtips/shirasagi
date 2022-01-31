@@ -89,8 +89,8 @@ class Gws::UserCsv::Exporter
     terms << item.tel_ext
     terms << item.title(site).try(:code)
     terms << item.label(:type)
-    terms << (item.account_start_date.present? ? I18n.l(item.account_start_date) : nil)
-    terms << (item.account_expiration_date.present? ? I18n.l(item.account_expiration_date) : nil)
+    terms << item.account_start_date.try { |time| I18n.l(time, format: :csv) }
+    terms << item.account_expiration_date.try { |time| I18n.l(time, format: :csv) }
     terms << I18n.t("ss.options.state.#{item.initial_password_warning.present? ? 'enabled' : 'disabled'}")
     terms << item.session_lifetime
     terms << (item.organization ? item.organization.name : nil)
