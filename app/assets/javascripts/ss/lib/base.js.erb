@@ -4,6 +4,8 @@ this.SS = (function () {
 
   SS.config = {};
 
+  SS.env = '<%= Rails.env %>';
+
   SS.timezone = '<%= Rails.application.config.time_zone %>';
 
   SS.head = "";
@@ -523,6 +525,9 @@ this.SS = (function () {
   // SS.formatTime(new Date())
   // SS.formatTime(moment())
   SS.formatTime = function (time, format) {
+    if (!time) {
+      return time;
+    }
     if (!format) {
       format = "default"
     }
@@ -533,6 +538,9 @@ this.SS = (function () {
   };
 
   SS.formatDate = function (date, format) {
+    if (!date) {
+      return date;
+    }
     if (!format) {
       format = "default"
     }

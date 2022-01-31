@@ -40,16 +40,10 @@
       return;
     }
 
-    var startOn;
-    if ("xdsoft_datetimepicker" in $startOnEl.data()) {
-      startOn = $startOnEl.datetimepicker("getValue");
-    } else {
-      startOn = $startOnEl.val();
-    }
+    var startOn = SS_DateTimePicker.momentValue($startOnEl);
     if (! startOn) {
       return;
     }
-    startOn = moment(startOn);
 
     var $endOnEl;
     if (repeatType) {
@@ -63,16 +57,10 @@
       return;
     }
 
-    var endOn;
-    if ("xdsoft_datetimepicker" in $endOnEl.data()) {
-      endOn = $endOnEl.datetimepicker("getValue");
-    } else {
-      endOn = $endOnEl.val();
-    }
+    var endOn = SS_DateTimePicker.momentValue($endOnEl);
     if (! endOn) {
       return;
     }
-    endOn = moment(endOn);
 
     var facilityIds = [];
     $('.gws-schedule-facility table.ajax-selected tbody tr').each(function() {

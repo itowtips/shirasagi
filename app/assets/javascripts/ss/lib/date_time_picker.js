@@ -10,13 +10,16 @@ this.SS_DateTimePicker = (function () {
       }
     }
     this.type = type;
+    this.initialized = false;
+    this.ee = new EventEmitter3();
 
     this.render();
+    this.$el.data("ss_datetimepicker", this);
   }
 
   var initialized = false;
 
-  SS_DateTimePicker.renderOnce = function() {
+  SS_DateTimePicker.renderOnce = function () {
     if (initialized) {
       return;
     }
@@ -28,42 +31,206 @@ this.SS_DateTimePicker = (function () {
     initialized = true;
   };
 
-  SS_DateTimePicker.render = function() {
+  SS_DateTimePicker.render = function (root, type) {
     SS_DateTimePicker.renderOnce();
 
-    $(".js-date,.js-datetime").each(function() {
-        var $this = $(this);
-        var data = $this.data();
-        if ("ss_datetimepicker" in data) {
-          // already instantiated
-          return;
-        }
+    $(root || document).find(".js-date,.js-datetime").each(function () {
+      var $this = $(this);
+      var data = $this.data();
+      if ("ss_datetimepicker" in data) {
+        // already instantiated
+        return;
+      }
 
-        var picker = new SS_DateTimePicker(this);
-        $this.data("ss_datetimepicker", picker);
+      new SS_DateTimePicker(this, type);
     });
   };
 
-  SS_DateTimePicker.prototype.render = function() {
-    var options
-    if (this.type === "date") {
-      options = this.buildDatePickerOptions();
-    } else {
-      options = this.buildDateTimePickerOptions();
+  SS_DateTimePicker.hasFormDataEvent = function () {
+    if (SS.env === "test" && Math.random() < 0.5) {
+      return false;
     }
-
-    this.$el.attr('autocomplete', 'off').datetimepicker(options);
+    return !!window.FormDataEvent;
   };
 
-  SS_DateTimePicker.prototype.buildDatePickerOptions = function() {
+  SS_DateTimePicker.replaceDateTimeValue = function (ev) {
+    // You can use some ES6 features with ES5 syntax within this method.
+    var form = ev.target;
+    var formData = ev.originalEvent.formData;
+    Array.from(new Set(formData.keys())).forEach(function (key) {
+      var elements = form.elements[key];
+      if ("forEach" in elements) {
+        if (! $(elements[0]).data("ss_datetimepicker")) {
+          return;
+        }
+
+        var values = [];
+        elements.forEach(function (el) {
+          var $el = $(el);
+          var picker = $el.data("ss_datetimepicker")
+          if (! picker) {
+            values.push("");
+            return;
+          }
+
+          values.push(picker.valueForExchange());
+        });
+
+        formData.delete(key);
+        values.forEach(function (value) {
+          formData.append(key, value)
+        });
+      } else {
+        var $el = $(elements);
+        var picker = $el.data("ss_datetimepicker");
+        if (! picker) {
+          return;
+        }
+
+        formData.set(key, picker.valueForExchange());
+      }
+    });
+  };
+
+  SS_DateTimePicker.instance = function (selector) {
+    return $(selector).data("ss_datetimepicker");
+  };
+
+  [ "on", "once", "off", "momentValue" ].forEach(function(method) {
+    SS_DateTimePicker[method] = function() {
+      var selector = Array.prototype.shift.call(arguments)
+      return SS_DateTimePicker.prototype[method].apply(SS_DateTimePicker.instance(selector), arguments);
+    };
+  });
+
+  SS_DateTimePicker.prototype.render = function () {
+    var self = this;
+
+    var options = self.type === "date" ? self.buildDatePickerOptions() : self.buildDateTimePickerOptions();
+    self.$el
+      .attr('autocomplete', 'off')
+      .datetimepicker(options);
+
+    self.once("generate", function() { self.onInitialized(); });
+
+    if (SS_DateTimePicker.hasFormDataEvent()) {
+      var $form = this.$el.closest("form");
+      if (!$form.data("ss-datetime-picker-installed")) {
+        $form.data("ss-datetime-picker-installed", true);
+        $form.on("formdata", SS_DateTimePicker.replaceDateTimeValue);
+      }
+    } else {
+      self.createShadow();
+    }
+  };
+
+  SS_DateTimePicker.prototype.on = function (_event, _callback, _context) {
+    this.ee.on.apply(this.ee, arguments);
+    // to be able to chain on, once and off
+    return this;
+  };
+
+  SS_DateTimePicker.prototype.once = function (_event, _callback, _context) {
+    this.ee.once.apply(this.ee, arguments);
+    // to be able to chain on, once and off
+    return this;
+  };
+
+  SS_DateTimePicker.prototype.off = function (_event, _callback, _context) {
+    this.ee.removeListener.apply(this.ee, arguments);
+    // to be able to chain on, once and off
+    return this;
+  };
+
+  SS_DateTimePicker.prototype.onInitialized = function () {
+    this.initialized = true;
+  };
+
+  SS_DateTimePicker.prototype.createShadow = function () {
+    // IE11, old Safari, old Firefox, old Chrome goes here
+    var self = this;
+
+    var $shadow = $("<input />", {
+      type: "hidden",
+      class: "shadow",
+      value: self.valueForExchange(),
+      name: self.$el.attr("name")
+    });
+    $shadow.data("ss_datetimepicker", self);
+
+    self.$el.removeAttr("name", "");
+    $shadow.insertAfter(self.$el);
+    self.$shadow = $shadow;
+
+    self.on("changeDateTime", function() {
+      self.updateShadow();
+    });
+  };
+
+  SS_DateTimePicker.prototype.momentValue = function(value) {
+    var self = this;
+
+    if (arguments.length === 1) {
+      // setter
+      if (value) {
+        value = self.type === "datetime" ? SS.formatTime(value, "picker") : SS.formatDate(value, "picker")
+      }
+      self.$el.val(value || '');
+      self.$el.datetimepicker({ value: value || '' });
+      // self.$el.datetimepicker("validate");
+      // self.$el.trigger('change');
+
+      self.updateShadow();
+    } else {
+      // getter
+      // datetimepicker のバグだと思うが、初期化時に value が nil や空文字の場合、getValue がカレント時刻になってしまう。
+      // 表示されている値（input の value)と、内部の値（datetimepicker の getValue）とが異なる場合を考慮する。
+      if (!self.$el.val()) {
+        return null;
+      }
+
+      var ret = self.$el.datetimepicker("getValue");
+      if (!ret) {
+        return ret;
+      }
+
+      return moment(ret);
+    }
+  };
+
+  SS_DateTimePicker.prototype.valueForExchange = function () {
+    var self = this;
+
+    var value = self.momentValue();
+    if (value) {
+      value = value.format(this.type === "datetime" ? "YYYY/MM/DD HH:mm:ss" : "YYYY/MM/DD");
+    }
+
+    return value || '';
+  };
+
+  SS_DateTimePicker.prototype.updateShadow = function () {
+    var self = this;
+    if (!self.$shadow) {
+      return;
+    }
+
+    self.$shadow.val(self.valueForExchange());
+  };
+
+  SS_DateTimePicker.prototype.buildDatePickerOptions = function () {
+    var self = this;
     var opts = {
-      timepicker: false,
       format: SS.convertDateTimeFormat(i18next.t("date.formats.picker")),
+      value: self.$el.val(),
+      timepicker: false,
       closeOnDateSelect: true,
-      scrollInput: false
+      scrollInput: false,
+      onGenerate: function() { self.ee.emit("generate"); },
+      onChangeDateTime: function(currentTime, $input, ev) { self.ee.emit("changeDateTime", currentTime, $input, ev); }
     };
 
-    var data = this.$el.data();
+    var data = self.$el.data();
     if (data.format) {
       opts.format = data.format;
     }
@@ -83,16 +250,20 @@ this.SS_DateTimePicker = (function () {
     return opts;
   };
 
-  SS_DateTimePicker.prototype.buildDateTimePickerOptions = function() {
+  SS_DateTimePicker.prototype.buildDateTimePickerOptions = function () {
+    var self = this;
     var opts = {
       format: SS.convertDateTimeFormat(i18next.t("time.formats.picker")),
+      value: self.$el.val(),
       closeOnDateSelect: true,
       scrollInput: false,
       roundTime: 'ceil',
-      step: 30
+      step: 30,
+      onGenerate: function() { self.ee.emit("generate"); },
+      onChangeDateTime: function(currentTime, $input, ev) { self.ee.emit("changeDateTime", currentTime, $input, ev); }
     };
 
-    var data = this.$el.data();
+    var data = self.$el.data();
     if (data.format) {
       opts.format = data.format;
     }

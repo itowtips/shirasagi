@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "cms_users", type: :feature, dbscope: :example do
+describe "cms_users", type: :feature, dbscope: :example, js: true do
   let(:site) { cms_site }
   let(:group) { cms_group }
   let(:item) { create(:cms_test_user, group: group) }
@@ -11,7 +11,7 @@ describe "cms_users", type: :feature, dbscope: :example do
   let(:delete_path) { delete_cms_user_path site.id, item }
   let(:import_path) { import_cms_users_path site.id }
 
-  context "with login", js: true do
+  context "with login" do
     it "#crud" do
       login_cms_user
 
@@ -109,7 +109,7 @@ describe "cms_users", type: :feature, dbscope: :example do
     end
   end
 
-  context "with ldap user", js: true do
+  context "with ldap user" do
     it "#new" do
       login_cms_user
 
@@ -173,10 +173,11 @@ describe "cms_users", type: :feature, dbscope: :example do
       visit import_path
       within "form" do
         attach_file "item[in_file]", "#{Rails.root}/spec/fixtures/cms/user/cms_users_1.csv"
-        click_button I18n.t('ss.buttons.import')
+        page.accept_confirm(I18n.t('ss.confirm.import')) do
+          click_button I18n.t('ss.buttons.import')
+        end
       end
-      expect(status_code).to eq 200
-      expect(current_path).to eq index_path
+      wait_for_notice I18n.t("ss.notice.saved")
 
       users = Cms::User.site(cms_site).ne(id: cms_user.id)
       expected_emails = %w(
@@ -209,10 +210,10 @@ describe "cms_users", type: :feature, dbscope: :example do
         visit import_path
         within "form" do
           attach_file "item[in_file]", "#{Rails.root}/spec/fixtures/cms/user/cms_users_1.csv"
-          click_button I18n.t('ss.buttons.import')
+          page.accept_confirm(I18n.t('ss.confirm.import')) do
+            click_button I18n.t('ss.buttons.import')
+          end
         end
-        expect(status_code).to eq 200
-        expect(current_path).to eq import_path
         expect(page).to have_selector('#errorExplanation ul li', count: 9)
       end
     end
@@ -234,18 +235,20 @@ describe "cms_users", type: :feature, dbscope: :example do
       visit import_path
       within "form" do
         attach_file "item[in_file]", "#{Rails.root}/spec/fixtures/cms/user/cms_users_1.csv"
-        click_button I18n.t('ss.buttons.import')
+        page.accept_confirm(I18n.t('ss.confirm.import')) do
+          click_button I18n.t('ss.buttons.import')
+        end
       end
-      expect(status_code).to eq 200
-      expect(current_path).to eq index_path
+      wait_for_notice I18n.t("ss.notice.saved")
 
       visit import_path
       within "form" do
         attach_file "item[in_file]", "#{Rails.root}/spec/fixtures/cms/user/cms_users_2.csv"
-        click_button I18n.t('ss.buttons.import')
+        page.accept_confirm(I18n.t('ss.confirm.import')) do
+          click_button I18n.t('ss.buttons.import')
+        end
       end
-      expect(status_code).to eq 200
-      expect(current_path).to eq index_path
+      wait_for_notice I18n.t("ss.notice.saved")
 
       users = Cms::User.site(cms_site).ne(id: cms_user.id)
       expected_emails = %w(
@@ -290,11 +293,11 @@ describe "cms_users", type: :feature, dbscope: :example do
         permissions: Cms::Role.permission_names
       )
     end
-    let(:header) do
+    let(:headers) do
       %w(
         id name kana uid organization_uid email password tel tel_ext account_start_date account_expiration_date
         initial_password_warning organization_id groups ldap_dn cms_roles
-      ).map { |k| Cms::User.new.t(k) }.join(",")
+      ).map { |k| Cms::User.new.t(k) }
     end
 
     before do
@@ -307,10 +310,11 @@ describe "cms_users", type: :feature, dbscope: :example do
     it do
       visit index_path
       click_on I18n.t("ss.buttons.download")
+      wait_for_download
 
-      csv = page.html.encode("UTF-8")
-      expect(csv).to include(header)
-      expect(csv.split("\n").length).to eq 3
+      csv = ::CSV.read(downloads.first, headers: true, encoding: 'SJIS:UTF-8')
+      expect(csv.length).to eq 2
+      expect(csv.headers).to include(*headers)
     end
   end
 
@@ -331,8 +335,9 @@ describe "cms_users", type: :feature, dbscope: :example do
       click_on user_name
       click_on I18n.t("ss.links.edit")
 
-      fill_in "item[account_expiration_date]", with: account_expiration_date.strftime("%Y/%m/%d %H:%M")
+      fill_in_datetime "item[account_expiration_date]", with: account_expiration_date
       click_on I18n.t("ss.buttons.save")
+      wait_for_notice I18n.t("ss.notice.saved")
 
       test_user.reload
       expect(test_user.account_expiration_date).to eq account_expiration_date
@@ -350,6 +355,7 @@ describe "cms_users", type: :feature, dbscope: :example do
 
       fill_in "item[kana]", with: kana
       click_on I18n.t("ss.buttons.save")
+      wait_for_notice I18n.t("ss.notice.saved")
 
       test_user.reload
       expect(test_user.kana).to eq kana
@@ -379,6 +385,7 @@ describe "cms_users", type: :feature, dbscope: :example do
 
       fill_in "item[kana]", with: kana
       click_on I18n.t("ss.buttons.save")
+      wait_for_notice I18n.t("ss.notice.saved")
 
       test_user.reload
       expect(test_user.kana).to eq kana
@@ -399,30 +406,29 @@ describe "cms_users", type: :feature, dbscope: :example do
 
     it do
       visit sns_mypage_path
-      expect(status_code).to eq 200
+      expect(current_path).to eq sns_mypage_path
       expect(page).to have_no_css(".mypage-sites .title", text: cms_site.name)
 
       visit cms_contents_path(site)
-      expect(status_code).to eq 403
+      expect(current_path).to eq cms_contents_path(site)
+      expect(page).to have_title(/403 Forbidden/)
+      expect(page).to have_css("#addon-basic .addon-head", text: I18n.t("ss.rescues.default.head"))
     end
   end
 
-  context "when disalbed user is logged-in" do
+  context "when disabled user attempts to log-in" do
     let(:account_expiration_date) { Time.zone.now.days_ago(1).beginning_of_day }
     let!(:test_user) { create(:cms_test_user, group: group, name: unique_id, account_expiration_date: account_expiration_date) }
 
     it do
       login_user test_user
-      expect(status_code).to eq 200
       expect(current_path).to eq sns_login_path
       expect(page).to have_css(".error-message", text: I18n.t("sns.errors.invalid_login"))
 
       visit sns_mypage_path
-      expect(status_code).to eq 200
       expect(current_path).to eq sns_login_path
 
       visit cms_contents_path(site)
-      expect(status_code).to eq 200
       expect(current_path).to eq sns_login_path
     end
   end

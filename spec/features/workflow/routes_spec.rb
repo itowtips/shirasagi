@@ -22,26 +22,42 @@ describe "workflow_routes", type: :feature, dbscope: :example do
         visit new_path
         within "form#item-form" do
           fill_in "item[name]", with: "sample"
-          select "無効", from: "item[pull_up]"
-        end
+          select I18n.t("ss.options.state.disabled"), from: "item[pull_up]"
 
-        click_on "グループを選択する"
-        wait_for_cbox do
-          within "table.index" do
-            click_on group.name
+          wait_cbox_open do
+            click_on I18n.t("ss.apis.groups.index")
           end
         end
 
-        within "dl.workflow-level-1" do
-          click_on "承認者を選択する"
-        end
         wait_for_cbox do
-          within "table.index tbody.items" do
-            click_on user.name
+          within "table.index" do
+            wait_cbox_close do
+              click_on group.name
+            end
           end
         end
 
         within "form#item-form" do
+          expect(page).to have_css("#addon-basic .ajax-selected", text: group.name)
+
+          within "dl.workflow-level-1" do
+            wait_cbox_open do
+              click_on I18n.t("workflow.search_approvers.index")
+            end
+          end
+        end
+        wait_for_cbox do
+          within "table.index tbody.items" do
+            wait_cbox_close do
+              click_on user.name
+            end
+          end
+        end
+
+        within "form#item-form" do
+          within "#addon-workflow-agents-addons-approver_view" do
+            expect(page).to have_css(".workflow-level-1 .ajax-selected", text: user.name)
+          end
           click_on I18n.t('ss.buttons.save')
         end
         expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'), wait: 60)

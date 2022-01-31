@@ -89,18 +89,16 @@
 <%= paginate @items if @items.try(:current_page) %>
 
 <%= jquery do %>
-  $('.list-head input[name=ymd]').datetimepicker({
-    onChangeDateTime: function(dp, $input) {
-      var ymd = $input.datetimepicker("getValue");
-      if (!ymd) {
-        return;
-      }
-      ymd = moment(ymd).format("YYYYMMDD");
-
-      var url = '<%= webmail_daily_histories_path(ymd: ':ymd') %>';
-      url = url.replace(':ymd', ymd);
-
-      location.href = url;
+  SS_DateTimePicker.on('.list-head input[name=ymd]', 'changeDateTime', function(dp, $input) {
+    var ymd = SS_DateTimePicker.momentValue($input);
+    if (!ymd) {
+      return;
     }
+    ymd = ymd.format("YYYYMMDD");
+
+    var url = '<%= webmail_daily_histories_path(ymd: ':ymd') %>';
+    url = url.replace(':ymd', ymd);
+
+    location.href = url;
   });
 <% end %>

@@ -17,18 +17,7 @@ describe "article_pages", type: :feature, dbscope: :example, js: true do
       visit edit_path
       ensure_addon_opened('#addon-cms-agents-addons-release_plan')
       within "#addon-cms-agents-addons-release_plan" do
-        first('[name="item[release_date]"]').click
-      end
-      within first(".xdsoft_datetimepicker", visible: true) do
-        within first(".xdsoft_scroller_box", visible: true) do
-          times.each do |time|
-            expect(page).to have_css(".xdsoft_time", text: time)
-          end
-        end
-        within first(".xdsoft_calendar", visible: true) do
-          expect(page).to have_css(".xdsoft_today", text: today.day)
-          first(".xdsoft_today").click
-        end
+        fill_in_datetime 'item[release_date]', with: today
       end
       expect(first('[name="item[release_date]"]').value).to start_with(today.strftime("%Y/%m/%d"))
     end
@@ -37,18 +26,7 @@ describe "article_pages", type: :feature, dbscope: :example, js: true do
       visit edit_path
       ensure_addon_opened('#addon-cms-agents-addons-release_plan')
       within "#addon-cms-agents-addons-release_plan" do
-        first('[name="item[close_date]"]').click
-      end
-      within first(".xdsoft_datetimepicker", visible: true) do
-        within first(".xdsoft_scroller_box", visible: true) do
-          times.each do |time|
-            expect(page).to have_css(".xdsoft_time", text: time)
-          end
-        end
-        within first(".xdsoft_calendar", visible: true) do
-          expect(page).to have_css(".xdsoft_today", text: today.day)
-          first(".xdsoft_today").click
-        end
+        fill_in_datetime 'item[close_date]', with: today
       end
       expect(first('[name="item[close_date]"]').value).to start_with(today.strftime("%Y/%m/%d"))
     end

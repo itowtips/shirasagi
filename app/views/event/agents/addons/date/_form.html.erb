@@ -22,6 +22,14 @@
   <dd class="setting-dates">
     <%= button_tag t("event.add_date"), { type: :button, class: "add-date btn" } %>
     <%= link_to t("event.add_repeat_dates"), event_apis_repeat_dates_path, class: "ajax-box btn" %>
+
+    <script type="text/html" class="template">
+      <dd class="dates">
+        <%= ss_date_field_tag "event[][start_date]", nil, {}, { id: nil, class: "start" } %>
+        - <%= ss_date_field_tag "event[][close_date]", nil, {}, { id: nil, class: "close" } %>
+        <%= button_tag t("event.del_date"), { type: :button, class: "clear btn" } %>
+      </dd>
+    </script>
   </dd>
   <dd style="display: none;"><%= f.text_area :event_dates, value: @item.event_dates.try { |dates| dates.map { |d| I18n.l(d.to_date, format: :picker) }.join("\n") }, class: "event-dates btn" %></dd>
 

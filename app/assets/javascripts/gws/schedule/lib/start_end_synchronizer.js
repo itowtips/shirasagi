@@ -6,7 +6,7 @@ this.Gws_Schedule_StartEndSynchronizer = (function () {
       return defaultStartEndDifferenceInMillis;
     }
 
-    var diff = end.getTime() - start.getTime();
+    var diff = end.valueOf() - start.valueOf();
     if (diff < 0) {
       return 0;
     }
@@ -28,17 +28,11 @@ this.Gws_Schedule_StartEndSynchronizer = (function () {
     self.$startEl.on("click", handler);
     self.$endEl.on("click", handler);
 
-    self.$startEl.datetimepicker({
-      onChangeDateTime: function() { self.updateEndValue(); }
-    });
-    if (!self.$endEl.datetimepicker("getValue")) {
-      setTimeout(function() {
-        self.updateEndValue();
-        if (callback) {
-          callback();
-        }
-      }, 0);
-    } else if (callback) {
+    SS_DateTimePicker.on(self.$startEl, "changeDateTime", function() { self.updateEndValue(); });
+    if (!SS_DateTimePicker.momentValue(self.$endEl)) {
+      self.updateEndValue();
+    }
+    if (callback) {
       callback();
     }
   };
@@ -46,25 +40,24 @@ this.Gws_Schedule_StartEndSynchronizer = (function () {
   Gws_Schedule_StartEndSynchronizer.prototype.calcDifference = function() {
     var self = this;
 
-    var startValue = self.$startEl.datetimepicker("getValue");
-    var endValue = self.$endEl.datetimepicker("getValue");
+    var startValue = SS_DateTimePicker.momentValue(self.$startEl);
+    var endValue = SS_DateTimePicker.momentValue(self.$endEl);
     self.difference = calcDifference(startValue, endValue);
   };
 
   Gws_Schedule_StartEndSynchronizer.prototype.updateEndValue = function() {
     var self = this;
 
-    var endValue = self.$startEl.datetimepicker("getValue");
+    var endValue = SS_DateTimePicker.momentValue(self.$startEl);
     if (!endValue) {
       return;
     }
-    endValue = moment(endValue);
     if (!endValue.isValid()) {
       return;
     }
 
     endValue.add(self.difference, "milliseconds");
-    self.$endEl.datetimepicker({ value: SS.formatTime(endValue, "picker") });
+    SS_DateTimePicker.momentValue(self.$endEl, endValue);
   };
 
   return Gws_Schedule_StartEndSynchronizer;

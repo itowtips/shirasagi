@@ -153,7 +153,13 @@ module ApplicationHelper
     email_address = email_address.gsub(/@/, "&#64;").gsub(/\./, "&#46;").html_safe if email_address.present?
     html_options["href"] = "mailto:#{email_address}#{extras}".html_safe
 
-    tag.a(name || email_address, html_options, &block)
+    link_to(name || email_address, html_options) do
+      if block_given?
+        yield
+      else
+        name || email_address
+      end
+    end
   end
 
   def dropdown_link(name = nil, url_options: nil, options: nil, html_options: nil, &block)

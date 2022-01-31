@@ -2,7 +2,9 @@ class Gws::LoginController < ApplicationController
   include Gws::BaseFilter
   include Sns::LoginFilter
 
-  unless Rails.env.test?
+  if Rails.env.test?
+    before_action { I18n.locale = I18n.default_locale }
+  else
     include HttpAcceptLanguage::AutoLocale
   end
 

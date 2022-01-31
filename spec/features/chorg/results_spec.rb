@@ -41,8 +41,8 @@ describe 'chorg_results', type: :feature, dbscope: :example do
           visit show_path
           expect(status_code).to eq 200
           expect(current_path).to eq show_path
-          expect(page).to have_selector('dd.started', text: now.strftime('%Y/%m/%d %H:%M:%S'))
-          expect(page).to have_selector('dd.closed', text: now.strftime('%Y/%m/%d %H:%M:%S'))
+          expect(page).to have_selector('dd.started', text: I18n.l(now, format: :picker))
+          expect(page).to have_selector('dd.closed', text: I18n.l(now, format: :picker))
           expect(page).to have_selector('dl.mod-chorg-entity_log')
         end
       end
@@ -71,6 +71,7 @@ describe 'chorg_results', type: :feature, dbscope: :example do
             visit chorg_run_confirmation_path(site.id, revision.id, type)
 
             perform_enqueued_jobs do
+
               within 'form#item-form' do
                 click_button I18n.t("chorg.views.run/confirmation.#{type}.run_button")
               end
@@ -82,8 +83,8 @@ describe 'chorg_results', type: :feature, dbscope: :example do
           visit show_path
           expect(status_code).to eq 200
           expect(current_path).to eq show_path
-          expect(page).to have_selector('dd.started', text: now.strftime('%Y/%m/%d %H:%M:%S'))
-          expect(page).to have_selector('dd.closed', text: now.strftime('%Y/%m/%d %H:%M:%S'))
+          expect(page).to have_selector('dd.started', text: I18n.l(now, format: :picker))
+          expect(page).to have_selector('dd.closed', text: I18n.l(now, format: :picker))
           expect(page).to have_selector('dl.mod-chorg-entity_log')
         end
       end

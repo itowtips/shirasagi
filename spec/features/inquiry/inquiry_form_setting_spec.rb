@@ -69,10 +69,11 @@ describe "inquiry_form", type: :feature, dbscope: :example, js: true do
       find("#addon-ss-agents-addons-inquiry_setting").click
       select node.name, from: "item_inquiry_form_id"
       click_button I18n.t('ss.buttons.save')
+      wait_for_notice I18n.t("ss.notice.saved")
 
       visit edit_article_path
       click_on I18n.t("ss.buttons.publish_save")
-      expect(page).to have_css('#notice', text: I18n.t('ss.notice.saved'))
+      wait_for_notice I18n.t("ss.notice.saved")
 
       visit article.url
       expect(page).to have_content I18n.t("contact.view.inquiry_form")

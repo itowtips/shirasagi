@@ -2,7 +2,9 @@ class Webmail::LoginController < ApplicationController
   include Webmail::BaseFilter
   include Sns::LoginFilter
 
-  unless Rails.env.test?
+  if Rails.env.test?
+    before_action { I18n.locale = I18n.default_locale }
+  else
     include HttpAcceptLanguage::AutoLocale
   end
 

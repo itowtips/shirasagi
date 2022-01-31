@@ -41,11 +41,10 @@ describe "gws_board_topics", type: :feature, dbscope: :example, js: true do
 
         select I18n.t("ss.options.state.enabled"), from: "item[notify_state]"
 
+        ensure_addon_opened "#addon-ss-agents-addons-release"
         within "#addon-ss-agents-addons-release" do
-          first(".addon-head h2").click
-
-          fill_in "item[release_date]", with: I18n.l(release_date, format: :picker) + "\n"
-          fill_in "item[close_date]", with: I18n.l(close_date, format: :picker) + "\n"
+          fill_in_datetime "item[release_date]", with: release_date
+          fill_in_datetime "item[close_date]", with: close_date
         end
 
         click_on I18n.t("ss.buttons.save")

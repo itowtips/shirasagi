@@ -22,9 +22,6 @@ this.Event_Form = (function () {
             Event_Form.clearTermForm($(this).parent("dd"));
           }
         } else {
-//      $(".mod-event input.date").datepicker
-//        dateFormat: "yy/mm/dd",
-//        yearRange: "-10:+10"
           Event_Form.clearTermForm($(this).parent("dd"));
         }
       });
@@ -167,40 +164,33 @@ this.Event_Form = (function () {
   };
 
   Event_Form.cloneTermForm = function () {
-    var cln;
-    cln = $(".mod-event dd.dates:last").clone(false).insertAfter($(".mod-event dd.dates:last"));
+    var cln = $($(".mod-event .template").html());
+    cln.insertAfter($(".mod-event dd.dates:last"));
     cln.find(".start").val("");
     cln.find(".close").val("");
-    cln.find(".clear").on("click", function () {
+    cln.on("click", ".clear", function () {
       var close, start;
-      start = $(this).parent("dd").find(".start").val();
-      close = $(this).parent("dd").find(".close").val();
+      start = cln.find(".start").val();
+      close = cln.find(".close").val();
       if (start !== "" || close !== "") {
         if (confirm(Event_Form.deleteMessage)) {
-          Event_Form.clearTermForm($(this).parent("dd"));
+          Event_Form.clearTermForm(cln);
         }
       } else {
-        Event_Form.clearTermForm($(this).parent("dd"));
+        Event_Form.clearTermForm(cln);
       }
     });
-    $(".mod-event .date").attr("id", "").datetimepicker({
-      lang: "ja",
-      timepicker: false,
-      format: "YYYY/MM/DD"
-    });
+    SS_DateTimePicker.render(cln, "date");
     if ($(".mod-event dd.dates").length >= this.maxTermForm) {
       return $(".mod-event .setting-dates").hide();
     }
   };
-//$(".mod-event button:button.add-date").attr "disabled", true
   Event_Form.clearTermForm = function (ele) {
     ele.find(".start").val("");
     ele.find(".close").val("");
     if ($(".mod-event dd.dates").length > 1) {
       ele.remove();
     }
-//yearRange: "-10:+10"
-
 
     if ($(".mod-event dd.dates").length < this.maxTermForm) {
       return $(".mod-event .setting-dates").show();

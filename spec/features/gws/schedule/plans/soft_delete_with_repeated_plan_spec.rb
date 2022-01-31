@@ -28,22 +28,14 @@ describe "gws_schedule_plans", type: :feature, dbscope: :example, js: true do
 
         within "form#item-form" do
           fill_in "item[name]", with: name
-          fill_in "item[start_at]", with: start_at_text
-          fill_in "item[end_at]", with: end_at_text
+          fill_in_datetime "item[start_at]", with: start_at_text
+          fill_in_datetime "item[end_at]", with: end_at_text
           select repeat_type_label, from: "item[repeat_type]"
           # select interval.to_s, from: "item[interval]"
           check 'item_wdays_3'
-          fill_in "item[repeat_start]", with: repeat_start_text
-          fill_in "item[repeat_end]", with: repeat_end_text
+          fill_in_datetime "item[repeat_start]", with: repeat_start_text
+          fill_in_datetime "item[repeat_end]", with: repeat_end_text
           fill_in "item[text]", with: text
-
-          # 1 回目の end_at への入力が強制的に 20:00 にされてしまう。
-          # 2 回入力することで、意図した年月日を設定する。
-          fill_in "item[end_at]", with: end_at_text
-
-          # 1 回目の repeat_end への入力が強制的に現在日にされてしまう。
-          # 2 回入力することで、意図した年月日を設定する。
-          fill_in "item[repeat_end]", with: repeat_end_text
 
           click_on I18n.t('ss.buttons.save')
         end
@@ -81,22 +73,14 @@ describe "gws_schedule_plans", type: :feature, dbscope: :example, js: true do
 
         within "form#item-form" do
           fill_in "item[name]", with: name
-          fill_in "item[start_at]", with: start_at_text
-          fill_in "item[end_at]", with: end_at_text
+          fill_in_datetime "item[start_at]", with: start_at_text
+          fill_in_datetime "item[end_at]", with: end_at_text
           select repeat_type_label, from: "item[repeat_type]"
           # select interval.to_s, from: "item[interval]"
           check 'item_wdays_3'
-          fill_in "item[repeat_start]", with: repeat_start_text
-          fill_in "item[repeat_end]", with: repeat_end_text
+          fill_in_datetime "item[repeat_start]", with: repeat_start_text
+          fill_in_datetime "item[repeat_end]", with: repeat_end_text
           fill_in "item[text]", with: text
-
-          # 1 回目の end_at への入力が強制的に 20:00 にされてしまう。
-          # 2 回入力することで、意図した年月日を設定する。
-          fill_in "item[end_at]", with: end_at_text
-
-          # 1 回目の repeat_end への入力が強制的に現在日にされてしまう。
-          # 2 回入力することで、意図した年月日を設定する。
-          fill_in "item[repeat_end]", with: repeat_end_text
 
           click_on I18n.t('ss.buttons.save')
         end
@@ -128,22 +112,14 @@ describe "gws_schedule_plans", type: :feature, dbscope: :example, js: true do
 
         within "form#item-form" do
           fill_in "item[name]", with: name
-          fill_in "item[start_at]", with: start_at_text
-          fill_in "item[end_at]", with: end_at_text
+          fill_in_datetime "item[start_at]", with: start_at_text
+          fill_in_datetime "item[end_at]", with: end_at_text
           select repeat_type_label, from: "item[repeat_type]"
           # select interval.to_s, from: "item[interval]"
           check 'item_wdays_3'
-          fill_in "item[repeat_start]", with: repeat_start_text
-          fill_in "item[repeat_end]", with: repeat_end_text
+          fill_in_datetime "item[repeat_start]", with: repeat_start_text
+          fill_in_datetime "item[repeat_end]", with: repeat_end_text
           fill_in "item[text]", with: text
-
-          # 1 回目の end_at への入力が強制的に 20:00 にされてしまう。
-          # 2 回入力することで、意図した年月日を設定する。
-          fill_in "item[end_at]", with: end_at_text
-
-          # 1 回目の repeat_end への入力が強制的に現在日にされてしまう。
-          # 2 回入力することで、意図した年月日を設定する。
-          fill_in "item[repeat_end]", with: repeat_end_text
 
           click_on I18n.t('ss.buttons.save')
         end

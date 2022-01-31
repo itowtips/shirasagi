@@ -115,8 +115,8 @@ describe "gws_attendance_time_card", type: :feature, dbscope: :example, js: true
           click_on user1.long_name
         end
         within "form#item-form" do
-          fill_in "item[from_date]", with: I18n.l(from_time.to_date, format: :picker)
-          fill_in "item[to_date]", with: I18n.l(to_time.to_date, format: :picker)
+          fill_in_datetime "item[from_date]", with: from_time
+          fill_in_datetime "item[to_date]", with: to_time
           click_on I18n.t("ss.buttons.download")
         end
 

@@ -21,11 +21,15 @@ describe "gws_notice_folders", type: :feature, dbscope: :example, js: true do
         fill_in "item[order]", with: order
 
         within "#addon-gws-agents-addons-member" do
-          click_on I18n.t("ss.apis.users.index")
+          wait_cbox_open do
+            click_on I18n.t("ss.apis.users.index")
+          end
         end
       end
       wait_for_cbox do
-        click_on gws_user.name
+        wait_cbox_close do
+          click_on gws_user.name
+        end
       end
       within "form#item-form" do
         within "#addon-gws-agents-addons-member" do
@@ -94,19 +98,27 @@ describe "gws_notice_folders", type: :feature, dbscope: :example, js: true do
           fill_in "item[in_basename]", with: name
           fill_in "item[order]", with: order
           within "#addon-basic" do
-            click_on I18n.t("gws/share.apis.folders.index")
+            wait_cbox_open do
+              click_on I18n.t("gws/share.apis.folders.index")
+            end
           end
         end
         wait_for_cbox do
-          click_on folder0.name
+          wait_cbox_close do
+            click_on folder0.name
+          end
         end
         within "form#item-form" do
           within "#addon-gws-agents-addons-member" do
-            click_on I18n.t("ss.apis.users.index")
+            wait_cbox_open do
+              click_on I18n.t("ss.apis.users.index")
+            end
           end
         end
         wait_for_cbox do
-          click_on gws_user.name
+          wait_cbox_close do
+            click_on gws_user.name
+          end
         end
         within "form#item-form" do
           within "#addon-gws-agents-addons-member" do
@@ -166,11 +178,15 @@ describe "gws_notice_folders", type: :feature, dbscope: :example, js: true do
           fill_in "item[in_basename]", with: "#{unique_id}/#{unique_id}"
 
           within "#addon-gws-agents-addons-member" do
-            click_on I18n.t("ss.apis.users.index")
+            wait_cbox_open do
+              click_on I18n.t("ss.apis.users.index")
+            end
           end
         end
         wait_for_cbox do
-          click_on gws_user.name
+          wait_cbox_close do
+            click_on gws_user.name
+          end
         end
         within "form#item-form" do
           within "#addon-gws-agents-addons-member" do
@@ -202,10 +218,14 @@ describe "gws_notice_folders", type: :feature, dbscope: :example, js: true do
       click_on item.name
       click_on I18n.t("ss.links.move")
       within "form#item-form" do
-        click_on I18n.t("gws/share.apis.folders.index")
+        wait_cbox_open do
+          click_on I18n.t("gws/share.apis.folders.index")
+        end
       end
       wait_for_cbox do
-        click_on folder1.name
+        wait_cbox_close do
+          click_on folder1.name
+        end
       end
       within "form#item-form" do
         click_on I18n.t("ss.buttons.save")
