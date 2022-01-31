@@ -80,7 +80,7 @@ module Gws::Schedule::Planable
   end
 
   def time_label(datetime)
-    sprintf('%d:%02d', datetime.hour, datetime.minute)
+    I18n.l(datetime.in_time_zone, format: :gws_time)
   end
 
   def section_name

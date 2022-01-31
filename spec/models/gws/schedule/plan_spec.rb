@@ -90,6 +90,79 @@ RSpec.describe Gws::Schedule::Plan, type: :model, dbscope: :example do
         expect(subject.cur_site.present?).to be_truthy
       end
     end
+
+    context "timezone" do
+      let(:start_on) { Date.new(2022, 1, 20) }
+      let(:end_on) { Date.new(2022, 1, 21) }
+
+      shared_examples "all day plan with timezone" do
+        it do
+          format = plan.calendar_format(plan.cur_user, plan.cur_site)
+          expect(format).to be_present
+          expect(format[:id]).to eq plan.id.to_s
+          expect(format[:title]).to eq plan.name
+          expect(format[:start]).to eq start_on
+          expect(format[:startDateLabel]).to eq I18n.l(start_on, format: :gws_long)
+          expect(format[:startTimeLabel]).to eq I18n.l(start_on.in_time_zone, format: :gws_time)
+          expect(format[:end]).to eq end_on.tomorrow
+          expect(format[:endDateLabel]).to eq I18n.l(end_on, format: :gws_long)
+          expect(format[:endTimeLabel]).to eq I18n.l(end_on.in_time_zone.end_of_day, format: :gws_time)
+          expect(format[:allDay]).to be_truthy
+          expect(format[:allDayLabel]).to eq plan.label(:allday)
+          expect(format[:readable]).to be_truthy
+          expect(format[:editable]).to be_truthy
+          expect(format[:className]).to include("fc-event-range", "fc-event-allday")
+        end
+      end
+
+      context "with Tokyo" do
+        let(:plan) { create(:gws_schedule_plan, allday: 'allday', start_on: start_on, end_on: end_on) }
+
+        before do
+          expect(plan.start_at).to eq start_on.in_time_zone
+          expect(plan.end_at).to eq end_on.in_time_zone.end_of_day.change(usec: 0)
+        end
+
+        # JST で作成した終日イベントを JST で表示
+        it_behaves_like "all day plan with timezone"
+      end
+
+      context "with Eastern Time (US & Canada)" do
+        let(:zone) { "Eastern Time (US & Canada)" }
+        let(:plan) { create(:gws_schedule_plan, allday: 'allday', start_on: start_on, end_on: end_on) }
+
+        around do |example|
+          Time.use_zone(zone) { example.run }
+        end
+
+        before do
+          expect(plan.start_at).to eq start_on.in_time_zone(zone)
+          expect(plan.end_at).to eq end_on.in_time_zone(zone).end_of_day.change(usec: 0)
+        end
+
+        # EST で作成した終日イベントを EST で表示
+        it_behaves_like "all day plan with timezone"
+      end
+
+      context "when a plan created in Eastern Time (US & Canada) shows in Tokyo" do
+        let(:zone) { "Eastern Time (US & Canada)" }
+        let(:plan) do
+          Time.use_zone(zone) do
+            create(:gws_schedule_plan, allday: 'allday', start_on: start_on, end_on: end_on)
+          end
+        end
+
+        before do
+          expect(plan.start_at).to eq start_on.in_time_zone(zone)
+          expect(plan.end_at).to eq end_on.in_time_zone(zone).end_of_day.change(usec: 0)
+        end
+
+        # EST で作成した終日イベントを JST で表示
+        # 2022/1/20〜2022/1/21 の終日イベントは、
+        # いかなるタイムゾーンであっても 2022/1/20〜2022/1/21 として表示されなければいけない
+        it_behaves_like "all day plan with timezone"
+      end
+    end
   end
 
   describe "file size limit" do

@@ -4,7 +4,13 @@ module Gws::Schedule::CalendarFormat
   # event options
   # http://fullcalendar.io/docs/event_data/Event_Object/
   def calendar_format(user, site)
-    data = { id: id.to_s, start: start_at, end: end_at, allDay: allday? }
+    # 2022/1/20 の終日イベントを、いかなるタイムゾーンであっても 2022/1/20 の終日イベントするための前処理
+    # DB に保存している start_at / end_at には作成時のタイムゾーンが付与されているので都合が悪く、
+    # start_on / end_on から、現在のタイムゾーン付きの日時を生成し、start_at_to_format / end_at_to_format にセットする
+    start_at_to_format = allday? ? start_on.in_time_zone : start_at
+    end_at_to_format = allday? ? end_on.in_time_zone.end_of_day.change(usec: 0) : end_at
+
+    data = { id: id.to_s, start: start_at_to_format, end: end_at_to_format, allDay: allday? }
 
     #data[:readable] = allowed?(:read, user, site: site)
     data[:readable] = readable?(user, site: site)
@@ -20,15 +26,15 @@ module Gws::Schedule::CalendarFormat
     end
 
     #data[:termLabel] = Gws::Schedule::PlansController.helpers.term(self)
-    data[:startDateLabel] = date_label(start_at)
-    data[:startTimeLabel] = time_label(start_at)
-    data[:endDateLabel] = date_label(end_at)
-    data[:endTimeLabel] = time_label(end_at)
+    data[:startDateLabel] = date_label(start_at_to_format)
+    data[:startTimeLabel] = time_label(start_at_to_format)
+    data[:endDateLabel] = date_label(end_at_to_format)
+    data[:endTimeLabel] = time_label(end_at_to_format)
     data[:allDayLabel] = label(:allday)
 
     coloring = color.present? ? self : try(:category)
 
-    if allday? || start_at.to_date != end_at.to_date
+    if allday? || start_at_to_format.to_date != end_at_to_format.to_date
       data[:className] = 'fc-event-range'
       data[:backgroundColor] = coloring.color if coloring
       data[:textColor] = coloring.text_color if coloring
@@ -38,8 +44,8 @@ module Gws::Schedule::CalendarFormat
     end
 
     if allday?
-      data[:start] = start_at.to_date
-      data[:end] = (end_at + 1.day).to_date
+      data[:start] = start_at_to_format.to_date
+      data[:end] = (end_at_to_format + 1.day).to_date
       data[:className] += ' fc-event-allday'
     end
 
