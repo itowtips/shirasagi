@@ -230,5 +230,61 @@ namespace :pippi do
       importer = Pippi::Joruri::Importer::PippiContent.new(site)
       importer.destroy_pippi_contents
     end
+
+    task import_facility_sho_koku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ShoKoku.new(site)
+      importer.import_facility_sho_koku_docs
+    end
+
+    task destroy_facility_sho_koku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ShoKoku.new(site)
+      importer.destroy_facility_sho_koku_docs
+    end
+
+    task import_facility_sho_shi_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ShoShi.new(site)
+      importer.import_facility_sho_shi_docs
+    end
+
+    task destroy_facility_sho_shi_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ShoShi.new(site)
+      importer.destroy_facility_sho_shi_docs
+    end
+
+    task import_facility_sho_watakushi_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ShoWatakushi.new(site)
+      importer.import_facility_sho_watakushi_docs
+    end
+
+    task destroy_facility_sho_watakushi_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ShoWatakushi.new(site)
+      importer.destroy_facility_sho_watakushi_docs
+    end
+
+    task import_facility_sho_tokubetsu_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ShoTokubetsu.new(site)
+      importer.import_facility_sho_tokubetsu_docs
+    end
+
+    task destroy_facility_sho_tokubetsu_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ShoTokubetsu.new(site)
+      importer.destroy_facility_sho_tokubetsu_docs
+    end
   end
 end

@@ -49,4 +49,18 @@ module Pippi::Joruri::Relation
 
   class Node < Doc
   end
+
+  class Facility < Doc
+    class ShoKoku < Doc
+    end
+
+    class ShoShi < Doc
+    end
+
+    class ShoWatakushi < Doc
+    end
+
+    class ShoTokubetsu < Doc
+    end
+  end
 end
