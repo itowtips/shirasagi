@@ -96,7 +96,7 @@ this.SS_DateTimePicker = (function () {
     return $(selector).data("ss_datetimepicker");
   };
 
-  [ "on", "once", "off", "momentValue" ].forEach(function(method) {
+  [ "on", "once", "off", "momentValue", "valueForExchange" ].forEach(function(method) {
     SS_DateTimePicker[method] = function() {
       var selector = Array.prototype.shift.call(arguments)
       return SS_DateTimePicker.prototype[method].apply(SS_DateTimePicker.instance(selector), arguments);

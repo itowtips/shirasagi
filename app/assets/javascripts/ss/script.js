@@ -30,6 +30,7 @@
 //= require mdn-polyfills/String.prototype.startsWith.js
 //= require mdn-polyfills/String.prototype.trim.js
 //= require eventemitter3/umd/eventemitter3
+//= require formdata-polyfill/formdata.min.js
 //= require moment
 //= require moment/ja
 //= require popper.js/dist/umd/popper.js
