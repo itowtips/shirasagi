@@ -21,6 +21,12 @@
             <%= hidden_field_tag "#{f.object_name}[#{column.id}]", file_data.values[0] %>
             <%= file_data.values[2] %>
           <% end %>
+        <% elsif column.input_type =~ /geolocation/ %>
+          <%= render_inquiry_location_map "#geolocation-column#{column.id}", site: @cur_site, preview: @preview %>
+          <div id="<%= "geolocation-column#{column.id}" %>">
+            <div id="map-canvas" style="width: 100%;"></div>
+            <%= f.hidden_field column.id, value: data, class: "loc" %>
+          </div>
         <% else %>
           <%= f.hidden_field column.id, value: data %><%=br data %>
           <% if column.input_confirm == "enabled" %>
@@ -74,6 +80,13 @@
         <% else %>
           <%= file_field_tag "#{f.object_name}[#{column.id}]", opt %><br />
         <% end %>
+      <% elsif column.input_type =~ /geolocation/ %>
+        <%= render_inquiry_location_map "#geolocation-column#{column.id}", site: @cur_site, preview: @preview %>
+        <div id="<%= "geolocation-column#{column.id}" %>">
+          <%= link_to t("map.geolocation.search"), "", class: "search-location" %>
+          <div id="map-canvas" style="width: 100%;"></div>
+          <%= hidden_field_tag "#{f.object_name}[#{column.id}]", data, class: "loc" %>
+        </div>
       <% end %>
     <% end %>
   <% end %>

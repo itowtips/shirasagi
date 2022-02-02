@@ -3,6 +3,15 @@
     <dt><%= tryb { data.column.name } || "Unknown Name" %></dt>
     <% if data.column && data.column.input_type =~ /upload_file/ %>
       <dd><%= link_to data.value, { action: :download_afile, fid: data.values[0] } %></dd>
+    <% elsif data.column && data.column.input_type =~ /geolocation/ %>
+      <dd>
+        <%= render_inquiry_location_map "#geolocation-column#{data.column_id}", site: @cur_site %>
+        <div id="<%= "geolocation-column#{data.column_id}" %>">
+          <div id="map-canvas" style="width: 100%;"></div>
+          <%= hidden_field_tag data.column_id, data.value, class: "loc" %>
+        </div>
+        <dd><%= br sanitize(data.value, tags: []) %></dd>
+      </dd>
     <% else %>
       <dd><%= br sanitize(data.value, tags: []) %></dd>
     <% end %>

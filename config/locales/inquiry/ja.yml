@@ -47,6 +47,7 @@ ja:
         check_box: チェックボックス選択
         upload_file: ファイル投稿
         form_select: フォーム選択
+        geolocation: 位置情報送信
       input_confirm:
         disabled: しない
         enabled: する

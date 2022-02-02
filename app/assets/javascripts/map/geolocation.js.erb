@@ -1,0 +1,57 @@
+this.Map_Geolocation = (function () {
+  function Map_Geolocation(selector, success, error) {
+    this.selector = $(selector);
+    this.defaultText = $(selector).text();
+    this.success = success;
+    this.error = error;
+    this.render();
+  };
+
+  Map_Geolocation.prototype.render = function () {
+    var self = this;
+    var success = function(position) {
+      var loc = [position.coords.longitude, position.coords.latitude];
+      self.selector.text("<%= I18n.t("map.geolocation.success") %>");
+      self.selector.removeAttr("disabled");
+      if (self.success) {
+        self.success(loc);
+      }
+    };
+    var error = function(error) {
+      var errorMessage = {
+        0: "<%= I18n.t("map.geolocation.errors.0") %>",
+        1: "<%= I18n.t("map.geolocation.errors.1") %>",
+        2: "<%= I18n.t("map.geolocation.errors.2") %>",
+        3: "<%= I18n.t("map.geolocation.errors.3") %>",
+      };
+      alert(errorMessage[error.code] + " ERROR(" + error.code + ")" + error.message);
+      self.selector.text(self.defaultText);
+      self.selector.removeAttr("disabled");
+      if (self.error) {
+        self.error();
+      }
+    };
+    var option = {
+      "enableHighAccuracy": true,
+      "maximumAge": 30000
+    };
+    self.selector.on("click", function () {
+      if (self.selector.attr("disabled")) {
+        return false;
+      }
+      if(navigator.geolocation) {
+        self.selector.text("<%= I18n.t("map.geolocation.searching") %>");
+        self.selector.attr("disabled", "disabled");
+        navigator.geolocation.getCurrentPosition(success, error, option);
+      } else {
+        alert("<%= I18n.t("map.geolocation.errors.unsupported") %>");
+        if (self.error) {
+          self.error();
+        }
+      }
+      return false;
+    });
+  };
+
+  return Map_Geolocation;
+})();

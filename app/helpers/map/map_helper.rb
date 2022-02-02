@@ -153,6 +153,28 @@ module Map::MapHelper
     jquery { s.join("\n").html_safe }
   end
 
+  def render_inquiry_location_map(selector, opts = {})
+    return "" unless map_enabled?(opts)
+
+    map_options = opts[:map] || {}
+    s = []
+
+    case default_map_api(opts)
+    when 'openlayers'
+      include_openlayers_api
+
+      # set default values
+      map_options[:readonly] = true
+      map_options[:layers] = effective_layers(opts)
+      s << "new Openlayers_Inquiry_Form(\"" + selector + "\", #{map_options.to_json})"
+    else
+      include_googlemaps_api(opts)
+      s << "new Googlemaps_Inquiry_Form(\"" + selector + "\", #{map_options.to_json})"
+    end
+
+    jquery { s.join("\n").html_safe }
+  end
+
   def render_member_photo_form_map(selector, opts = {})
     return "" unless map_enabled?(opts)
 

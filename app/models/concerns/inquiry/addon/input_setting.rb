@@ -19,7 +19,7 @@ module Inquiry::Addon
       permit_params transfers: [:keyword, :email]
 
       validates :input_type, presence: true, inclusion: {
-        in: %w(text_field text_area email_field radio_button select check_box upload_file form_select)
+        in: %w(text_field text_area email_field radio_button select check_box upload_file form_select geolocation)
       }
       validates :question, presence: true, inclusion: {
         in: %w(enabled disabled)
@@ -34,7 +34,7 @@ module Inquiry::Addon
     end
 
     def input_type_options
-      %w(text_field text_area email_field radio_button select check_box upload_file form_select).map do |v|
+      %w(text_field text_area email_field radio_button select check_box upload_file form_select geolocation).map do |v|
         label = I18n.t("inquiry.options.input_type.#{v}")
         label += I18n.t("inquiry.cannot_use") if v == "upload_file" && SS.config.cms.enable_lgwan
         [ label, v ]
