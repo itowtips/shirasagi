@@ -16,7 +16,9 @@ describe "gws_survey_categories", type: :feature, dbscope: :example, js: true do
       # Create
       #
       visit gws_survey_categories_path(site: site)
-      click_on I18n.t("ss.links.new")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
       within "form" do
         fill_in "item[name]", with: name
         click_on I18n.t("ss.buttons.save")
@@ -32,7 +34,9 @@ describe "gws_survey_categories", type: :feature, dbscope: :example, js: true do
       #
       visit gws_survey_categories_path(site: site)
       click_on name
-      click_on I18n.t("ss.links.edit")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.edit")
+      end
       within "form" do
         fill_in "item[name]", with: name2
         click_on I18n.t("ss.buttons.save")
@@ -47,7 +51,9 @@ describe "gws_survey_categories", type: :feature, dbscope: :example, js: true do
       #
       visit gws_survey_categories_path(site: site)
       click_on name2
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.delete")
       end

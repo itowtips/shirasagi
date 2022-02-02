@@ -31,11 +31,11 @@ describe "gws_user_titles", type: :feature, dbscope: :example do
       csv = ::CSV.parse(csv, headers: true)
 
       expect(csv.length).to eq 1
-      expect(csv.headers).to include(Gws::UserTitle.t(:code), Gws::UserTitle.t(:name))
-      expect(csv[0][Gws::UserTitle.t(:code)]).to eq item.code
-      expect(csv[0][Gws::UserTitle.t(:name)]).to eq item.name
-      expect(csv[0][Gws::UserTitle.t(:remark)]).to eq item.remark
-      expect(csv[0][Gws::UserTitle.t(:order)]).to eq item.order.to_s
+      expect(csv.headers).to include(*%i[code name].map { |n| Gws::UserTitle.t(n, locale: I18n.default_locale) })
+      expect(csv[0][Gws::UserTitle.t(:code, locale: I18n.default_locale)]).to eq item.code
+      expect(csv[0][Gws::UserTitle.t(:name, locale: I18n.default_locale)]).to eq item.name
+      expect(csv[0][Gws::UserTitle.t(:remark, locale: I18n.default_locale)]).to eq item.remark
+      expect(csv[0][Gws::UserTitle.t(:order, locale: I18n.default_locale)]).to eq item.order.to_s
     end
   end
 

@@ -18,7 +18,9 @@ describe "gws_survey copy", type: :feature, dbscope: :example, js: true do
       # create new form
       visit gws_survey_main_path(site: site)
       click_on I18n.t("ss.navi.editable")
-      click_on I18n.t("ss.links.new")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
 
       within "form#item-form" do
         fill_in "item[name]", with: form_name
@@ -38,7 +40,9 @@ describe "gws_survey copy", type: :feature, dbscope: :example, js: true do
 
       click_on(I18n.t('gws/workflow.columns.index'))
 
-      click_on(I18n.t("ss.links.new"))
+      within ".nav-menu" do
+        click_on(I18n.t("ss.links.new"))
+      end
       click_on(I18n.t("mongoid.models.gws/column/radio_button"))
       within "form#item-form" do
         fill_in "item[name]", with: column_name
@@ -51,7 +55,9 @@ describe "gws_survey copy", type: :feature, dbscope: :example, js: true do
       visit gws_survey_main_path(site: site)
       click_on I18n.t("ss.navi.editable")
       click_on form_name
-      click_on I18n.t("gws/workflow.links.publish")
+      within ".nav-menu" do
+        click_on I18n.t("gws/workflow.links.publish")
+      end
 
       within "form" do
         click_on(I18n.t("ss.buttons.save"))
@@ -76,12 +82,14 @@ describe "gws_survey copy", type: :feature, dbscope: :example, js: true do
       visit gws_survey_main_path(site: site)
       click_on I18n.t("ss.navi.editable")
       click_on form_name
-      click_on I18n.t("ss.links.copy")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.copy")
+      end
 
       within "form#item-form" do
         fill_in "copy[name]", with: copy_name
-        select '有効', from: 'copy[anonymous_state]'
-        select '公開', from: 'copy[file_state]'
+        select I18n.t("ss.options.state.enabled"), from: 'copy[anonymous_state]'
+        select I18n.t("ss.options.state.public"), from: 'copy[file_state]'
         click_on I18n.t("ss.buttons.save")
       end
       expect(page).to have_css("#notice", text: I18n.t("ss.notice.copied"))
@@ -92,7 +100,9 @@ describe "gws_survey copy", type: :feature, dbscope: :example, js: true do
 
       # publish
       click_on copy_name
-      click_on I18n.t("gws/workflow.links.publish")
+      within ".nav-menu" do
+        click_on I18n.t("gws/workflow.links.publish")
+      end
 
       within "form" do
         click_on(I18n.t("ss.buttons.save"))

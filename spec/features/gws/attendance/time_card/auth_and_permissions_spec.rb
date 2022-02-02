@@ -16,7 +16,7 @@ describe "gws_attendance_time_card", type: :feature, dbscope: :example, js: true
   context 'without login' do
     it do
       visit gws_attendance_main_path(site)
-      expect(page).to have_css(".login-box", text: I18n.t("ss.login"))
+      expect(page).to have_css(".login-box", text: I18n.t("ss.login", locale: I18n.default_locale))
     end
   end
 

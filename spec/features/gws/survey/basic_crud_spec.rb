@@ -32,7 +32,9 @@ describe "gws_survey", type: :feature, dbscope: :example, js: true do
 
       visit gws_survey_main_path(site: site)
       click_on I18n.t("ss.navi.editable")
-      click_on I18n.t("ss.links.new")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
 
       within "form#item-form" do
         fill_in "item[name]", with: form_name
@@ -52,7 +54,9 @@ describe "gws_survey", type: :feature, dbscope: :example, js: true do
 
       click_on(I18n.t('gws/workflow.columns.index'))
 
-      click_on(I18n.t("ss.links.new"))
+      within ".nav-menu" do
+        click_on(I18n.t("ss.links.new"))
+      end
       click_on(I18n.t("mongoid.models.gws/column/radio_button"))
       within "form#item-form" do
         fill_in "item[name]", with: column_name
@@ -70,7 +74,9 @@ describe "gws_survey", type: :feature, dbscope: :example, js: true do
       visit gws_survey_main_path(site: site)
       click_on I18n.t("ss.navi.editable")
       click_on form_name
-      click_on I18n.t("gws/workflow.links.publish")
+      within ".nav-menu" do
+        click_on I18n.t("gws/workflow.links.publish")
+      end
 
       within "form" do
         click_on(I18n.t("ss.buttons.save"))
@@ -100,7 +106,9 @@ describe "gws_survey", type: :feature, dbscope: :example, js: true do
       click_on form_name
 
       # click print
-      click_on(I18n.t("ss.links.print"))
+      within ".nav-menu" do
+        click_on(I18n.t("ss.links.print"))
+      end
       expect(page).to have_text(column_name)
       click_on(I18n.t("ss.links.back"))
 
@@ -120,7 +128,9 @@ describe "gws_survey", type: :feature, dbscope: :example, js: true do
       click_on form_name
 
       # click print
-      click_on(I18n.t("ss.links.print"))
+      within ".nav-menu" do
+        click_on(I18n.t("ss.links.print"))
+      end
       expect(page).to have_text(column_name)
       click_on(I18n.t("ss.links.back"))
 
@@ -159,7 +169,9 @@ describe "gws_survey", type: :feature, dbscope: :example, js: true do
       expect(csv[0][Gws::User.t(:organization_uid)]).to eq user1.organization_uid
 
       # zip
-      click_on I18n.t("ss.links.back_to_index")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.back_to_index")
+      end
       within ".operations" do
         click_on I18n.t("gws/survey.buttons.zip_all_files")
       end
@@ -168,7 +180,9 @@ describe "gws_survey", type: :feature, dbscope: :example, js: true do
       # aggregate
       #
       #click_on I18n.t("ss.links.back_to_index")
-      click_on I18n.t("gws/survey.tabs.summary")
+      within ".gws-tabs" do
+        click_on I18n.t("gws/survey.tabs.summary")
+      end
       within ".gws-survey" do
         expect(page).to have_css("dd", text: csv.length)
       end
@@ -177,7 +191,7 @@ describe "gws_survey", type: :feature, dbscope: :example, js: true do
       # delete_all
       #
       within ".current-navi" do
-        click_on "管理一覧"
+        click_on I18n.t("ss.navi.editable")
       end
 
       within ".list-items" do

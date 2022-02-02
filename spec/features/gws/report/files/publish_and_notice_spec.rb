@@ -55,7 +55,9 @@ describe "gws_report_files", type: :feature, dbscope: :example, js: true do
         click_on I18n.t('gws/report.options.file_state.closed')
       end
       click_on subject.name
-      click_on I18n.t("gws/report.links.publish")
+      within ".nav-menu" do
+        click_on I18n.t("gws/report.links.publish")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.save")
       end
@@ -121,7 +123,9 @@ describe "gws_report_files", type: :feature, dbscope: :example, js: true do
         click_on I18n.t('gws/report.options.file_state.sent')
       end
       click_on subject.name
-      click_on I18n.t("gws/report.links.depublish")
+      within ".nav-menu" do
+        click_on I18n.t("gws/report.links.depublish")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.save")
       end
@@ -173,7 +177,9 @@ describe "gws_report_files", type: :feature, dbscope: :example, js: true do
         click_on I18n.t('gws/report.options.file_state.closed')
       end
       click_on subject.name
-      click_on I18n.t("gws/report.links.publish")
+      within ".nav-menu" do
+        click_on I18n.t("gws/report.links.publish")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.save")
       end
@@ -203,7 +209,9 @@ describe "gws_report_files", type: :feature, dbscope: :example, js: true do
         click_on I18n.t('gws/report.options.file_state.sent')
       end
       click_on subject.name
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.delete")
       end

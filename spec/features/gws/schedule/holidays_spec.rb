@@ -118,7 +118,9 @@ describe "gws_schedule_holidays", type: :feature, dbscope: :example do
     let(:time){ Time.zone.now }
     it "downloads CSVfile" do
       Timecop.freeze(time) do
-        click_link I18n.t('ss.links.download')
+        within ".gws-schedule-box" do
+          click_link I18n.t('gws/schedule.links.download')
+        end
         expect(status_code).to eq 200
         expect(page.response_headers['Content-Type']).to eq("text/csv")
 

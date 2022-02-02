@@ -62,9 +62,9 @@ this.Gws_Schedule_Calendar = (function ($) {
         listMonth: i18next.t('gws/schedule.calendar.buttonText.listMonth')
       },
       columnFormat: {
-        month: "ddd",
-        week: "M/D [(]ddd[)]",
-        day: "M/D [(]ddd[)]"
+        month: SS.convertDateTimeFormat(i18next.t('gws/schedule.calendar.columnFormat.month')),
+        week: SS.convertDateTimeFormat(i18next.t('gws/schedule.calendar.columnFormat.week')),
+        day: SS.convertDateTimeFormat(i18next.t('gws/schedule.calendar.columnFormat.day'))
       },
       customButtons: {
         withTodo: {
@@ -115,16 +115,16 @@ this.Gws_Schedule_Calendar = (function ($) {
         left: 'today prev next title reload',
         right: 'withAbsence withTodo month,basicWeek,agendaDay withListView'
       },
-      lang: 'ja',
+      lang: document.documentElement.lang || 'ja',
       nextDayThreshold: '00:00:00', // 複数日表示の閾値
       schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
       slotLabelFormat: 'HH:mm',
       startParam: 's[start]',
       timeFormat: 'HH:mm',
       titleFormat: {
-        month: i18next.t('gws/schedule.calendar.titleFormat.month'),
-        week: i18next.t('gws/schedule.calendar.titleFormat.week'),
-        day: i18next.t('gws/schedule.calendar.titleFormat.day')
+        month: SS.convertDateTimeFormat(i18next.t('gws/schedule.calendar.titleFormat.month')),
+        week: SS.convertDateTimeFormat(i18next.t('gws/schedule.calendar.titleFormat.week')),
+        day: SS.convertDateTimeFormat(i18next.t('gws/schedule.calendar.titleFormat.day'))
       },
       loading: function (isLoading, view) {
         if (isLoading) {

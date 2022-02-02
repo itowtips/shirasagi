@@ -21,7 +21,9 @@ describe "gws_discussion_todos", type: :feature, dbscope: :example, js: true do
         click_on I18n.t("gws/discussion.links.todo.index")
       end
       wait_for_ajax
-      click_on I18n.t("ss.links.new")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
 
       within "form#item-form" do
         fill_in "item[text]", with: text
@@ -60,7 +62,9 @@ describe "gws_discussion_todos", type: :feature, dbscope: :example, js: true do
       within ".addon-view.my-todo" do
         click_on item.name
       end
-      click_on I18n.t("ss.links.edit")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.edit")
+      end
       within "form#item-form" do
         fill_in "item[text]", with: text2
         click_on I18n.t('ss.buttons.save')
@@ -80,7 +84,9 @@ describe "gws_discussion_todos", type: :feature, dbscope: :example, js: true do
       within ".addon-view.my-todo" do
         click_on item.name
       end
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within "form" do
         click_on I18n.t('ss.buttons.delete')
       end

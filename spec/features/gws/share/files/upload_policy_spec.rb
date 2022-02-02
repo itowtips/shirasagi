@@ -17,7 +17,9 @@ describe "gws_share_files_upload_policy", type: :feature, dbscope: :example, js:
       click_on folder.name
 
       # create
-      click_on I18n.t("ss.links.new")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
       click_on I18n.t("gws.apis.categories.index")
       wait_for_cbox do
         click_on category.name
@@ -70,13 +72,17 @@ describe "gws_share_files_upload_policy", type: :feature, dbscope: :example, js:
       expect(restored_file.sanitizer_state).to eq 'complete'
       expect(Fs.exist?(restored_file.path)).to be_truthy
 
-      click_on I18n.t('ss.links.back_to_index')
+      within ".nav-menu" do
+        click_on I18n.t('ss.links.back_to_index')
+      end
       expect(page).to have_css('.list-items .sanitizer-complete')
       click_on restored_file.name
       expect(page).to have_css('.sanitizer-complete')
 
       # update
-      click_on I18n.t("ss.links.edit")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.edit")
+      end
       within "form#item-form" do
         attach_file "item[in_file]", "#{Rails.root}/spec/fixtures/ss/file/keyvisual.jpg"
         fill_in "item[name]", with: "modify"
@@ -91,7 +97,9 @@ describe "gws_share_files_upload_policy", type: :feature, dbscope: :example, js:
       expect(Fs.cmp(file.path, sanitizer_input_path)).to be_truthy
 
       # soft delete
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.delete")
       end
@@ -102,7 +110,9 @@ describe "gws_share_files_upload_policy", type: :feature, dbscope: :example, js:
       click_on I18n.t("ss.links.trash")
       click_on folder.name
       click_on file.name
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.delete")
       end
@@ -127,7 +137,9 @@ describe "gws_share_files_upload_policy", type: :feature, dbscope: :example, js:
       click_on folder.name
 
       # create
-      click_on I18n.t("ss.links.new")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
       click_on I18n.t("gws.apis.categories.index")
       wait_for_cbox do
         click_on category.name

@@ -12,8 +12,9 @@ FactoryBot.define do
     uid { "uid-#{unique_id}" }
     email { "#{uid}@example.jp" }
     in_password { "pass" }
+
+    lang { I18n.locale.to_s }
   end
 
-  factory :gws_user, class: Gws::User, traits: [:gws_user_base] do
-  end
+  factory :gws_user, class: Gws::User, traits: [:gws_user_base]
 end

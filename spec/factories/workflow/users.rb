@@ -10,6 +10,8 @@ FactoryBot.define do
     cms_role_ids { role.present? ? [role.id] : nil }
     login_roles { [SS::Model::User::LOGIN_ROLE_DBPASSWD] }
 
+    lang { I18n.locale.to_s }
+
     trait :workflow_user_fixed_name do
       name { "workflow_user" }
     end

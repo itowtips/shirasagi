@@ -22,8 +22,9 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
     it do
       # Create as draft
       visit gws_circular_admins_path(site)
-      click_on I18n.t("ss.links.new")
-
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
       within "form#item-form" do
         fill_in "item[name]", with: name
       end
@@ -71,8 +72,9 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
     it do
       # Create as draft
       visit gws_circular_admins_path(site)
-      click_on I18n.t("ss.links.new")
-
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
       within "form#item-form" do
         fill_in "item[name]", with: name
       end

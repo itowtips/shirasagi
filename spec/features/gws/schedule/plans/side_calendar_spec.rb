@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'gws_schedule_plans', type: :feature, dbscope: :example, js: true do
   let(:site) { gws_site }
   let(:now) { Time.zone.now }
-  let(:title) { now.strftime('%Y年 %1m月') }
+  let(:title) { I18n.l(now, format: I18n.t("gws/schedule.calendar.titleFormat.month")) }
 
   before { login_gws_user }
 
@@ -18,27 +18,27 @@ describe 'gws_schedule_plans', type: :feature, dbscope: :example, js: true do
       end
 
       within ".gws-schedule-tool-calendars" do
-        expect(page).to have_css(".xdsoft_month", text: now.strftime("%1m月"))
+        expect(page).to have_css(".xdsoft_month", text: now.strftime(I18n.locale == :ja ? "%1m月" : "%b"))
 
         within all(".xdsoft_calendar")[0] do
           first('[data-date="1"]', text: "1").click
         end
-        expect(page).to have_css(".xdsoft_month", text: now.strftime("%1m月"))
+        expect(page).to have_css(".xdsoft_month", text: now.strftime(I18n.locale == :ja ? "%1m月" : "%b"))
 
         within all(".xdsoft_calendar")[1] do
           first('[data-date="1"]', text: "1").click
         end
-        expect(page).to have_css(".xdsoft_month", text: now.advance(months: 1).strftime("%1m月"))
+        expect(page).to have_css(".xdsoft_month", text: now.advance(months: 1).strftime(I18n.locale == :ja ? "%1m月" : "%b"))
 
         within all(".xdsoft_calendar")[2] do
           first('[data-date="1"]', text: "1").click
         end
-        expect(page).to have_css(".xdsoft_month", text: now.advance(months: 2).strftime("%1m月"))
+        expect(page).to have_css(".xdsoft_month", text: now.advance(months: 2).strftime(I18n.locale == :ja ? "%1m月" : "%b"))
 
         within all(".xdsoft_calendar")[3] do
           first('[data-date="1"]', text: "1").click
         end
-        expect(page).to have_css(".xdsoft_month", text: now.advance(months: 3).strftime("%1m月"))
+        expect(page).to have_css(".xdsoft_month", text: now.advance(months: 3).strftime(I18n.locale == :ja ? "%1m月" : "%b"))
       end
     end
   end

@@ -17,7 +17,9 @@ describe "gws_share_files", type: :feature, dbscope: :example, js: true do
       #
       # Create
       #
-      click_on I18n.t("ss.links.new")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
       click_on I18n.t("gws.apis.categories.index")
       wait_for_cbox do
         click_on category.name
@@ -84,7 +86,9 @@ describe "gws_share_files", type: :feature, dbscope: :example, js: true do
       click_on folder.name
       click_on file.name
       expect(page).to have_content(file.memo)
-      click_on I18n.t("ss.links.edit")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.edit")
+      end
       within "form#item-form" do
         fill_in "item[name]", with: "modify"
         fill_in "item[memo]", with: "edited"
@@ -121,7 +125,9 @@ describe "gws_share_files", type: :feature, dbscope: :example, js: true do
       visit gws_share_files_path(site)
       click_on folder.name
       click_on file.name
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.delete")
       end
@@ -158,7 +164,9 @@ describe "gws_share_files", type: :feature, dbscope: :example, js: true do
       click_on I18n.t("ss.links.trash")
       click_on folder.name
       click_on file.name
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.delete")
       end

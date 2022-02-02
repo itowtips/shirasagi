@@ -37,7 +37,7 @@ en:
     encoding: Character encoding
     text_zoom: Character size
     default_here_label: "Click here for details⇒"
-    dash: —
+    dash: ー
     wave_dash: ～
     color: Display color
     bg_color: Background color

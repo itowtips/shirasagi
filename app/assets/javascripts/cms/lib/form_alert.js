@@ -66,7 +66,7 @@ this.Form_Alert = (function () {
 
   Form_Alert.showAlert = function (form, submit) {
     var div = $('<div id="alertExplanation" class="errorExplanation">');
-    div.append("<h2><%= I18n.t('cms.alert') %></h2>");
+    div.append("<h2>" + i18next.t('cms.alert') + "</h2>");
     var ref = Form_Alert.alerts;
     var alert_msg = $(submit).attr("data-alert-msg");
     for (var addon in ref) {
@@ -88,9 +88,9 @@ this.Form_Alert = (function () {
     var footer = $(document.createElement("footer")).addClass('send');
     
     if (!alert_msg) {
-      footer.append('<button name="button" type="button" class="btn-primary save"><%= I18n.t("ss.buttons.ignore_alert") %></button>');
+      footer.append($('<button />', { name: "button", type: "button", class: "btn-primary save" }).html(i18next.t("ss.buttons.ignore_alert")));
     }
-    footer.append('<button name="button" type="button" class="btn-default cancel"><%= I18n.t("ss.buttons.cancel") %></button>');
+    footer.append($('<button />', { name: "button", type: "button", class: "btn-default cancel" }).html(i18next.t("ss.buttons.cancel")));
     $.colorbox({
       html: div.get(0).outerHTML + footer.get(0).outerHTML,
       maxHeight: "80%",
@@ -115,7 +115,7 @@ this.Form_Alert = (function () {
     var promise = Syntax_Checker.asyncCheck();
     promise.done(function() {
       $.each(Syntax_Checker.errors, function(id, error) {
-        Form_Alert.add("<%= I18n.t('cms.syntax_check') %>", error["ele"], error["msg"]);
+        Form_Alert.add(i18next.t('cms.syntax_check'), error["ele"], error["msg"]);
       });
     });
     return promise;
@@ -128,7 +128,7 @@ this.Form_Alert = (function () {
         $(this).closest("dl").show();
         addonName = $(this).closest(".addon-view").find("header").text();
         fieldName = Form_Alert.justText($(this).closest("dd").prev("dt"));
-        return Form_Alert.add(addonName, this, fieldName + <%= I18n.t('errors.messages.blank').to_json %>);
+        return Form_Alert.add(addonName, this, fieldName + i18next.t('errors.messages.blank'));
       }
     });
   };
@@ -148,19 +148,20 @@ this.Form_Alert = (function () {
 
   Form_Alert.clonedName = function (form, submit) {
     var name = $(form).find("#addon-basic #item_name");
-    if ($(submit).hasClass("publish_save") && /^\[<%= I18n.t('workflow.cloned_name_prefix') %>\]/.test($(name).val())) {
+    var regex = new RegExp("^\\[" + i18next.t('workflow.cloned_name_prefix') + "\\]");
+    if ($(submit).hasClass("publish_save") && regex.test($(name).val())) {
       var addonName = $(name).closest(".addon-view").find("header").text();
-      return Form_Alert.add(addonName, name, "<%= I18n.t('errors.messages.cloned_name') %>");
+      return Form_Alert.add(addonName, name, i18next.t('errors.messages.cloned_name'));
     }
   };
 
   Form_Alert.closeConfirmation = function (form, submit) {
     var addonName, msg;
     if ($(submit).attr("data-close-confirmation")) {
-      addonName = '<%= I18n.t("cms.confirm.close") %>';
+      addonName = i18next.t("cms.confirm.close");
       msg = null;
       if ($(submit).attr("data-contain-links-path")) {
-        msg = '<a href="' + $(submit).attr("data-contain-links-path") + '" target="_blank" rel="noopener">' + '<%= I18n.t("cms.confirm.check_contains_urls") %>' + '</a>';
+        msg = '<a href="' + $(submit).attr("data-contain-links-path") + '" target="_blank" rel="noopener">' + i18next.t("cms.confirm.check_contains_urls") + '</a>';
       }
       return Form_Alert.add(addonName, null, msg);
     }
@@ -175,7 +176,7 @@ this.Form_Alert = (function () {
       messages = f();
     }
 
-    addonName = '<%= I18n.t("cms.sns_post") %>';
+    addonName = i18next.t("cms.sns_post");
     $.each(messages, function() {
       Form_Alert.add(addonName, null, this);
     });
@@ -212,7 +213,7 @@ this.Form_Alert = (function () {
           $(this).closest("dl").show();
           addonName = $(this).closest(".addon-view").find(".addon-head").text();
           fieldName = Form_Alert.justText($(this).closest("dd").prev("dt"));
-          return Form_Alert.add(addonName, this, fieldName + "<%= I18n.t('errors.messages.replace_word_validation') %>" + ("「" + k + "」→「" + v + "」"));
+          return Form_Alert.add(addonName, this, fieldName + i18next.t('errors.messages.replace_word_validation') + ("「" + k + "」→「" + v + "」"));
         }
       }));
     }

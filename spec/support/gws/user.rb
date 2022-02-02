@@ -52,7 +52,7 @@ def create_gws_users
   user = Gws::User.create name: "gw-admin", uid: "admin", email: "admin@example.jp", in_password: "pass",
     group_ids: [g11.id], gws_role_ids: [role.id],
     organization_id: g00.id, organization_uid: "org-admin",
-    deletion_lock_state: "locked"
+    deletion_lock_state: "locked", lang: I18n.locale.to_s
   if user.invalid?
     user = Gws::User.find_by(email: "admin@example.jp")
     user.add_to_set(group_ids: g11.id, gws_role_ids: role.id)
@@ -61,7 +61,7 @@ def create_gws_users
   end
 
   sys = Gws::User.create name: "gws-sys", uid: "sys", email: "sys@example.jp", in_password: "pass",
-    group_ids: [g11.id], gws_role_ids: [role.id]
+    group_ids: [g11.id], gws_role_ids: [role.id], lang: I18n.locale.to_s
   if sys.invalid?
     sys = Gws::User.find_by(email: "sys@example.jp")
     sys.add_to_set(group_ids: g11.id, gws_role_ids: role.id)

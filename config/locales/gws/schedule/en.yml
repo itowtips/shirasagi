@@ -1,0 +1,15 @@
+en:
+  gws/schedule:
+    calendar:
+      buttonText:
+        listMonth: List
+        withTodo: ToDo
+        withAbsence: Absence
+      titleFormat:
+        month: "%m/%Y"
+        week: "(%a, %m/%d/%Y)"
+        day: "%a, %m/%d/%Y"
+      columnFormat:
+        month: "%a"
+        week: "%a, %m/%d"
+        day: "%a, %m/%d"

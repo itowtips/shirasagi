@@ -23,15 +23,21 @@ class Gws::UserCsv::Importer
 
     @imported = 0
 
+    locale = nil
     SS::Csv.foreach_row(in_file, headers: true) do |row, i|
       @row_index = i + 2
       @row = row
+      if i == 0
+        locale = guess_locale(row.headers)
+      end
 
-      item = build_item
-      next if item.blank?
+      I18n.with_locale(locale) do
+        item = build_item
+        next if item.blank?
 
-      save_item(item)
-      save_form_data(item)
+        save_item(item)
+        save_form_data(item)
+      end
     end
 
     errors.empty?
@@ -56,8 +62,10 @@ class Gws::UserCsv::Importer
     end
 
     begin
+      locale = nil
       SS::Csv.foreach_row(in_file, headers: true) do |row|
-        diff = Gws::UserCsv::Exporter.csv_basic_headers(webmail_support: @webmail_support) - row.headers
+        locale ||= guess_locale(row.headers)
+        diff = Gws::UserCsv::Exporter.csv_basic_headers(webmail_support: @webmail_support, locale: locale) - row.headers
         if diff.length > 6
           errors.add :in_file, :invalid_file_type
         end
@@ -69,6 +77,13 @@ class Gws::UserCsv::Importer
     end
 
     in_file.rewind
+  end
+
+  def guess_locale(headers)
+    common_ja = (Gws::UserCsv::Exporter.csv_basic_headers(webmail_support: @webmail_support, locale: :ja) & headers)
+    common_en = (Gws::UserCsv::Exporter.csv_basic_headers(webmail_support: @webmail_support, locale: :en) & headers)
+
+    common_ja.length >= common_en.length ? :ja : :en
   end
 
   def normalize_value(value)

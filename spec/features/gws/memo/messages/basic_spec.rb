@@ -63,23 +63,29 @@ describe 'gws_memo_messages', type: :feature, dbscope: :example do
       within 'form#item-form' do
         click_on I18n.t("webmail.links.show_cc_bcc")
         within 'dl.see.to' do
-          click_on I18n.t('gws.organization_addresses')
+          wait_cbox_open do
+            click_on I18n.t('gws.organization_addresses')
+          end
         end
       end
       wait_for_cbox do
-        expect(page).to have_content(user2.name)
-        click_on user2.name
+        wait_cbox_close do
+          click_on user2.name
+        end
       end
       within 'form#item-form' do
+        expect(page).to have_content(user2.name)
         click_on I18n.t('ss.buttons.draft_save')
       end
-      wait_for_error Gws::Memo::Message.t(:subject) + I18n.t('errors.messages.blank')
+      message = I18n.t('errors.messages.blank')
+      message = I18n.t("errors.format", attribute: Gws::Memo::Message.t(:subject), message: message)
+      wait_for_error message
 
       within 'form#item-form' do
         fill_in 'item[subject]', with: subject
         fill_in 'item[text]', with: text
         accept_confirm do
-          click_on I18n.t('gws/memo/message.commit_params_check')
+          click_on I18n.t('ss.buttons.send')
         end
       end
       expect(page).to have_css('#notice', text: I18n.t("ss.notice.sent"))
@@ -91,13 +97,15 @@ describe 'gws_memo_messages', type: :feature, dbscope: :example do
         fill_in 'item[subject]', with: ''
         click_on I18n.t('ss.buttons.draft_save')
       end
-      wait_for_error Gws::Memo::Message.t(:subject) + I18n.t('errors.messages.blank')
+      message = I18n.t('errors.messages.blank')
+      message = I18n.t("errors.format", attribute: Gws::Memo::Message.t(:subject), message: message)
+      wait_for_error message
 
       within 'form#item-form' do
         fill_in 'item[subject]', with: subject
 
         accept_confirm do
-          click_on I18n.t('gws/memo/message.commit_params_check')
+          click_on I18n.t('ss.buttons.send')
         end
       end
       expect(page).to have_css('#notice', text: I18n.t("ss.notice.sent"))
@@ -109,7 +117,7 @@ describe 'gws_memo_messages', type: :feature, dbscope: :example do
         fill_in 'item[text]', with: text
 
         accept_confirm do
-          click_on I18n.t('gws/memo/message.commit_params_check')
+          click_on I18n.t('ss.buttons.send')
         end
       end
       expect(page).to have_css('#notice', text: I18n.t("ss.notice.sent"))
@@ -121,7 +129,7 @@ describe 'gws_memo_messages', type: :feature, dbscope: :example do
         fill_in 'item[text]', with: text
 
         accept_confirm do
-          click_on I18n.t('gws/memo/message.commit_params_check')
+          click_on I18n.t('ss.buttons.send')
         end
       end
       expect(page).to have_css('#notice', text: I18n.t("ss.notice.sent"))
@@ -144,7 +152,7 @@ describe 'gws_memo_messages', type: :feature, dbscope: :example do
 
       within 'form#item-form' do
         accept_confirm do
-          click_on I18n.t('gws/memo/message.commit_params_check')
+          click_on I18n.t('ss.buttons.send')
         end
       end
       expect(page).to have_css('#notice', text: I18n.t("ss.notice.sent"))
@@ -169,7 +177,7 @@ describe 'gws_memo_messages', type: :feature, dbscope: :example do
         fill_in 'item[text]', with: text
 
         accept_confirm do
-          click_on I18n.t('gws/memo/message.commit_params_check')
+          click_on I18n.t('ss.buttons.send')
         end
       end
       expect(page).to have_css('#notice', text: I18n.t("ss.notice.sent"))

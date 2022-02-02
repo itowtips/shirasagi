@@ -92,6 +92,6 @@ module SS::DateTimePickerHelper
     # options[:data] ||= {}
     # options[:data][:tz] = Time.zone.formatted_offset
 
-    tag.time(formatted, options)
+    tag.time(formatted, **options)
   end
 end

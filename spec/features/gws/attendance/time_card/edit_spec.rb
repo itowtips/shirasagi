@@ -164,7 +164,11 @@ describe "gws_attendance_time_card", type: :feature, dbscope: :example, js: true
         end
 
         within "#cboxLoadedContent form.cell-edit" do
-          error = "#{I18n.t("activemodel.attributes.gws/attendance/time_edit.in_reason")}#{I18n.t("errors.messages.blank")}"
+          error = I18n.t(
+            "errors.format",
+            attribute: I18n.t("activemodel.attributes.gws/attendance/time_edit.in_reason"),
+            message: I18n.t("errors.messages.blank")
+          )
           expect(page).to have_css("#errorExplanation", text: error)
         end
       end

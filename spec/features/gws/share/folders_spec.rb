@@ -14,7 +14,9 @@ describe "gws_share_folders", type: :feature, dbscope: :example, js: true do
       # Create
       #
       visit gws_share_folders_path(site: site)
-      click_on I18n.t("ss.links.new")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
       within "form#item-form" do
         fill_in "item[in_basename]", with: name
         click_on I18n.t("ss.buttons.save")
@@ -43,7 +45,9 @@ describe "gws_share_folders", type: :feature, dbscope: :example, js: true do
       #
       visit gws_share_folders_path(site: site)
       click_on name
-      click_on I18n.t("ss.links.edit")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.edit")
+      end
       within "form#item-form" do
         fill_in "item[in_basename]", with: name2
         click_on I18n.t("ss.buttons.save")
@@ -58,7 +62,9 @@ describe "gws_share_folders", type: :feature, dbscope: :example, js: true do
       #
       visit gws_share_folders_path(site: site)
       click_on name2
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.delete")
       end
@@ -93,7 +99,9 @@ describe "gws_share_folders", type: :feature, dbscope: :example, js: true do
     context 'basic crud' do
       it do
         visit gws_share_folders_path(site: site)
-        click_on I18n.t('ss.links.new')
+        within ".nav-menu" do
+          click_on I18n.t('ss.links.new')
+        end
 
         #
         # Create
@@ -132,7 +140,9 @@ describe "gws_share_folders", type: :feature, dbscope: :example, js: true do
         #
         visit gws_share_folders_path(site: site)
         click_on "#{item.name}/#{subfolder_name1}"
-        click_on I18n.t('ss.links.edit')
+        within ".nav-menu" do
+          click_on I18n.t('ss.links.edit')
+        end
 
         within 'form#item-form' do
           fill_in 'item[in_basename]', with: subfolder_name2
@@ -148,7 +158,9 @@ describe "gws_share_folders", type: :feature, dbscope: :example, js: true do
         #
         visit gws_share_folders_path(site: site)
         click_on "#{item.name}/#{subfolder_name2}"
-        click_on I18n.t('ss.links.delete')
+        within ".nav-menu" do
+          click_on I18n.t('ss.links.delete')
+        end
 
         within 'form' do
           click_on I18n.t('ss.buttons.delete')
@@ -236,7 +248,7 @@ describe "gws_share_folders", type: :feature, dbscope: :example, js: true do
         click_on folder.name
         within "#addon-basic" do
           page.accept_confirm do
-            click_on I18n.t("ss.buttons.download")
+            click_on I18n.t('gws/share.links.file_download')
           end
         end
 
@@ -264,7 +276,7 @@ describe "gws_share_folders", type: :feature, dbscope: :example, js: true do
         click_on folder.name
         within "#addon-basic" do
           page.accept_confirm do
-            click_on I18n.t("ss.buttons.download")
+            click_on I18n.t('gws/share.links.file_download')
           end
         end
         expect(page).to have_css("#notice", text: I18n.t('gws.notice.delay_download_with_message').split("\n").first)

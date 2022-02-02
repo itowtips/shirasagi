@@ -2,7 +2,8 @@ class Gws::UserTitleImportJob < Gws::ApplicationJob
   include Cms::CsvImportBase
   include SS::ZipFileImport
 
-  self.required_headers = %i[code name].map { |k| Gws::UserTitle.t(k) }.freeze
+  self.csv_locale = I18n.default_locale
+  self.required_headers = %i[code name].map { |k| Gws::UserTitle.t(k, locale: I18n.default_locale) }.freeze
 
   private
 

@@ -20,7 +20,9 @@ describe "gws_schedule_facility_plans", type: :feature, dbscope: :example, js: t
       # Create
       #
       visit gws_schedule_facility_plans_path(site: site, facility: facility)
-      click_on I18n.t("gws/schedule.links.add_plan")
+      within ".gws-schedule-box" do
+        click_on I18n.t("gws/schedule.links.add_plan")
+      end
 
       within "form#item-form" do
         fill_in "item[name]", with: name
@@ -42,7 +44,9 @@ describe "gws_schedule_facility_plans", type: :feature, dbscope: :example, js: t
       # Update
       #
       visit gws_schedule_facility_plan_path(site: site, facility: facility, id: plan)
-      click_on I18n.t("ss.links.edit")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.edit")
+      end
       within "form#item-form" do
         fill_in "item[name]", with: name2
         fill_in "item[facility_column_values][#{column1.id}]", with: column_value2
@@ -61,7 +65,9 @@ describe "gws_schedule_facility_plans", type: :feature, dbscope: :example, js: t
       # Soft Delete
       #
       visit gws_schedule_facility_plan_path(site: site, facility: facility, id: plan)
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.delete")
       end

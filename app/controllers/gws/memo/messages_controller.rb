@@ -114,7 +114,7 @@ class Gws::Memo::MessagesController < ApplicationController
 
   def create
     @item = @model.new get_params
-    if params['commit'] == t('gws/memo/message.commit_params_check')
+    if params['commit'] == t('ss.buttons.send')
       @item.state = "public"
       @item.in_validate_presence_member = true
       notice = t("ss.notice.sent")
@@ -147,7 +147,7 @@ class Gws::Memo::MessagesController < ApplicationController
     raise "404" unless @item.editable?(@cur_user, @cur_site)
 
     @item.in_updated = params[:_updated] if @item.respond_to?(:in_updated)
-    if params['commit'] == t('gws/memo/message.commit_params_check')
+    if params['commit'] == t('ss.buttons.send')
       @item.state = "public"
       @item.in_validate_presence_member = true
       notice = t("ss.notice.sent")

@@ -12,7 +12,9 @@ describe "gws_report_forms", type: :feature, dbscope: :example, js: true do
       it do
         visit gws_report_forms_path(site: site)
         click_on form.name
-        click_on I18n.t("gws/workflow.links.publish")
+        within ".nav-menu" do
+          click_on I18n.t("gws/workflow.links.publish")
+        end
         within "form" do
           click_on I18n.t("ss.buttons.save")
         end
@@ -27,7 +29,9 @@ describe "gws_report_forms", type: :feature, dbscope: :example, js: true do
       it do
         visit gws_report_forms_path(site: site)
         click_on form.name
-        click_on I18n.t("gws/workflow.links.publish")
+        within ".nav-menu" do
+          click_on I18n.t("gws/workflow.links.publish")
+        end
 
         form.state = "public"
         form.save!
@@ -53,7 +57,9 @@ describe "gws_report_forms", type: :feature, dbscope: :example, js: true do
       it do
         visit gws_report_forms_path(site: site)
         click_on form.name
-        click_on I18n.t("gws/workflow.links.depublish")
+        within ".nav-menu" do
+          click_on I18n.t("gws/workflow.links.depublish")
+        end
         within "form" do
           click_on I18n.t("ss.buttons.save")
         end
@@ -68,7 +74,9 @@ describe "gws_report_forms", type: :feature, dbscope: :example, js: true do
       it do
         visit gws_report_forms_path(site: site)
         click_on form.name
-        click_on I18n.t("gws/workflow.links.depublish")
+        within ".nav-menu" do
+          click_on I18n.t("gws/workflow.links.depublish")
+        end
 
         form.state = "closed"
         form.save!

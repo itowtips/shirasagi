@@ -49,7 +49,7 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
       expect(post3.deleted).to be_present
 
       visit gws_circular_admins_path(site)
-      click_on I18n.t("ss.links.trash")
+      click_on I18n.t("gws/circular.tabs.trash")
 
       within first(".list-item") do
         first("input[type='checkbox']").click

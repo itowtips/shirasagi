@@ -30,6 +30,7 @@ class Gws::UserTitle
         end
       end
 
+      options[:locale] ||= I18n.default_locale
       drawer.enum(self.all, options)
     end
   end

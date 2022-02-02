@@ -22,7 +22,9 @@ describe "gws_schedule_todo_readables", type: :feature, dbscope: :example, js: t
       #
       visit gws_schedule_todo_readables_path gws_site, "-"
 
-      click_on I18n.t("ss.links.new")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
       within 'form#item-form' do
         fill_in 'item[name]', with: name
         fill_in 'item[text]', with: text
@@ -65,7 +67,9 @@ describe "gws_schedule_todo_readables", type: :feature, dbscope: :example, js: t
       #
       visit gws_schedule_todo_readables_path gws_site, "-"
       click_on name
-      click_on I18n.t("ss.links.edit")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.edit")
+      end
       within 'form#item-form' do
         fill_in 'item[name]', with: name2
         fill_in 'item[text]', with: text2
@@ -90,7 +94,9 @@ describe "gws_schedule_todo_readables", type: :feature, dbscope: :example, js: t
       #
       visit gws_schedule_todo_readables_path gws_site, "-"
       click_on name2
-      click_on I18n.t('gws/schedule/todo.links.finish')
+      within ".nav-menu" do
+        click_on I18n.t('gws/schedule/todo.links.finish')
+      end
       within "form" do
         click_on I18n.t('gws/schedule/todo.buttons.finish')
       end
@@ -114,7 +120,9 @@ describe "gws_schedule_todo_readables", type: :feature, dbscope: :example, js: t
       visit gws_schedule_todo_readables_path gws_site, "-"
       select I18n.t("gws/schedule/todo.options.todo_state_filter.finished"), from: "s[todo_state]"
       click_on name2
-      click_on I18n.t('gws/schedule/todo.links.revert')
+      within ".nav-menu" do
+        click_on I18n.t('gws/schedule/todo.links.revert')
+      end
       within "form" do
         click_on I18n.t('gws/schedule/todo.buttons.revert')
       end
@@ -220,7 +228,9 @@ describe "gws_schedule_todo_readables", type: :feature, dbscope: :example, js: t
       #
       visit gws_schedule_todo_readables_path gws_site, "-"
       click_on name2
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within 'form' do
         click_on I18n.t('ss.buttons.delete')
       end
@@ -244,7 +254,9 @@ describe "gws_schedule_todo_readables", type: :feature, dbscope: :example, js: t
       visit gws_schedule_todo_readables_path gws_site, "-"
       click_on I18n.t('gws/schedule.navi.trash')
       click_on name2
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within 'form' do
         click_on I18n.t('ss.buttons.delete')
       end
@@ -263,8 +275,8 @@ describe "gws_schedule_todo_readables", type: :feature, dbscope: :example, js: t
       #
       visit gws_schedule_todo_readables_path gws_site, "-"
 
-      click_on I18n.t("ss.links.new")
-      within "form#item-form" do
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
       end
       within 'form#item-form' do
         fill_in 'item[name]', with: name
@@ -397,7 +409,9 @@ describe "gws_schedule_todo_readables", type: :feature, dbscope: :example, js: t
       visit gws_schedule_todo_readables_path gws_site, "-"
       click_on I18n.t('gws/schedule.navi.trash')
       click_on todo.name
-      click_on I18n.t("ss.links.restore")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.restore")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.restore")
       end

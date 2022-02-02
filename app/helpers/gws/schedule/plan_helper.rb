@@ -7,8 +7,10 @@ module Gws::Schedule::PlanHelper
 
   def term(item)
     if item.allday?
-      from = item.start_at.to_date
-      to = item.end_at.to_date
+      # 2022/1/20 の終日イベントを、いかなるタイムゾーンであっても 2022/1/20 の終日イベントするため
+      # タイムゾーンがついていない start_on /end_on を用いて書式化する必要がある。
+      from = item.start_on
+      to = item.end_on
     else
       from = item.start_at
       to = item.end_at

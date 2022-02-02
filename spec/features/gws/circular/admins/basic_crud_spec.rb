@@ -15,8 +15,9 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
       # Create as draft
       #
       visit gws_circular_admins_path(site)
-      click_on I18n.t("ss.links.new")
-
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
       within "form#item-form" do
         fill_in "item[name]", with: name
         within "#addon-gws-agents-addons-member" do
@@ -46,8 +47,9 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
       #
       visit gws_circular_admins_path(site)
       click_on topic.name
-      click_on I18n.t("ss.links.edit")
-
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.edit")
+      end
       within "form#item-form" do
         fill_in "item[name]", with: name2
         click_on I18n.t("ss.buttons.publish_save")
@@ -85,8 +87,9 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
       #
       visit gws_circular_admins_path(site)
       click_on topic.name
-      click_on I18n.t("ss.links.delete")
-
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.delete")
       end
@@ -102,9 +105,11 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
       # Delete (hard delete)
       #
       visit gws_circular_admins_path(site)
-      click_on I18n.t("ss.links.trash")
+      click_on I18n.t("gws/circular.tabs.trash")
       click_on topic.name
-      click_on I18n.t("ss.links.delete")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.delete")
+      end
       within "form" do
         click_on I18n.t("ss.buttons.delete")
       end
@@ -129,7 +134,9 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
     it do
       # Create as draft with cate1
       visit gws_circular_admins_path(site)
-      click_on I18n.t("ss.links.new")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
 
       within "form#item-form" do
         fill_in "item[name]", with: name
@@ -181,7 +188,9 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
       # Create as public
       #
       visit gws_circular_admins_path(site)
-      click_on I18n.t("ss.links.new")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
 
       within "form#item-form" do
         fill_in "item[name]", with: name
@@ -228,7 +237,9 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
       #
       visit gws_circular_admins_path(site)
       click_on topic.name
-      click_on I18n.t("ss.links.edit")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.edit")
+      end
       within "form#item-form" do
         click_on I18n.t("ss.buttons.draft_save")
       end
@@ -273,8 +284,9 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
       # Create as public
       #
       visit gws_circular_admins_path(site)
-      click_on I18n.t("ss.links.new")
-
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.new")
+      end
       within "form#item-form" do
         fill_in "item[name]", with: name
         within "#addon-gws-agents-addons-member" do
@@ -326,7 +338,9 @@ describe "gws_circular_admins", type: :feature, dbscope: :example, js: true do
       #
       visit gws_circular_admins_path(site)
       click_on topic.name
-      click_on I18n.t("ss.links.edit")
+      within ".nav-menu" do
+        click_on I18n.t("ss.links.edit")
+      end
       within "form#item-form" do
         within "#addon-gws-agents-addons-member" do
           within ".ajax-selected [data-id='#{user1.id}']" do

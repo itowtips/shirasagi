@@ -100,7 +100,7 @@ describe "restart", type: :feature, dbscope: :example, js: true do
           click_on I18n.t("workflow.buttons.select")
 
           fill_in "workflow[comment]", with: workflow_comment2
-          click_on I18n.t("workflow.buttons.request")
+          click_on I18n.t("workflow.buttons.restart")
         end
         expect(page).to have_css(".mod-workflow-view dd", text: I18n.t('workflow.state.request'))
 

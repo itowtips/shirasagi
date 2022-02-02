@@ -12,7 +12,7 @@ describe "gws_job_logs", type: :feature, dbscope: :example, js: true do
     end
   end
   let!(:log2) do
-    Timecop.freeze(now.ago(1.days)) do
+    Timecop.freeze(now.ago(1.day)) do
       job2 = Gws::Notice::NotificationJob.new.bind("site_id" => site.id, "user_id" => user.id)
       create(:gws_job_log, :gws_job_log_completed, job: job2)
     end
@@ -46,21 +46,21 @@ describe "gws_job_logs", type: :feature, dbscope: :example, js: true do
 
       click_on I18n.t(log1.class_name.underscore, scope: "job.models")
       expect(page).to have_content(I18n.t(log1.state, scope: "job.state"))
-      expect(page).to have_content(log1.started.strftime("%Y/%m/%d %H:%M"))
+      expect(page).to have_content(I18n.l(log1.started, format: :picker))
       expect(page).to have_content(log1.logs.first.strip)
 
       visit gws_job_logs_path(site: site)
       click_on I18n.t(log2.class_name.underscore, scope: "job.models")
       expect(page).to have_content(I18n.t(log2.state, scope: "job.state"))
-      expect(page).to have_content(log2.started.strftime("%Y/%m/%d %H:%M"))
-      expect(page).to have_content(log2.closed.strftime("%Y/%m/%d %H:%M"))
+      expect(page).to have_content(I18n.l(log2.started, format: :picker))
+      expect(page).to have_content(I18n.l(log2.closed, format: :picker))
       expect(page).to have_content(log2.logs.first.strip)
 
       visit gws_job_logs_path(site: site)
       click_on I18n.t(log3.class_name.underscore, scope: "job.models")
       expect(page).to have_content(I18n.t(log3.state, scope: "job.state"))
-      expect(page).to have_content(log3.started.strftime("%Y/%m/%d %H:%M"))
-      expect(page).to have_content(log3.closed.strftime("%Y/%m/%d %H:%M"))
+      expect(page).to have_content(I18n.l(log3.started, format: :picker))
+      expect(page).to have_content(I18n.l(log3.closed, format: :picker))
       expect(page).to have_content(log3.logs.first.strip)
     end
   end

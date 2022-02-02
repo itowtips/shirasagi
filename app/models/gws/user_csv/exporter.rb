@@ -20,7 +20,7 @@ class Gws::UserCsv::Exporter
         ldap_dn gws_roles sys_roles
       )
       headers += %w(webmail_roles) if opts[:webmail_support]
-      headers.map! { |k| Gws::User.t(k) }
+      headers.map! { |k| Gws::User.t(k, locale: opts[:locale] || I18n.locale) }
     end
 
     def csv_headers(opts = {})

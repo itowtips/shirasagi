@@ -12,6 +12,7 @@ class SS::Csv
       @cur_user = options[:cur_user]
       @cur_node = options[:cur_node]
       @model_class = options[:model] || @criteria.klass
+      @locale = options[:locale] || I18n.locale
       @columns = []
       @context = self
     end
@@ -19,12 +20,14 @@ class SS::Csv
     attr_reader :cur_site, :cur_user, :encoding, :columns
 
     def each
-      yield draw_header
-      @criteria.each do |item|
-        item.cur_site = @cur_site if item.respond_to?(:cur_site=)
-        item.cur_user = @cur_user if item.respond_to?(:cur_user=)
-        item.cur_node = @cur_node if item.respond_to?(:cur_node=)
-        yield draw_data(item)
+      I18n.with_locale(@locale) do
+        yield draw_header
+        @criteria.each do |item|
+          item.cur_site = @cur_site if item.respond_to?(:cur_site=)
+          item.cur_user = @cur_user if item.respond_to?(:cur_user=)
+          item.cur_node = @cur_node if item.respond_to?(:cur_node=)
+          yield draw_data(item)
+        end
       end
     end
 

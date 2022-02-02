@@ -2,6 +2,7 @@ module Cms::CsvImportBase
   extend ActiveSupport::Concern
 
   included do
+    cattr_accessor(:csv_locale)
     cattr_accessor(:required_headers) { [] }
   end
 
@@ -11,7 +12,9 @@ module Cms::CsvImportBase
     end
 
     def each_csv(file, &block)
-      SS::Csv.foreach_row(file, headers: true, &block)
+      I18n.with_locale(csv_locale || I18n.locale) do
+        SS::Csv.foreach_row(file, headers: true, &block)
+      end
     end
   end
 end

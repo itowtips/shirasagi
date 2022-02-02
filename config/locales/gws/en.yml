@@ -1,0 +1,13 @@
+en:
+  date:
+    formats:
+      gws_long: ! '%a, %m/%d/%Y'
+      gws_long_without_year: ! '%a, %m/%d'
+      gws_long_without_year_month: ! '%a, %m/%d'
+  time:
+    formats:
+      gws_long: ! '%a, %m/%d/%Y %H:%M'
+      gws_long_without_year: ! '%a, %m/%d %H:%M'
+      gws_long_without_year_month: ! '%a, %m/%d %H:%M'
+      gws_long_without_year_month_day: ! '%H:%M'
+      gws_time: ! '%H:%M'

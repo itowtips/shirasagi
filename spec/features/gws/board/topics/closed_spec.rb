@@ -29,7 +29,9 @@ describe "gws_board_topics", type: :feature, dbscope: :example do
       it do
         visit index_path
         click_on I18n.t("ss.navi.editable")
-        click_on I18n.t("ss.links.new")
+        within ".nav-menu" do
+          click_on I18n.t("ss.links.new")
+        end
         click_on I18n.t("gws.apis.categories.index")
         wait_for_cbox do
           click_on category.name
@@ -92,7 +94,9 @@ describe "gws_board_topics", type: :feature, dbscope: :example do
           visit index_path
           click_on I18n.t("ss.navi.editable")
           click_on item.name
-          click_on I18n.t("ss.links.edit")
+          within ".nav-menu" do
+            click_on I18n.t("ss.links.edit")
+          end
           within "form#item-form" do
             fill_in "item[name]", with: "modify"
             click_on I18n.t("ss.buttons.save")
@@ -118,7 +122,9 @@ describe "gws_board_topics", type: :feature, dbscope: :example do
           visit index_path
           click_on I18n.t("ss.navi.editable")
           click_on item.name
-          click_on I18n.t("ss.links.delete")
+          within ".nav-menu" do
+            click_on I18n.t("ss.links.delete")
+          end
           within "form" do
             click_button I18n.t("ss.buttons.delete")
           end
@@ -147,7 +153,9 @@ describe "gws_board_topics", type: :feature, dbscope: :example do
           visit index_path
           click_on I18n.t("ss.links.trash")
           click_on item.name
-          click_on I18n.t("ss.links.delete")
+          within ".nav-menu" do
+            click_on I18n.t("ss.links.delete")
+          end
           within "form" do
             click_button I18n.t("ss.buttons.delete")
           end
@@ -173,7 +181,9 @@ describe "gws_board_topics", type: :feature, dbscope: :example do
           visit index_path
           click_on I18n.t("ss.links.trash")
           click_on item.name
-          click_on I18n.t("ss.links.restore")
+          within ".nav-menu" do
+            click_on I18n.t("ss.links.restore")
+          end
           within "form" do
             click_button I18n.t("ss.buttons.restore")
           end

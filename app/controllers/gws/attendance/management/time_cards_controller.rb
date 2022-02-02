@@ -25,7 +25,7 @@ class Gws::Attendance::Management::TimeCardsController < ApplicationController
 
   def set_crumbs
     @crumbs << [@cur_site.menu_attendance_label || t('modules.gws/attendance'), gws_attendance_main_path]
-    @crumbs << [t('ss.management'), gws_attendance_management_main_path]
+    @crumbs << [t('modules.gws/attendance/management/time_card'), gws_attendance_management_main_path]
   end
 
   def check_model_permission

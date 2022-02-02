@@ -164,6 +164,13 @@ RSpec.configure do |config|
 
     puts "[RSpec] enabled rspec retry"
   end
+
+  if I18n.available_locales.length > 1
+    config.around :all do |example|
+      lang = ENV.fetch("RSPEC_LOCALE") { I18n.available_locales.sample }
+      I18n.with_locale(lang.to_sym) { example.run }
+    end
+  end
 end
 
 ALPHABETS = ("a".."z").to_a.freeze
@@ -238,4 +245,4 @@ end
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
