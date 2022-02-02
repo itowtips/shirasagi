@@ -44,6 +44,12 @@ class Gws::User
     where("$and" => [{ "$or" => or_conds }])
   }
 
+  class << self
+    def notify_slack_users
+      where(notice_circular_slack_user_setting: "notify")
+    end
+  end
+
   def readable_user?(user, opts = {})
     return true if id == user.id
 

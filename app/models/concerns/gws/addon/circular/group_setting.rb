@@ -12,10 +12,11 @@ module Gws::Addon::Circular::GroupSetting
     field :circular_delete_threshold, type: Integer, default: 3
     field :circular_files_break, type: String, default: 'vertically'
     field :circular_new_days, type: Integer
+    field :slack_channels, type: SS::Extensions::Words
 
     permit_params :circular_default_due_date, :circular_max_member,
       :circular_filesize_limit, :circular_delete_threshold,
-      :circular_files_break, :circular_new_days
+      :circular_files_break, :circular_new_days, :slack_channels
 
     validates :circular_default_due_date, numericality: true
     validates :circular_delete_threshold, numericality: true

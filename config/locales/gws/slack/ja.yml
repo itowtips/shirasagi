@@ -1,0 +1,17 @@
+ja:
+  modules:
+    gws/slack: slack
+    addons:
+      gws/slack: slack
+
+  mongoid:
+    models:
+      gws/slack: slack
+    attributes:
+      gws/addon/slack:
+        slack_oauth_token: Slack OAuth Token
+
+  tooltip:
+    gws/addon/slack:
+      slack_oauth_token:
+        - Slack APIを利用したメッセージの送信時に必要なトークンを設定します。

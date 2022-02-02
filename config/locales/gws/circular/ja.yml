@@ -62,6 +62,9 @@ ja:
       browsing_authority:
         all: 全ての回覧者に閲覧可
         author_or_commenter: 回覧作成者と自分のみ閲覧可
+    slack:
+      ja: "新しい回覧、「%{name}」が新しく回覧板に投稿されました。"
+      eng: 'A new circulation, "%{name}" has been newly posted on the circulation board.'
   modules:
     gws/circular: 回覧板
     addons:
@@ -90,15 +93,12 @@ ja:
       text: "%{text}"
       mail_text: |
         %{subject}
-
         %{text}
-
     gws/circular/post/remove:
       subject: "[回覧板] 「%{name}」が取り下げられました。"
       text: ""
       mail_text: |
         %{subject}
-
   mongoid:
     models:
       gws/circular/post: トピック
@@ -133,6 +133,7 @@ ja:
         circular_delete_threshold: 回覧復旧可能期間
         circular_files_break: ファイル表示の並び
         circular_new_days: 新着表示期間
+        slack_channels: slackチャンネル
       gws/addon/circular/category:
         category_ids: カテゴリー
   tooltip:
@@ -170,6 +171,8 @@ ja:
         - 添付ファイルの表示の並びを選択します。
       circular_new_days:
         - 新着表示期間を入力します。
+      slack_channels:
+        - 空白区切りで複数のチャンネルの設定が可能です。
 
   job:
     models:

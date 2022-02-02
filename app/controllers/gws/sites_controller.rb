@@ -24,6 +24,7 @@ class Gws::SitesController < ApplicationController
 
   def set_addons
     @addons = @item.addons(:organization)
+    @addons
   end
 
   def reload_nginx
