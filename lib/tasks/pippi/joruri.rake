@@ -286,5 +286,47 @@ namespace :pippi do
       importer = Pippi::Joruri::Importer::Facility::ShoTokubetsu.new(site)
       importer.destroy_facility_sho_tokubetsu_docs
     end
+
+    task import_facility_gakushushien_gakusyukyoshitsu_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::GakushushienGakusyukyoshitsu.new(site)
+      importer.import_facility_gakushushien_gakusyukyoshitsu_docs
+    end
+
+    task destroy_facility_gakushushien_gakusyukyoshitsu_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::GakushushienGakusyukyoshitsu.new(site)
+      importer.destroy_facility_gakushushien_gakusyukyoshitsu_docs
+    end
+
+    task import_facility_gakushushien_gakusyushien_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::GakushushienGakusyushien.new(site)
+      importer.import_facility_gakushushien_gakusyushien_docs
+    end
+
+    task destroy_facility_gakushushien_gakusyushien_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::GakushushienGakusyushien.new(site)
+      importer.destroy_facility_gakushushien_gakusyushien_docs
+    end
+
+    task import_facility_kodomoshokudo_kodomoshokudo_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::KodomoshokudoKodomoshokudo.new(site)
+      importer.import_facility_kodomoshokudo_kodomoshokudo_docs
+    end
+
+    task destroy_facility_kodomoshokudo_kodomoshokudo_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::KodomoshokudoKodomoshokudo.new(site)
+      importer.destroy_facility_kodomoshokudo_kodomoshokudo_docs
+    end
   end
 end

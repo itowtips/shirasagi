@@ -62,5 +62,14 @@ module Pippi::Joruri::Relation
 
     class ShoTokubetsu < Doc
     end
+
+    class GakushushienGakusyukyoshitsu < Doc
+    end
+
+    class GakushushienGakusyushien < Doc
+    end
+
+    class KodomoshokudoKodomoshokudo < Doc
+    end
   end
 end
