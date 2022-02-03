@@ -71,5 +71,14 @@ module Pippi::Joruri::Relation
 
     class KodomoshokudoKodomoshokudo < Doc
     end
+
+    class GakudoHoukagojidoukai < Doc
+    end
+
+    class GakudoRuijihoukagojidoukurabu < Doc
+    end
+
+    class GakudoSonotagakudouhoiku < Doc
+    end
   end
 end
