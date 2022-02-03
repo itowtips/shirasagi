@@ -17,7 +17,7 @@ module Gws::Addon::System::MenuSetting
     def define_menu_setting(name, options = {})
       field "menu_#{name}_state", type: String, default: options[:default_state]
       field "menu_#{name}_label", type: String, localize: true
-      permit_params "menu_#{name}_state", "menu_#{name}_label"
+      permit_params "menu_#{name}_state", "menu_#{name}_label", "menu_#{name}_label_translations" => I18n.available_locales
       alias_method("menu_#{name}_state_options", "menu_state_options")
 
       if !options[:define_visible]

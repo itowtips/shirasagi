@@ -187,3 +187,47 @@ a.gws-category-label:hover {
   padding-top: 20px;
   border-top: 1px solid #eee;
 }
+
+.addon-gws-system-menu-setting {
+  span.menu-label {
+    display: inline-block;
+    padding-right: 2px;
+    padding-left: 2px;
+    @include border-radius(3px);
+    border: 1px solid $gray2;
+  }
+  span.menu-label-ja, span.menu-label-en {
+    &:before {
+      margin-right: 2px;
+      padding-right: 2px;
+      border-right: 1px solid $gray2;
+    }
+  }
+  span.menu-label-ja {
+    &:before {
+      content: "ja";
+    }
+  }
+  span.menu-label-en {
+    &:before {
+      content: "en";
+    }
+  }
+
+  input.menu-label {
+    width: 10.5em;
+  }
+
+  @include mb {
+    > dd {
+      display: flex;
+      input.menu-label {
+        width: 100%;
+        margin-left: 5px;
+      }
+      span.menu-label {
+        margin-right: 5px;
+      }
+    }
+  }
+}

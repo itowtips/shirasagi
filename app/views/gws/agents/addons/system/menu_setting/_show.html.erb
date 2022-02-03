@@ -8,7 +8,17 @@
     <dt><%= @model.t("menu_#{type}_state") %></dt>
     <dd>
       <% if @item.send("menu_#{type}_visible?") %>
-        <%= @item.send("menu_#{type}_label") || fallback_label || t("modules.gws/#{type}") %>
+        <% if I18n.available_locales.length == 1 %>
+          <%= @item.send("menu_#{type}_label") || tryb { fallback_label[I18n.default_locale].presence } || t("modules.gws/#{type}") %>
+        <% else %>
+          <% translations = @item.send("menu_#{type}_label_translations") %>
+          <% I18n.default_locale.tap do |lang| %>
+            <span class="menu-label menu-label-<%= lang %>"><%= tryb { translations[lang].presence } || tryb { fallback_label[lang] } || t("modules.gws/#{type}", locale: lang) %></span>
+          <% end %>
+          <% I18n.available_locales.reject { |lang| lang == I18n.default_locale }.each do |lang| %>
+            <span class="menu-label menu-label-<%= lang %>"><%= tryb { translations[lang].presence } || tryb { fallback_label[lang] } || t("modules.gws/#{type}", locale: lang) %></span>
+          <% end %>
+        <% end %>
       <% else %>
         <%= @item.label("menu_#{type}_state") %>
       <% end %>
@@ -16,12 +26,12 @@
   </dl>
 <% end %>
 
-<% render_menu_setting.call(:portal, t('modules.gws/portal')) %>
+<% render_menu_setting.call(:portal, I18n.available_locales.index_with { |lang| t('modules.gws/portal', locale: lang) }) %>
 <% render_menu_setting.call(:notice) %>
 <% render_menu_setting.call(:schedule) %>
-<% render_menu_setting.call(:todo, t('mongoid.models.gws/schedule/todo')) %>
-<% render_menu_setting.call(:reminder, t('mongoid.models.gws/reminder')) %>
-<% render_menu_setting.call(:presence, t('mongoid.models.gws/presence')) %>
+<% render_menu_setting.call(:todo, I18n.available_locales.index_with { |lang| t('mongoid.models.gws/schedule/todo', locale: lang) }) %>
+<% render_menu_setting.call(:reminder, I18n.available_locales.index_with { |lang| t('mongoid.models.gws/reminder', locale: lang) }) %>
+<% render_menu_setting.call(:presence, I18n.available_locales.index_with { |lang| t('mongoid.models.gws/presence', locale: lang) }) %>
 <% render_menu_setting.call(:attendance) %>
 <% render_menu_setting.call(:bookmark) %>
 <% render_menu_setting.call(:memo) %>
@@ -37,7 +47,7 @@
 <% render_menu_setting.call(:share) %>
 <% render_menu_setting.call(:shared_address) %>
 <% render_menu_setting.call(:personal_address) %>
-<% render_menu_setting.call(:staff_record, t('gws/staff_record.staff_records')) %>
-<% render_menu_setting.call(:links, t('mongoid.models.gws/link')) %>
-<% render_menu_setting.call(:contrast, t('mongoid.models.gws/contrast')) %>
+<% render_menu_setting.call(:staff_record, I18n.available_locales.index_with { |lang| t('gws/staff_record.staff_records', locale: lang) }) %>
+<% render_menu_setting.call(:links, I18n.available_locales.index_with { |lang| t('mongoid.models.gws/link', locale: lang) }) %>
+<% render_menu_setting.call(:contrast, I18n.available_locales.index_with { |lang| t('mongoid.models.gws/contrast', locale: lang) }) %>
 <% render_menu_setting.call(:elasticsearch) %>
