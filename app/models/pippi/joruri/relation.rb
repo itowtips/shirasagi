@@ -86,5 +86,11 @@ module Pippi::Joruri::Relation
 
     class Pool < Doc
     end
+
+    class ByogojiByogojiItaku < Doc
+    end
+
+    class ByogojiMinkanbyoji < Doc
+    end
   end
 end
