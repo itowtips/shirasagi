@@ -83,5 +83,8 @@ module Pippi::Joruri::Relation
 
     class Jidoukan < Doc
     end
+
+    class Pool < Doc
+    end
   end
 end
