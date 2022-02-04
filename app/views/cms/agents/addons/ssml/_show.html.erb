@@ -1,3 +1,4 @@
+<% return if @cur_node && @cur_node.respond_to?(:ssml_enabled?) && !@cur_node.ssml_enabled? %>
 <dl class="see">
   <dd class="wide">
     <% if @item.ssml.present? %>
