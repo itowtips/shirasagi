@@ -37,7 +37,11 @@ module SS::Addon
     end
 
     def map_effective_layers
-      layer = map_layers[map_api_layer] || map_layers[map_layers.keys.first]
+      if SS::Lgwan.enabled? && SS::Lgwan.map_layers.present?
+        layer = SS::Lgwan.map_layers.first
+      else
+        layer = map_layers[map_api_layer] || map_layers[map_layers.keys.first]
+      end
       [layer]
     end
 

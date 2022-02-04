@@ -15,4 +15,8 @@ module SS::Lgwan
     Rails.logger.error("Lgwan Support pull_private_files : #{error}") if error.present?
     error.blank?
   end
+
+  def map_layers
+    @_map_layers ||= SS.config.lgwan.map.dig("layers").to_a
+  end
 end
