@@ -80,5 +80,8 @@ module Pippi::Joruri::Relation
 
     class GakudoSonotagakudouhoiku < Doc
     end
+
+    class Jidoukan < Doc
+    end
   end
 end

@@ -370,5 +370,19 @@ namespace :pippi do
       importer = Pippi::Joruri::Importer::Facility::GakudoSonotagakudouhoiku.new(site)
       importer.destroy_facility_gakudo_sonotagakudouhoiku_docs
     end
+
+    task import_facility_jidoukan_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::Jidoukan.new(site)
+      importer.import_facility_jidoukan_docs
+    end
+
+    task destroy_facility_jidoukan_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::Jidoukan.new(site)
+      importer.destroy_facility_jidoukan_docs
+    end
   end
 end
