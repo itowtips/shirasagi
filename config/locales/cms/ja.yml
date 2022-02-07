@@ -204,6 +204,7 @@ ja:
         - 反映するボタンを押下すると反映処理が開始されます。
       line_deliver_directly: 即時配信（予約日時無し）
       line_deliver_plans_empty: 配信日時が設定されていません。
+      line_hub_node_emtpy: "「標準機能/LINE HUB」フォルダーが公開状態で設置されていません。"
     apis:
       categories:
         index: カテゴリーを選択する
@@ -469,6 +470,7 @@ ja:
       cms/photo_album: 写真一覧
       cms/group_page: グループ別ページリスト
       cms/site_search: サイト内検索
+      cms/line_hub: "LINE HUB"
     parts:
       cms/free: HTML記述
       cms/node: フォルダーリスト
@@ -1257,7 +1259,7 @@ ja:
         completed: 配信日時
         test_completed: テスト配信日時
       cms/line/service/hook/base:
-        service: 種別
+        type: 種別
         name: タイトル
         order: 並び順
         action_type: アクション
