@@ -426,5 +426,173 @@ namespace :pippi do
       importer = Pippi::Joruri::Importer::Facility::ByogojiMinkanbyoji.new(site)
       importer.destroy_facility_byogoji_minkanbyoji_docs
     end
+
+    task import_facility_ninsyohoikusyo_ninsyohoiku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::NinsyohoikusyoNinsyohoiku.new(site)
+      importer.import_facility_ninsyohoikusyo_ninsyohoiku_docs
+    end
+
+    task destroy_facility_ninsyohoikusyo_ninsyohoiku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::NinsyohoikusyoNinsyohoiku.new(site)
+      importer.destroy_facility_ninsyohoikusyo_ninsyohoiku_docs
+    end
+
+    task import_facility_kyokagaihoiku_kigyosyudogatahoiku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::KyokagaihoikuKigyosyudogatahoiku.new(site)
+      importer.import_facility_kyokagaihoiku_kigyosyudogatahoiku_docs
+    end
+
+    task destroy_facility_kyokagaihoiku_kigyosyudogatahoiku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::KyokagaihoikuKigyosyudogatahoiku.new(site)
+      importer.destroy_facility_kyokagaihoiku_kigyosyudogatahoiku_docs
+    end
+
+    task import_facility_kyokagaihoiku_kyokagaihoiku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::KyokagaihoikuKyokagaihoiku.new(site)
+      importer.import_facility_kyokagaihoiku_kyokagaihoiku_docs
+    end
+
+    task destroy_facility_kyokagaihoiku_kyokagaihoiku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::KyokagaihoikuKyokagaihoiku.new(site)
+      importer.destroy_facility_kyokagaihoiku_kyokagaihoiku_docs
+    end
+
+    task import_facility_kyokagaihoiku_gaikokuzinmukekyokagaihoiku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::KyokagaihoikuGaikokuzinmukekyokagaihoiku.new(site)
+      importer.import_facility_kyokagaihoiku_gaikokuzinmukekyokagaihoiku_docs
+    end
+
+    task destroy_facility_kyokagaihoiku_gaikokuzinmukekyokagaihoiku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::KyokagaihoikuGaikokuzinmukekyokagaihoiku.new(site)
+      importer.destroy_facility_kyokagaihoiku_gaikokuzinmukekyokagaihoiku_docs
+    end
+
+    task import_facility_ninteikodomoen_hoikusyokino_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::NinteikodomoenHoikusyokino.new(site)
+      importer.import_facility_ninteikodomoen_hoikusyokino_docs
+    end
+
+    task destroy_facility_ninteikodomoen_hoikusyokino_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::NinteikodomoenHoikusyokino.new(site)
+      importer.destroy_facility_ninteikodomoen_hoikusyokino_docs
+    end
+
+    task import_facility_ninteikodomoen_yochienkino_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::NinteikodomoenYochienkino.new(site)
+      importer.import_facility_ninteikodomoen_yochienkino_docs
+    end
+
+    task destroy_facility_ninteikodomoen_yochienkino_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::NinteikodomoenYochienkino.new(site)
+      importer.destroy_facility_ninteikodomoen_yochienkino_docs
+    end
+
+    task import_facility_ninkahoiku_kokyoninka_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::NinkahoikuKokyoninka.new(site)
+      importer.import_facility_ninkahoiku_kokyoninka_docs
+    end
+
+    task destroy_facility_ninkahoiku_kokyoninka_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::NinkahoikuKokyoninka.new(site)
+      importer.destroy_facility_ninkahoiku_kokyoninka_docs
+    end
+
+    task import_facility_ninkahoiku_shiritsuninka_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::NinkahoikuShiritsuninka.new(site)
+      importer.import_facility_ninkahoiku_shiritsuninka_docs
+    end
+
+    task destroy_facility_ninkahoiku_shiritsuninka_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::NinkahoikuShiritsuninka.new(site)
+      importer.destroy_facility_ninkahoiku_shiritsuninka_docs
+    end
+
+    task import_facility_yochien_koritsuyochien_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::YochienKoritsuyochien.new(site)
+      importer.import_facility_yochien_koritsuyochien_docs
+    end
+
+    task destroy_facility_yochien_koritsuyochien_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::YochienKoritsuyochien.new(site)
+      importer.destroy_facility_yochien_koritsuyochien_docs
+    end
+
+    task import_facility_yochien_shiritsuyochien_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::YochienShiritsuyochien.new(site)
+      importer.import_facility_yochien_shiritsuyochien_docs
+    end
+
+    task destroy_facility_yochien_shiritsuyochien_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::YochienShiritsuyochien.new(site)
+      importer.destroy_facility_yochien_shiritsuyochien_docs
+    end
+
+    task import_facility_chiikigatahoikuzigyo_chiikigatahoiku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ChiikigatahoikuzigyoChiikigatahoiku.new(site)
+      importer.import_facility_chiikigatahoikuzigyo_chiikigatahoiku_docs
+    end
+
+    task destroy_facility_chiikigatahoikuzigyo_chiikigatahoiku_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ChiikigatahoikuzigyoChiikigatahoiku.new(site)
+      importer.destroy_facility_chiikigatahoikuzigyo_chiikigatahoiku_docs
+    end
+
+    task import_facility_chiikigatahoikuzigyo_zigyosyonai_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ChiikigatahoikuzigyoZigyosyonai.new(site)
+      importer.import_facility_chiikigatahoikuzigyo_zigyosyonai_docs
+    end
+
+    task destroy_facility_chiikigatahoikuzigyo_zigyosyonai_docs: :environment do
+      puts "Please input site: site=[www]" or exit if ENV['site'].blank?
+      site = ::Cms::Site.where(host: ENV['site']).first
+      importer = Pippi::Joruri::Importer::Facility::ChiikigatahoikuzigyoZigyosyonai.new(site)
+      importer.destroy_facility_chiikigatahoikuzigyo_zigyosyonai_docs
+    end
   end
 end

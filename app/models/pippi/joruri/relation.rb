@@ -92,5 +92,38 @@ module Pippi::Joruri::Relation
 
     class ByogojiMinkanbyoji < Doc
     end
+
+    class NinsyohoikusyoNinsyohoiku < Doc
+    end
+
+    class KyokagaihoikuKigyosyudogatahoiku < Doc
+    end
+
+    class KyokagaihoikuKyokagaihoiku < Doc
+    end
+
+    class KyokagaihoikuGaikokuzinmukekyokagaihoiku < Doc
+    end
+
+    class NinteikodomoenHoikusyokino < Doc
+    end
+
+    class NinteikodomoenYochienkino < Doc
+    end
+
+    class NinkahoikuKokyoninka < Doc
+    end
+
+    class YochienKoritsuyochien < Doc
+    end
+
+    class YochienShiritsuyochien < Doc
+    end
+
+    class ChiikigatahoikuzigyoChiikigatahoiku < Doc
+    end
+
+    class ChiikigatahoikuzigyoZigyosyonai < Doc
+    end
   end
 end
