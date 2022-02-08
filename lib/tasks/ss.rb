@@ -28,11 +28,11 @@ module Tasks
       def decrypt_yaml(file)
         if file.blank?
           puts "file must be specified"
-          next
+          return
         end
         unless ::File.exist?(file)
           puts "file '#{file}' is not found"
-          next
+          return
         end
 
         contents = ::File.binread(file)
