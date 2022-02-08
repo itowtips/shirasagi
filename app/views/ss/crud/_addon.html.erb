@@ -3,6 +3,7 @@
 <% addon_head ||= addon.fetch(:head, nil) %>
 <% addon_classes ||= Array(addon.fetch(:class, nil)).flatten.compact %>
 <% addon_toggle ||= addon.fetch(:toggle, false) %>
+<% addon_type ||= addon.fetch(:type, false) %>
 
 <%
   addon_view_classes = %w(addon-view) + addon_classes
@@ -13,7 +14,7 @@
 <% addon_head_classes = %w(addon-head) + (addon_toggle ? %w(toggle-head) : []) %>
 <% addon_body_classes = %w(addon-body) + (addon_toggle ? %w(toggle-body) : []) %>
 
-<div class="<%= addon_view_classes.join(' ') %>" <% if addon_id %>id="<%= addon_id %>"<% end %>>
+<div class="<%= addon_view_classes.join(' ') %>" <% if addon_id %>id="<%= addon_id %>"<% end %> <% if addon_type %>data-addon-type="<%= addon_type %>"<% end %>>
   <% if addon_head %>
     <div class="<%= addon_head_classes.join(' ') %>"><h2><%= addon_head %></h2></div>
   <% end %>

@@ -4,6 +4,7 @@ class Gws::Portal::UserPortlet
   include Gws::Reference::User
   include Gws::Reference::Site
   include Gws::Portal::PortletModel
+  include Gws::Portal::PresetSynchronization
   include Gws::Addon::ReadableSetting
   include Gws::Addon::GroupPermission
   include Gws::Addon::History

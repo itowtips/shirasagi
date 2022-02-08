@@ -9,6 +9,7 @@ describe "gws_portal_portlet", type: :feature, dbscope: :example, js: true do
   let(:url) { "http://#{unique_id}.example.jp/" }
 
   before do
+    create_default_portal
     login_gws_user
   end
 

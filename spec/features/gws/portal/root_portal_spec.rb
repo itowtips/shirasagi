@@ -8,6 +8,8 @@ describe "gws_portal_group_portal", type: :feature, dbscope: :example do
   let(:portal) { group.find_portal_setting(cur_user: user, cur_site: site).tap(&:save) }
   let(:default_portlets) { SS.config.gws['portal']['group_portlets'] }
 
+  before { create_default_portal }
+
   context 'with auth' do
     before { login_gws_user }
 
@@ -16,21 +18,11 @@ describe "gws_portal_group_portal", type: :feature, dbscope: :example do
       default_portlets.each do |data|
         expect(page).to have_css(".portlet-model-#{data['model']}")
       end
-      expect(Gws::Portal::GroupPortlet.all.size).to eq(0)
+      expect(Gws::Portal::GroupPortlet.all.size).to eq(default_portlets.size)
 
       first('.current-navi a.management').click
       expect(current_path).to eq gws_portal_group_layouts_path(site: site, group: group)
       expect(Gws::Portal::GroupPortlet.all.size).to eq(default_portlets.size)
-
-      # setting
-      first('#navi a', text: I18n.t('gws/portal.links.settings')).click
-      expect(current_path).to eq gws_portal_group_settings_path(site: site, group: group)
-
-      first('#menu a', text: I18n.t('ss.links.edit')).click
-      expect(current_path).to eq edit_gws_portal_group_settings_path(site: site, group: group)
-
-      click_button I18n.t('ss.buttons.save')
-      expect(current_path).to eq gws_portal_group_settings_path(site: site, group: group)
 
       # layout
       first('#navi a', text: I18n.t('gws/portal.links.arrange_portlets')).click
@@ -49,8 +41,24 @@ describe "gws_portal_group_portal", type: :feature, dbscope: :example do
       click_button I18n.t('ss.buttons.delete')
       expect(Gws::Portal::GroupPortlet.all.size).not_to eq(default_portlets.size)
 
-      first('a', text: I18n.t('ss.links.initialize')).click
-      click_button I18n.t('ss.buttons.initialize')
+      click_on I18n.t('gws/portal.sync_preset')
+      within "form .gws-tabs" do
+        click_on I18n.t('ss.buttons.sync')
+      end
+      within "form footer.send" do
+        click_on I18n.t('ss.buttons.sync')
+      end
+      expect(page).to have_css('#notice', text: I18n.t("ss.notice.synced"))
+      expect(Gws::Portal::GroupPortlet.all.size).to eq(default_portlets.size - 1)
+
+      click_on I18n.t('gws/portal.sync_preset')
+      within "form .gws-tabs" do
+        click_on I18n.t('ss.buttons.initialize')
+      end
+      within "form footer.send" do
+        click_on I18n.t('ss.buttons.initialize')
+      end
+      expect(page).to have_css('#notice', text: I18n.t("ss.notice.initialized"))
       expect(Gws::Portal::GroupPortlet.all.size).to eq(default_portlets.size)
     end
   end

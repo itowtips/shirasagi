@@ -1,0 +1,22 @@
+<%= form_for :item, url: { action: :sync }, html: { method: :post, id: "task-form" } do |f| %>
+  <%= error_messages_for :item %>
+
+  <div class="gws-tabs">
+    <%= link_to({ action: :sync },  { class: "current" }) do %>
+      <span class="tab-name"><%= t("ss.buttons.sync") %></span>
+    <% end %>
+    <%= link_to({ action: :reset }) do %>
+      <span class="tab-name"><%= t("ss.buttons.initialize") %></span>
+    <% end %>
+  </div>
+  <section class="main-box task-box" style="line-height: 20px;">
+    <%=br t("gws/portal.messages.sync.all_portal") %>
+  </section>
+
+  <%= render "ss/tasks/box", task: @task, url: url_for(action: :sync, format: :json) %>
+
+  <footer class="send">
+    <%= f.submit t("ss.buttons.sync"), class: "save", data: { confirm: t("ss.confirm.sync"), disable_with: t("ss.buttons.syncing") } %>
+    <%= f.button t("ss.buttons.cancel"), class: "btn-default", onclick: "location.href='#{url_for(action: :index)}'; return false;" %>
+  </footer>
+<% end %>

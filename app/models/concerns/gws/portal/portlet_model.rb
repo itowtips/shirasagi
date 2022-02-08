@@ -51,6 +51,9 @@ module Gws::Portal::PortletModel
     field :grid_data, type: Hash
     field :limit, type: Integer, default: 5
 
+    # user in gws file addon
+    field :state, type: String, default: "public"
+
     permit_params :name, :portlet_model, :limit
 
     validates :name, presence: true
@@ -147,6 +150,11 @@ module Gws::Portal::PortletModel
       self.addons.select do |addon|
         addon.type.nil? || addons.include?(addon.klass)
       end
+    end
+
+    def preset_addons(preset_portlet)
+      return [] if preset_portlet.managed?
+      portlet_addons(preset_portlet.portlet_model)
     end
   end
 end

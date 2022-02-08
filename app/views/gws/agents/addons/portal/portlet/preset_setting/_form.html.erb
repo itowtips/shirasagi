@@ -1,0 +1,38 @@
+<%= jquery do %>
+var preset_addons = <%== @item.initialize_by_preset_addons.to_json %>;
+var $addon = $(".gws-addon-portal-portlet-preset_setting");
+var toggleManaged = function(){
+  var value = $addon.find('[name="item[managed]"]').val();
+  if (value == "managed") {
+    $addon.find(".managed").show();
+    $('[data-addon-type="gws_portlet"]').show();
+  } else {
+    $addon.find(".managed").hide();
+    $('[data-addon-type="gws_portlet"]').each(function() {
+      var id = $(this).attr("id");
+      if (!preset_addons.includes(id)) {
+        $(this).hide();
+      }
+    });
+  }
+}
+$('[name="item[managed]"]').on("change", toggleManaged);
+toggleManaged();
+<% end %>
+
+<dl class="see gws-addon-portal-portlet-preset_setting">
+  <dt><%= @model.t :managed %><%= @model.tt :managed %></dt>
+  <dd><%= f.select :managed, @item.managed_options %></dd>
+
+  <dt class="managed"><%= @model.t :required %><%= @model.tt :required %></dt>
+  <dd class="managed"><%= f.select :required, @item.required_options %></dd>
+
+  <dt><%= @model.t :show_default %><%= @model.tt :show_default %></dt>
+  <dd><%= f.select :show_default, @item.show_default_options %></dd>
+
+  <dt><%= @model.t :description %><%= @model.tt :description %></dt>
+  <dd><%= f.text_field :description %></dd>
+
+  <dt><%= @model.t :order %><%= @model.tt :order %></dt>
+  <dd><%= f.number_field :order %></dd>
+</dl>

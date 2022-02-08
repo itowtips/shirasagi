@@ -1,0 +1,28 @@
+<dl class="see gws-addon-portal-portlet-preset_setting">
+  <dt><%= @model.t :managed %></dt>
+  <dd><%= @item.label :managed %></dd>
+
+  <% if @item.managed? %>
+    <dt><%= @model.t :required %></dt>
+    <dd><%= @item.label :required %></dd>
+  <% else %>
+    <%= jquery do %>
+    var preset_addons = <%== @item.initialize_by_preset_addons.to_json %>;
+    $('[data-addon-type="gws_portlet"]').each(function() {
+      var id = $(this).attr("id");
+      if (!preset_addons.includes(id)) {
+        $(this).hide();
+      }
+    });
+    <% end %>
+  <% end %>
+
+  <dt><%= @model.t :show_default %></dt>
+  <dd><%= @item.label :show_default %></dd>
+
+  <dt><%= @model.t :description %></dt>
+  <dd><%=br @item.description %></dd>
+
+  <dt><%= @model.t :order %></dt>
+  <dd><%=br @item.order %></dd>
+</dl>

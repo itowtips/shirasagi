@@ -3,6 +3,7 @@ en:
     gws/portal: Portal
     addons:
       gws/portal/portlet/free: Free format
+      gws/portal/portlet/free_file: File
       gws/portal/portlet/link: Link settings
       gws/portal/portlet/reminder: Reminder settings
       gws/portal/portlet/schedule: Schedule settings
@@ -22,6 +23,7 @@ en:
       gws/portal/portlet/survey: Questionnaires
       gws/portal/portlet/ad: Advertisements
       gws/portal/portlet/ad_file: Advertising images
+      gws/portal/portlet/preset_setting: Preset
       gws/portal/notice_setting: Announcement settings
       gws/portal/monitor_setting: Inquiry and response settings
       gws/portal/link_setting: Links settings
@@ -32,7 +34,14 @@ en:
     group_portal: Department portal
     create_portlets_for_reset: Portlets to be created
     delete_portlets_for_reset: Portlets to be deleted
+    update_portlets_for_sync: Portlets to be updated
     other_config: Settings for others persons and departments
+    preset: Portal preset
+    presets: Presets
+    sync_preset: Synchronize preset
+    user_portal_setting: User portal setting
+    group_portal_setting: Department Portal setting
+    organization_portal_setting: Organization  Portal Setting
     tabs:
       user_portal: Personal
       root_portal: All agencies
@@ -108,10 +117,36 @@ en:
       reminder_filter:
         all: Show all
         future: Future days only
+      portal_type:
+        user: User portal
+        group: Department portal
+        organization: Organization portal
+      managed:
+        managed: Managed by administrator
+        unmanaged: Managed by user
+
     messages:
       no_portlets: Create a portlet.
+      no_preset: Portal settings are not assigned.
       closed_portlet: This portlet cannot be viewed.
       no_portals: Portal not found.
+      required_portlet: This portlet is cannot be updated / deleted.
+      sync:
+        one_portal:
+          - Synchronize portal settings.
+        all_portal:
+          - Synchronize all portal settings.
+      reset:
+        one_portal:
+          - Initialize portal settings.
+        all_portal:
+          - Initialize all portal settings.
+      task:
+        sync_user_started: User portal synchronization started.
+        sync_group_started: Department portal synchronization started.
+        reset_user_started: User portal initialization started.
+        reset_group_started: Department portal initialization started.
+        not_found_preset: Not found portal setting.
 
   gws_role:
     use_gws_portal_user_settings: Use of personal portals
@@ -129,6 +164,7 @@ en:
     edit_private_gws_portal_group_settings: Edit department portal settings (own)
     delete_other_gws_portal_group_settings: Delete organization and department portal settings (all)
     delete_private_gws_portal_group_settings: Delete department portal settings (own)
+    manage_gws_portal_preset: Manage portal settings
 
   mongoid:
     models:
@@ -143,6 +179,8 @@ en:
       gws/portal/group_setting:
         name: Portal name
         portal_group_id: Portal group
+      gws/portal/preset_setting:
+        name: Portal name
       gws/portal/portlet_model:
         setting_id: Portal ID
         name: Portlet name
@@ -150,6 +188,10 @@ en:
         limit: Number of items displayed
         grid_data: Deployment information
         links: Link
+      gws/portal/preset:
+        name: Portal setting name
+        portal_type: Portal type
+        order: Order
       gws/addon/portal/portlet/free:
         html: Content
       gws/addon/portal/portlet/reminder:
@@ -199,6 +241,12 @@ en:
       gws/addon/portal/portlet/ad_file:
         ad_files: Advertising images
         ad_file_ids: Advertising images
+      gws/addon/portal/portlet/preset_setting:
+        managed: Manage
+        required: Required
+        show_default: Show default
+        description: Description
+        order: Order
       gws/addon/portal/notice_setting:
         portal_notice_state: Show/Hide
         portal_notice_browsed_state: Unread/Read
@@ -206,6 +254,7 @@ en:
         portal_monitor_state: Show/Hide
       gws/addon/portal/link_setting:
         portal_link_state: Show/Hide
+
     errors:
       models:
         gws/addon/portal/portlet/ad_file:

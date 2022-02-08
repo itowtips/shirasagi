@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   end
 
   concern :portlet do
+    get :sync, on: :collection
+    post :sync, on: :collection
     get :reset, on: :collection
     post :reset, on: :collection
   end
@@ -17,6 +19,18 @@ Rails.application.routes.draw do
   end
 
   gws "portal" do
+    resources :presets, concerns: [:deletion] do
+      get :sync, on: :collection
+      post :sync, on: :collection
+      get :reset, on: :collection
+      post :reset, on: :collection
+    end
+    namespace :preset, path: 'p-:preset' do
+      resources :portlets, concerns: [:deletion, :portlet]
+      resource :settings, concerns: [:deletion], only: [:show, :edit, :update]
+      resource :layouts, concerns: [:deletion], only: [:show, :update]
+    end
+
     namespace :user, path: 'u-:user' do
       get '/' => 'portal#show'
       resources :portlets, concerns: [:deletion, :portlet]

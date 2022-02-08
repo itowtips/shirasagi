@@ -1,4 +1,10 @@
 <dl class="see">
+  <% if @item.required_by_preset? %>
+    <div style="padding-bottom: 20px; color: red;">
+      <%= t("gws/portal.messages.required_portlet") %>
+    </div>
+  <% end %>
+
   <dt><%= @model.t :name %></dt>
   <dd><%= @item.send :name %></dd>
 

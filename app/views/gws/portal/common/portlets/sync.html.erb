@@ -1,0 +1,33 @@
+<%= form_for :item, url: { action: :sync }, html: { method: :post } do |f| %>
+  <%= error_messages_for :item %>
+
+  <div class="gws-tabs">
+    <%= link_to({ action: :sync }, { class: "current" }) do %>
+      <span class="tab-name"><%= t("ss.buttons.sync") %></span>
+    <% end %>
+    <%= link_to({ action: :reset }) do %>
+      <span class="tab-name"><%= t("ss.buttons.initialize") %></span>
+    <% end %>
+  </div>
+  <section class="main-box task-box" style="line-height: 20px;">
+    <%=br t("gws/portal.messages.sync.one_portal") %>
+  </section>
+
+  <section class="main-box">
+    <dl class="see">
+      <dt><%= t("gws/portal.preset") %></dt>
+      <dd><%= @preset.name %></dd>
+
+      <dt><%= t('gws/portal.update_portlets_for_sync') %></dt>
+      <dd>
+        <% @preset_setting.required_portlets.each do |item| %>
+          <%= item.name %><br />
+        <% end %>
+      </dd>
+    </dl>
+  </section>
+
+  <footer class="send">
+    <%= f.submit t('ss.buttons.sync'), class: :save, data: { confirm: I18n.t("ss.confirm.sync") } %>
+  </footer>
+<% end %>

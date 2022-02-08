@@ -7,6 +7,7 @@ describe "gws_portal_portlet", type: :feature, dbscope: :example, js: true do
   let!(:notice_post) { create(:gws_notice_post, severity: 'high', folder: notice_folder) }
 
   before do
+    create_default_portal
     login_gws_user
   end
 

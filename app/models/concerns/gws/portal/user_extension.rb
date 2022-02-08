@@ -6,6 +6,12 @@ module Gws::Portal::UserExtension
       foreign_key: :portal_user_id, dependent: :destroy, inverse_of: :portal_user
   end
 
+  def find_portal_preset(overwrite_params = {})
+    site = overwrite_params[:cur_site]
+    target = overwrite_params[:cur_user] || site
+    Gws::Portal::Preset.find_portal_preset(site, target)
+  end
+
   def find_portal_setting(overwrite_params = {})
     site = overwrite_params[:cur_site]
     portal = portal_setting.site(site).first_or_initialize(

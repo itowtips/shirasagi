@@ -4,6 +4,8 @@ describe "gws_portal_setting_users", type: :feature, dbscope: :example, js: true
   let(:site) { gws_site }
   let(:user) { gws_user }
 
+  before { create_default_portal }
+
   context "with auth" do
     before { login_gws_user }
 
@@ -70,7 +72,6 @@ describe "gws_portal_setting_users", type: :feature, dbscope: :example, js: true
       within ".current-navi" do
         expect(page).to have_content(I18n.t('gws/portal.links.arrange_portlets'))
         expect(page).to have_content(I18n.t('gws/portal.links.manage_portlets'))
-        expect(page).to have_content(I18n.t('gws/portal.links.settings'))
       end
 
       click_on I18n.t('gws/portal.links.arrange_portlets')
@@ -78,19 +79,27 @@ describe "gws_portal_setting_users", type: :feature, dbscope: :example, js: true
       expect(page).to have_css(".gws-portlets .portlet-model-schedule", text: schedule_plan.name)
 
       click_on I18n.t('gws/portal.links.manage_portlets')
-      click_on I18n.t('ss.links.initialize')
-      within "form" do
+      click_on I18n.t('gws/portal.sync_preset')
+      within "form .gws-tabs" do
+        click_on I18n.t('ss.buttons.sync')
+      end
+      within "form footer.send" do
+        page.accept_alert(/#{::Regexp.escape(I18n.t("ss.confirm.sync"))}/) do
+          click_on I18n.t('ss.buttons.sync')
+        end
+      end
+      expect(page).to have_css('#notice', text: I18n.t("ss.notice.synced"))
+
+      click_on I18n.t('gws/portal.sync_preset')
+      within "form .gws-tabs" do
+        click_on I18n.t('ss.buttons.initialize')
+      end
+      within "form footer.send" do
         page.accept_alert(/#{::Regexp.escape(I18n.t("ss.confirm.initialize"))}/) do
           click_on I18n.t('ss.buttons.initialize')
         end
       end
-
-      click_on I18n.t('gws/portal.links.settings')
-      click_on I18n.t('ss.links.edit')
-      within "form" do
-        click_on I18n.t('ss.buttons.save')
-      end
-      wait_for_notice I18n.t("ss.notice.saved")
+      expect(page).to have_css('#notice', text: I18n.t("ss.notice.initialized"))
     end
   end
 
@@ -131,7 +140,6 @@ describe "gws_portal_setting_users", type: :feature, dbscope: :example, js: true
       within ".current-navi" do
         expect(page).to have_no_content(I18n.t('gws/portal.links.arrange_portlets'))
         expect(page).to have_no_content(I18n.t('gws/portal.links.manage_portlets'))
-        expect(page).to have_no_content(I18n.t('gws/portal.links.settings'))
       end
     end
   end

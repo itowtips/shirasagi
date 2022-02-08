@@ -41,29 +41,40 @@
     navi_links << [ :h2, @portal.portal_group.trailing_name, nil ]
     navi_links << [ :h3, t("gws/portal.links.arrange_portlets"), gws_portal_group_layouts_path, class: "management" ]
     navi_links << [ :h3, t("gws/portal.links.manage_portlets"), gws_portal_group_portlets_path, class: "management" ]
-    navi_links << [ :h3, t("gws/portal.links.settings"), gws_portal_group_settings_path, class: "management" ]
+    #navi_links << [ :h3, t("gws/portal.links.settings"), gws_portal_group_settings_path, class: "management" ]
   end
 
   if params[:user].present? && @portal.allowed?(:edit, @cur_user, site: @cur_site, strict: true)
     navi_links << [ :h2, @portal.portal_user.name, nil ]
     navi_links << [ :h3, t("gws/portal.links.arrange_portlets"), gws_portal_user_layouts_path, class: "management" ]
     navi_links << [ :h3, t("gws/portal.links.manage_portlets"), gws_portal_user_portlets_path, class: "management" ]
-    navi_links << [ :h3, t("gws/portal.links.settings"), gws_portal_user_settings_path, class: "management" ]
+    #navi_links << [ :h3, t("gws/portal.links.settings"), gws_portal_user_settings_path, class: "management" ]
   end
 
-  others_management_links = []
-  if params[:group].present? || params[:user].present? || params[:controller].start_with?("gws/portal/setting/")
-    if Gws::Portal::UserSetting.allowed?(:read, @cur_user, site: @cur_site, only: :other)
-      others_management_links << [ :h3, t('gws/portal.user_portal'), gws_portal_setting_users_path, class: "management" ]
-    end
-    if Gws::Portal::GroupSetting.allowed?(:read, @cur_user, site: @cur_site, only: :other)
-      others_management_links << [ :h3, t('gws/portal.group_portal'), gws_portal_setting_groups_path, class: "management" ]
-    end
-  end
+  #others_management_links = []
+  #if params[:group].present? || params[:user].present? || params[:controller].start_with?("gws/portal/setting/")
+  #  if Gws::Portal::UserSetting.allowed?(:read, @cur_user, site: @cur_site, only: :other)
+  #    others_management_links << [ :h3, t('gws/portal.user_portal'), gws_portal_setting_users_path, class: "management" ]
+  #  end
+  #  if Gws::Portal::GroupSetting.allowed?(:read, @cur_user, site: @cur_site, only: :other)
+  #    others_management_links << [ :h3, t('gws/portal.group_portal'), gws_portal_setting_groups_path, class: "management" ]
+  #  end
+  #end
 
-  if others_management_links.present?
-    navi_links << [ :h2, t("gws/portal.other_config") ]
-    navi_links += others_management_links
+  #if others_management_links.present?
+  #  navi_links << [ :h2, t("gws/portal.other_config") ]
+  #  navi_links += others_management_links
+  #end
+
+  if Gws::Portal::Preset.allowed?(:manage, @cur_user, site: @cur_site)
+    navi_links << [ :h2, t("gws/portal.preset") ]
+    navi_links << [ :h3, t("gws/portal.presets"), gws_portal_presets_path, class: "management" ]
+    if params[:preset]
+      navi_links << [ :h2, @preset.name ]
+      navi_links << [ :h3, t("gws/portal.links.arrange_portlets"), gws_portal_preset_layouts_path, class: "management" ]
+      navi_links << [ :h3, t("gws/portal.links.manage_portlets"), gws_portal_preset_portlets_path, class: "management" ]
+      navi_links << [ :h3, t("gws/portal.links.settings"), gws_portal_preset_settings_path, class: "management" ]
+    end
   end
 %>
 

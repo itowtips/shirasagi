@@ -160,8 +160,11 @@ ja:
       move: 移動
       moving: 移動中
       import: インポート
+      sync: 同期
       restore_message: 復元
       importing: インポート中
+      syncing: 同期中
+      initializing: 初期化中
       restoring_message: 復元中
       convert: 変換
       unlock_and_edit_forcibly: 強制的にロックを解除し編集する
@@ -206,6 +209,7 @@ ja:
       redirect: 外部のサイトにアクセスしようとしています。
       export: エクスポートを開始してよろしいですか？
       import: インポートを開始してよろしいですか？
+      sync: 同期処理を開始してよろしいですか？
       download: ダウンロードしてよろしいですか？
       set_tag: タグを設定してよろしいですか？
       reset_tag: タグを削除してよろしいですか？
@@ -229,9 +233,12 @@ ja:
       unable_to_delete: '%{items} を削除できませんでした。'
       copied: 複製しました。
       started_import: インポートを開始しました。
+      started_sync: 同期処理を開始しました。
+      started_initialize: 初期化処理を開始しました。
       sent: 送信しました。
       posted: 投稿しました。
       initialized: 初期化しました。
+      synced: 同期しました。
       file_droppable: ファイルをドロップすることでアップロードできます。
       uploading: アップロードしています。
       lock_user_all: 利用を停止しました。

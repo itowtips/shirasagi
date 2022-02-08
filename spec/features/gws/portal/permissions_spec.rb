@@ -4,6 +4,8 @@ describe "gws_portal_permissions", type: :feature, dbscope: :example, js: true d
   let(:site) { gws_site }
   let(:user) { gws_user }
 
+  before { create_default_portal }
+
   context "with auth" do
     before { login_gws_user }
 
