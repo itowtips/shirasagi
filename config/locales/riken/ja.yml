@@ -1,4 +1,27 @@
 ja:
+  riken:
+    shibboleth:
+      login_failed:
+        head: ログインできませんでした。
+        body: "ログインできませんでした。<br>システム管理者にお問合せください。"
+
+  modules:
+    riken: 理研
+    addons:
+      riken/shibboleth_setting: シボレス設定
+
+  mongoid:
+    models:
+      riken/auth/shibboleth: シボレス認証
+    attributes:
+      riken/addon/shibboleth_setting:
+        login_url: ログインURL
+
+  tooltip:
+    riken/addon/shibboleth_setting:
+      login_url:
+        - シボレス認証のためのログインURLを設定してください。
+
   job:
     models:
       riken/ldap/import_job: RIKEN LDAP インポート

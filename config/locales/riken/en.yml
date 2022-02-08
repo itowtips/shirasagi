@@ -1,4 +1,27 @@
 en:
+  riken:
+    shibboleth:
+      login_failed:
+        head: Failed to login
+        body: "Failed to login. Please consult your system administrator."
+
+  modules:
+    riken: Riken
+    addons:
+      riken/shibboleth_setting: Shibboleth Settings
+
+  mongoid:
+    models:
+      riken/auth/shibboleth: Shibboleth Auth
+    attributes:
+      riken/addon/shibboleth_setting:
+        login_url: Login URL
+
+  tooltip:
+    riken/addon/shibboleth_setting:
+      login_url:
+        - Set the login url for Shibboleth login
+
   job:
     models:
       riken/ldap/import_job: RIKEN LDAP Import
