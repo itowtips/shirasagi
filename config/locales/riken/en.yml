@@ -1,0 +1,4 @@
+en:
+  job:
+    models:
+      riken/ldap/import_job: RIKEN LDAP Import

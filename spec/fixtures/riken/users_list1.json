@@ -1,0 +1,113 @@
+{
+  "ok": true,
+  "members": [
+    {
+      "id": "47AEBBA29",
+      "team_id": "A8901DEAC",
+      "name": "鈴木 茂",
+      "deleted": false,
+      "tz": "Asia\/Tokyo",
+      "tz_label": "Japan Standard Time",
+      "tz_offset": 32400,
+      "profile": {
+        "email": "user1@example.jp",
+        "team": "A8901DEAC"
+      },
+      "is_bot": false,
+      "is_app_user": false,
+      "updated": 1533099669,
+      "is_email_confirmed": true,
+      "who_can_share_contact_card": "EVERYONE"
+    },
+    {
+      "id": "8A80218B6",
+      "team_id": "A8901DEAC",
+      "name": "渡辺 和子",
+      "deleted": false,
+      "tz": "Asia\/Tokyo",
+      "tz_label": "Japan Standard Time",
+      "tz_offset": 32400,
+      "profile": {
+        "email": "user2@example.jp",
+        "team": "A8901DEAC"
+      },
+      "is_bot": false,
+      "is_app_user": false,
+      "updated": 1603857050,
+      "is_email_confirmed": true,
+      "who_can_share_contact_card": "EVERYONE"
+    },
+    {
+      "id": "A32840FE0",
+      "team_id": "A8901DEAC",
+      "name": "斎藤 拓也",
+      "deleted": true,
+      "profile": {
+        "email": "user3@example.jp",
+        "team": "A8901DEAC"
+      },
+      "is_bot": false,
+      "is_app_user": false,
+      "updated": 1643003045
+    },
+    {
+      "id": "50C14D2B4",
+      "team_id": "A8901DEAC",
+      "name": "伊藤 幸子",
+      "deleted": false,
+      "tz": "Asia\/Tokyo",
+      "tz_label": "Japan Standard Time",
+      "tz_offset": 32400,
+      "profile": {
+        "email": "user4@example.jp",
+        "team": "A8901DEAC"
+      },
+      "is_bot": false,
+      "is_app_user": false,
+      "updated": 1569149882,
+      "is_email_confirmed": true,
+      "who_can_share_contact_card": "EVERYONE"
+    },
+    {
+      "id": "C3FE211BE",
+      "team_id": "A8901DEAC",
+      "name": "高橋 清",
+      "deleted": false,
+      "tz": "Asia\/Tokyo",
+      "tz_label": "Japan Standard Time",
+      "tz_offset": 32400,
+      "profile": {
+        "email": "user5@example.jp",
+        "team": "A8901DEAC"
+      },
+      "is_bot": false,
+      "is_app_user": false,
+      "updated": 1643251222,
+      "is_email_confirmed": true,
+      "who_can_share_contact_card": "EVERYONE"
+    },
+    {
+      "id": "48F8AD234CF",
+      "team_id": "A8901DEAC",
+      "name": "shirasagi",
+      "deleted": false,
+      "real_name": "Shirasagi",
+      "tz": "America\/Los_Angeles",
+      "tz_label": "Pacific Standard Time",
+      "tz_offset": -28800,
+      "profile": {
+        "bot_id": "61B0369209E",
+        "team": "A8901DEAC"
+      },
+      "is_bot": true,
+      "is_app_user": false,
+      "updated": 1643856010,
+      "is_email_confirmed": false,
+      "who_can_share_contact_card": "EVERYONE"
+    }
+  ],
+  "cache_ts": 1644215643,
+  "response_metadata": {
+    "next_cursor": ""
+  }
+}

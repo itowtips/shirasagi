@@ -13,8 +13,7 @@ module Gws::Slack::SendNotificationJob
   def init_slack_client
     @ja_slack_ids = []
     @en_slack_ids = []
-    site.set_slack_token
-    @client = Slack::Web::Client.new
+    @client = site.slack_client
   end
 
   def send_to_channel

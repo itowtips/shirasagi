@@ -406,6 +406,7 @@ class SS::Csv
 
     def _detect_encoding(io)
       bom = io.read(3)
+      return Encoding::ASCII_8BIT if bom.blank?
       return Encoding::UTF_8 if utf8_bom?(bom)
 
       body = bom + io.read(997)

@@ -9,9 +9,8 @@ module Gws::Addon::Slack
     permit_params :slack_oauth_token
   end
 
-  def set_slack_token
-    Slack.configure do |config|
-      config.token = slack_oauth_token
-    end
+  def slack_client
+    return if slack_oauth_token.blank?
+    Slack::Web::Client.new(token: slack_oauth_token, logger: Rails.logger)
   end
 end

@@ -51,8 +51,7 @@ module Gws::Addon::Circular::GroupSetting
   private
 
   def join_bot_to_slack_channels
-    set_slack_token
-    client = Slack::Web::Client.new
+    client = slack_client
     bot_user_id = client.auth_test.user_id rescue nil
 
     return if bot_user_id.nil?

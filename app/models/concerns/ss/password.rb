@@ -14,7 +14,7 @@ module SS::Password
 
     before_validation :encrypt_password, if: ->{ in_password.present? }
     validate :validate_password, if: -> { in_password.present? }
-    validates :password, presence: true, if: ->{ ldap_dn.blank? }
+    validates :password, presence: true, if: :password_required?
     before_save :reset_initial_password_warning, if: -> { self_edit }
     before_save :update_password_changed_at, if: -> { password_changed? }
     after_save :update_password_in_session, if: -> { password_changed? }
@@ -36,6 +36,17 @@ module SS::Password
   end
 
   private
+
+  def password_required?
+    # LDAP ユーザーの場合、パスワードが空欄でも構わない（パスワードは LDAP に照会すれば良い）
+    return false if ldap_dn.present?
+
+    # SSO ユーザーの場合、パスワードが空欄でも構わない（パスワードは認証サーバーに照会すれば良い）
+    return false if type == SS::User::TYPE_SSO
+
+    # それ以外は必須
+    true
+  end
 
   def validate_password
     validator = Sys::Setting.password_validator

@@ -11,9 +11,11 @@ module SS::Model::User
 
   TYPE_SNS = "sns".freeze
   TYPE_LDAP = "ldap".freeze
+  TYPE_SSO = "sso".freeze
 
   LOGIN_ROLE_DBPASSWD = "dbpasswd".freeze
   LOGIN_ROLE_LDAP = "ldap".freeze
+  LOGIN_ROLE_SSO = "sso".freeze
 
   included do
     attr_accessor :cur_site, :cur_user
@@ -411,7 +413,7 @@ module SS::Model::User
   end
 
   def validate_type
-    errors.add :type, :invalid unless type.blank? || type == TYPE_SNS || type == TYPE_LDAP
+    errors.add :type, :invalid unless type.blank? || type == TYPE_SNS || type == TYPE_LDAP || type == TYPE_SSO
   end
 
   def validate_uid

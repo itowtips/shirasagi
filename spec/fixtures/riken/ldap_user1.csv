@@ -1,0 +1,8 @@
+﻿dn,rk_uid,uid,cn_jp,gn_jp,mn_jp,cn_furigana,gn_furigana,mn _furigana,cn,gn,mn_en,main_superior_id,mail,ict6k_flg,lab_dn,belongs_to
+"rkUid=1001,OU=Users,O=example,C=jp",1001,1001,システム管理者,-,-,システムカンリシャ,-,-,System Admin,-,-,-,sys@example.jp,1,"labCd=111001,OU=Organizations,O=example,C=jp",-
+"rkUid=1002,OU=Users,O=example,C=jp",1002,1002,サイト管理者,-,-,サイトカンリシャ,-,-,Site Admin,-,-,-,admin@example.jp,1,"labCd=111001,OU=Organizations,O=example,C=jp",-
+"rkUid=1003,OU=Users,O=example,C=jp",1003,1003,鈴木,茂,-,スズキ,シゲル,-,Suzuki,Shigeru,-,-,user1@example.jp,1,"labCd=111001,OU=Organizations,O=example,C=jp",-
+"rkUid=1004,OU=Users,O=example,C=jp",1004,1004,渡辺,和子,-,ワタナベ,カズコ,-,Watanabe,Kazuko,-,-,user2@example.jp,1,"labCd=112001,OU=Organizations,O=example,C=jp",-
+"rkUid=1005,OU=Users,O=example,C=jp",1005,1005,斎藤,拓也,-,サイトウ,タクヤ,-,Saito,Takkuya,-,-,user3@example.jp,1,"labCd=111002,OU=Organizations,O=example,C=jp",-
+"rkUid=1006,OU=Users,O=example,C=jp",1006,1006,伊藤,幸子,-,イトウ,サチコ,-,Ito,Sachiko,-,-,user4@example.jp,1,"labCd=112001,OU=Organizations,O=example,C=jp","labCd=112002,OU=Organizations,O=example,C=jp"
+"rkUid=1007,OU=Users,O=example,C=jp",1007,1007,高橋,清,-,タカハシ,キヨシ,-,Takahashi,Kiyoshi,-,-,user5@example.jp,1,"labCd=111002,OU=Organizations,O=example,C=jp",-
