@@ -1,4 +1,4 @@
 <dl class="see addon-gws-slack-setting">
   <dt><%= @model.t :slack_oauth_token %></dt>
-  <dd><%= @item.slack_oauth_token %></dd>
+  <dd><%= @item.slack_oauth_token.try(:sub, /.{10}$/, "****") %></dd>
 </dl>

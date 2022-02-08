@@ -1,4 +1,6 @@
 class Gws::Notice::NotificationJob < Gws::ApplicationJob
+  include Gws::Slack::SendNotificationJob
+
   def perform
     return unless site.notify_model?(Gws::Notice::Post)
 
@@ -23,6 +25,7 @@ class Gws::Notice::NotificationJob < Gws::ApplicationJob
       next unless item
 
       send_one_notification(item)
+      send_slack_msg(item)
     end
   end
 

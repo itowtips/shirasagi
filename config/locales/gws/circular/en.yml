@@ -1,0 +1,3 @@
+en:
+  gws/circular:
+    slack: 'A new circulation, "%{name}" has been newly posted on the circulation board.'

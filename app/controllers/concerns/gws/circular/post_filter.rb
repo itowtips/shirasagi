@@ -1,6 +1,5 @@
 module Gws::Circular::PostFilter
   extend ActiveSupport::Concern
-  include Gws::Circular::SlackFilter
 
   included do
     append_view_path 'app/views/gws/circular/main'
@@ -83,9 +82,7 @@ module Gws::Circular::PostFilter
     end
     raise '403' unless @item.allowed?(:edit, @cur_user, site: @cur_site)
 
-    is_saved = @item.save
-    render_create is_saved
-    send_slack_msg if is_saved && @item.state == 'public'
+    render_create @item.save
   end
 
   def update
@@ -98,13 +95,7 @@ module Gws::Circular::PostFilter
     end
     raise '403' unless @item.allowed?(:edit, @cur_user, site: @cur_site)
 
-    if @item.changes["state"].present? && @item.state == 'public'
-      is_updated = @item.update
-      render_update is_updated
-      send_slack_msg if is_updated
-    else
-      render_update @item.update
-    end
+    render_update @item.update
   end
 
   def download_all

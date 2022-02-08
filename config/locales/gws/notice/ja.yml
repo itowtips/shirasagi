@@ -25,6 +25,7 @@ ja:
       reclaimed: 使用量を再計算しました。
     prefix:
       copy: 【複製】
+    slack: "新しいお知らせ、「%{name}」が新しく投稿されました。"
 
   gws_role:
     use_gws_notice: お知らせの利用
@@ -121,6 +122,7 @@ ja:
         notice_id: お知らせ
       gws/addon/notice/group_setting:
         notice_new_days: 新着表示期間
+        notice_slack_channels: slackチャンネル
 
   tooltip:
     gws/notice/post:
@@ -146,6 +148,8 @@ ja:
     gws/addon/notice/group_setting:
       notice_new_days:
         - 新着表示期間を入力します。
+      notice_slack_channels:
+        - 空白区切りで複数のチャンネルの設定が可能です。
 
   job:
     models:

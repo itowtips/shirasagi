@@ -34,7 +34,8 @@ class Gws::Circular::Post
   validates :due_date, presence: true
   validate :validate_attached_file_size
 
-  after_save :send_notification
+  before_save :update_deleted?, :update_other_than_state?
+  after_save :send_notification, :send_slack_notification
 
   alias reminder_date due_date
   alias reminder_user_ids member_ids
@@ -269,6 +270,22 @@ class Gws::Circular::Post
       mail = Gws::Memo::Mailer.notice_mail(message, to_users, self)
       mail.deliver_now if mail
     end
+  end
+
+  def send_slack_notification
+    return if self.state == "close"
+    return if update_deleted?
+    return if update_other_than_state?
+
+    Gws::Circular::SlackNotificationJob.bind(site_id: site.id).perform_later(self.id)
+  end
+
+  def update_deleted?
+    self.changes[:deleted].present?
+  end
+
+  def update_other_than_state?
+    !self.changes.key?("state")
   end
 
   # def search_start_end(params)
