@@ -1,0 +1,12 @@
+<%= code_editor ".mod-member-photo-license-setting .html", mode: :html, readonly: true %>
+
+<dl class="see mod-member-photo-license-setting">
+  <dt><%= @model.t :not_downloadable_html %></dt>
+  <dd><%= text_area_tag :not_downloadable_html, @item.not_downloadable_html, class: :html %></dd>
+
+  <dt><%= @model.t :cc_by_html %></dt>
+  <dd><%= text_area_tag :cc_by_html, @item.cc_by_html, class: :html %></dd>
+
+  <dt><%= @model.t :cc_by_image_id %></dt>
+  <dd><%= image_tag(@item.cc_by_image.url) if @item.cc_by_image %></dd>
+</dl>

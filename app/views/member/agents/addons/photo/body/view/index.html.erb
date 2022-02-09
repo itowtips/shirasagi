@@ -8,10 +8,27 @@
 
   <%
     license = @cur_page.parent.send("license_#{@cur_page.license_name}") rescue nil
+    if @cur_page.download_state == 'enabled'
+      if @cur_page.pippi_license == 'cc_by'
+        license_html = @cur_page.parent.send("cc_by_html") rescue nil
+        license_image = @cur_page.parent.send("cc_by_image") rescue nil
+      else
+        license_html = @cur_page.send("license_html") rescue nil
+        license_image = @cur_page.send("license_image") rescue nil
+      end
+    else
+      license_html = @cur_page.parent.send("not_downloadable_html") rescue nil
+      license_image = nil
+    end
   %>
-  <% if license.present? %>
-    <div class="license"><%== license %></div>
+  <% if license_html.present? || license_image.present? %>
+    <div class="license">
+      <%== license_html %>
+      <%== image_tag(license_image.url) if license_image %>
+    </div>
   <% end %>
 
-  <%= link_to t('ss.download'), @cur_page.image.download_url, alt: @cur_page.name %>
+  <% if @cur_page.download_state == 'enabled' %>
+    <%= link_to t('ss.download'), @cur_page.image.download_url, alt: @cur_page.name %>
+  <% end %>
 </article>

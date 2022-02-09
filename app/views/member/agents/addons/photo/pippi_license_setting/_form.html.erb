@@ -1,0 +1,12 @@
+<%= code_editor ".mod-member-photo-pippi-license-setting .html", mode: :html %>
+
+<dl class="see mod-member-photo-pippi-license-setting">
+  <dt><%= @model.t :not_downloadable_html %><%= @model.tt :not_downloadable_html %></dt>
+  <dd><%= f.text_area :not_downloadable_html, class: :html, style: "height: 220px" %></dd>
+
+  <dt><%= @model.t :cc_by_html %><%= @model.tt :cc_by_html %></dt>
+  <dd><%= f.text_area :cc_by_html, class: :html, style: "height: 220px" %></dd>
+
+  <dt><%= @model.t :cc_by_image_id %><%= @model.tt :cc_by_image_id %></dt>
+  <dd><%= f.ss_file_field :cc_by_image %></dd>
+</dl>

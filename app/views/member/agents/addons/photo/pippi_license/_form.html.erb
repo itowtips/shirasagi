@@ -1,0 +1,15 @@
+<%= code_editor ".mod-member-photo-license .html", mode: :html %>
+
+<dl class="see mod-member-photo-license">
+  <dt><%= @model.t :download_state %><%= @model.tt :download_state %></dt>
+  <dd><%= f.select :download_state, @item.download_state_options %></dd>
+
+  <dt><%= @model.t :pippi_license %><%= @model.tt :pippi_license %></dt>
+  <dd><%= f.select :pippi_license, @item.pippi_license_options, include_blank: 'その他' %></dd>
+
+  <dt><%= @model.t :license_html %><%= @model.tt :license_html %></dt>
+  <dd><%= f.text_area :license_html, class: :html, style: "height: 220px" %></dd>
+
+  <dt><%= @model.t :license_image_id %><%= @model.tt :license_image_id %></dt>
+  <dd><%= f.ss_file_field :license_image %></dd>
+</dl>

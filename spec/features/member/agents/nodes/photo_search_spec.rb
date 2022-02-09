@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "member_agents_nodes_photo_search", type: :feature, dbscope: :example, js: true do
+xdescribe "member_agents_nodes_photo_search", type: :feature, dbscope: :example, js: true do
   let(:site) { cms_site }
   let(:layout) { create_cms_layout }
 

@@ -1,0 +1,15 @@
+<%= code_editor ".mod-member-photo-license .html", mode: :html, readonly: true %>
+
+<dl class="see mod-member-photo-license">
+  <dt><%= @model.t :download_state %></dt>
+  <dd><%= @item.label :download_state %></dd>
+
+  <dt><%= @model.t :pippi_license %></dt>
+  <dd><%= @item.label :pippi_license %></dd>
+
+  <dt><%= @model.t :license_html %></dt>
+  <dd><%= text_area_tag :license_html, @item.license_html, class: :html %></dd>
+
+  <dt><%= @model.t :license_image_id %></dt>
+  <dd><%= image_tag(@item.license_image.url) if @item.license_image %></dd>
+</dl>

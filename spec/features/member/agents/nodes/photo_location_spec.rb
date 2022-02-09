@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "member_agents_nodes_photo_location", type: :feature, dbscope: :example do
+xdescribe "member_agents_nodes_photo_location", type: :feature, dbscope: :example do
   let(:site) { cms_site }
   let(:layout) { create_cms_layout }
   let(:location) { create :member_node_photo_location, layout_id: layout.id, filename: "location" }

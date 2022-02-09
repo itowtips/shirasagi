@@ -159,6 +159,8 @@ ja:
       member/login_link: ログイン
       member/editor_setting: エディタ設定
       member/bookmark_list: ブックマーク表示
+      member/photo/pippi_license: ライセンス
+      member/photo/pippi_license_setting: ライセンス
 
   cms:
     nodes:
@@ -348,6 +350,15 @@ ja:
         member_joins_to_invited_group: 招待グループへの参加
       member/addon/login_link:
         login_link_url: ログインURL
+      member/addon/photo/pippi_license:
+        download_state: ダウンロード
+        pippi_license: ライセンス
+        license_html: HTML（その他）
+        license_image_id: 画像（その他）
+      member/addon/photo/pippi_license_setting:
+        not_downloadable_html: HTML（ダウンロード不可）
+        cc_by_html: HTML（CC-BY）
+        cc_by_image_id: 画像（CC-BY）
 
   cms_role:
     read_other_member_blogs: メンバーブログの閲覧（全て）

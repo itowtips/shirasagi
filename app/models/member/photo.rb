@@ -6,7 +6,8 @@ class Member::Photo
   include Member::Addon::Photo::Category
   include Member::Addon::Photo::Location
   include Member::Addon::Photo::Map
-  include Member::Addon::Photo::License
+  # include Member::Addon::Photo::License
+  include Member::Addon::Photo::PippiLicense
   include Cms::Addon::GroupPermission
   include History::Addon::Backup
 
@@ -81,6 +82,10 @@ class Member::Photo
     if set_zoom_level <= 0 || set_zoom_level > 21
       self.errors.add :set_zoom_level, :invalid_zoom_level
     end
+  end
+
+  def member?(user)
+    member.id == user.id
   end
 
   class << self
