@@ -96,7 +96,7 @@ describe "gws_chorg", type: :feature, dbscope: :example, js: true do
     before do
       expect do
         Gws::Chorg::MainRunner.bind(site_id: site.id, user_id: gws_user.id, task_id: task.id).perform_now(revision.name, {})
-      end.to output(include("[新設] 成功: 1, 失敗: 0\n")).to_stdout
+      end.to output(include("[#{I18n.t("chorg.options.changeset_type.add")}] 成功: 1, 失敗: 0\n")).to_stdout
     end
 
     it do
@@ -104,7 +104,7 @@ describe "gws_chorg", type: :feature, dbscope: :example, js: true do
       click_on revision.name
       click_on I18n.t("chorg.menus.revisions.production_execute")
       click_on "結果"
-      expect(page).to have_content("[新設] 成功: 1, 失敗: 0")
+      expect(page).to have_content("[#{I18n.t("chorg.options.changeset_type.add")}] 成功: 1, 失敗: 0")
     end
   end
 end

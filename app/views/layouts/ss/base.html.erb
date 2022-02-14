@@ -280,7 +280,7 @@
           <% if @cur_group %>
             <span class="group"><%= @cur_group.trailing_name %></span>
           <% end %>
-          <span class="name"><%= @cur_user.name %></span>
+          <span class="name"><%= @cur_user.i18n_name %></span>
         </h2>
         <ul class="dropdown-menu" id="user-main-dropdown">
           <% @account_menu.to_a.each do |link_params| %>

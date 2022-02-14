@@ -38,7 +38,7 @@ module Gws::BaseFilter
     @ss_mode = :gws
     @cur_site = SS.current_site = Gws::Group.find params[:site]
     @cur_user.cur_site = @cur_site if @cur_user
-    @crumbs << [@cur_site.name, gws_portal_path]
+    @crumbs << [@cur_site.i18n_name, gws_portal_path]
   end
 
   def set_current_group

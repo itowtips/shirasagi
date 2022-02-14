@@ -108,9 +108,9 @@ describe "facility_item", type: :feature, dbscope: :example do
       end
 
       csv = CSV.parse(page.html.encode("UTF-8", "SJIS"), headers: true)
-      expect(csv.headers.include?(I18n.t("gws/facility/item.csv.id"))).to be_truthy
-      expect(csv.headers.include?(I18n.t("gws/facility/item.csv.name"))).to be_truthy
-      expect(csv.headers.include?(I18n.t("gws/facility/item.csv.category_id"))).to be_truthy
+      expect(csv.headers.include?(I18n.t("gws/facility/item.csv.id", locale: I18n.default_locale))).to be_truthy
+      expect(csv.headers.include?(I18n.t("gws/facility/item.csv.name", locale: I18n.default_locale))).to be_truthy
+      expect(csv.headers.include?(I18n.t("gws/facility/item.csv.category_id", locale: I18n.default_locale))).to be_truthy
     end
   end
 end

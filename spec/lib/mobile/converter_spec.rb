@@ -130,17 +130,20 @@ describe Mobile::Converter do
       context "when jpg is given" do
         context "when alt attribute is given" do
           subject { do_convert!("<img src=\"sample.jpg\" alt=\"sample\">") }
-          it { is_expected.to eq "sample <a href=\"sample.jpg\" class=\"tag-img\" title=\"sample\">[画像]</a>" }
+          it { is_expected.to eq "sample <a href=\"sample.jpg\" class=\"tag-img\" title=\"sample\">[#{I18n.t("ss.image")}]</a>" }
         end
 
         context "when title attribute is given" do
           subject { do_convert!("<img src=\"sample.jpg\" title=\"sample\">") }
-          it { is_expected.to eq "sample <a href=\"sample.jpg\" class=\"tag-img\" title=\"sample\">[画像]</a>" }
+          it { is_expected.to eq "sample <a href=\"sample.jpg\" class=\"tag-img\" title=\"sample\">[#{I18n.t("ss.image")}]</a>" }
         end
 
         context "when no additoinal attributes is given" do
           subject { do_convert!("<img src=\"sample.jpg\">") }
-          it { is_expected.to eq "sample.jpg <a href=\"sample.jpg\" class=\"tag-img\" title=\"sample.jpg\">[画像]</a>" }
+          it do
+            is_expected.to \
+              eq "sample.jpg <a href=\"sample.jpg\" class=\"tag-img\" title=\"sample.jpg\">[#{I18n.t("ss.image")}]</a>"
+          end
         end
       end
 

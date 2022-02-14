@@ -11,20 +11,22 @@ class Gws::Memo::MessageImporter
   end
 
   def import_messages
-    @datetime = Time.zone.now
-    @zip_filename = File.basename(in_file.original_filename, ".zip")
-    @ss_files_map = {}
-    @gws_users_map = {}
-    @restored_folders = {}
+    I18n.with_locale(I18n.default_locale) do
+      @datetime = Time.zone.now
+      @zip_filename = File.basename(in_file.original_filename, ".zip")
+      @ss_files_map = {}
+      @gws_users_map = {}
+      @restored_folders = {}
 
-    Zip.unicode_names = true
-    Zip::File.open(in_file.path) do |entries|
-      entries.each do |entry|
-        next if entry.directory?
-        next if !entry.name.end_with?(".eml")
-        next if File.basename(entry.name).start_with?(".", "_")
+      Zip.unicode_names = true
+      Zip::File.open(in_file.path) do |entries|
+        entries.each do |entry|
+          next if entry.directory?
+          next if !entry.name.end_with?(".eml")
+          next if File.basename(entry.name).start_with?(".", "_")
 
-        import_gws_memo_message(entry)
+          import_gws_memo_message(entry)
+        end
       end
     end
   end

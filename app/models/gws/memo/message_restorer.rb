@@ -11,15 +11,17 @@ class Gws::Memo::MessageRestorer
   end
 
   def restore_messages
-    @datetime = Time.zone.now
-    @ss_files_map = {}
-    @gws_users_map = {}
+    I18n.with_locale(I18n.default_locale) do
+      @datetime = Time.zone.now
+      @ss_files_map = {}
+      @gws_users_map = {}
 
-    Zip::File.open(in_file.path) do |entries|
-      entries.each do |entry|
-        next if entry.directory?
+      Zip::File.open(in_file.path) do |entries|
+        entries.each do |entry|
+          next if entry.directory?
 
-        restore_gws_memo_message(entry)
+          restore_gws_memo_message(entry)
+        end
       end
     end
   end

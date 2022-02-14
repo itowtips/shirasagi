@@ -57,7 +57,7 @@ describe "gws_survey", type: :feature, dbscope: :example, js: true do
       within ".nav-menu" do
         click_on(I18n.t("ss.links.new"))
       end
-      click_on(I18n.t("mongoid.models.gws/column/radio_button"))
+      click_on(I18n.t("gws.columns.gws/radio_button"))
       within "form#item-form" do
         fill_in "item[name]", with: column_name
         fill_in "item[select_options]", with: column_options.join("\n")

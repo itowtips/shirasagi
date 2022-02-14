@@ -6,20 +6,10 @@ module Gws::PluginRepository
     mattr_accessor(:_plugin_type, instance_accessor: false) { 'node' }
   end
 
-  module ClassMethods
-    def plugin_type(type)
-      self._plugin_type = type.singularize
-    end
-
-    def plugin(path)
-      name = I18n.t("modules.#{path.sub(/\/.*/, '')}", default: path.titleize)
-      name << "/" + I18n.t("gws.#{self._plugin_type.pluralize}.#{path}", default: path.titleize)
-      self.plugins << [name, path, plugin_enabled?(path)]
-    end
-
-    def plugin_enabled?(path)
+  Plugin = Struct.new(:plugin_type, :path, keyword_init: true) do
+    def enabled?
       paths = path.split('/')
-      paths.insert(1, self._plugin_type)
+      paths.insert(1, plugin_type)
 
       section = paths.shift
       return true unless SS.config.respond_to?(section)
@@ -33,6 +23,34 @@ module Gws::PluginRepository
       end
 
       !config.fetch('disable', false)
+    end
+
+    def i18n_name
+      module_name = path.split('/', 2).first
+      name = I18n.t("modules.#{module_name}", default: path.titleize)
+      name << "/" + I18n.t("gws.#{plugin_type.pluralize}.#{path}", default: path.titleize)
+      name
+    end
+  end
+
+  module ClassMethods
+    def plugin_type(type)
+      self._plugin_type = type.singularize
+    end
+
+    def plugin(path)
+      self.plugins << Plugin.new(plugin_type: self._plugin_type, path: path)
+    end
+
+    def plugin_enabled?(path)
+      plugin = find_plugin_by_path(path)
+      return if plugin.blank?
+
+      plugin.enabled?
+    end
+
+    def find_plugin_by_path(path)
+      plugins.find { |plugin| plugin.path == path }
     end
 
     def modules

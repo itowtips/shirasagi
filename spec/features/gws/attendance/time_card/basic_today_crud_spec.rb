@@ -46,14 +46,18 @@ describe "gws_attendance_time_card", type: :feature, dbscope: :example, js: true
 
         # edit
         within '.today .action .enter' do
-          click_on I18n.t('ss.buttons.edit')
+          wait_cbox_open do
+            click_on I18n.t('ss.buttons.edit')
+          end
         end
         wait_for_cbox do
-          select '8時', from: 'cell[in_hour]'
-          select '32分', from: 'cell[in_minute]'
+          select I18n.t("gws/attendance.hour", count: 8), from: 'cell[in_hour]'
+          select I18n.t("gws/attendance.minute", count: 32), from: 'cell[in_minute]'
           fill_in 'cell[in_reason]', with: reason
+
           click_on I18n.t('ss.buttons.save')
         end
+        wait_for_notice I18n.t("ss.notice.saved")
         expect(page).to have_css('.today .info .enter', text: '8:32')
 
         expect(Gws::Attendance::TimeCard.count).to eq 1

@@ -52,7 +52,7 @@
       <% @gws_sites.each do |item| %>
       <li class="list-item">
         <div class="info">
-          <%= link_to item.name, gws_portal_path(site: item), class: "title" %>
+          <%= link_to item.i18n_name, gws_portal_path(site: item), class: "title" %>
         </div>
       </li>
       <% end %>

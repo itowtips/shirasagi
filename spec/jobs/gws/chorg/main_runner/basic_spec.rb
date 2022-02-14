@@ -14,7 +14,8 @@ describe Gws::Chorg::MainRunner, dbscope: :example do
 
       # execute
       job = described_class.bind(site_id: site, task_id: task)
-      expect { job.perform_now(revision.name, job_opts) }.to output(include("[新設] 成功: 1, 失敗: 0\n")).to_stdout
+      expect { job.perform_now(revision.name, job_opts) }.to \
+        output(include("[#{I18n.t("chorg.options.changeset_type.add")}] 成功: 1, 失敗: 0\n")).to_stdout
 
       # check for job was succeeded
       expect(Gws::Job::Log.count).to eq 1
@@ -39,7 +40,8 @@ describe Gws::Chorg::MainRunner, dbscope: :example do
 
         # execute
         job = described_class.bind(site_id: site, task_id: task)
-        expect { job.perform_now(revision.name, job_opts) }.to output(include("[移動] 成功: 1, 失敗: 0\n")).to_stdout
+        expect { job.perform_now(revision.name, job_opts) }.to \
+          output(include("[#{I18n.t("chorg.options.changeset_type.move")}] 成功: 1, 失敗: 0\n")).to_stdout
 
         # check for job was succeeded
         expect(Gws::Job::Log.count).to eq 1
@@ -66,7 +68,8 @@ describe Gws::Chorg::MainRunner, dbscope: :example do
 
         # execute
         job = described_class.bind(site_id: site, task_id: task)
-        expect { job.perform_now(revision.name, job_opts) }.to output(include("[移動] 成功: 1, 失敗: 0\n")).to_stdout
+        expect { job.perform_now(revision.name, job_opts) }.to \
+          output(include("[#{I18n.t("chorg.options.changeset_type.move")}] 成功: 1, 失敗: 0\n")).to_stdout
 
         # check for job was succeeded
         expect(Gws::Job::Log.count).to eq 1
@@ -98,7 +101,8 @@ describe Gws::Chorg::MainRunner, dbscope: :example do
 
         # execute
         job = described_class.bind(site_id: site, user_id: user1, task_id: task)
-        expect { job.perform_now(revision.name, job_opts) }.to output(include("[統合] 成功: 1, 失敗: 0\n")).to_stdout
+        expect { job.perform_now(revision.name, job_opts) }.to \
+          output(include("[#{I18n.t("chorg.options.changeset_type.unify")}] 成功: 1, 失敗: 0\n")).to_stdout
 
         # check for job was succeeded
         expect(Gws::Job::Log.count).to eq 1
@@ -140,7 +144,8 @@ describe Gws::Chorg::MainRunner, dbscope: :example do
 
         # execute
         job = described_class.bind(site_id: site, user_id: user1, task_id: task)
-        expect { job.perform_now(revision.name, job_opts) }.to output(include("[統合] 成功: 1, 失敗: 0\n")).to_stdout
+        expect { job.perform_now(revision.name, job_opts) }.to \
+          output(include("[#{I18n.t("chorg.options.changeset_type.unify")}] 成功: 1, 失敗: 0\n")).to_stdout
 
         # check for job was succeeded
         expect(Gws::Job::Log.count).to eq 1
@@ -187,7 +192,8 @@ describe Gws::Chorg::MainRunner, dbscope: :example do
 
         # execute
         job = described_class.bind(site_id: site, user_id: user, task_id: task)
-        expect { job.perform_now(revision.name, job_opts) }.to output(include("[分割] 成功: 1, 失敗: 0\n")).to_stdout
+        expect { job.perform_now(revision.name, job_opts) }.to \
+          output(include("[#{I18n.t("chorg.options.changeset_type.division")}] 成功: 1, 失敗: 0\n")).to_stdout
 
         # check for job was succeeded
         expect(Gws::Job::Log.count).to eq 1
@@ -224,7 +230,8 @@ describe Gws::Chorg::MainRunner, dbscope: :example do
 
         # execute
         job = described_class.bind(site_id: site, user_id: user, task_id: task)
-        expect { job.perform_now(revision.name, job_opts) }.to output(include("[分割] 成功: 1, 失敗: 0\n")).to_stdout
+        expect { job.perform_now(revision.name, job_opts) }.to \
+          output(include("[#{I18n.t("chorg.options.changeset_type.division")}] 成功: 1, 失敗: 0\n")).to_stdout
 
         # check for job was succeeded
         expect(Gws::Job::Log.count).to eq 1
@@ -260,7 +267,8 @@ describe Gws::Chorg::MainRunner, dbscope: :example do
 
         # execute
         job = described_class.bind(site_id: site, task_id: task)
-        expect { job.perform_now(revision.name, job_opts) }.to output(include("[廃止] 成功: 1, 失敗: 0\n")).to_stdout
+        expect { job.perform_now(revision.name, job_opts) }.to \
+          output(include("[#{I18n.t("chorg.options.changeset_type.delete")}] 成功: 1, 失敗: 0\n")).to_stdout
 
         # check for job was succeeded
         expect(Gws::Job::Log.count).to eq 1
@@ -285,7 +293,8 @@ describe Gws::Chorg::MainRunner, dbscope: :example do
 
         # execute
         job = described_class.bind(site_id: site, task_id: task)
-        expect { job.perform_now(revision.name, job_opts) }.to output(include("[廃止] 成功: 1, 失敗: 0\n")).to_stdout
+        expect { job.perform_now(revision.name, job_opts) }.to \
+          output(include("[#{I18n.t("chorg.options.changeset_type.delete")}] 成功: 1, 失敗: 0\n")).to_stdout
 
         # check for job was succeeded
         expect(Gws::Job::Log.count).to eq 1

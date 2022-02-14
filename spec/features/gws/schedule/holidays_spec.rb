@@ -19,8 +19,8 @@ describe "gws_schedule_holidays", type: :feature, dbscope: :example, js: true do
       visit "#{path}/new"
       within "form#item-form" do
         fill_in "item[name]", with: "name"
-        fill_in_datetime "item[start_on]", with: "2016/01/01"
-        fill_in_datetime "item[end_on]", with: "2016/01/02"
+        fill_in_datetime "item[start_on]", with: "2016/01/01".in_time_zone
+        fill_in_datetime "item[end_on]", with: "2016/01/02".in_time_zone
         click_button I18n.t('ss.buttons.save')
       end
       wait_for_ajax
@@ -129,13 +129,15 @@ describe "gws_schedule_holidays", type: :feature, dbscope: :example do
         expect(page.response_headers['Content-Disposition']).to eq disposition
       end
 
-      csv = CSV.parse(page.html.encode("UTF-8", "SJIS"), headers: true)
-      expect(csv.headers.include?(I18n.t("gws/schedule.csv.id"))).to be_truthy
-      expect(csv.headers.include?(I18n.t("gws/schedule.csv.name"))).to be_truthy
-      expect(csv.headers.include?(I18n.t("gws/schedule.csv.start_on"))).to be_truthy
-      expect(csv.headers.include?(I18n.t("gws/schedule.csv.end_on"))).to be_truthy
-      expect(csv.headers.include?(I18n.t("gws/schedule.csv.repeat_plan_datas.repeat_type"))).to be_truthy
-      expect(csv.headers.include?(I18n.t("gws/schedule.csv.repeat_plan_datas.repeat_start"))).to be_truthy
+      I18n.with_locale(I18n.default_locale) do
+        csv = CSV.parse(page.html.encode("UTF-8", "SJIS"), headers: true)
+        expect(csv.headers.include?(I18n.t("gws/schedule.csv.id"))).to be_truthy
+        expect(csv.headers.include?(I18n.t("gws/schedule.csv.name"))).to be_truthy
+        expect(csv.headers.include?(I18n.t("gws/schedule.csv.start_on"))).to be_truthy
+        expect(csv.headers.include?(I18n.t("gws/schedule.csv.end_on"))).to be_truthy
+        expect(csv.headers.include?(I18n.t("gws/schedule.csv.repeat_plan_datas.repeat_type"))).to be_truthy
+        expect(csv.headers.include?(I18n.t("gws/schedule.csv.repeat_plan_datas.repeat_start"))).to be_truthy
+      end
     end
   end
 end

@@ -231,7 +231,11 @@ describe SS::File, dbscope: :example do
       it do
         expect(subject.save).to be_falsey
         expect(subject.errors[:base]).not_to be_empty
-        expect(subject.errors[:base].first).to include("logo.png", "サイズが大きすぎます", "制限値: 50バイト")
+        msg = I18n.t(
+          "errors.messages.too_large_file",
+          filename: "logo.png", size: subject.size.to_s(:human_size), limit: 50.to_s(:human_size)
+        )
+        expect(subject.errors[:base].first).to eq msg
       end
     end
 
@@ -248,7 +252,11 @@ describe SS::File, dbscope: :example do
       it do
         expect(subject.save).to be_falsey
         expect(subject.errors[:base]).not_to be_empty
-        expect(subject.errors[:base].first).to include("logo.png", "サイズが大きすぎます", "制限値: 23バイト")
+        msg = I18n.t(
+          "errors.messages.too_large_file",
+          filename: "logo.png", size: subject.size.to_s(:human_size), limit: 23.to_s(:human_size)
+        )
+        expect(subject.errors[:base].first).to eq msg
       end
     end
   end

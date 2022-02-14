@@ -2,16 +2,19 @@ class Gws::Memo::MessageExportJob < Gws::ApplicationJob
   include Gws::Memo::Helper
 
   def perform(*args)
-    opts = args.extract_options!
-    @datetime = Time.zone.now
-    @message_ids = args[0]
-    @root_url = opts[:root_url].to_s
-    @output_zip = SS::ZipCreator.new("gws-memo-messages.zip", user, site: site)
-    @export_filter = opts[:export_filter].to_s.presence || "selected"
-    @exported_items = 0
+    I18n.with_locale(I18n.default_locale) do
+      opts = args.extract_options!
+      @datetime = Time.zone.now
+      @message_ids = args[0]
+      @root_url = opts[:root_url].to_s
+      @output_zip = SS::ZipCreator.new("gws-memo-messages.zip", user, site: site)
+      @export_filter = opts[:export_filter].to_s.presence || "selected"
+      @exported_items = 0
 
-    export_gws_memo_messages
-    @output_zip.close
+      export_gws_memo_messages
+    ensure
+      @output_zip.close if @output_zip
+    end
 
     if @exported_items == 0
       create_notify_message(failed: true, failed_message: I18n.t("gws/memo/message.export_failed.empty_messages"))
@@ -20,8 +23,6 @@ class Gws::Memo::MessageExportJob < Gws::ApplicationJob
 
     create_notify_message
     Rails.logger.info("#{@exported_items.to_s(:delimied)} 件のメッセージをエクスポートしました。")
-  ensure
-    @output_zip.close if @output_zip
   end
 
   private
