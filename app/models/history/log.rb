@@ -32,6 +32,10 @@ class History::Log
     user ? "#{user.name}(#{user_id})" : user_id
   end
 
+  def user_email
+    user.try(:email)
+  end
+
   def group_label
     Cms::Group.in(id: group_ids).map { |group| group.name }.join(",")
   end
@@ -88,6 +92,9 @@ class History::Log
         drawer.column :created
         drawer.column :user_name do
           drawer.body { |item| item.user_label }
+        end
+        drawer.column :user_email do
+          drawer.body { |item| item.user_email }
         end
         drawer.column :model_name do
           drawer.body { |item| item.target_label }
