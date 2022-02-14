@@ -1,0 +1,159 @@
+{
+  "ok": true,
+  "channels": [{
+      "id": "C4F1ZU7DY",
+      "name": "random",
+      "is_channel": true,
+      "is_group": false,
+      "is_im": false,
+      "is_mpim": false,
+      "is_private": false,
+      "created": 1488965235,
+      "is_archived": false,
+      "is_general": false,
+      "unlinked": 0,
+      "name_normalized": "random",
+      "is_shared": false,
+      "is_org_shared": false,
+      "is_pending_ext_shared": false,
+      "pending_shared": [],
+      "parent_conversation": null,
+      "creator": "U4FVBBS4X",
+      "is_ext_shared": false,
+      "shared_team_ids": [
+        "T4FA39ZHA"
+      ],
+      "pending_connected_team_ids": [],
+      "is_member": false,
+      "topic": {
+        "value": "Non-work banter and water cooler conversation",
+        "creator": "",
+        "last_set": 0
+      },
+      "purpose": {
+        "value": "A place for non-work-related flimflam, faffing, hodge-podge or jibber-jabber you'd prefer to keep out of more focused work-related channels.",
+        "creator": "",
+        "last_set": 0
+      },
+      "previous_names": [],
+      "num_members": 5
+    },
+    {
+      "id": "C4FA3A25S",
+      "name": "general",
+      "is_channel": true,
+      "is_group": false,
+      "is_im": false,
+      "is_mpim": false,
+      "is_private": false,
+      "created": 1488965235,
+      "is_archived": false,
+      "is_general": true,
+      "unlinked": 0,
+      "name_normalized": "general",
+      "is_shared": false,
+      "is_org_shared": false,
+      "is_pending_ext_shared": false,
+      "pending_shared": [],
+      "parent_conversation": null,
+      "creator": "U4FVBBS4X",
+      "is_ext_shared": false,
+      "shared_team_ids": [
+        "T4FA39ZHA"
+      ],
+      "pending_connected_team_ids": [],
+      "is_member": false,
+      "topic": {
+        "value": "Company-wide announcements and work-based matters",
+        "creator": "",
+        "last_set": 0
+      },
+      "purpose": {
+        "value": "This channel is for team-wide communication and announcements. All team members are in this channel.",
+        "creator": "",
+        "last_set": 0
+      },
+      "previous_names": [],
+      "num_members": 6
+    },
+    {
+      "id": "C02ULJWHY9V",
+      "name": "インテグレーション指定チャンネル",
+      "is_channel": true,
+      "is_group": false,
+      "is_im": false,
+      "is_mpim": false,
+      "is_private": false,
+      "created": 1642569264,
+      "is_archived": false,
+      "is_general": false,
+      "unlinked": 0,
+      "name_normalized": "ｲﾝﾃｸﾞﾚｰｼｮﾝ指定ﾁｬﾝﾈﾙ",
+      "is_shared": false,
+      "is_org_shared": false,
+      "is_pending_ext_shared": false,
+      "pending_shared": [],
+      "parent_conversation": null,
+      "creator": "U02THB8UEFN",
+      "is_ext_shared": false,
+      "shared_team_ids": [
+        "T4FA39ZHA"
+      ],
+      "pending_connected_team_ids": [],
+      "is_member": true,
+      "topic": {
+        "value": "",
+        "creator": "",
+        "last_set": 0
+      },
+      "purpose": {
+        "value": "",
+        "creator": "",
+        "last_set": 0
+      },
+      "previous_names": [],
+      "num_members": 2
+    },
+    {
+      "id": "C02V5T08AJZ",
+      "name": "テストグループ",
+      "is_channel": true,
+      "is_group": false,
+      "is_im": false,
+      "is_mpim": false,
+      "is_private": false,
+      "created": 1643005900,
+      "is_archived": false,
+      "is_general": false,
+      "unlinked": 0,
+      "name_normalized": "ﾃｽﾄｸﾞﾙｰﾌﾟ",
+      "is_shared": false,
+      "is_org_shared": false,
+      "is_pending_ext_shared": false,
+      "pending_shared": [],
+      "parent_conversation": null,
+      "creator": "U02UU2M1P0F",
+      "is_ext_shared": false,
+      "shared_team_ids": [
+        "T4FA39ZHA"
+      ],
+      "pending_connected_team_ids": [],
+      "is_member": true,
+      "topic": {
+        "value": "",
+        "creator": "",
+        "last_set": 0
+      },
+      "purpose": {
+        "value": "",
+        "creator": "",
+        "last_set": 0
+      },
+      "previous_names": [],
+      "num_members": 2
+    }
+  ],
+  "response_metadata": {
+    "next_cursor": ""
+  }
+}

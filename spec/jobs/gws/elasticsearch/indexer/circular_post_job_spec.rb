@@ -28,7 +28,6 @@ describe Gws::Elasticsearch::Indexer::CircularPostJob, dbscope: :example do
   after do
     WebMock.reset!
   end
-
   describe '.callback' do
     context 'when model was created' do
       it do
@@ -40,7 +39,7 @@ describe Gws::Elasticsearch::Indexer::CircularPostJob, dbscope: :example do
               cur_site: site, cur_user: user, category_ids: [category.id], file_ids: [file.id]
             )
           end
-          expectation.to change { performed_jobs.size }.by(2)
+          expectation.to change { performed_jobs.size }.by(1)
         end
 
         expect(Gws::Job::Log.count).to eq 2
@@ -84,7 +83,7 @@ describe Gws::Elasticsearch::Indexer::CircularPostJob, dbscope: :example do
           expectation.to change { performed_jobs.size }.by(1)
         end
 
-        expect(Gws::Job::Log.count).to eq 1
+        expect(Gws::Job::Log.count).to eq 2
         Gws::Job::Log.first.tap do |log|
           expect(log.logs).to include(/INFO -- : .* Started Job/)
           expect(log.logs).to include(/INFO -- : .* Completed Job/)
@@ -121,7 +120,7 @@ describe Gws::Elasticsearch::Indexer::CircularPostJob, dbscope: :example do
           expectation.to change { performed_jobs.size }.by(1)
         end
 
-        expect(Gws::Job::Log.count).to eq 1
+        expect(Gws::Job::Log.count).to eq 2
         Gws::Job::Log.first.tap do |log|
           expect(log.logs).to include(/INFO -- : .* Started Job/)
           expect(log.logs).to include(/INFO -- : .* Completed Job/)
@@ -156,7 +155,7 @@ describe Gws::Elasticsearch::Indexer::CircularPostJob, dbscope: :example do
           expectation.to change { performed_jobs.size }.by(1)
         end
 
-        expect(Gws::Job::Log.count).to eq 1
+        expect(Gws::Job::Log.count).to eq 2
         Gws::Job::Log.first.tap do |log|
           expect(log.logs).to include(/INFO -- : .* Started Job/)
           expect(log.logs).to include(/INFO -- : .* Completed Job/)

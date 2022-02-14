@@ -46,7 +46,7 @@ class Gws::User
 
   class << self
     def notify_slack_users
-      where(notice_circular_slack_user_setting: "notify")
+      where(notice_circular_slack_user_setting: "notify").where(send_notice_slack_id: { '$exists' => true })
     end
   end
 

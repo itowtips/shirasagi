@@ -277,7 +277,7 @@ class Gws::Circular::Post
     return if update_deleted?
     return if update_other_than_state?
 
-    Gws::Circular::SlackNotificationJob.bind(site_id: site.id).perform_later(self.id)
+    Gws::Circular::SlackNotificationJob.bind(site_id: site.id).perform_now(self.id)
   end
 
   def update_deleted?

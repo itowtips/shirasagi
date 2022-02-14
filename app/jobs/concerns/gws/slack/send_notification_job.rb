@@ -3,11 +3,18 @@ module Gws::Slack::SendNotificationJob
 
   def send_slack_msg(item)
     @item = item
+    @dm_success_count = 0
+    @dm_error_count = 0
+    @channel_success_count = 0
+    @channel_error_count = 0
+
     init_slack_client
     send_to_channel
+    Rails.logger.info { "チャンネル通知成功件数: #{@channel_success_count}件、チャンネル通知失敗件数: #{@channel_error_count}件" }
 
     return if notice_post_class?
     send_to_dm
+    Rails.logger.info { "DM通知成功件数: #{@dm_success_count}件、DM通知失敗件数: #{@dm_error_count}件" }
   end
 
   def init_slack_client
@@ -18,16 +25,49 @@ module Gws::Slack::SendNotificationJob
 
   def send_to_channel
     if notice_post_class?
-      site.notice_slack_channels.each { |channel| slack_post_msg(channel, "both_lang") }
+      site.notice_slack_channels.each do |channel|
+        begin
+          slack_post_msg(channel, "both_lang")
+          @channel_success_count += 1
+        rescue => e
+          @channel_error_count += 1
+          Rails.logger.error { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
+        end
+      end
     elsif site.circular_slack_channels.present?
-      site.circular_slack_channels.each { |channel| slack_post_msg(channel, "both_lang") }
+      site.circular_slack_channels.each do |channel|
+        begin
+          slack_post_msg(channel, "both_lang")
+          @channel_success_count += 1
+        rescue => e
+          @channel_error_count += 1
+          Rails.logger.error { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
+        end
+      end
     end
   end
 
   def send_to_dm
     set_notify_slack_ids
-    @ja_slack_ids.each { |slack_id| slack_post_msg(slack_id, "ja") }
-    @en_slack_ids.each { |slack_id| slack_post_msg(slack_id, "en") }
+    @ja_slack_ids.each do |slack_id|
+      begin
+        slack_post_msg(slack_id, "ja")
+        @dm_success_count += 1
+      rescue => e
+        @dm_error_count += 1
+        Rails.logger.error { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
+      end
+    end
+
+    @en_slack_ids.each do |slack_id|
+      begin
+        slack_post_msg(slack_id, "en")
+        @dm_success_count += 1
+      rescue => e
+        @dm_error_count += 1
+        Rails.logger.error { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
+      end
+    end
   end
 
   def slack_post_msg(slack_id, lang)
