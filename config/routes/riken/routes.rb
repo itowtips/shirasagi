@@ -19,4 +19,24 @@ Rails.application.routes.draw do
       get "shibboleth/:id/login" => "shibboleth#login", as: :env
     end
   end
+
+  # gws 'attendance' do
+  # end
+  namespace('riken', as: "gws_riken", path: ".g:site/riken", site: /\d+/) do
+    namespace "ldap" do
+      get "/" => redirect { |p, req| "#{req.path}/setting" }, as: :main
+      resource :setting, only: %i[show edit update] do
+        put :import, on: :member
+      end
+      resources :groups, only: %i[index]
+      resources :users, only: %i[index]
+    end
+    namespace "apis" do
+      namespace "ldap" do
+        post "test_connection" => "test#connection"
+        post "test_group_search" => "test#group_search"
+        post "test_user_search" => "test#user_search"
+      end
+    end
+  end
 end

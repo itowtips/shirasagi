@@ -51,9 +51,12 @@ module Gws::Addon::Circular::GroupSetting
   private
 
   def join_bot_to_slack_channels
-    client = slack_client
-    bot_user_id = client.auth_test.user_id rescue nil
+    return if circular_slack_channels.blank?
 
+    client = slack_client
+    return if client.nil?
+
+    bot_user_id = client.auth_test.user_id rescue nil
     return if bot_user_id.nil?
 
     client.conversations_list.channels.each do |channel|

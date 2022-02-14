@@ -32,7 +32,7 @@ module SS::Model::Group
 
     before_validation :synchronize_i18n_name
 
-    validates :name, presence: true, uniqueness: true, length: { maximum: 80 }
+    validates :name, presence: true, uniqueness: true, length: { maximum: 200 }
     validates :domains, domain: true
     validates :order, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 999_999, allow_blank: true }
     validates :activation_date, datetime: true

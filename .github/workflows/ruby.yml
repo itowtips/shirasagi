@@ -81,7 +81,7 @@ jobs:
         run: docker ps -a
       - name: Run tests
         run: |
-          file_list=$(bundle exec ruby .travis.d/split_specs.rb -p ${{ matrix.parallelism }} -i ${{ matrix.id }} --include /gws/ --include /workflow/)
+          file_list=$(bundle exec ruby .travis.d/split_specs.rb -p ${{ matrix.parallelism }} -i ${{ matrix.id }} --include /gws/ --include /workflow/ --include /riken/)
           if [ $? -ne 0 ]; then
             exit 1
           fi

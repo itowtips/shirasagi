@@ -1,0 +1,10 @@
+<% @s ||= OpenStruct.new params[:s] %>
+<div class="list-head">
+  <div class="list-head-search-full">
+    <%= form_for :s, url: '', html: { method: :get } do |f| %>
+      <%= f.text_field :base_dn, placeholder: "ldap base dn", style: 'width: 30%;' %>
+      <%= f.text_field :filter, placeholder: "ldap filter", style: 'width: 60%;' %>
+      <input type="submit" value="<%= t('ss.buttons.search') %>" class="btn" />
+    <% end %>
+  </div>
+</div>

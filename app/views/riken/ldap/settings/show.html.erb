@@ -1,0 +1,51 @@
+<div class="addon-views">
+  <%=
+    {}.then do |addon_options|
+      addon_options[:id] = "ldap-connection"
+      addon_options[:head] = t("riken.ldap.connection_setting")
+      buf = render "show_connection", addon: addon_options
+      render "ss/crud/addon", addon: addon_options do
+        buf
+      end
+    end
+  %>
+
+  <%=
+    {}.then do |addon_options|
+      addon_options[:id] = "ldap-group-condition"
+      addon_options[:head] = t("riken.ldap.group_condition")
+      buf = render "show_group_condition", addon: addon_options
+      render "ss/crud/addon", addon: addon_options do
+        buf
+      end
+    end
+  %>
+
+  <%=
+    {}.then do |addon_options|
+      addon_options[:id] = "ldap-user-condition"
+      addon_options[:head] = t("riken.ldap.user_condition")
+      buf = render "show_user_condition", addon: addon_options
+      render "ss/crud/addon", addon: addon_options do
+        buf
+      end
+    end
+  %>
+
+  <%=
+    {}.then do |addon_options|
+      addon_options[:id] = "ldap-roles"
+      addon_options[:head] = t("riken.ldap.roles")
+      buf = render "show_roles", addon: addon_options
+      render "ss/crud/addon", addon: addon_options do
+        buf
+      end
+    end
+  %>
+
+  <% if Rails.env.development? %>
+    <%= form_for :item, url: { action: :import }, html: { id: "test-import", method: :put, multipart: true, autocomplete: :off } do |f| %>
+      <%= f.submit "Test Import", class: "btn" %>
+    <% end %>
+  <% end %>
+</div>

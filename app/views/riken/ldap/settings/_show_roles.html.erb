@@ -1,0 +1,23 @@
+<dl class="see">
+  <dt><%= @model.t :riken_ldap_sys_role_ids %></dt>
+  <dd>
+    <% @item.riken_ldap_sys_roles.order_by(name: 1).each do |role| %>
+      <% if Sys::Role.allowed?(:read, @cur_user) %>
+        <div><%= link_to role.name, sys_role_path(id: role) %></div>
+      <% else %>
+        <div><%= role.name %></div>
+      <% end %>
+    <% end %>
+  </dd>
+
+  <dt><%= @model.t :riken_ldap_gws_role_ids %></dt>
+  <dd>
+    <% @item.riken_ldap_gws_roles.site(@cur_site).order_by(name: 1).each do |role| %>
+      <% if Gws::Role.allowed?(:read, @cur_user, site: @cur_site) %>
+        <div><%= link_to role.name, gws_role_path(id: role) %></div>
+      <% else %>
+        <div><%= role.name %></div>
+      <% end %>
+    <% end %>
+  </dd>
+</dl>

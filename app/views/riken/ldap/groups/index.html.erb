@@ -1,0 +1,15 @@
+<% if @error.present? %>
+  <%= render 'error' %>
+<% end %>
+
+<div class="index">
+  <%= render 'list_head' %>
+
+  <% if @result.present? %>
+    <%= render 'result' %>
+  <% end %>
+</div>
+
+<%= jquery do %>
+  $(".data-table").dataTable();
+<% end %>

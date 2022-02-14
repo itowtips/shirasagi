@@ -31,6 +31,7 @@
 //= require gws/attendance/portlet
 //= require gws/presence/user
 //= require gws/share/folder_toolbar
+//= require riken/ldap_test
 
 $(function () {
   // external link

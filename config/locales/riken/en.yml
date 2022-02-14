@@ -1,5 +1,16 @@
 en:
   riken:
+    ldap:
+      main: Riken LDAP
+      setting: Setting
+      group: Group
+      user: User
+      connection_setting: Connection Settings
+      group_condition: Group Search Conditions
+      user_condition: User Search Conditions
+      roles: Default Roles
+      test_connection: Test Connection
+      test_search: Test Search
     shibboleth:
       login_failed:
         head: Failed to login

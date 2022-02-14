@@ -31,6 +31,7 @@ class Gws::Group
   include Gws::Addon::History
   include Gws::Addon::Import::Group
   include Gws::Addon::SiteUsage
+  include Riken::Ldap::GroupSetting
   include Gws::Addon::Slack
 
   set_permission_name "gws_groups", :edit

@@ -1,0 +1,24 @@
+<%
+  attribute_names = nil
+%>
+<table class="data-table">
+  <% @result.each_with_index do |entry, index| %>
+    <% if index == 0 %>
+      <% attribute_names = entry.attribute_names %>
+      <thead>
+      <tr>
+        <% attribute_names.each do |attribute| %>
+          <th><%= attribute %></th>
+        <% end %>
+      </tr>
+      </thead>
+      <tbody>
+    <% end %>
+    <tr>
+      <% attribute_names.each do |attribute| %>
+        <td data-attr="<%= attribute %>"><%= entry[attribute] %></td>
+      <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

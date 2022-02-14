@@ -1,5 +1,16 @@
 ja:
   riken:
+    ldap:
+      main: 理研LDAP
+      setting: 設定
+      group: グループ
+      user: ユーザー
+      connection_setting: サーバー設定
+      group_condition: グループ検索条件
+      user_condition: ユーザー検索条件
+      roles: 既定のロール
+      test_connection: 接続テスト
+      test_search: 検索テスト
     shibboleth:
       login_failed:
         head: ログインできませんでした。

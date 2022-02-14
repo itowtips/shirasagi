@@ -1,0 +1,15 @@
+<% if @error.present? %>
+  <%= render 'riken/ldap/groups/error' %>
+<% end %>
+
+<div class="index">
+  <%= render 'riken/ldap/groups/list_head' %>
+
+  <% if @result.present? %>
+    <%= render 'riken/ldap/groups/result' %>
+  <% end %>
+</div>
+
+<%= jquery do %>
+  $(".data-table").dataTable();
+<% end %>

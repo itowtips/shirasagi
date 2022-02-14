@@ -33,4 +33,7 @@
   <% if Gws::Job::Log.allowed?(:read, @cur_user, site: @cur_site) %>
     <h3><%= link_to t('modules.gws/job'), gws_job_logs_path %></h3>
   <% end %>
+  <% if Gws::Group.allowed?(:edit, @cur_user, site: @cur_site) %>
+    <h3><%= link_to t("riken.ldap.main"), gws_riken_ldap_main_path %></h3>
+  <% end %>
 </nav>

@@ -1,0 +1,10 @@
+<dl class="see">
+  <dt><%= @model.t :riken_ldap_group_dn %><%= @model.tt :riken_ldap_group_dn %></dt>
+  <dd><%= f.text_field :riken_ldap_group_dn %></dd>
+
+  <dt><%= @model.t :riken_ldap_group_filter %><%= @model.tt :riken_ldap_group_filter %></dt>
+  <dd><%= f.text_field :riken_ldap_group_filter %></dd>
+
+  <dt></dt>
+  <dd><%= button_tag t("riken.ldap.test_search"), type: "button", class: "btn btn-ldap-test", data: { url: gws_riken_apis_ldap_test_group_search_path } %></dd>
+</dl>

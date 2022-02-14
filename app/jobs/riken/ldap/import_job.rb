@@ -12,6 +12,9 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
     @user_error_count = 0
     @imported_groups = []
 
+    # ldap test
+    site.riken_ldap_connection!
+
     # warm-up slack-id map
     slack_id_map
 
@@ -19,11 +22,6 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
     synchronize_all_users
 
     task.log "ldap インポートを実行しました。"
-    task.log "グループ成功件数: #{@group_success_count}, グループ失敗件数: #{@group_error_count}"
-    task.log "ユーザー成功件数: #{@user_success_count}, ユーザー失敗件数: #{@user_error_count}"
-  rescue => e
-    Rails.logger.fatal { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
-    raise
   end
 
   private
@@ -33,31 +31,40 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
   end
 
   def ldap_searcher
-    @ldap_searcher ||= begin
-      raise NotImplementedError
-    end
+    @ldap_searcher ||= Riken::Ldap::Searcher.new(cur_site: site)
   end
 
   def synchronize_all_groups
-    base_criteria = Gws::Group.all.unscoped.site(site)
+    Rails.logger.tagged("'#{site.riken_ldap_group_dn}' with '#{site.riken_ldap_group_filter}'") do
+      base_criteria = Gws::Group.all.unscoped.site(site).exists(ldap_dn: true)
 
-    ldap_searcher.each_group do |ldap_group|
-      Rails.logger.tagged(ldap_group.dn) do
-        group = synchronize_one_group(base_criteria, ldap_group)
-        @imported_groups << group
-        @group_success_count += 1
-      rescue => e
-        @group_error_count += 1
-        Rails.logger.error { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
+      ldap_searcher.each_group do |ldap_group|
+        Rails.logger.tagged(ldap_group.dn) do
+          group = synchronize_one_group(base_criteria, ldap_group)
+          @imported_groups << group
+          @group_success_count += 1
+        rescue => e
+          @group_error_count += 1
+          Rails.logger.error { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
+        end
+      end
+
+      return if @group_error_count > 0 || @user_error_count > 0
+      return if @group_success_count == 0
+
+      unimported_group_ids = base_criteria.where(name: /\//).pluck(:id) - @imported_groups.map(&:id)
+      unimported_group_ids.delete(site.id)
+      return if unimported_group_ids.blank?
+
+      base_criteria.in(id: unimported_group_ids).set(expiration_date: @now.change(sec: 0).utc)
+    rescue => e
+      Rails.logger.fatal { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
+      raise
+    ensure
+      unless $ERROR_INFO
+        task.log "グループ成功件数: #{@group_success_count}, グループ失敗件数: #{@group_error_count}"
       end
     end
-
-    return if @group_error_count > 0 || @user_error_count > 0
-
-    unimported_group_ids = base_criteria.pluck(:id) - @imported_groups.map(&:id)
-    return if unimported_group_ids.blank?
-
-    base_criteria.in(id: unimported_group_ids).set(expiration_date: @now.change(sec: 0).utc)
   end
 
   def synchronize_one_group(base_criteria, ldap_group)
@@ -73,42 +80,52 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
   end
 
   def synchronize_all_users
-    base_criteria = Gws::User.all.unscoped.site(site)
+    Rails.logger.tagged("'#{site.riken_ldap_user_dn}' with '#{site.riken_ldap_user_filter}'") do
+      base_criteria = Gws::User.all.unscoped.site(site).where(type: SS::User::TYPE_SSO)
 
-    imported_users = {}
-    pending_superiors = []
-    ldap_searcher.each_user do |ldap_user|
-      Rails.logger.tagged(ldap_user.rk_uid) do
-        user = synchronize_one_user(base_criteria, ldap_user)
-        imported_users[ldap_user.rk_uid] = user
-        main_superior_id = normalize(ldap_user.main_superior_id)
-        if main_superior_id
-          pending_superiors << [ ldap_user.rk_uid, main_superior_id ]
+      imported_users = {}
+      pending_superiors = []
+      ldap_searcher.each_user do |ldap_user|
+        Rails.logger.tagged(ldap_user.rk_uid) do
+          user = synchronize_one_user(base_criteria, ldap_user)
+          imported_users[ldap_user.rk_uid] = user
+          main_superior_id = normalize(ldap_user.main_superior_id)
+          if main_superior_id
+            pending_superiors << [ ldap_user.rk_uid, main_superior_id ]
+          end
+          @user_success_count += 1
+        rescue => e
+          @user_error_count += 1
+          Rails.logger.error { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
         end
-        @user_success_count += 1
-      rescue => e
-        @user_error_count += 1
-        Rails.logger.error { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
+      end
+
+      pending_superiors.each do |rk_uid, main_superior_id|
+        Rails.logger.tagged(rk_uid) do
+          superior_user = imported_users[main_superior_id]
+          if superior_user.blank?
+            Rails.logger.warn { "superior '#{main_superior_id}' is not found" }
+            next
+          end
+
+          user = imported_users[rk_uid]
+          user.update(superior: superior_user)
+        end
+      end
+
+      return if @group_error_count > 0 || @user_error_count > 0
+      return if @user_success_count == 0
+
+      unimported_user_ids = base_criteria.pluck(:id) - imported_users.values.map(&:id)
+      base_criteria.in(id: unimported_user_ids).set(account_expiration_date: @now.change(sec: 0).utc)
+    rescue => e
+      Rails.logger.fatal { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
+      raise
+    ensure
+      unless $ERROR_INFO
+        task.log "ユーザー成功件数: #{@user_success_count}, ユーザー失敗件数: #{@user_error_count}"
       end
     end
-
-    pending_superiors.each do |rk_uid, main_superior_id|
-      Rails.logger.tagged(rk_uid) do
-        superior_user = imported_users[main_superior_id]
-        if superior_user.blank?
-          Rails.logger.warn { "superior '#{main_superior_id}' is not found" }
-          next
-        end
-
-        user = imported_users[rk_uid]
-        user.update(superior: superior_user)
-      end
-    end
-
-    return if @group_error_count > 0 || @user_error_count > 0
-
-    unimported_user_ids = base_criteria.pluck(:id) - imported_users.values.map(&:id)
-    base_criteria.in(id: unimported_user_ids).set(account_expiration_date: @now.change(sec: 0).utc)
   end
 
   def synchronize_one_user(base_criteria, ldap_user)
@@ -128,6 +145,10 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
     user.group_ids = resolve_groups(ldap_user)
     user.in_gws_main_group_id = resolve_main_group(ldap_user)
     user.send_notice_slack_id = resolve_slack_id(ldap_user)
+    if user.new_record?
+      user.sys_role_ids = site.riken_ldap_sys_role_ids
+      user.gws_role_ids = site.riken_ldap_gws_role_ids
+    end
 
     user.save!
     user
@@ -147,15 +168,27 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
   end
 
   def resolve_groups(ldap_user)
-    groups = select_groups_by_dn(ldap_user.lab_dn)
-    groups += select_groups_by_dn(ldap_user.belongs_to)
+    dns = Array(ldap_user.lab_dn) + Array(ldap_user.belongs_to)
+    dns.uniq!
+
+    groups = select_groups_by_dn(dns)
     groups.compact!
     groups.uniq!
-    groups.map(&:id)
+
+    group_ids = groups.map(&:id)
+    group_ids.delete(site.id)
+    group_ids
   end
 
   def resolve_main_group(ldap_user)
-    groups = select_groups_by_dn(ldap_user.lab_dn)
+    return if ldap_user.lab_dn.blank?
+
+    lab_dns = Array(ldap_user.lab_dn)
+    if lab_dns.length > 1 && ldap_user.main_lab_cd.present?
+      lab_dns.select! { |dn| dn.include?(ldap_user.main_lab_cd) }
+    end
+
+    groups = select_groups_by_dn(lab_dns)
     groups.compact!
     groups.uniq!
     groups.first.try(:id)
@@ -224,6 +257,6 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
   end
 
   def find_group_by_dn(dn)
-    @imported_groups.find { |group| group.ldap_dn == dn }
+    @imported_groups.find { |group| group.ldap_dn.casecmp(dn).zero? }
   end
 end

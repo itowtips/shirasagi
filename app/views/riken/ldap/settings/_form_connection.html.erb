@@ -1,0 +1,14 @@
+<dl class="see">
+  <dt><%= @model.t :riken_ldap_url %><%= @model.tt :riken_ldap_url %></dt>
+  <dd><%= f.text_field :riken_ldap_url %></dd>
+
+  <dt><%= @model.t :riken_ldap_bind_dn %><%= @model.tt :riken_ldap_bind_dn %></dt>
+  <dd><%= f.text_field :riken_ldap_bind_dn %></dd>
+
+  <dt><%= @model.t :riken_ldap_bind_password %><%= @model.tt :riken_ldap_bind_password %></dt>
+  <dd><%= f.password_field :in_riken_ldap_bind_password %></dd>
+  <dd><label><%= f.check_box :rm_riken_ldap_bind_password %> <%= t("ss.buttons.delete") %></label></dd>
+
+  <dt></dt>
+  <dd><%= button_tag t("riken.ldap.test_connection"), type: "button", class: "btn btn-ldap-test", data: { url: gws_riken_apis_ldap_test_connection_path } %></dd>
+</dl>

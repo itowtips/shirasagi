@@ -9,6 +9,8 @@ describe Riken::Login::ShibbolethController, type: :feature, dbscope: :example, 
   end
 
   context "without environments" do
+    let!(:site) { gws_site }
+
     it do
       visit sns_login_path(ref: gws_portal_path(site: site))
       click_on auth.name
@@ -49,7 +51,9 @@ describe Riken::Login::ShibbolethController, type: :feature, dbscope: :example, 
         visit sns_login_path(ref: gws_portal_path(site: site))
         click_on auth.name
 
-        expect(page).to have_css("#addon-basic h2", text: I18n.t("riken.shibboleth.login_failed.head"))
+        # login controller in test always uses default locale
+        text = I18n.t("riken.shibboleth.login_failed.head", locale: I18n.default_locale)
+        expect(page).to have_css("#addon-basic h2", text: text)
       end
     end
   end

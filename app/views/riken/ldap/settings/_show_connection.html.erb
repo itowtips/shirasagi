@@ -1,0 +1,10 @@
+<dl class="see">
+  <dt><%= @model.t :riken_ldap_url %></dt>
+  <dd><%= @item.riken_ldap_url %></dd>
+
+  <dt><%= @model.t :riken_ldap_bind_dn %></dt>
+  <dd><%= @item.riken_ldap_bind_dn %></dd>
+
+  <dt><%= @model.t :riken_ldap_bind_password %></dt>
+  <dd><%= @item.riken_ldap_bind_password.present? ? "*" * 8 : "" %></dd>
+</dl>
