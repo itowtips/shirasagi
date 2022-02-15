@@ -627,6 +627,7 @@ en:
         domains: Domain
         gws_use: Use of groupware
         upload_policy: Upload restrictions
+        superior_id: Superior
       ss/model/group/i18n_name_translations:
         ja: Group name (JA)
         en: Group name (EN)
@@ -937,6 +938,8 @@ en:
         - Groupware is used by default.
       upload_policy:
         - Set behavior when uploading files.
+      superior_id:
+        - Selects the superior user.
     ss/document:
       title:
         - Used for the page title and displayed in the title bar of the browser.

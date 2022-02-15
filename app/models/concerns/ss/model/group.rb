@@ -24,9 +24,12 @@ module SS::Model::Group
     field :domains, type: SS::Extensions::Words
     field :gws_use, type: String
     field :upload_policy, type: String
+    # 上長
+    belongs_to :superior, class_name: "SS::User"
 
     permit_params :name, :i18n_name, i18n_name_translations: I18n.available_locales
     permit_params :order, :activation_date, :expiration_date, :domains, :gws_use
+    permit_params :superior_id
 
     default_scope -> { order_by(order: 1, name: 1) }
 

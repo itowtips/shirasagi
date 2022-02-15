@@ -110,6 +110,12 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
       Gws::Group.all.site(site).find_by(ldap_dn: "labCd=111001,OU=Organizations,O=example,C=jp").tap do |group|
         expect(group.i18n_name_translations[:ja]).to eq "シラサギ市/企画政策部/政策課"
         expect(group.i18n_name_translations[:en]).to eq "Shirasagi City/Kikaku Seisaku Department/Seisaku Section"
+        expect(group.superior.try(:email)).to eq "admin@example.jp"
+      end
+      Gws::Group.all.site(site).find_by(ldap_dn: "labCd=112001,OU=Organizations,O=example,C=jp").tap do |group|
+        expect(group.i18n_name_translations[:ja]).to eq "シラサギ市/危機管理部/管理課"
+        expect(group.i18n_name_translations[:en]).to eq "Shirasagi City/Kiki Kanri Department/Kanri Section"
+        expect(group.superior.try(:email)).to eq "user4@example.jp"
       end
 
       Gws::User.all.site(site).find_by(uid: Riken.encrypt("1001")).tap do |user|

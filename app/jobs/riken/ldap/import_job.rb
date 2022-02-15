@@ -11,6 +11,9 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
     @user_success_count = 0
     @user_error_count = 0
     @imported_groups = []
+    @pending_group_superiors = []
+    @pending_user_superiors = []
+    @imported_users = {}
 
     # ldap test
     site.riken_ldap_connection!
@@ -20,6 +23,9 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
 
     synchronize_all_groups
     synchronize_all_users
+    if @group_error_count == 0 && @user_error_count == 0
+      resolve_pending_superiors
+    end
 
     task.log "ldap インポートを実行しました。"
   end
@@ -42,6 +48,12 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
         Rails.logger.tagged(ldap_group.dn) do
           group = synchronize_one_group(base_criteria, ldap_group)
           @imported_groups << group
+
+          superior_id = normalize(ldap_group.superior_id)
+          if superior_id
+            @pending_group_superiors << [ group, superior_id ]
+          end
+
           @group_success_count += 1
         rescue => e
           @group_error_count += 1
@@ -83,15 +95,13 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
     Rails.logger.tagged("'#{site.riken_ldap_user_dn}' with '#{site.riken_ldap_user_filter}'") do
       base_criteria = Gws::User.all.unscoped.site(site).where(type: SS::User::TYPE_SSO)
 
-      imported_users = {}
-      pending_superiors = []
       ldap_searcher.each_user do |ldap_user|
         Rails.logger.tagged(ldap_user.rk_uid) do
           user = synchronize_one_user(base_criteria, ldap_user)
-          imported_users[ldap_user.rk_uid] = user
+          @imported_users[ldap_user.rk_uid] = user
           main_superior_id = normalize(ldap_user.main_superior_id)
           if main_superior_id
-            pending_superiors << [ ldap_user.rk_uid, main_superior_id ]
+            @pending_user_superiors << [ ldap_user.rk_uid, main_superior_id ]
           end
           @user_success_count += 1
         rescue => e
@@ -100,23 +110,10 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
         end
       end
 
-      pending_superiors.each do |rk_uid, main_superior_id|
-        Rails.logger.tagged(rk_uid) do
-          superior_user = imported_users[main_superior_id]
-          if superior_user.blank?
-            Rails.logger.warn { "superior '#{main_superior_id}' is not found" }
-            next
-          end
-
-          user = imported_users[rk_uid]
-          user.update(superior: superior_user)
-        end
-      end
-
       return if @group_error_count > 0 || @user_error_count > 0
       return if @user_success_count == 0
 
-      unimported_user_ids = base_criteria.pluck(:id) - imported_users.values.map(&:id)
+      unimported_user_ids = base_criteria.pluck(:id) - @imported_users.values.map(&:id)
       base_criteria.in(id: unimported_user_ids).set(account_expiration_date: @now.change(sec: 0).utc)
     rescue => e
       Rails.logger.fatal { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
@@ -162,6 +159,33 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
     return if value == "-"
 
     value
+  end
+
+  def resolve_pending_superiors
+    @pending_group_superiors.each do |group, superior_id|
+      Rails.logger.tagged(group.ldap_dn) do
+        superior_user = @imported_users[superior_id]
+        if superior_user.blank?
+          Rails.logger.warn { "superior '#{superior_id}' is not found" }
+          next
+        end
+
+        group.update(superior: superior_user)
+      end
+    end
+
+    @pending_user_superiors.each do |rk_uid, main_superior_id|
+      Rails.logger.tagged(rk_uid) do
+        superior_user = @imported_users[main_superior_id]
+        if superior_user.blank?
+          Rails.logger.warn { "superior '#{main_superior_id}' is not found" }
+          next
+        end
+
+        user = @imported_users[rk_uid]
+        user.update(superior: superior_user)
+      end
+    end
   end
 
   def normalize_and_join(*args, separator: " ")

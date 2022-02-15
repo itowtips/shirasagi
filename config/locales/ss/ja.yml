@@ -645,6 +645,7 @@ ja:
         domains: ドメイン
         gws_use: グループウェアの使用
         upload_policy: アップロード制限
+        superior_id: 上長
       ss/model/group/i18n_name_translations:
         ja: グループ名 (JA)
         en: グループ名 (EN)
@@ -970,6 +971,8 @@ ja:
         - 既定では、グループウェアを使用します。
       upload_policy:
         - ファイルアップロード時の動作を設定します。
+      superior_id:
+        - 上長を選択します。
     ss/document:
       title:
         - ページのタイトルに利用し、ブラウザのタイトルバーに表示されます。

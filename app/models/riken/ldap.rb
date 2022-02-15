@@ -8,7 +8,7 @@ module Riken::Ldap
 
   RK_USER_ARRAY_ATTRS = %i[lab_dn belongs_to].freeze
 
-  RkOrganization = Struct.new(:dn, :cn_j, :cn, :hierarchy_lab_name_j, :hierarchy_lab_name_e, keyword_init: true)
+  RkOrganization = Struct.new(:dn, :superior_id, :cn_j, :cn, :hierarchy_lab_name_j, :hierarchy_lab_name_e, keyword_init: true)
 
   DEFAULT_USER_DN = "ou=users,o=riken,c=jp".freeze
   DEFAULT_USER_FILTER = "(&(retiredFlg=0)(!(rkUid=XTS*)))".freeze
