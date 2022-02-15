@@ -133,6 +133,7 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
     user = base_criteria.where(uid: encrypted_rk_uid).first
     user ||= Gws::User.new(uid: encrypted_rk_uid)
 
+    user.cur_site = site
     user.i18n_name_translations = {
       ja: normalize_and_join(ldap_user.cn_jp, ldap_user.gn_jp, ldap_user.mn_jp),
       en: normalize_and_join(ldap_user.cn, ldap_user.gn, ldap_user.mn_en)
@@ -174,10 +175,7 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
     groups = select_groups_by_dn(dns)
     groups.compact!
     groups.uniq!
-
-    group_ids = groups.map(&:id)
-    group_ids.delete(site.id)
-    group_ids
+    groups.map(&:id)
   end
 
   def resolve_main_group(ldap_user)
@@ -257,6 +255,11 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
   end
 
   def find_group_by_dn(dn)
-    @imported_groups.find { |group| group.ldap_dn.casecmp(dn).zero? }
+    group = @imported_groups.find { |group| group.ldap_dn.casecmp(dn).zero? }
+    return group if group
+
+    return site if site.ldap_dn.present? && site.ldap_dn.casecmp(dn).zero?
+
+    nil
   end
 end

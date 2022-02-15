@@ -1,5 +1,4 @@
 ﻿dn,cn_j,cn,hierarchy_lab_name_j,hierarchy_lab_name_e
-"labCd=100001,OU=Organizations,O=example,C=jp",シラサギ市,Shirasagi City,-,-
 "labCd=110001,OU=Organizations,O=example,C=jp",企画政策部,Kikaku Seisaku Department,シラサギ市,Shirasagi City
 "labCd=110002,OU=Organizations,O=example,C=jp",危機管理部,Kiki Kanri Department,シラサギ市,Shirasagi City
 "labCd=111001,OU=Organizations,O=example,C=jp",政策課,Seisaku Section,シラサギ市/企画政策部,Shirasagi City/Kikaku Seisaku Department

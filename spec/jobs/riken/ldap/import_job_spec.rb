@@ -97,8 +97,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(log.logs).to include(/INFO -- : .* Started Job/)
         expect(log.logs).to include(/INFO -- : .* Completed Job/)
 
-        expect(log.logs).to include(/INFO -- : .* グループ成功件数: #{Gws::Group.all.count}, グループ失敗件数: 0/)
-        expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: #{Gws::User.all.count}, ユーザー失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* グループ成功件数: 6, グループ失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: 7, ユーザー失敗件数: 0/)
       end
 
       expect(Gws::Group.all.count).to eq 7
@@ -106,10 +106,6 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
       expect(Gws::User.all.count).to eq 7
       expect(Gws::User.all.active.count).to eq 7
       expect(Gws::User.all.and_enabled.count).to eq 7
-
-      site.reload
-      expect(site.i18n_name_translations[:ja]).to eq "シラサギ市"
-      expect(site.i18n_name_translations[:en]).to eq "Shirasagi City"
 
       Gws::Group.all.site(site).find_by(ldap_dn: "labCd=111001,OU=Organizations,O=example,C=jp").tap do |group|
         expect(group.i18n_name_translations[:ja]).to eq "シラサギ市/企画政策部/政策課"
@@ -123,8 +119,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.i18n_name_translations[:en]).to eq "System Admin"
         expect(user.kana).to eq "システムカンリシャ"
         expect(user.email).to eq "sys@example.jp"
-        expect(user.groups.count).to eq 1
-        expect(user.groups.map(&:name)).to include("シラサギ市/企画政策部/政策課")
+        expect(user.groups.count).to eq 2
+        expect(user.groups.map(&:name)).to include("シラサギ市", "シラサギ市/企画政策部/政策課")
         expect(user.gws_main_group.name).to eq "シラサギ市/企画政策部/政策課"
         expect(user.send_notice_slack_id).to be_blank
         expect(user.sys_role_ids).to include(sys_role1.id)
@@ -143,8 +139,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.i18n_name_translations[:en]).to eq "Suzuki Shigeru"
         expect(user.kana).to eq "スズキ シゲル"
         expect(user.email).to eq "user1@example.jp"
-        expect(user.groups.count).to eq 1
-        expect(user.groups.map(&:name)).to include("シラサギ市/企画政策部/政策課")
+        expect(user.groups.count).to eq 2
+        expect(user.groups.map(&:name)).to include("シラサギ市", "シラサギ市/企画政策部/政策課")
         expect(user.gws_main_group.name).to eq "シラサギ市/企画政策部/政策課"
         expect(user.send_notice_slack_id).to eq "47AEBBA29"
         expect(user.sys_role_ids).to include(sys_role1.id)
@@ -163,8 +159,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.i18n_name_translations[:en]).to eq "Saito Takkuya"
         expect(user.kana).to eq "サイトウ タクヤ"
         expect(user.email).to eq "user3@example.jp"
-        expect(user.groups.count).to eq 1
-        expect(user.groups.map(&:name)).to include("シラサギ市/企画政策部/広報課")
+        expect(user.groups.count).to eq 2
+        expect(user.groups.map(&:name)).to include("シラサギ市", "シラサギ市/企画政策部/広報課")
         expect(user.gws_main_group.name).to eq "シラサギ市/企画政策部/広報課"
         # user "1005" is deleted from Slack
         expect(user.send_notice_slack_id).to be_blank
@@ -184,10 +180,31 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.i18n_name_translations[:en]).to eq "Ito Sachiko"
         expect(user.kana).to eq "イトウ サチコ"
         expect(user.email).to eq "user4@example.jp"
-        expect(user.groups.count).to eq 2
-        expect(user.groups.map(&:name)).to include("シラサギ市/危機管理部/管理課", "シラサギ市/危機管理部/防災課")
+        expect(user.groups.count).to eq 3
+        expect(user.groups.map(&:name)).to include("シラサギ市", "シラサギ市/危機管理部/管理課", "シラサギ市/危機管理部/防災課")
         expect(user.gws_main_group.name).to eq "シラサギ市/危機管理部/管理課"
         expect(user.send_notice_slack_id).to eq "50C14D2B4"
+        expect(user.sys_role_ids).to include(sys_role1.id)
+        expect(user.gws_role_ids).to include(sys_role1.id)
+
+        expect(user.type).to eq SS::User::TYPE_SSO
+        expect(user.login_roles).to include(SS::User::LOGIN_ROLE_SSO)
+        expect(user.password).to be_blank
+        expect(user.active?).to be_truthy
+        expect(user.ldap_dn).to be_blank # ldap_dn には rkUid が含まれており、rkUid は守秘情報なので保存しないようにする
+      end
+      Gws::User.all.site(site).find_by(uid: Riken.encrypt("1007")).tap do |user|
+        # グループ直下にユーザーがいるとのことで、グループ直下のユーザーが取り込めるかテスト
+        user.cur_site = site
+
+        expect(user.i18n_name_translations[:ja]).to eq "高橋 清"
+        expect(user.i18n_name_translations[:en]).to eq "Takahashi Kiyoshi"
+        expect(user.kana).to eq "タカハシ キヨシ"
+        expect(user.email).to eq "user5@example.jp"
+        expect(user.groups.count).to eq 1
+        expect(user.groups.map(&:name)).to include("シラサギ市")
+        expect(user.gws_main_group.name).to eq "シラサギ市"
+        expect(user.send_notice_slack_id).to eq "C3FE211BE"
         expect(user.sys_role_ids).to include(sys_role1.id)
         expect(user.gws_role_ids).to include(sys_role1.id)
 
@@ -213,8 +230,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(log.logs).to include(/INFO -- : .* Started Job/)
         expect(log.logs).to include(/INFO -- : .* Completed Job/)
 
-        expect(log.logs).to include(/INFO -- : .* グループ成功件数: #{save_group_count}, グループ失敗件数: 0/)
-        expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: #{save_user_count}, ユーザー失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* グループ成功件数: 6, グループ失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: 7, ユーザー失敗件数: 0/)
       end
 
       expect(Gws::Group.all.active.count).to eq save_group_count
@@ -236,8 +253,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(log.logs).to include(/INFO -- : .* Started Job/)
         expect(log.logs).to include(/INFO -- : .* Completed Job/)
 
-        expect(log.logs).to include(/INFO -- : .* グループ成功件数: #{Gws::Group.all.count}, グループ失敗件数: 0/)
-        expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: #{Gws::User.all.count}, ユーザー失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* グループ成功件数: 6, グループ失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: 7, ユーザー失敗件数: 0/)
       end
 
       expect(Gws::Group.all.count).to eq 7
@@ -282,8 +299,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(log.logs).to include(/INFO -- : .* Started Job/)
         expect(log.logs).to include(/INFO -- : .* Completed Job/)
 
-        expect(log.logs).to include(/INFO -- : .* グループ成功件数: #{Gws::Group.all.count}, グループ失敗件数: 0/)
-        expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: #{Gws::User.all.count}, ユーザー失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* グループ成功件数: 6, グループ失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: 7, ユーザー失敗件数: 0/)
       end
 
       expect(Gws::Group.all.count).to eq 7
@@ -305,7 +322,7 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(log.logs).to include(/FATAL -- : .* Failed Job/)
         expect(log.logs).to include(/FATAL -- : .* Timeout::Error/)
 
-        expect(log.logs).to include(/INFO -- : .* グループ成功件数: #{save_group_count}, グループ失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* グループ成功件数: 6, グループ失敗件数: 0/)
         expect(log.logs).not_to include(/INFO -- : .* ユーザー成功件数/)
       end
 
@@ -328,8 +345,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(log.logs).to include(/INFO -- : .* Started Job/)
         expect(log.logs).to include(/INFO -- : .* Completed Job/)
 
-        expect(log.logs).to include(/INFO -- : .* グループ成功件数: #{Gws::Group.all.count}, グループ失敗件数: 0/)
-        expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: #{Gws::User.all.count}, ユーザー失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* グループ成功件数: 6, グループ失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: 7, ユーザー失敗件数: 0/)
       end
 
       expect(Gws::Group.all.count).to eq 7
@@ -390,7 +407,7 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(log.logs).to include(/INFO -- : .* Started Job/)
         expect(log.logs).to include(/INFO -- : .* Completed Job/)
 
-        expect(log.logs).to include(/INFO -- : .* グループ成功件数: 7, グループ失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* グループ成功件数: 6, グループ失敗件数: 0/)
         expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: 7, ユーザー失敗件数: 0/)
       end
 
