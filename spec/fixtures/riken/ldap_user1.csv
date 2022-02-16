@@ -8,9 +8,9 @@ labCd=111001,OU=Organizations,O=example,C=jp","labCd=100001,OU=Organizations,O=e
 labCd=111001,OU=Organizations,O=example,C=jp"
 "rkUid=1004,OU=Users,O=example,C=jp",1004,1004,112001,渡辺,和子,-,ワタナベ,カズコ,-,Watanabe,Kazuko,-,-,user2@example.jp,1,"labCd=112001,OU=Organizations,O=example,C=jp","labCd=100001,OU=Organizations,O=example,C=jp
 labCd=112001,OU=Organizations,O=example,C=jp"
-"rkUid=1005,OU=Users,O=example,C=jp",1005,1005,111002,斎藤,拓也,-,サイトウ,タクヤ,-,Saito,Takkuya,-,-,user3@example.jp,1,"labCd=111002,OU=Organizations,O=example,C=jp","labCd=100001,OU=Organizations,O=example,C=jp
+"rkUid=1005,OU=Users,O=example,C=jp",1005,1005,111002,斎藤,拓也,-,サイトウ,タクヤ,-,Saito,Takkuya,-,-,user3@example.jp,0,"labCd=111002,OU=Organizations,O=example,C=jp","labCd=100001,OU=Organizations,O=example,C=jp
 labCd=111002,OU=Organizations,O=example,C=jp"
-"rkUid=1006,OU=Users,O=example,C=jp",1006,1006,112001,伊藤,幸子,-,イトウ,サチコ,-,Ito,Sachiko,-,-,user4@example.jp,1,"labCd=112001,OU=Organizations,O=example,C=jp
+"rkUid=1006,OU=Users,O=example,C=jp",1006,1006,112001,伊藤,幸子,-,イトウ,サチコ,-,Ito,Sachiko,-,-,user4@example.jp,0,"labCd=112001,OU=Organizations,O=example,C=jp
 labCd=112002,OU=Organizations,O=example,C=jp","labCd=100001,OU=Organizations,O=example,C=jp
 labCd=112001,OU=Organizations,O=example,C=jp
 labCd=112002,OU=Organizations,O=example,C=jp"

@@ -36,6 +36,7 @@ Rails.application.routes.draw do
         post "test_connection" => "test#connection"
         post "test_group_search" => "test#group_search"
         post "test_user_search" => "test#user_search"
+        post "test_custom_group_search" => "test#custom_group_search"
       end
     end
   end

@@ -5,6 +5,8 @@ require 'uri'
 module Riken::Ldap::GroupSetting
   extend ActiveSupport::Concern
 
+  MAX_LDAP_CUSTOM_GROUP_CONDITIONS = 10
+
   included do
     field :riken_ldap_url, type: String
     field :riken_ldap_bind_dn, type: String
@@ -16,6 +18,8 @@ module Riken::Ldap::GroupSetting
     embeds_ids :riken_ldap_sys_roles, class_name: "Sys::Role"
     embeds_ids :riken_ldap_gws_roles, class_name: "Gws::Role"
 
+    field :riken_ldap_custom_group_conditions, type: Riken::Extensions::Ldap::CustomGroupConditions
+
     attr_accessor :in_riken_ldap_bind_password, :rm_riken_ldap_bind_password
 
     permit_params :riken_ldap_url, :riken_ldap_bind_dn
@@ -23,10 +27,12 @@ module Riken::Ldap::GroupSetting
     permit_params :riken_ldap_group_dn, :riken_ldap_group_filter
     permit_params :riken_ldap_user_dn, :riken_ldap_user_filter
     permit_params riken_ldap_sys_role_ids: [], riken_ldap_gws_role_ids: []
+    permit_params riken_ldap_custom_group_conditions: [ :name, :dn, :filter ]
 
     before_validation :encrypt_riken_ldap_bind_password
 
     validates :riken_ldap_url, url: { scheme: %w(ldap ldaps) }
+    validates :riken_ldap_custom_group_conditions, length: { maximum: MAX_LDAP_CUSTOM_GROUP_CONDITIONS }
     validate :validate_riken_ldap_dns
     validate :validate_riken_ldap_filters
   end

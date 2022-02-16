@@ -9,8 +9,10 @@ en:
       group_condition: Group Search Conditions
       user_condition: User Search Conditions
       roles: Default Roles
+      custom_groups: Custom Groups
       test_connection: Test Connection
       test_search: Test Search
+      max_custom_groups_notice: (<= %{count} items)
     shibboleth:
       login_failed:
         head: Failed to login

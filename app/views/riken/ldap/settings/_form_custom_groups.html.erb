@@ -1,0 +1,56 @@
+<%
+  addon ||= local_assigns.fetch(:addon, {})
+%>
+
+<% render_custom_group_condition = proc do |index, name, dn, filter| %>
+  <tr class="custom-group-condition" data-index="<%= index %>">
+    <td class="name">
+      <%= text_field_tag "#{f.object_name}[riken_ldap_custom_group_conditions][][name]", name, id: nil %>
+    </td>
+    <td class="dn">
+      <%= text_field_tag "#{f.object_name}[riken_ldap_custom_group_conditions][][dn]", dn, id: nil %>
+    </td>
+    <td class="filter">
+      <%= text_field_tag "#{f.object_name}[riken_ldap_custom_group_conditions][][filter]", filter, id: nil %>
+    </td>
+    <td class="actions">
+      <%= button_tag t("ss.buttons.delete"), type: "button", class: "btn btn-custom-group-condition-delete" %>
+      <%= button_tag t("riken.ldap.test_search"), type: "button", class: "btn btn-custom-group-condition-test", data: { url: gws_riken_apis_ldap_test_custom_group_search_path } %>
+    </td>
+  </tr>
+<% end %>
+
+<table class="index">
+  <thead>
+  <tr>
+    <th class="name">Name</th>
+    <th class="dn">DN</th>
+    <th class="filter">Filter</th>
+    <th class="actions"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% index = 0 %>
+  <% @item.riken_ldap_custom_group_conditions.each do |custom_group_condition| %>
+    <% next if custom_group_condition.name.blank? && custom_group_condition.dn.blank? && custom_group_condition.filter.blank? %>
+    <% render_custom_group_condition.call(index, custom_group_condition.try(:name), custom_group_condition.try(:dn), custom_group_condition.try(:filter)) %>
+    <% index += 1 %>
+  <% end %>
+
+  <% render_custom_group_condition.call(index, nil, nil, nil) %>
+
+  <tr class="operations">
+    <td colspan="4">
+      <%= button_tag t("ss.buttons.add"), type: "button", class: "btn btn-custom-group-condition-add" %>
+      <script type="text/html">
+        <% render_custom_group_condition.call(nil, nil, nil, nil) %>
+      </script>
+      <span><%= t("riken.ldap.max_custom_groups_notice", count: Riken::Ldap::GroupSetting::MAX_LDAP_CUSTOM_GROUP_CONDITIONS.to_s(:delimited)) %></span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<%= jquery do %>
+  new Riken_LdapCustomGroupForm(<%== "##{addon[:id]}".to_json %>)
+<% end %>

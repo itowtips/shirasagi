@@ -6,6 +6,7 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
   let(:group_csv_file) { "#{Rails.root}/spec/fixtures/riken/ldap_group1.csv" }
   let!(:sys_role1) { create :sys_role_gws, cur_user: nil, name: unique_id }
   let!(:gws_role1) { create :gws_role, :gws_role_portal_user_use, cur_site: site, cur_user: nil }
+  let(:custom_group_name1) { "custom-group-#{unique_id}" }
 
   let(:csv_searcher1) do
     Struct.new(:user_csv_file, :group_csv_file) do
@@ -15,6 +16,18 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
           Riken::Ldap::RK_USER_ARRAY_ATTRS.each do |field|
             user.send("#{field}=", user.send(field).split(/\R/))
           end
+
+          yield user
+        end
+      end
+
+      def each_user_with_filter(_base_dn, _filter)
+        SS::Csv.foreach_row(user_csv_file) do |row|
+          user = Riken::Ldap::RkUser.new(Riken::Ldap::RkUser.members.index_with { |m| row[m.to_s] })
+          Riken::Ldap::RK_USER_ARRAY_ATTRS.each do |field|
+            user.send("#{field}=", user.send(field).split(/\R/))
+          end
+          next if user.ict6k_flg != '0'
 
           yield user
         end
@@ -75,6 +88,10 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
     site.riken_ldap_user_filter = "(deletedFlg=0)"
     site.riken_ldap_sys_role_ids = [ "", sys_role1.id ]
     site.riken_ldap_gws_role_ids = [ "", gws_role1.id ]
+    site.riken_ldap_custom_group_conditions = [
+      { name: custom_group_name1, dn: "ou=users,o=example,c=jp", filter: "(ict6kflg=0)" }
+    ]
+
     site.save!
   end
 
@@ -90,7 +107,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
       #
       job = Riken::Ldap::ImportJob.new.bind("site_id" => site.id)
       job.instance_variable_set(:@ldap_searcher, csv_searcher1.new(user_csv_file, group_csv_file))
-      expect { job.perform_now }.to output(include("グループ失敗件数: 0", "ユーザー失敗件数: 0", "ldap インポートを実行しました。")).to_stdout
+      expect { job.perform_now }.to \
+        output(include("グループ失敗件数: 0", "ユーザー失敗件数: 0", "カスタムグループ失敗件数: 0", "ldap インポートを実行しました。")).to_stdout
 
       expect(Job::Log.count).to eq 1
       Job::Log.first.tap do |log|
@@ -99,6 +117,7 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
 
         expect(log.logs).to include(/INFO -- : .* グループ成功件数: 6, グループ失敗件数: 0/)
         expect(log.logs).to include(/INFO -- : .* ユーザー成功件数: 7, ユーザー失敗件数: 0/)
+        expect(log.logs).to include(/INFO -- : .* カスタムグループ成功件数: 1, カスタムグループ失敗件数: 0/)
       end
 
       expect(Gws::Group.all.count).to eq 7
@@ -106,6 +125,7 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
       expect(Gws::User.all.count).to eq 7
       expect(Gws::User.all.active.count).to eq 7
       expect(Gws::User.all.and_enabled.count).to eq 7
+      expect(Gws::CustomGroup.all.count).to eq 1
 
       Gws::Group.all.site(site).find_by(ldap_dn: "labCd=111001,OU=Organizations,O=example,C=jp").tap do |group|
         expect(group.i18n_name_translations[:ja]).to eq "シラサギ市/企画政策部/政策課"
@@ -219,6 +239,12 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.password).to be_blank
         expect(user.active?).to be_truthy
         expect(user.ldap_dn).to be_blank # ldap_dn には rkUid が含まれており、rkUid は守秘情報なので保存しないようにする
+      end
+      Gws::CustomGroup.all.site(site).first.tap do |custom_group|
+        expect(custom_group.name).to eq custom_group_name1
+        expect(custom_group.member_ids).to have(2).items
+        expect(custom_group.members.map(&:email)).to include("user3@example.jp", "user4@example.jp")
+        expect(custom_group.readable_setting_range).to eq "public"
       end
 
       #

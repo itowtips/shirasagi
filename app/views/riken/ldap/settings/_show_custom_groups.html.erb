@@ -1,0 +1,25 @@
+<table class="index">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Dn</th>
+    <th>Filter</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @item.riken_ldap_custom_group_conditions.each do |custom_group_condition| %>
+    <% next if custom_group_condition.name.blank? && custom_group_condition.dn.blank? && custom_group_condition.filter.blank? %>
+    <tr>
+      <td>
+        <%= custom_group_condition.try(:name) %>
+      </td>
+      <td>
+        <%= custom_group_condition.try(:dn) %>
+      </td>
+      <td>
+        <%= custom_group_condition.try(:filter) %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

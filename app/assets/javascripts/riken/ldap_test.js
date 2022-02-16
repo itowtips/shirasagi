@@ -19,6 +19,13 @@ Riken_LdapTest.prototype.render = function() {
     var data = new FormData($form[0]);
     data.delete("_method");
 
+    var additionalParams = self.$el.data("params");
+    if (additionalParams) {
+      $.each(additionalParams, function (key, value) {
+        data.append(key, value);
+      })
+    }
+
     self.ldapTestResult().html(SS.loading);
 
     $.ajax({

@@ -33,11 +33,11 @@ module Riken::Ldap
       cur_site.riken_ldap_group_filter.presence || DEFAULT_GROUP_FILTER
     end
 
-    def each_user
+    def each_user_with_filter(base_dn, filter)
       connection = cur_site.riken_ldap_connection!
-      filter = Net::LDAP::Filter.construct(user_filter)
+      filter = Net::LDAP::Filter.construct(filter)
       result = Retriable.retriable(on_retry: method(:on_each_retry)) do
-        connection.search(filter: filter, base: user_dn)
+        connection.search(base: base_dn, filter: filter)
       end
       return if result.blank?
 
@@ -56,11 +56,15 @@ module Riken::Ldap
       end
     end
 
+    def each_user(&block)
+      each_user_with_filter(user_dn, user_filter, &block)
+    end
+
     def each_group
       connection = cur_site.riken_ldap_connection!
       filter = Net::LDAP::Filter.construct(group_filter)
       result = Retriable.retriable(on_retry: method(:on_each_retry)) do
-        connection.search(filter: filter, base: group_dn)
+        connection.search(base: group_dn, filter: filter)
       end
       return if result.blank?
 

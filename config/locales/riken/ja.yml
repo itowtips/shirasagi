@@ -9,8 +9,10 @@ ja:
       group_condition: グループ検索条件
       user_condition: ユーザー検索条件
       roles: 既定のロール
+      custom_groups: カスタムグループ
       test_connection: 接続テスト
       test_search: 検索テスト
+      max_custom_groups_notice: 最大 %{count} 件
     shibboleth:
       login_failed:
         head: ログインできませんでした。

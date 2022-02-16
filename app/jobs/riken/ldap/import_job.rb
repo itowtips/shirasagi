@@ -10,6 +10,8 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
     @group_error_count = 0
     @user_success_count = 0
     @user_error_count = 0
+    @custom_group_success_count = 0
+    @custom_group_error_count = 0
     @imported_groups = []
     @pending_group_superiors = []
     @pending_user_superiors = []
@@ -23,8 +25,9 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
 
     synchronize_all_groups
     synchronize_all_users
-    if @group_error_count == 0 && @user_error_count == 0
+    if @group_success_count > 0 && @group_error_count == 0 && @user_success_count > 0 && @user_error_count == 0
       resolve_pending_superiors
+      synchronize_all_custom_groups
     end
 
     task.log "ldap インポートを実行しました。"
@@ -186,6 +189,49 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
         user.update(superior: superior_user)
       end
     end
+  end
+
+  def synchronize_all_custom_groups
+    site.riken_ldap_custom_group_conditions.each do |custom_group_condition|
+      next if custom_group_condition.name.blank? && custom_group_condition.dn.blank? && custom_group_condition.filter.blank?
+
+      Rails.logger.tagged("'#{custom_group_condition.dn}' with '#{custom_group_condition.filter}'") do
+        synchronize_one_custom_group(custom_group_condition)
+        @custom_group_success_count += 1
+      rescue => e
+        @custom_group_error_count += 1
+        Rails.logger.error { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
+      end
+    end
+  rescue => e
+    Rails.logger.fatal { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
+    raise
+  ensure
+    unless $ERROR_INFO
+      task.log "カスタムグループ成功件数: #{@custom_group_success_count}, カスタムグループ失敗件数: #{@custom_group_error_count}"
+    end
+  end
+
+  def synchronize_one_custom_group(custom_group_condition)
+    users = []
+    ldap_searcher.each_user_with_filter(custom_group_condition.dn, custom_group_condition.filter) do |ldap_user|
+      users << @imported_users[ldap_user.rk_uid]
+    end
+
+    users.compact!
+    return if users.blank?
+
+    user_ids = users.map(&:id)
+    user_ids.uniq!
+    return if user_ids.blank?
+
+    custom_group = Gws::CustomGroup.site(site).where(name: custom_group_condition.name).first
+    custom_group ||= Gws::CustomGroup.new(site: site, name: custom_group_condition.name)
+    custom_group.cur_site = site
+    custom_group.member_ids = user_ids
+    custom_group.readable_setting_range = 'public' if custom_group.new_record?
+
+    custom_group.save!
   end
 
   def normalize_and_join(*args, separator: " ")
