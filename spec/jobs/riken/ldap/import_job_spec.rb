@@ -1,7 +1,13 @@
 require 'spec_helper'
 
 describe Riken::Ldap::ImportJob, dbscope: :example do
-  let!(:site) { Gws::Group.create(name: "シラサギ市", ldap_dn: "labCd=100001,OU=Organizations,O=example,C=jp") }
+  let!(:site) do
+    i18n_name_translations = {
+      ja: "シラサギ大学",
+      en: "Shirasagi Univ"
+    }
+    Gws::Group.create(i18n_name_translations: i18n_name_translations, ldap_dn: "labCd=100001,OU=Organizations,O=example,C=jp")
+  end
   let(:user_csv_file) { "#{Rails.root}/spec/fixtures/riken/ldap_user1.csv" }
   let(:group_csv_file) { "#{Rails.root}/spec/fixtures/riken/ldap_group1.csv" }
   let!(:sys_role1) { create :sys_role_gws, cur_user: nil, name: unique_id }
@@ -128,13 +134,13 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
       expect(Gws::CustomGroup.all.count).to eq 1
 
       Gws::Group.all.site(site).find_by(ldap_dn: "labCd=111001,OU=Organizations,O=example,C=jp").tap do |group|
-        expect(group.i18n_name_translations[:ja]).to eq "シラサギ市/企画政策部/政策課"
-        expect(group.i18n_name_translations[:en]).to eq "Shirasagi City/Kikaku Seisaku Department/Seisaku Section"
+        expect(group.i18n_name_translations[:ja]).to eq "シラサギ大学/企画政策部/政策課"
+        expect(group.i18n_name_translations[:en]).to eq "Shirasagi Univ/Kikaku Seisaku Department/Seisaku Section"
         expect(group.superior.try(:email)).to eq "admin@example.jp"
       end
       Gws::Group.all.site(site).find_by(ldap_dn: "labCd=112001,OU=Organizations,O=example,C=jp").tap do |group|
-        expect(group.i18n_name_translations[:ja]).to eq "シラサギ市/危機管理部/管理課"
-        expect(group.i18n_name_translations[:en]).to eq "Shirasagi City/Kiki Kanri Department/Kanri Section"
+        expect(group.i18n_name_translations[:ja]).to eq "シラサギ大学/危機管理部/管理課"
+        expect(group.i18n_name_translations[:en]).to eq "Shirasagi Univ/Kiki Kanri Department/Kanri Section"
         expect(group.superior.try(:email)).to eq "user4@example.jp"
       end
 
@@ -146,8 +152,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.kana).to eq "システムカンリシャ"
         expect(user.email).to eq "sys@example.jp"
         expect(user.groups.count).to eq 2
-        expect(user.groups.map(&:name)).to include("シラサギ市", "シラサギ市/企画政策部/政策課")
-        expect(user.gws_main_group.name).to eq "シラサギ市/企画政策部/政策課"
+        expect(user.groups.map(&:name)).to include("シラサギ大学", "シラサギ大学/企画政策部/政策課")
+        expect(user.gws_main_group.name).to eq "シラサギ大学/企画政策部/政策課"
         expect(user.send_notice_slack_id).to be_blank
         expect(user.sys_role_ids).to include(sys_role1.id)
         expect(user.gws_role_ids).to include(sys_role1.id)
@@ -166,8 +172,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.kana).to eq "スズキ シゲル"
         expect(user.email).to eq "user1@example.jp"
         expect(user.groups.count).to eq 2
-        expect(user.groups.map(&:name)).to include("シラサギ市", "シラサギ市/企画政策部/政策課")
-        expect(user.gws_main_group.name).to eq "シラサギ市/企画政策部/政策課"
+        expect(user.groups.map(&:name)).to include("シラサギ大学", "シラサギ大学/企画政策部/政策課")
+        expect(user.gws_main_group.name).to eq "シラサギ大学/企画政策部/政策課"
         expect(user.send_notice_slack_id).to eq "47AEBBA29"
         expect(user.sys_role_ids).to include(sys_role1.id)
         expect(user.gws_role_ids).to include(sys_role1.id)
@@ -186,8 +192,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.kana).to eq "サイトウ タクヤ"
         expect(user.email).to eq "user3@example.jp"
         expect(user.groups.count).to eq 2
-        expect(user.groups.map(&:name)).to include("シラサギ市", "シラサギ市/企画政策部/広報課")
-        expect(user.gws_main_group.name).to eq "シラサギ市/企画政策部/広報課"
+        expect(user.groups.map(&:name)).to include("シラサギ大学", "シラサギ大学/企画政策部/広報課")
+        expect(user.gws_main_group.name).to eq "シラサギ大学/企画政策部/広報課"
         # user "1005" is deleted from Slack
         expect(user.send_notice_slack_id).to be_blank
         expect(user.sys_role_ids).to include(sys_role1.id)
@@ -207,8 +213,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.kana).to eq "イトウ サチコ"
         expect(user.email).to eq "user4@example.jp"
         expect(user.groups.count).to eq 3
-        expect(user.groups.map(&:name)).to include("シラサギ市", "シラサギ市/危機管理部/管理課", "シラサギ市/危機管理部/防災課")
-        expect(user.gws_main_group.name).to eq "シラサギ市/危機管理部/管理課"
+        expect(user.groups.map(&:name)).to include("シラサギ大学", "シラサギ大学/危機管理部/管理課", "シラサギ大学/危機管理部/防災課")
+        expect(user.gws_main_group.name).to eq "シラサギ大学/危機管理部/管理課"
         expect(user.send_notice_slack_id).to eq "50C14D2B4"
         expect(user.sys_role_ids).to include(sys_role1.id)
         expect(user.gws_role_ids).to include(sys_role1.id)
@@ -228,8 +234,8 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.kana).to eq "タカハシ キヨシ"
         expect(user.email).to eq "user5@example.jp"
         expect(user.groups.count).to eq 1
-        expect(user.groups.map(&:name)).to include("シラサギ市")
-        expect(user.gws_main_group.name).to eq "シラサギ市"
+        expect(user.groups.map(&:name)).to include("シラサギ大学")
+        expect(user.gws_main_group.name).to eq "シラサギ大学"
         expect(user.send_notice_slack_id).to eq "C3FE211BE"
         expect(user.sys_role_ids).to include(sys_role1.id)
         expect(user.gws_role_ids).to include(sys_role1.id)

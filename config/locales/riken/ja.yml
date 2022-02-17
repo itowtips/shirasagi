@@ -13,6 +13,9 @@ ja:
       test_connection: 接続テスト
       test_search: 検索テスト
       max_custom_groups_notice: 最大 %{count} 件
+      custom_group_conditions_name: カスタムグループ名
+      custom_group_conditions_dn: DN
+      custom_group_conditions_filter: 検索式
     shibboleth:
       login_failed:
         head: ログインできませんでした。
@@ -29,6 +32,17 @@ ja:
     attributes:
       riken/addon/shibboleth_setting:
         login_url: ログインURL
+      riken/ldap/group_setting:
+        riken_ldap_url: LDAP URL
+        riken_ldap_bind_dn: LDAP アカウント
+        riken_ldap_bind_password: パスワード
+        riken_ldap_group_dn: グループDN
+        riken_ldap_group_filter: グループ検索式
+        riken_ldap_user_dn: ユーザーDN
+        riken_ldap_user_filter: ユーザー検索式
+        riken_ldap_sys_role_ids: システム権限
+        riken_ldap_gws_role_ids: GWS権限
+        riken_ldap_custom_group_conditions: カスタムグループ抽出条件
 
   tooltip:
     riken/addon/shibboleth_setting:

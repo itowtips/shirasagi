@@ -4,6 +4,7 @@ require 'uri'
 
 module Riken::Ldap::GroupSetting
   extend ActiveSupport::Concern
+  extend SS::Translation
 
   MAX_LDAP_CUSTOM_GROUP_CONDITIONS = 10
 

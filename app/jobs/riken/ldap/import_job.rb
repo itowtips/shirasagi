@@ -86,9 +86,14 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
     group = base_criteria.where(ldap_dn: ldap_group.dn).first
     group ||= Gws::Group.new(ldap_dn: ldap_group.dn)
 
+    # root group は特別扱い。自動では更新しない。
+    return group if group.id == site.id
+
+    hierarchy_lab_name_j = normalize_group_hierarchy(normalize(ldap_group.hierarchy_lab_name_j), :ja)
+    hierarchy_lab_name_e = normalize_group_hierarchy(normalize(ldap_group.hierarchy_lab_name_e), :en)
     group.i18n_name_translations = {
-      ja: normalize_and_join(ldap_group.hierarchy_lab_name_j, ldap_group.cn_j, separator: "/"),
-      en: normalize_and_join(ldap_group.hierarchy_lab_name_e, ldap_group.cn, separator: "/")
+      ja: normalize_and_join(hierarchy_lab_name_j, ldap_group.cn_j, separator: "/"),
+      en: normalize_and_join(hierarchy_lab_name_e, ldap_group.cn, separator: "/")
     }
     group.save!
     group
@@ -236,6 +241,14 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
 
   def normalize_and_join(*args, separator: " ")
     args.map { |arg| normalize(arg) }.compact.join(separator)
+  end
+
+  def normalize_group_hierarchy(hierarchy, locale)
+    return '' if hierarchy.blank?
+
+    parts = hierarchy.split("/")
+    parts[0] = site.i18n_name_translations[locale]
+    parts.join("/")
   end
 
   def resolve_groups(ldap_user)
