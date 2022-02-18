@@ -35,5 +35,6 @@
   <% end %>
   <% if Gws::Group.allowed?(:edit, @cur_user, site: @cur_site) %>
     <h3><%= link_to t("riken.ldap.main"), gws_riken_ldap_main_path %></h3>
+    <h3><%= link_to t("riken.ms365.main"), gws_riken_ms365_main_path %></h3>
   <% end %>
 </nav>

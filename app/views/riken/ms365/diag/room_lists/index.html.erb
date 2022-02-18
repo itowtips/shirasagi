@@ -1,0 +1,30 @@
+<% attribute_names = nil %>
+<div class="index" style="width: 100%; overflow-x: auto; padding: 10px;">
+  <table class="data-table">
+    <% Riken::MS365::GraphApi.each_room_list(@cur_site) do |entry| %>
+      <% if attribute_names.blank? %>
+        <% attribute_names = entry.keys %>
+        <thead>
+        <tr>
+          <td></td>
+          <% attribute_names.each do |attribute| %>
+            <th><%= attribute %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+      <% end %>
+      <tr>
+        <td><%= link_to t("ss.links.open"), gws_riken_ms365_diag_room_list_rooms_path(room_list_id: entry["id"]) %></td>
+        <% attribute_names.each do |attribute| %>
+          <td data-attr="<%= attribute %>"><%= entry[attribute] %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= jquery do %>
+  $(".data-table").dataTable();
+<% end %>

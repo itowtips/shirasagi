@@ -1,0 +1,16 @@
+<% if Gws::Group.allowed?(:edit, @cur_user, site: @cur_site) && (Rails.env.development? || Rails.application.hostname.start_with?("devss")) %>
+  <nav class="mod-navi">
+    <h2><%= t("riken.ms365.main") %></h2>
+    <h3><%= link_to t("riken.ms365.setting"), gws_riken_ms365_setting_path %></h3>
+
+    <h3><span><%= t("sys.diag") %></span></h3>
+
+    <ul class="narrow-page">
+      <li><%= link_to t('riken.ms365.room_list'), gws_riken_ms365_diag_room_lists_path %></li>
+      <li><%= link_to t('riken.ms365.room'), gws_riken_ms365_diag_rooms_path %></li>
+      <li><%= link_to t('riken.ms365.event'), gws_riken_ms365_diag_events_path %></li>
+    </ul>
+  </nav>
+<% end %>
+
+<%= render partial: 'gws/main/conf_navi' %>

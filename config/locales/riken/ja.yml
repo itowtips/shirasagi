@@ -16,6 +16,12 @@ ja:
       custom_group_conditions_name: カスタムグループ名
       custom_group_conditions_dn: DN
       custom_group_conditions_filter: 検索式
+    ms365:
+      main: Microsoft365
+      setting: 設定
+      room_list: Room List
+      room: Room
+      event: Event
     shibboleth:
       login_failed:
         head: ログインできませんでした。
@@ -43,6 +49,10 @@ ja:
         riken_ldap_sys_role_ids: システム権限
         riken_ldap_gws_role_ids: GWS権限
         riken_ldap_custom_group_conditions: カスタムグループ抽出条件
+      riken/ms365/group_setting:
+        riken_ms365_tenant_id: テナントID
+        riken_ms365_client_id: クライアントID
+        riken_ms365_client_secret: クライアントシークレット
 
   tooltip:
     riken/addon/shibboleth_setting:

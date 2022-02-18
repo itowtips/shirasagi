@@ -1,0 +1,11 @@
+<dl class="see">
+  <dt><%= @model.t :riken_ms365_tenant_id %><%= @model.tt :riken_ms365_tenant_id %></dt>
+  <dd><%= f.text_field :riken_ms365_tenant_id %></dd>
+
+  <dt><%= @model.t :riken_ms365_client_id %><%= @model.tt :riken_ms365_client_id %></dt>
+  <dd><%= f.text_field :riken_ms365_client_id %></dd>
+
+  <dt><%= @model.t :riken_ms365_client_secret %><%= @model.tt :riken_ms365_client_secret %></dt>
+  <dd><%= f.password_field :in_riken_ms365_client_secret %></dd>
+  <dd><label><%= f.check_box :rm_riken_ms365_client_secret %> <%= t("ss.buttons.delete") %></label></dd>
+</dl>

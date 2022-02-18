@@ -1,0 +1,47 @@
+<% attribute_names = nil %>
+<div class="index" style="width: 100%; overflow-x: auto; padding: 10px;">
+  <div class="list-head">
+    <div class="list-head-search-full">
+      <%= form_for :s, url: '', html: { method: :get } do |f| %>
+        <%= f.select :room_id, room_options %>
+        <span style="margin-left: 5px; margin-right: 5px;">
+          <%= f.ss_date_field :from %>
+          <%= t("ss.wave_dash") %>
+          <%= f.ss_date_field :to %>
+        </span>
+
+        <input type="submit" value="<%= t('ss.buttons.search') %>" class="btn" />
+      <% end %>
+    </div>
+  </div>
+
+  <% if @s.room_id.present? %>
+    <table class="data-table">
+      <% Riken::MS365::GraphApi.each_events(@cur_site, @s.room_id, from: @s.from, to: @s.to) do |entry| %>
+        <% if attribute_names.blank? %>
+          <% attribute_names = entry.keys %>
+          <thead>
+          <tr>
+            <% attribute_names.each do |attribute| %>
+              <th><%= attribute %></th>
+            <% end %>
+          </tr>
+          </thead>
+          <tbody>
+        <% end %>
+        <tr>
+          <% attribute_names.each do |attribute| %>
+            <td data-attr="<%= attribute %>"><%= entry[attribute] %></td>
+          <% end %>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+
+<%= jquery do %>
+  $(".data-table").dataTable();
+
+  new Gws_Schedule_StartEndSynchronizer("#s_from", "#s_to");
+<% end %>

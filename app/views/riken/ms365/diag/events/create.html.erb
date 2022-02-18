@@ -1,0 +1,14 @@
+<dl class="see">
+  <dt>Status</dt>
+  <dd><%= @resp.status %></dd>
+
+  <dt>Body</dt>
+  <dd><pre class="json"><%= br @resp.body %></pre></dd>
+</dl>
+
+<%= jquery do %>
+  var json = $(".json").text();
+  if (json) {
+    $(".json").text(JSON.stringify(JSON.parse(json), null, 2));
+  }
+<% end %>

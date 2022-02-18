@@ -32,6 +32,7 @@ class Gws::Group
   include Gws::Addon::Import::Group
   include Gws::Addon::SiteUsage
   include Riken::Ldap::GroupSetting
+  include Riken::MS365::GroupSetting
   include Gws::Addon::Slack
 
   set_permission_name "gws_groups", :edit

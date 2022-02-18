@@ -31,6 +31,17 @@ Rails.application.routes.draw do
       resources :groups, only: %i[index]
       resources :users, only: %i[index]
     end
+    namespace "ms365" do
+      get "/" => redirect { |p, req| "#{req.path}/setting" }, as: :main
+      resource :setting, only: %i[show edit update]
+      namespace "diag" do
+        resources :room_lists, only: %i[index] do
+          resources :rooms, only: %i[index]
+        end
+        resources :rooms, only: %i[index]
+        resources :events, only: %i[index new create]
+      end
+    end
     namespace "apis" do
       namespace "ldap" do
         post "test_connection" => "test#connection"

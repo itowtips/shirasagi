@@ -1,0 +1,18 @@
+<dl class="see">
+  <dt>Room *</dt>
+  <dd><%= select_tag "#{f.object_name}[room_id]", options_for_select(room_options) %></dd>
+
+  <dt>Subject *</dt>
+  <dd><%= text_field_tag "#{f.object_name}[subject]" %></dd>
+
+  <dt>Start - End *</dt>
+  <dd><%= ss_datetime_field_tag "#{f.object_name}[start]", nil %> - <%= ss_datetime_field_tag "#{f.object_name}[end]", nil %></dd>
+
+  <dt>Body (HTML)</dt>
+  <dd><%= text_area_tag "#{f.object_name}[body]" %></dd>
+
+  <dt>Attendees</dt>
+  <dd>puts email here</dd>
+  <dd><%= text_area_tag "#{f.object_name}[attendees]" %></dd>
+  <dd>divide by line to specify multiple attendees</dd>
+</dl>

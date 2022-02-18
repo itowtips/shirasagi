@@ -1,0 +1,10 @@
+<dl class="see">
+  <dt><%= @model.t :riken_ms365_tenant_id %></dt>
+  <dd><%= @item.riken_ms365_tenant_id %></dd>
+
+  <dt><%= @model.t :riken_ms365_client_id %></dt>
+  <dd><%= @item.riken_ms365_client_id %></dd>
+
+  <dt><%= @model.t :riken_ms365_client_secret %></dt>
+  <dd><%= @item.riken_ms365_client_secret.present? ? "*" * 8 : "" %></dd>
+</dl>

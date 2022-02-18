@@ -16,6 +16,12 @@ en:
       custom_group_conditions_name: Custom Group Name
       custom_group_conditions_dn: DN
       custom_group_conditions_filter: Filter
+    ms365:
+      main: Microsoft365
+      setting: Setting
+      room_list: Room List
+      room: Room
+      event: Event
     shibboleth:
       login_failed:
         head: Failed to login
@@ -43,6 +49,10 @@ en:
         riken_ldap_sys_role_ids: System Permissions
         riken_ldap_gws_role_ids: GWS Permissions
         riken_ldap_custom_group_conditions: Custom Group Conditions
+      riken/ms365/group_setting:
+        riken_ms365_tenant_id: Tenant ID
+        riken_ms365_client_id: Client ID
+        riken_ms365_client_secret: Client Secret
 
   tooltip:
     riken/addon/shibboleth_setting:
