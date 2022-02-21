@@ -2,6 +2,7 @@ module Gws::Portal::PortletModel
   extend ActiveSupport::Concern
   extend SS::Translation
   include Gws::Addon::Portal::Portlet::Free
+  include Gws::Addon::Portal::Portlet::FreeFile
   include Gws::Addon::Portal::Portlet::Link
   include Gws::Addon::Portal::Portlet::Schedule
   include Gws::Addon::Portal::Portlet::Todo
@@ -23,7 +24,7 @@ module Gws::Portal::PortletModel
   include Gws::Addon::Portal::Portlet::AdFile
 
   PORTLETS = {
-    free:       { size_x: 2, size_y: 2, addons: [Gws::Addon::Portal::Portlet::Free] },
+    free:       { size_x: 2, size_y: 2, addons: [Gws::Addon::Portal::Portlet::Free, Gws::Addon::Portal::Portlet::FreeFile] },
     links:      { size_x: 2, size_y: 3, addons: [Gws::Addon::Portal::Portlet::Link] },
     reminder:   { size_x: 2, size_y: 3, addons: [Gws::Addon::Portal::Portlet::Reminder] },
     schedule:   { size_x: 4, size_y: 2, addons: [Gws::Addon::Portal::Portlet::Schedule] },

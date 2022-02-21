@@ -1,0 +1,27 @@
+<%
+  return if @file_addon_state == 'hide'
+  addon ||= local_assigns.fetch(:addon, {})
+%>
+
+<div class="see gws-addon-portlet-free_file">
+  <%= f.hidden_field "file_ids[]", value: "" %>
+  <span class="upload-menu-new">
+    <%= link_to t('ss.links.upload'), sns_apis_temp_files_path(@cur_user), class: "ajax-box btn" %>
+  </span>
+  <div class="upload-drop-area">
+    <span class="upload-drop-notice"><%= t('ss.notice.file_droppable') %></span>
+  </div>
+
+  <div id="selected-files">
+    <% @item.files.each do |file| %>
+      <%= render "ss/crud/ajax_files/file_view", file: file, show_properties: false, show_attach: true %>
+    <% end %>
+  </div>
+</div>
+
+<%= jquery do %>
+  var $el = $("#<%= addon[:id] %>");
+
+  var tempFile = new SS_Addon_TempFile($el.find(".upload-drop-area"), <%= @cur_user.id %>);
+  SS_FileView.renderFileView($el);
+<% end %>

@@ -3,6 +3,7 @@ ja:
     gws/portal: ポータル
     addons:
       gws/portal/portlet/free: 自由形式
+      gws/portal/portlet/free_file: ファイル
       gws/portal/portlet/link: リンク設定
       gws/portal/portlet/reminder: リマインダー設定
       gws/portal/portlet/schedule: スケジュール設定

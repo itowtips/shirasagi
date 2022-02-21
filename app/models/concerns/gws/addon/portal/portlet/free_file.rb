@@ -1,5 +1,5 @@
-module Gws::Addon
-  module File
+module Gws::Addon::Portal::Portlet
+  module FreeFile
     extend ActiveSupport::Concern
     extend SS::Addon
     include Gws::Addon::Model::File
