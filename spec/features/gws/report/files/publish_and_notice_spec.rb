@@ -71,7 +71,12 @@ describe "gws_report_files", type: :feature, dbscope: :example, js: true do
       expect(notice.group_id).to eq site.id
       expect(notice.member_ids).to eq [ user1.id ]
       expect(notice.user_id).to eq user0.id
-      expect(notice.subject).to eq "[#{Gws::Report::File.model_name.human}] 「#{subject.name}」が届きました。"
+      if I18n.locale == :ja
+        subject_part = "「#{subject.name}」が届きました。"
+      else
+        subject_part = "\"#{subject.name}\" has arrived."
+      end
+      expect(notice.subject).to eq "[#{Gws::Report::File.model_name.human}] #{subject_part}"
       expect(notice.text).to be_blank
       expect(notice.html).to be_blank
       expect(notice.format).to eq "text"
@@ -87,7 +92,7 @@ describe "gws_report_files", type: :feature, dbscope: :example, js: true do
       ActionMailer::Base.deliveries.first.tap do |mail|
         expect(mail.from.first).to eq site.sender_address
         expect(mail.bcc.first).to eq user1.send_notice_mail_addresses.first
-        expect(mail.subject).to eq "[#{Gws::Report::File.model_name.human}] 「#{subject.name}」が届きました。"
+        expect(mail.subject).to eq notice.subject
         expect(mail.decoded.to_s).to include(mail.subject)
         notice_url = "#{site.canonical_scheme}://#{site.canonical_domain}/.g#{site.id}/memo/notices/#{notice.id}"
         expect(mail.decoded.to_s).to include(notice_url)
@@ -139,7 +144,12 @@ describe "gws_report_files", type: :feature, dbscope: :example, js: true do
       expect(notice.group_id).to eq site.id
       expect(notice.member_ids).to eq [ user1.id ]
       expect(notice.user_id).to eq user0.id
-      expect(notice.subject).to eq "[#{Gws::Report::File.model_name.human}] 「#{subject.name}」の送信が取り消されました。"
+      if I18n.locale == :ja
+        subject_part = "「#{subject.name}」の送信が取り消されました。"
+      else
+        subject_part = "\"#{subject.name}\"'s transmission has been canceled."
+      end
+      expect(notice.subject).to eq "[#{Gws::Report::File.model_name.human}] #{subject_part}"
       expect(notice.text).to be_blank
       expect(notice.html).to be_blank
       expect(notice.format).to eq "text"
