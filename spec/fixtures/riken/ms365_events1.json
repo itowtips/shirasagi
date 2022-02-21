@@ -1,0 +1,110 @@
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users('room1%40example.onmicrosoft.com')/events",
+  "value": [
+    {
+      "@odata.etag": "W/\"RSMynoR8JUGjec1pcDF92AAAAAAEXg==\"",
+      "id": "AAMkADE3ZjlmZTIyLTlmNWUtNDY5OC04NDk2LWUyMDgwNzEzZTIxZQBGAAAAAADm_SySGQleTqJ16PX9-Xz7BwBFIzKehHwlQaN5zWlwMX3YAAAAAAENAABFIzKehHwlQaN5zWlwMX3YAAAAABrSAAA=",
+      "createdDateTime": "2022-02-16T05:08:04.1499216Z",
+      "lastModifiedDateTime": "2022-02-16T05:35:52.4084757Z",
+      "changeKey": "RSMynoR8JUGjec1pcDF92AAAAAAEXg==",
+      "categories": [],
+      "transactionId": null,
+      "originalStartTimeZone": "Tokyo Standard Time",
+      "originalEndTimeZone": "Tokyo Standard Time",
+      "iCalUId": "040000008200E00074C5B7101A82E0080000000051937F2BF322D8010000000000000000100000008498E90077B0024A90E4CAE81978F01E",
+      "reminderMinutesBeforeStart": 15,
+      "isReminderOn": false,
+      "hasAttachments": false,
+      "subject": "白鷺 太郎",
+      "bodyPreview": "",
+      "importance": "normal",
+      "sensitivity": "normal",
+      "isAllDay": false,
+      "isCancelled": false,
+      "isOrganizer": false,
+      "responseRequested": true,
+      "seriesMasterId": null,
+      "showAs": "busy",
+      "type": "singleInstance",
+      "webLink": "https://outlook.office365.com/owa/?itemid=AAMkADE3ZjlmZTIyLTlmNWUtNDY5OC04NDk2LWUyMDgwNzEzZTIxZQBGAAAAAADm%2BSySGQleTqJ16PX9%2FXz7BwBFIzKehHwlQaN5zWlwMX3YAAAAAAENAABFIzKehHwlQaN5zWlwMX3YAAAAABrSAAA%3D&exvsurl=1&path=/calendar/item",
+      "onlineMeetingUrl": null,
+      "isOnlineMeeting": true,
+      "onlineMeetingProvider": "teamsForBusiness",
+      "allowNewTimeProposals": true,
+      "occurrenceId": null,
+      "isDraft": false,
+      "hideAttendees": false,
+      "responseStatus": {
+        "response": "accepted",
+        "time": "2022-02-16T00:08:05.2281943-05:00"
+      },
+      "body": {
+        "contentType": "html",
+        "content": "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n<meta name=\"Generator\" content=\"Microsoft Exchange Server\">\r\n<!-- converted from text -->\r\n<style><!-- .EmailQuote { margin-left: 1pt; padding-left: 4pt; border-left: #800000 2px solid; } --></style></head>\r\n<body>\r\n<font size=\"2\"><span style=\"font-size:11pt;\"><div class=\"PlainText\">&nbsp;</div></span></font>\r\n</body>\r\n</html>\r\n"
+      },
+      "start": {
+        "dateTime": "2022-02-24T20:00:00.0000000",
+        "timeZone": "America/New_York"
+      },
+      "end": {
+        "dateTime": "2022-02-24T22:00:00.0000000",
+        "timeZone": "America/New_York"
+      },
+      "location": {
+        "displayName": "",
+        "locationType": "default",
+        "uniqueIdType": "unknown",
+        "address": {},
+        "coordinates": {}
+      },
+      "locations": [],
+      "recurrence": null,
+      "attendees": [
+        {
+          "type": "required",
+          "status": {
+            "response": "none",
+            "time": "0001-01-01T00:00:00Z"
+          },
+          "emailAddress": {
+            "name": "白鷺 太郎",
+            "address": "shirasagi@example.onmicrosoft.com"
+          }
+        },
+        {
+          "type": "required",
+          "status": {
+            "response": "accepted",
+            "time": "0001-01-01T00:00:00Z"
+          },
+          "emailAddress": {
+            "name": "会議室1",
+            "address": "room1@example.onmicrosoft.com"
+          }
+        },
+        {
+          "type": "required",
+          "status": {
+            "response": "none",
+            "time": "0001-01-01T00:00:00Z"
+          },
+          "emailAddress": {
+            "name": "赤鷺 花子",
+            "address": "akasagi@example.onmicrosoft.com"
+          }
+        }
+      ],
+      "organizer": {
+        "emailAddress": {
+          "name": "白鷺 太郎",
+          "address": "shirasagi@example.onmicrosoft.com"
+        }
+      },
+      "onlineMeeting": {
+        "joinUrl": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzNlY2UyYzMtMmJmOS00ZWQyLWE1MDEtZjllMjgzYTcxMTRi%40thread.v2/0?context=%7b%22Tid%22%3a%2211ab43e6-db7e-4b46-ab04-d8ccbaa00fbd%22%2c%22Oid%22%3a%2256f0ed29-6736-49d5-b579-13dbd417ecce%22%7d"
+      },
+      "calendar@odata.associationLink": "https://graph.microsoft.com/v1.0/users('room1@example.onmicrosoft.com')/calendars('AAMkADE3ZjlmZTIyLTlmNWUtNDY5OC04NDk2LWUyMDgwNzEzZTIxZQBGAAAAAADm_SySGQleTqJ16PX9-Xz7BwBFIzKehHwlQaN5zWlwMX3YAAAAAAEGAABFIzKehHwlQaN5zWlwMX3YAAAAAGVhAAA=')/$ref",
+      "calendar@odata.navigationLink": "https://graph.microsoft.com/v1.0/users('room1@example.onmicrosoft.com')/calendars('AAMkADE3ZjlmZTIyLTlmNWUtNDY5OC04NDk2LWUyMDgwNzEzZTIxZQBGAAAAAADm_SySGQleTqJ16PX9-Xz7BwBFIzKehHwlQaN5zWlwMX3YAAAAAAEGAABFIzKehHwlQaN5zWlwMX3YAAAAAGVhAAA=')"
+    }
+  ]
+}

@@ -2,17 +2,30 @@ module Riken::MS365::GraphApi
 
   EMPTY_PARAMS = {}.freeze
 
+  mattr_accessor :base_interval, instance_accessor: false
+  self.base_interval = Rails.env.test? ? 0.5 : 15 # seconds
+
   def self.tokens
     @tokens ||= {}
   end
 
-  def self.refresh_token(site)
-    http_client = Faraday.new(url: "https://login.microsoftonline.com/") do |builder|
+  def self.create_client(url, token: nil)
+    http_client = Faraday.new(url: url) do |builder|
       builder.request  :url_encoded
       builder.response :logger, Rails.logger
       builder.adapter Faraday.default_adapter
     end
     http_client.headers[:user_agent] += " (SHIRASAGI/#{SS.version}; PID/#{Process.pid})"
+    if token
+      http_client.headers[:prefer] = "outlook.timezone=\"#{Time.zone.tzinfo.identifier}\""
+      http_client.headers[:content_type] = "application/json"
+      http_client.headers[:authorization] = "Bearer #{token}"
+    end
+    http_client
+  end
+
+  def self.refresh_token(site)
+    http_client = Riken::MS365::GraphApi.create_client("https://login.microsoftonline.com/")
 
     token_params = {
       client_id: site.riken_ms365_client_id,
@@ -21,36 +34,28 @@ module Riken::MS365::GraphApi
       grant_type: "client_credentials"
     }
     resp = http_client.post("/#{site.riken_ms365_tenant_id}/oauth2/v2.0/token", token_params)
-    return unless resp.status == 200
+    raise "unable to obtain tokens" unless resp.status == 200
 
     json = JSON.parse(resp.body)
     Riken::MS365::GraphApi.tokens[site.id] = json["access_token"]
   end
 
   def self.get(site, url, params = nil)
-    # ensure to obtain access token for site
-    Riken::MS365::GraphApi.tokens[site.id] || Riken::MS365::GraphApi.refresh_token(site)
-
     on_retry = proc do |err, try, elapsed, interval|
       Rails.logger.fatal do
         "#{err.class}: '#{err.message}' - #{try} tries in #{elapsed} seconds and #{interval} seconds until the next try."
       end
-      Riken::MS365::GraphApi.refresh_token(site)
+      Riken::MS365::GraphApi.tokens[site.id] = nil
     end
 
-    Retriable.retriable(on_retry: on_retry) do
-      http_client = Faraday.new("https://graph.microsoft.com/") do |builder|
-        builder.request  :url_encoded
-        builder.response :logger, Rails.logger
-        builder.adapter Faraday.default_adapter
-      end
-      http_client.headers[:user_agent] += " (SHIRASAGI/#{SS.version}; PID/#{Process.pid})"
-      http_client.headers[:authorization] = "Bearer #{Riken::MS365::GraphApi.tokens[site.id]}"
-      http_client.headers[:prefer] = "outlook.timezone=\"#{Time.zone.tzinfo.identifier}\""
-      http_client.headers[:content_type] = "application/json"
+    Retriable.retriable(on_retry: on_retry, base_interval: Riken::MS365::GraphApi.base_interval) do
+      # ensure to obtain access token for site
+      token = Riken::MS365::GraphApi.tokens[site.id] || Riken::MS365::GraphApi.refresh_token(site)
+
+      http_client = Riken::MS365::GraphApi.create_client("https://graph.microsoft.com/", token: token)
 
       resp = http_client.get url, params || Riken::MS365::GraphApi::EMPTY_PARAMS
-      break if resp.status != 200
+      raise "#{resp.status}: '#{resp.body}'" if resp.status != 200
 
       JSON.parse(resp.body)
     end
@@ -86,7 +91,7 @@ module Riken::MS365::GraphApi
     end
   end
 
-  def self.each_events(site, room_id, from: nil, to: nil, &block)
+  def self.each_event(site, room_id, from: nil, to: nil, &block)
     return if room_id.blank?
 
     filters = []
@@ -146,21 +151,23 @@ module Riken::MS365::GraphApi
       "transactionId" => transaction_id
     }
 
-    # ensure to obtain access token for site
-    Riken::MS365::GraphApi.tokens[site.id] || Riken::MS365::GraphApi.refresh_token(site)
-
-    Retriable.retriable(on_retry: proc { Riken::MS365::GraphApi.refresh_token(site) }) do
-      http_client = Faraday.new("https://graph.microsoft.com/") do |builder|
-        builder.request  :url_encoded
-        builder.response :logger, Rails.logger
-        builder.adapter Faraday.default_adapter
+    on_retry = proc do |err, try, elapsed, interval|
+      Rails.logger.fatal do
+        "#{err.class}: '#{err.message}' - #{try} tries in #{elapsed} seconds and #{interval} seconds until the next try."
       end
-      http_client.headers[:user_agent] += " (SHIRASAGI/#{SS.version}; PID/#{Process.pid})"
-      http_client.headers[:authorization] = "Bearer #{Riken::MS365::GraphApi.tokens[site.id]}"
-      http_client.headers[:prefer] = "outlook.timezone=\"#{Time.zone.tzinfo.identifier}\""
-      http_client.headers[:content_type] = "application/json"
+      Riken::MS365::GraphApi.tokens[site.id] = nil
+    end
 
-      http_client.post "/v1.0/users/#{room_id}/events", event_params.to_json
+    Retriable.retriable(on_retry: on_retry, base_interval: Riken::MS365::GraphApi.base_interval) do
+      # ensure to obtain access token for site
+      token = Riken::MS365::GraphApi.tokens[site.id] || Riken::MS365::GraphApi.refresh_token(site)
+
+      http_client = Riken::MS365::GraphApi.create_client("https://graph.microsoft.com/", token: token)
+
+      resp = http_client.post "/v1.0/users/#{room_id}/events", event_params.to_json
+      raise "#{resp.status}: '#{resp.body}'" if resp.status != 201
+
+      resp
     end
   end
 end

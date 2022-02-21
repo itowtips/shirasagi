@@ -1,0 +1,45 @@
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#places/microsoft.graph.room",
+  "value": [
+    {
+      "id": "f9f115b0-c442-4f4f-96ea-cabc47e9aba6",
+      "displayName": "会議室2",
+      "address": null,
+      "geoCoordinates": null,
+      "phone": "",
+      "nickname": "会議室2",
+      "emailAddress": "room2@example.onmicrosoft.com",
+      "building": null,
+      "floorNumber": null,
+      "floorLabel": null,
+      "label": null,
+      "capacity": 6,
+      "bookingType": null,
+      "audioDeviceName": null,
+      "videoDeviceName": null,
+      "displayDeviceName": null,
+      "isWheelChairAccessible": false,
+      "tags": []
+    },
+    {
+      "id": "e8ea8dd1-4d92-4181-8f10-04a9cdc30ff8",
+      "displayName": "会議室1",
+      "address": null,
+      "geoCoordinates": null,
+      "phone": "",
+      "nickname": "会議室1",
+      "emailAddress": "room1@webtips.onmicrosoft.com",
+      "building": null,
+      "floorNumber": null,
+      "floorLabel": null,
+      "label": null,
+      "capacity": 6,
+      "bookingType": null,
+      "audioDeviceName": null,
+      "videoDeviceName": null,
+      "displayDeviceName": null,
+      "isWheelChairAccessible": false,
+      "tags": []
+    }
+  ]
+}

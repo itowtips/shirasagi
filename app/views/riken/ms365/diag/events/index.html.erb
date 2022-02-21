@@ -17,7 +17,7 @@
 
   <% if @s.room_id.present? %>
     <table class="data-table">
-      <% Riken::MS365::GraphApi.each_events(@cur_site, @s.room_id, from: @s.from, to: @s.to) do |entry| %>
+      <% Riken::MS365::GraphApi.each_event(@cur_site, @s.room_id, from: @s.from, to: @s.to) do |entry| %>
         <% if attribute_names.blank? %>
           <% attribute_names = entry.keys %>
           <thead>

@@ -1,0 +1,13 @@
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#places/microsoft.graph.roomList",
+  "value": [
+    {
+      "id": "a148c0bf-b0c6-48df-a63c-d5aec7d4e1b0",
+      "displayName": "Room List",
+      "address": null,
+      "geoCoordinates": null,
+      "phone": "",
+      "emailAddress": "room-list@example.onmicrosoft.com"
+    }
+  ]
+}
