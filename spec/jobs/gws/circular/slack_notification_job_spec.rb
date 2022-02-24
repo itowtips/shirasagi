@@ -67,13 +67,15 @@ describe Gws::Circular::SlackNotificationJob, dbscope: :example do
   context "参加ユーザー" do
     let(:post_member) do
       create(:gws_circular_post, :due_date, site: site, user: notify_user1,
-             member_ids: [notify_user1.id, notify_user2.id, silence_user.id])
+            member_ids: [notify_user1.id, notify_user2.id, silence_user.id])
+    end
+
+    before do
+      # after_save で Gws::Circular::SlackNotificationJob が実行される
+      perform_enqueued_jobs { post_member }
     end
 
     it do
-      # after_save で Gws::Circular::SlackNotificationJob が実行される
-      post_member
-
       expect(Job::Log.count).to eq 1
       Job::Log.first.tap do |log|
         expect(log.logs).to include(/INFO -- : .* Started Job/)
@@ -106,10 +108,12 @@ describe Gws::Circular::SlackNotificationJob, dbscope: :example do
              member_group_ids: [group1.id, group2.id])
     end
 
-    it do
+    before do
       # after_save で Gws::Circular::SlackNotificationJob が実行される
-      post_group
+      perform_enqueued_jobs { post_group }
+    end
 
+    it do
       expect(Job::Log.count).to eq 1
       Job::Log.first.tap do |log|
         expect(log.logs).to include(/INFO -- : .* Started Job/)
@@ -142,10 +146,12 @@ describe Gws::Circular::SlackNotificationJob, dbscope: :example do
              member_custom_group_ids: [custom_group1.id, custom_group2.id])
     end
 
-    it do
+    before do
       # after_save で Gws::Circular::SlackNotificationJob が実行される
-      post_custom_group
+      perform_enqueued_jobs { post_custom_group }
+    end
 
+    it do
       expect(Job::Log.count).to eq 1
       Job::Log.first.tap do |log|
         expect(log.logs).to include(/INFO -- : .* Started Job/)
@@ -181,10 +187,12 @@ describe Gws::Circular::SlackNotificationJob, dbscope: :example do
       )
     end
 
-    it do
+    before do
       # after_save で Gws::Circular::SlackNotificationJob が実行される
-      post_duplicate_user
+      perform_enqueued_jobs { post_duplicate_user }
+    end
 
+    it do
       expect(Job::Log.count).to eq 1
       Job::Log.first.tap do |log|
         expect(log.logs).to include(/INFO -- : .* Started Job/)
@@ -221,10 +229,12 @@ describe Gws::Circular::SlackNotificationJob, dbscope: :example do
              member_ids: [notify_user1.id, notify_user2.id, notify_user5.id, silence_user.id])
     end
 
-    it do
+    before do
       # after_save で Gws::Circular::SlackNotificationJob が実行される
-      post_member2
+      perform_enqueued_jobs { post_member2 }
+    end
 
+    it do
       expect(Job::Log.count).to eq 1
       Job::Log.first.tap do |log|
         expect(log.logs).to include(/INFO -- : .* Started Job/)
