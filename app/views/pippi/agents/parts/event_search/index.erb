@@ -1,0 +1,23 @@
+<%
+  options = [
+    %w(無料 free),
+    %w(事前申込み必要 advance_apri),
+    %w(託児あり takuji)
+  ]
+%>
+
+<%= jquery do %>
+  $("#extract").on('change', function() {
+    var form = $("<form />").attr("method", "get");
+    if ($(this).val().length) {
+      form.append($("<input />", { name: "column_values_value", value: $('#extract option:selected').text(), type: "hidden"}));
+    }
+    form.appendTo("body");
+    form.submit();
+  });
+<% end %>
+
+<div class="event_extract">
+  <label class="scrText" for="extract">検索結果絞り込み</label>
+  <%= select_tag(:column_values_value, options_for_select(options, options.to_h[params[:column_values_value]]), { include_blank: '検索結果絞り込み', name: 'ev_extract', id: 'extract' }) %>
+</div>

@@ -6,6 +6,17 @@ class Category::Agents::Nodes::PageController < ApplicationController
   private
 
   def pages
-    Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date)
+    pages = Cms::Page.public_list(site: @cur_site, node: @cur_node, date: @cur_date)
+    if params[:column_values_value].present?
+      cond = {
+        column_values: {
+          "$elemMatch" => {
+            value: params[:column_values_value]
+          }
+        }
+      }
+      pages = pages.where(cond)
+    end
+    pages
   end
 end

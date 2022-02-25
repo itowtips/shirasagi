@@ -33,6 +33,7 @@ ja:
       pippi/skill_json: スキルJSON
     parts:
       pippi/tips: 今日のひとこと
+      pippi/event_search: 検索絞り込み
 
   mongoid:
     attributes:

@@ -32,5 +32,6 @@ Rails.application.routes.draw do
 
   part "pippi" do
     get "tips" => "public#index", cell: "parts/tips"
+    get "event_search" => "public#index", cell: "parts/event_search"
   end
 end
