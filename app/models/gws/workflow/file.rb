@@ -22,7 +22,9 @@ class Gws::Workflow::File
   permit_params :state, :name
 
   validates :state, presence: true
-  validates :name, presence: true, length: { maximum: 80 }
+  # 200 = 80 for japanese name + 120 for english name
+  # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+  validates :name, presence: true, length: { maximum: 200 }
 
   after_clone_files :rewrite_file_ref
 

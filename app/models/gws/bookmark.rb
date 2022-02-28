@@ -18,7 +18,9 @@ class Gws::Bookmark
 
   permit_params :name, :url, :bookmark_model
 
-  validates :name, presence: true, length: { maximum: 80 }
+  # 200 = 80 for japanese name + 120 for english name
+  # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+  validates :name, presence: true, length: { maximum: 200 }
   validates :url, presence: true
   validates :bookmark_model, presence: true, inclusion: { in: (%w(other) << BOOKMARK_MODEL_TYPES).flatten }
 

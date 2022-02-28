@@ -32,7 +32,9 @@ module Gws::Schedule::Planable
     before_validation :set_dates_on
     before_validation :set_datetimes_at
 
-    validates :name, presence: true, length: { maximum: 80 }
+    # 200 = 80 for japanese name + 120 for english name
+    # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+    validates :name, presence: true, length: { maximum: 200 }
     validates :start_at, presence: true, datetime: true
     validates :end_at, presence: true, datetime: true
     validates :allday, inclusion: { in: [nil, "", "allday"] }

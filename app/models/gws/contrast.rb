@@ -13,7 +13,9 @@ class Gws::Contrast
   field :color, type: String
   permit_params :name, :order, :state, :text_color, :color
 
-  validates :name, presence: true, length: { maximum: 40 }
+  # 200 = 80 for japanese name + 120 for english name
+  # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+  validates :name, presence: true, length: { maximum: 200 }
   validates :state, presence: true, inclusion: { in: %w(public closed), allow_blank: true }
   validates :text_color, presence: true, if: -> { state == 'public' }
   validates :color, presence: true, if: -> { state == 'public' }

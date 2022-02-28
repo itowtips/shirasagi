@@ -76,8 +76,8 @@ module SS::Model::User
 
     before_validation :synchronize_i18n_name
 
-    validates :name, presence: true, length: { maximum: 40 }
-    validates :kana, length: { maximum: 40 }
+    validates :name, presence: true, length: { maximum: 200 }
+    validates :kana, length: { maximum: 200 }
     validates :uid, length: { maximum: 40 }
     validates :uid, uniqueness: true, if: ->{ uid.present? }
     validates :email, email: true, length: { maximum: 80 }

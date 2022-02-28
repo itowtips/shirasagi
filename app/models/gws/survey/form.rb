@@ -33,7 +33,9 @@ class Gws::Survey::Form
   permit_params :name, :description, :order, :memo, :due_date, :release_date, :close_date
   permit_params :file_edit_state
 
-  validates :name, presence: true, length: { maximum: 80 }
+  # 200 = 80 for japanese name + 120 for english name
+  # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+  validates :name, presence: true, length: { maximum: 200 }
   validates :order, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 999_999, allow_blank: true }
   validates :state, presence: true, inclusion: { in: %w(public closed), allow_blank: true }
   validates :due_date, presence: true, datetime: true

@@ -31,7 +31,9 @@ class Sys::Notice
 
   permit_params :name, :notice_severity, notice_target: []
 
-  validates :name, presence: true, length: { maximum: 80 }
+  # 200 = 80 for japanese name + 120 for english name
+  # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+  validates :name, presence: true, length: { maximum: 200 }
 
   scope :cms_admin_notice, -> {
     where(:notice_target.in => [NOTICE_TARGET_CMS_ADMIN])

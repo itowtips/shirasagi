@@ -19,7 +19,9 @@ class Gws::Memo::Folder
 
   permit_params :name, :order, :path, :in_parent, :in_basename
 
-  validates :name, presence: true, uniqueness: { scope: [:site_id, :user_id] }, length: {maximum: 80}
+  # 200 = 80 for japanese name + 120 for english name
+  # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+  validates :name, presence: true, uniqueness: { scope: [:site_id, :user_id] }, length: { maximum: 200 }
   validates :order, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 999_999, allow_blank: true }
   validate :validate_parent_name
 

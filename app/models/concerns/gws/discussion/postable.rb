@@ -41,7 +41,9 @@ module Gws::Discussion::Postable
 
     before_validation :set_depth
 
-    validates :name, presence: true, length: { maximum: 80 }
+    # 200 = 80 for japanese name + 120 for english name
+    # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+    validates :name, presence: true, length: { maximum: 200 }
 
     before_save :set_descendants_updated, if: -> { !skip_descendants_updated }
     after_save :update_topic_descendants_updated, if: -> { topic_id.present? && !skip_descendants_updated }

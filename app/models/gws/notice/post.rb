@@ -32,7 +32,9 @@ class Gws::Notice::Post
 
   permit_params :name, :severity, :in_clone_file
 
-  validates :name, presence: true, length: { maximum: 80 }
+  # 200 = 80 for japanese name + 120 for english name
+  # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+  validates :name, presence: true, length: { maximum: 200 }
   validate :validate_body_size
   validate :validate_file_size
   before_save :update_body_size

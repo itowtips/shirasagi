@@ -19,7 +19,9 @@ class Gws::Survey::File
 
   permit_params :name
 
-  validates :name, presence: true, length: { maximum: 80 }
+  # 200 = 80 for japanese name + 120 for english name
+  # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+  validates :name, presence: true, length: { maximum: 200 }
   validates :anonymous_state, inclusion: { in: %w(disabled enabled), allow_blank: true }
 
   class << self

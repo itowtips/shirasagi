@@ -22,7 +22,9 @@ class Gws::Report::File
   permit_params :name
 
   validates :state, presence: true, inclusion: { in: %w(public closed), allow_blank: true }
-  validates :name, presence: true, length: { maximum: 80 }
+  # 200 = 80 for japanese name + 120 for english name
+  # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+  validates :name, presence: true, length: { maximum: 200 }
   after_save :send_notification_mail, unless: ->{ @in_skip_notification_mail }
 
   scope :and_public, -> { where(state: 'public') }

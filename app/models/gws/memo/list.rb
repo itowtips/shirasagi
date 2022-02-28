@@ -22,7 +22,9 @@ class Gws::Memo::List
 
   permit_params :name, :sender_name, :signature, category_ids: []
 
-  validates :name, presence: true, length: { maximum: 80 }
+  # 200 = 80 for japanese name + 120 for english name
+  # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+  validates :name, presence: true, length: { maximum: 200 }
 
   class << self
     def search(params)

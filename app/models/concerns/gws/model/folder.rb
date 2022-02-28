@@ -20,9 +20,11 @@ module Gws::Model::Folder
     before_validation :set_depth, if: ->{ name.present? }
     before_validation :set_name_and_depth, if: ->{ in_basename.present? }
 
-    validates :name, presence: true, length: {maximum: 80}
-    validates :order, numericality: {less_than_or_equal_to: 999_999}
-    validates :in_basename, length: {maximum: 80}
+    # 200 = 80 for japanese name + 120 for english name
+    # 日本語タイトルと英語タイトルとをスラッシュで連結して、一つのページとして運用することを想定
+    validates :name, presence: true, length: { maximum: 200 }
+    validates :order, numericality: { less_than_or_equal_to: 999_999 }
+    validates :in_basename, length: { maximum: 200 }
     validates :in_basename, format: { with: /\A[^\\\/:*?"<>|]*\z/, message: :invalid_chars_as_name }
 
     validate :validate_parent_name
