@@ -43,16 +43,18 @@ describe "gws_job_user_reservations", type: :feature, dbscope: :example, js: tru
 
         click_on I18n.t(task1.class_name.underscore, scope: "job.models")
         expect(page).to have_content(task1.state)
-        expect(page).to have_content(Time.zone.at(task1.at).strftime("%Y/%m/%d %H:%M"))
+        expect(page).to have_content(I18n.l(Time.zone.at(task1.at), format: :picker))
 
         visit gws_job_user_reservations_path(site: site)
         click_on I18n.t(task2.class_name.underscore, scope: "job.models")
         expect(page).to have_content(task2.state)
-        expect(page).to have_content(Time.zone.at(task2.at).strftime("%Y/%m/%d %H:%M"))
+        expect(page).to have_content(I18n.l(Time.zone.at(task2.at), format: :picker))
 
         visit gws_job_user_reservations_path(site: site)
         click_on I18n.t(task1.class_name.underscore, scope: "job.models")
-        click_on I18n.t("ss.links.delete")
+        within ".nav-menu" do
+          click_on I18n.t("ss.links.delete")
+        end
         within "form" do
           click_on I18n.t("ss.buttons.delete")
         end
@@ -73,7 +75,7 @@ describe "gws_job_user_reservations", type: :feature, dbscope: :example, js: tru
 
         click_on I18n.t(task3.class_name.underscore, scope: "job.models")
         expect(page).to have_content(task3.state)
-        expect(page).to have_content(Time.zone.at(task3.at).strftime("%Y/%m/%d %H:%M"))
+        expect(page).to have_content(I18n.l(Time.zone.at(task3.at), format: :picker))
       end
     end
   end

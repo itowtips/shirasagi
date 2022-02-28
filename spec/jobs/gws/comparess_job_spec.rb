@@ -37,7 +37,11 @@ describe Gws::CompressJob, dbscope: :example do
       expect(notification.member_ids).to include(user.id)
       expect(notification.subject).to eq I18n.t("gws/share.mailers.compressed.subject")
       expect(notification.format).to eq 'text'
-      expect(notification.text).to include("ダウンロードの準備が完了しました。")
+      if I18n.locale == :en
+        expect(notification.text).to include("Your download is ready.")
+      else
+        expect(notification.text).to include("ダウンロードの準備が完了しました。")
+      end
     end
 
     entry_names = ::Zip::File.open(physical_filepath) do |entries|
