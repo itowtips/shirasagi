@@ -23,6 +23,9 @@
   <dt><%= @model.t :order %></dt>
   <dd><%= @item.send :order %></dd>
 
+  <dt><%= @model.t :superior_id %></dt>
+  <dd><%= @item.superior.try { |user| user.long_name } %></dd>
+
   <% if @item.activation_date.present? %>
   <dt><%= @model.t :activation_date %></dt>
   <dd><%= ss_time_tag @item.activation_date %></dd>
