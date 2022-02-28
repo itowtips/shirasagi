@@ -30,6 +30,8 @@ en:
     agent_type:
       myself: Apply for oneself
       agent: Apply as a proxy
+    alert:
+      create_workflow_with_cur_group: "You are trying to create a new workflow as %{name} group. Please change the concurrent post if necessary."
 
   gws_notification:
     gws/workflow/file:

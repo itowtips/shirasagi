@@ -17,8 +17,10 @@ describe Gws::Workflow::FilesController, type: :feature, dbscope: :example, js: 
       Gws::User.create name: "一般ユーザー3", uid: "user3", email: "user3@example.jp", in_password: "pass",
         group_ids: [ admin.groups.first.id ], gws_role_ids: [ Gws::Role.first.id ], lang: I18n.locale.to_s
     end
+    let(:user4) { gws_user }
     let(:item) { create :gws_workflow_file }
     let(:show_path) { gws_workflow_file_path(site, item, state: 'all') }
+    let(:index_path) { gws_workflow_files_path(site, state: 'all') }
     let(:workflow_comment) { unique_id }
     let(:remand_comment1) { unique_id }
     let(:remand_comment2) { unique_id }
@@ -40,6 +42,81 @@ describe Gws::Workflow::FilesController, type: :feature, dbscope: :example, js: 
     end
 
     after { ActionMailer::Base.deliveries.clear }
+
+    it do
+      admin.groups.first.update(superior_id: admin.id)
+      login_user user1
+      visit show_path
+
+      #
+      # user1: 申請をする 上長（admin）自動セット
+      #
+
+      within ".mod-workflow-request" do
+        select I18n.t("mongoid.attributes.workflow/model/route.my_group"), from: "workflow_route"
+        click_on I18n.t("workflow.buttons.select")
+        wait_for_ajax
+        expect(page).to have_content(admin.name)
+      end
+      within ".mod-workflow-request" do
+        fill_in "workflow[comment]", with: workflow_comment
+        save_full_screenshot
+        click_on I18n.t("workflow.buttons.request")
+      end
+      expect(page).to have_css(".mod-workflow-view dd", text: I18n.t("workflow.state.request"))
+
+      item.reload
+      puts item.workflow_approvers
+      expect(item.workflow_user_id).to eq user1.id
+      expect(item.workflow_state).to eq 'request'
+      expect(item.workflow_comment).to eq workflow_comment
+      expect(item.workflow_approvers.count).to eq 1
+      expect(item.workflow_approvers).to \
+        include({level: 1, user_id: admin.id, editable: '', state: 'request', comment: ''})
+
+      expect(SS::Notification.count).to eq 1
+      notice1 = SS::Notification.all.reorder(created: -1).first
+      expect(notice1.group_id).to eq site.id
+      expect(notice1.member_ids).to eq [ admin.id ]
+      expect(notice1.user_id).to eq user1.id
+      expect(notice1.subject).to eq I18n.t("gws_notification.gws/workflow/file.request", name: item.name)
+      expect(notice1.text).to be_blank
+      expect(notice1.html).to be_blank
+      expect(notice1.format).to eq "text"
+      expect(notice1.user_settings).to be_blank
+      expect(notice1.state).to eq "public"
+      expect(notice1.send_date).to be_present
+      expect(notice1.url).to eq "/.g#{site.id}/workflow/files/all/#{item.id}"
+      expect(notice1.reply_module).to be_blank
+      expect(notice1.reply_model).to be_blank
+      expect(notice1.reply_item_id).to be_blank
+
+      expect(ActionMailer::Base.deliveries.length).to eq 1
+      ActionMailer::Base.deliveries.last.tap do |mail|
+        expect(mail.from.first).to eq site.sender_address
+        expect(mail.bcc.first).to eq admin.send_notice_mail_addresses.first
+        expect(mail.subject).to eq I18n.t("gws_notification.gws/workflow/file.request", name: item.name)
+        url = "#{site.canonical_scheme}://#{site.canonical_domain}/.g#{site.id}/memo/notices/#{notice1.id}"
+        expect(mail.decoded.to_s).to include(mail.subject, url)
+        expect(mail.message_id).to end_with("@#{site.canonical_domain}.mail")
+      end
+    end
+
+    it do
+      login_user user4
+      visit show_path
+
+      #
+      # user2: 申請をする 上長が自動セットされない
+      #
+
+      within ".mod-workflow-request" do
+        select I18n.t("mongoid.attributes.workflow/model/route.my_group"), from: "workflow_route"
+        click_on I18n.t("workflow.buttons.select")
+        wait_for_ajax
+        expect(find('table.approvers', visible: false)).not_to be_visible
+      end
+    end
 
     it do
       login_gws_user

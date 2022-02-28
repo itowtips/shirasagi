@@ -30,6 +30,8 @@ ja:
     agent_type:
       myself: 本人が申請する
       agent: 代理で申請する
+    alert:
+      create_workflow_with_cur_group: "「%{name} グループ」でワークフローを新規に作成しようとしています。必要であれば兼務を切り替えてください"
 
   gws_notification:
     gws/workflow/file:
