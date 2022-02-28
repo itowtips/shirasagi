@@ -1,0 +1,10 @@
+<nav class="nav-menu">
+  <% if params[:action] =~ /edit|update|delete/ %>
+    <%= link_to t('ss.links.back_to_show'), action: :show %>
+  <% else %>
+    <% if @cur_user.type == SS::User::TYPE_SNS %>
+      <%= link_to t('ss.links.edit'), action: :edit %>
+      <%= link_to t('ss.links.edit_password'), action: :edit_password %>
+    <% end %>
+  <% end %>
+</nav>

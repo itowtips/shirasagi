@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :sys_user, class: SS::User do
     name { "sys_user" }
     email { "sys@example.jp" }
+    type { SS::Model::User::TYPE_SNS }
     in_password { "pass" }
     deletion_lock_state { "locked" }
     #sys_role_ids
@@ -12,6 +13,7 @@ FactoryBot.define do
   factory :sys_user_sample, class: SS::User do
     name { unique_id.to_s }
     email { "user#{unique_id}@example.jp" }
+    type { SS::Model::User::TYPE_SNS }
     in_password { "pass" }
     #sys_role_ids
 

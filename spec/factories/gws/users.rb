@@ -11,6 +11,7 @@ FactoryBot.define do
     name { "name-#{unique_id}" }
     uid { "uid-#{unique_id}" }
     email { "#{uid}@example.jp" }
+    type { SS::Model::User::TYPE_SNS }
     in_password { "pass" }
 
     lang { I18n.locale.to_s }

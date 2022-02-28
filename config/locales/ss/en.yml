@@ -121,6 +121,7 @@ en:
       send_message: Create a message
       copy_email_address: Copy e-mail address
       closed_save: Make private
+      edit_password: Change password
     buttons:
       save: Save
       saving: Saving
@@ -505,6 +506,10 @@ en:
         encoding: Character encoding
       ss/import_param:
         in_file: File
+      ss/password_update_service:
+        new_password: New Password
+        new_password_again: New Password (Confirm)
+        old_password: Current Password
 
   mongoid:
     models:

@@ -112,6 +112,7 @@ en:
       auth_error: You do not have permission.
       blank: Must be filled in.
       present: Must be left blank.
+      mismatch: Does not match.
       confirmation: Does not match %{attribute}.
       empty: Must be filled in.
       equal_to: Must be set to %{count}.
