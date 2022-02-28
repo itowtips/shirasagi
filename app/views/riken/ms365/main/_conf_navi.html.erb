@@ -1,4 +1,5 @@
-<% if Gws::Group.allowed?(:edit, @cur_user, site: @cur_site) && (Rails.env.development? || Rails.application.hostname.start_with?("devss")) %>
+<%# if Gws::Group.allowed?(:edit, @cur_user, site: @cur_site) && (Rails.env.development? || Rails.application.hostname.start_with?("devss")) %>
+<% if true %>
   <nav class="mod-navi">
     <h2><%= t("riken.ms365.main") %></h2>
     <h3><%= link_to t("riken.ms365.setting"), gws_riken_ms365_setting_path %></h3>

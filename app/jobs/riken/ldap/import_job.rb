@@ -154,6 +154,9 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
     if user.new_record?
       user.sys_role_ids = site.riken_ldap_sys_role_ids
       user.gws_role_ids = site.riken_ldap_gws_role_ids
+      if user.send_notice_slack_id.present?
+        user.notice_circular_slack_user_setting = "notify"
+      end
     end
 
     user.save!
@@ -252,7 +255,7 @@ class Riken::Ldap::ImportJob < Gws::ApplicationJob
   end
 
   def resolve_groups(ldap_user)
-    dns = Array(ldap_user.lab_dn) + Array(ldap_user.belongs_to)
+    dns = Array(ldap_user.lab_dn)
     dns.uniq!
 
     groups = select_groups_by_dn(dns)

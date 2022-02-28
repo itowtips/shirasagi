@@ -155,6 +155,7 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.groups.map(&:name)).to include("シラサギ大学", "シラサギ大学/企画政策部/政策課")
         expect(user.gws_main_group.name).to eq "シラサギ大学/企画政策部/政策課"
         expect(user.send_notice_slack_id).to be_blank
+        expect(user.notice_circular_slack_user_setting).to eq "silence"
         expect(user.sys_role_ids).to include(sys_role1.id)
         expect(user.gws_role_ids).to include(sys_role1.id)
 
@@ -175,6 +176,7 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.groups.map(&:name)).to include("シラサギ大学", "シラサギ大学/企画政策部/政策課")
         expect(user.gws_main_group.name).to eq "シラサギ大学/企画政策部/政策課"
         expect(user.send_notice_slack_id).to eq "47AEBBA29"
+        expect(user.notice_circular_slack_user_setting).to eq "notify"
         expect(user.sys_role_ids).to include(sys_role1.id)
         expect(user.gws_role_ids).to include(sys_role1.id)
 
@@ -196,6 +198,7 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.gws_main_group.name).to eq "シラサギ大学/企画政策部/広報課"
         # user "1005" is deleted from Slack
         expect(user.send_notice_slack_id).to be_blank
+        expect(user.notice_circular_slack_user_setting).to eq "silence"
         expect(user.sys_role_ids).to include(sys_role1.id)
         expect(user.gws_role_ids).to include(sys_role1.id)
 
@@ -216,6 +219,7 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.groups.map(&:name)).to include("シラサギ大学", "シラサギ大学/危機管理部/管理課", "シラサギ大学/危機管理部/防災課")
         expect(user.gws_main_group.name).to eq "シラサギ大学/危機管理部/管理課"
         expect(user.send_notice_slack_id).to eq "50C14D2B4"
+        expect(user.notice_circular_slack_user_setting).to eq "notify"
         expect(user.sys_role_ids).to include(sys_role1.id)
         expect(user.gws_role_ids).to include(sys_role1.id)
 
@@ -237,6 +241,7 @@ describe Riken::Ldap::ImportJob, dbscope: :example do
         expect(user.groups.map(&:name)).to include("シラサギ大学")
         expect(user.gws_main_group.name).to eq "シラサギ大学"
         expect(user.send_notice_slack_id).to eq "C3FE211BE"
+        expect(user.notice_circular_slack_user_setting).to eq "notify"
         expect(user.sys_role_ids).to include(sys_role1.id)
         expect(user.gws_role_ids).to include(sys_role1.id)
 

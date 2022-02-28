@@ -1,4 +1,5 @@
-<% if Gws::Group.allowed?(:edit, @cur_user, site: @cur_site) && Rails.env.development? %>
+<%# if Gws::Group.allowed?(:edit, @cur_user, site: @cur_site) && Rails.env.development? %>
+<% if true %>
   <nav class="mod-navi">
     <h2><%= t('riken.ldap.main') %></h2>
     <h3><%= link_to t('riken.ldap.setting'), gws_riken_ldap_setting_path %></h3>

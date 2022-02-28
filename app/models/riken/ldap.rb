@@ -2,11 +2,11 @@ module Riken::Ldap
 
   RkUser = Struct.new(
     :dn, :rk_uid, :uid, :main_lab_cd, :cn_jp, :gn_jp, :mn_jp, :cn_furigana, :gn_furigana, :mn_furigana,
-    :cn, :gn, :mn_en, :main_superior_id, :mail, :ict6k_flg,
-    :lab_dn, :belongs_to, keyword_init: true
+    :cn, :gn, :mn_en, :main_superior_id, :mail, :ict6k_flg, :lab_dn,
+    keyword_init: true
   )
 
-  RK_USER_ARRAY_ATTRS = %i[lab_dn belongs_to].freeze
+  RK_USER_ARRAY_ATTRS = %i[lab_dn].freeze
 
   RkOrganization = Struct.new(:dn, :superior_id, :cn_j, :cn, :hierarchy_lab_name_j, :hierarchy_lab_name_e, keyword_init: true)
 
