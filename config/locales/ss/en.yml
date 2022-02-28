@@ -355,8 +355,9 @@ en:
         1280x720: 1280x720 (HD landscape)
         720x1280: 720x1280 (HD portrait)
       text_type:
-        plain: Text format
-        markdown: Markdown format
+        plain: Text
+        markdown: Markdown
+        cke: Formatted
       wareki:
         seireki: AD
         meiji: Meiji
