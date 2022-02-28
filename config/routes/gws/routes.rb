@@ -42,7 +42,6 @@ Rails.application.routes.draw do
   end
 
   namespace "gws", path: ".g:site/gws" do
-    get "default_groups/:default_group" => "default_groups#update", as: :default_group
     get "question_management" => "question_management#index"
     resource  :site
     resources :groups, concerns: [:deletion, :download, :import]
@@ -89,6 +88,7 @@ Rails.application.routes.draw do
       put "reload_site_usages" => "site_usages#reload"
       post "validation" => "validation#validate"
       get "cke_config" => "cke_config#index"
+      post "default_group" => "default_groups#update"
 
       resources :files, concerns: [:deletion, :file_api]
     end

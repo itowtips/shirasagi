@@ -87,6 +87,7 @@ en:
     links:
       back_to_portal: Back to portal
       webmail_user_import: Import with webmail permissions
+      switch_group: Change group
     buttons:
       unset: Cancel
       add_item: Add a new element
