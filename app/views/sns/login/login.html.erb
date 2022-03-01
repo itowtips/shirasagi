@@ -15,6 +15,21 @@
       <div class="version">ver. <%= tryb{SS.version} %></div>
     </header>
 
+    <% ssos = Sys::Auth::Base.where(state: "enabled").order_by(order: 1).to_a %>
+    <% if ssos.present? %>
+      <ul class="sso">
+        <% ssos.each do |sso| %>
+          <% sso = sso.becomes_with_model %>
+          <li class="<%= sso.filename %>">
+            <%= link_to(sso.url(ref: params[:ref].try { |ref| ref.to_s } || default_logged_in_path, login_path: request.path), class: "btn-default") do %>
+              <h2 class="name"><%= sso.name %></h2>
+              <p class="text"><%= br sso.text %></p>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
     <%= form_tag action: params[:action] do |f| %>
       <% if flash[:alert] %>
       <div class="error-message"><%= flash[:alert] %></div>
@@ -36,21 +51,6 @@
       <footer class="send">
         <%= submit_tag t("ss.login"), class: "btn-primary" %>
       </footer>
-    <% end %>
-
-    <% ssos = Sys::Auth::Base.where(state: "enabled").order_by(order: 1).to_a %>
-    <% if ssos.present? %>
-      <ul class="sso">
-        <% ssos.each do |sso| %>
-          <% sso = sso.becomes_with_model %>
-          <li class="<%= sso.filename %>">
-            <%= link_to(sso.url(ref: params[:ref].try { |ref| ref.to_s } || default_logged_in_path, login_path: request.path), class: "btn-default") do %>
-              <h2 class="name"><%= sso.name %></h2>
-              <p class="text"><%= br sso.text %></p>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
     <% end %>
   </section>
 </div>
