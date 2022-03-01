@@ -170,8 +170,12 @@ this.Gws_Schedule_Calendar = (function ($) {
   };
 
   Gws_Schedule_Calendar.tapMenuParams = function (selector, opts) {
-    var url;
+    var url, $controller;
     url = opts['restUrl'];
+    $controller = $('#calendar-controller');
+    if (!$controller.length) {
+      $controller = $(selector).siblings(".calendar-multiple-controller");
+    }
     return {
       dayClick: function (date, event, view) {
         var links = '';
@@ -188,7 +192,7 @@ this.Gws_Schedule_Calendar = (function ($) {
           var $addToDo = $("<a />", { href: todo, class: 'add-plan' }).html(i18next.t('gws/schedule.links.add_todo'));
           links += $addToDo.prop("outerHTML");
         }
-        if ($('#calendar-controller').length === 0) {
+        if ($controller.length === 0) {
           if (view.name !== 'month') {
             links += $('<a href="" data-view="month"/>').html(i18next.t("gws/schedule.links.show_month")).prop("outerHTML");
           }

@@ -99,7 +99,7 @@ this.Gws_Schedule_Multiple_Calendar = (function ($) {
   //view.el.find(".fctoolbar, .fc-head").remove("")
 
   Gws_Schedule_Multiple_Calendar.renderController = function (selector, opts, init) {
-    var controller, params;
+    var controller, warp, params;
     if (opts == null) {
       opts = {};
     }
@@ -114,26 +114,27 @@ this.Gws_Schedule_Multiple_Calendar = (function ($) {
     Gws_Schedule_Calendar.renderInitialize(selector, init);
     Gws_Schedule_Calendar.overrideAddLink(selector);
     controller = $(selector);
+    warp = controller.parent();
     controller.find('.fc-today-button').on("click", function () {
-      return $('.calendar.multiple .fc-today-button').trigger("click");
+      return warp.find('.calendar.multiple .fc-today-button').trigger("click");
     });
     controller.find('.fc-prev-button').on("click", function () {
-      return $('.calendar.multiple .fc-prev-button').trigger("click");
+      return warp.find('.calendar.multiple .fc-prev-button').trigger("click");
     });
     controller.find('.fc-next-button').on("click", function () {
-      return $('.calendar.multiple .fc-next-button').trigger("click");
+      return warp.find('.calendar.multiple .fc-next-button').trigger("click");
     });
     controller.find('.fc-basicWeek-button').on("click", function () {
-      return $('.calendar.multiple .fc-basicWeek-button').trigger("click");
+      return warp.find('.calendar.multiple .fc-basicWeek-button').trigger("click");
     });
     controller.find('.fc-timelineDay-button').on("click", function () {
-      return $('.calendar.multiple .fc-timelineDay-button').trigger("click");
+      return warp.find('.calendar.multiple .fc-timelineDay-button').trigger("click");
     });
     controller.find('.fc-basicHour-button').on("click", function () {
-      return $('.calendar.multiple .fc-basicHour-button').trigger("click");
+      return warp.find('.calendar.multiple .fc-basicHour-button').trigger("click");
     });
     controller.find('.fc-reload-button').on("click", function () {
-      return $('.calendar.multiple .fc-reload-button').trigger("click");
+      return warp.find('.calendar.multiple .fc-reload-button').trigger("click");
     });
   };
 
