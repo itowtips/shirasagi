@@ -109,7 +109,7 @@ module SS::Model::Group
   #   @trailing_name ||= name.split("/")[depth..-1].join("/")
   # end
   def i18n_trailing_name
-    @trailing_name ||= i18n_name.split("/")[depth..-1].join("/")
+    @i18n_trailing_name ||= i18n_name.split("/")[depth..-1].join("/")
   end
   alias trailing_name i18n_trailing_name
 

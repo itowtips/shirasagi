@@ -36,14 +36,14 @@
         <tbody>
           <% if params[:action] =~ /new/ && !@skip_default_group && !@item.group_ids.include?(@cur_group.id) %>
           <tr data-id="<%= @cur_group.id %>">
-            <td><%= f.hidden_field "group_ids[]", value: @cur_group.id, id: nil %> <%= @cur_group.name %></td>
+            <td><%= f.hidden_field "group_ids[]", value: @cur_group.id, id: nil %> <%= @cur_group.i18n_name %></td>
             <td><%= link_to t("ss.buttons.delete"), "#", class: "deselect btn" %></td>
           </tr>
           <% end %>
 
           <% @item.groups.each do |group| %>
           <tr data-id="<%= group.id %>">
-            <td><%= f.hidden_field "group_ids[]", value: group.id, id: nil %> <%= group.name %></td>
+            <td><%= f.hidden_field "group_ids[]", value: group.id, id: nil %> <%= group.i18n_name %></td>
             <td><%= link_to t("ss.buttons.delete"), "#", class: "deselect btn" %></td>
           </tr>
           <% end %>

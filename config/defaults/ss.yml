@@ -53,15 +53,15 @@ production: &production
   history_log_saving_days: 90
 
   quality_options:
-    - label: 最高画質
+    - label: { ja: 最高画質, en: Highest }
       quality: 85
-    - label: 高画質
+    - label: { ja: 高画質, en: High }
       quality: 60
-    - label: 中画質
+    - label: { ja: 中画質, en: Moderate }
       quality: 55
-    - label: 低画質
+    - label: { ja: 低画質, en: Low }
       quality: 40
-    - label: 最低画質
+    - label: { ja: 最低画質, en: Lowest }
       quality: 25
 
   updates_and_reloads_nginx_conf: false

@@ -69,7 +69,7 @@
           <tbody>
             <% @item.readable_groups.each do |group| %>
             <tr data-id="<%= group.id %>">
-              <td><%= f.hidden_field "readable_group_ids[]", value: group.id, id: nil %> <%= group.name %></td>
+              <td><%= f.hidden_field "readable_group_ids[]", value: group.id, id: nil %> <%= group.i18n_name %></td>
               <td><%= link_to t("ss.buttons.delete"), "#", class: "deselect btn" %></td>
             </tr>
             <% end %>

@@ -8,7 +8,7 @@
       <% else %>
         <%= render partial: 'workflow/search_approvers/group_dropdown_tree' %>
       <% end %>
-      <dt><%= t "cms.user" %></dt>
+      <dt><%= t "mongoid.models.ss/user" %></dt>
       <dd><%= f.text_field :keyword, value: params[:s].try(:[], :keyword) %>
       <%= f.submit t("workflow.search_approvers.search"), class: "btn" %></dd>
     </dl>

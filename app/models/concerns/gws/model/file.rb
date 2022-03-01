@@ -94,7 +94,7 @@ module Gws::Model::File
     end
 
     def quality_options(opts = {})
-      options = SS.config.ss.quality_options.collect { |v| [ v['label'], v['quality'] ] } rescue []
+      options = SS.config.ss.quality_options.collect { |v| [ v['label'][I18n.locale.to_s], v['quality'] ] } rescue []
 
       return options unless opts[:user]
 
