@@ -462,6 +462,9 @@ ja:
       lang:
         ja: 日本語
         en: 英語
+      logo_link_to_type:
+        my_page: マイページ
+        self_site: 自サイト
 
     tasks:
       started: 開始しました。

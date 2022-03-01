@@ -452,6 +452,9 @@ en:
       lang:
         ja: Japanese
         en: English
+      logo_link_to_type:
+        my_page: My Page
+        self_site: Self Site
 
     tasks:
       started: Started.

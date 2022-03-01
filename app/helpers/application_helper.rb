@@ -265,21 +265,33 @@ module ApplicationHelper
     end
   end
 
-  def render_application_logo(site = nil)
+  def render_application_logo(site: nil, ref: nil)
     site ||= @cur_site
-    return SS.config.ss.application_logo_html.html_safe if site.blank?
+    return default_application_logo(ref) if site.blank?
 
+    ref = site.logo_link_to
     name = site.logo_application_name
     image = site.logo_application_image
-    return SS.config.ss.application_logo_html.html_safe if name.blank? && image.blank?
+    return default_application_logo(ref) if name.blank? && image.blank?
 
-    tag.div(class: "ss-logo-wrap") do
+    log_html = tag.div(class: "ss-logo-wrap") do
       if image.present?
         output_buffer << image_tag(image.url, alt: name || SS.config.ss.application_name)
       end
       if name.present?
         output_buffer << tag.span(name, class: "ss-logo-application-name")
       end
+    end
+
+    log_html = link_to(log_html, ref) if ref
+    log_html
+  end
+
+  def default_application_logo(ref)
+    if ref
+      return link_to(SS.config.ss.application_logo_html.html_safe, ref)
+    else
+      return SS.config.ss.application_logo_html.html_safe
     end
   end
 
