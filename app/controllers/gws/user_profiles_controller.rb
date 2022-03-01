@@ -60,7 +60,15 @@ class Gws::UserProfilesController < ApplicationController
 
   def edit
     raise "404" if @cur_user.type != SS::User::TYPE_SNS
-    super
+    render
+  end
+
+  def update
+    raise "404" if @cur_user.type != SS::User::TYPE_SNS
+
+    @item.attributes = get_params
+    @item.in_updated = params[:_updated] if @item.respond_to?(:in_updated)
+    render_update @item.save
   end
 
   def edit_password
