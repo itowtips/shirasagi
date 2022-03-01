@@ -135,7 +135,7 @@ end
         </tr>
       </thead>
       <tbody>
-        <% if @cur_group.superior_id.present? %>
+        <% if @cur_group.superior.present? %>
           <tr data-id="1,<%= @cur_group.superior_id %>">
             <td>
               <%= hidden_field_tag "workflow_approvers", "1,#{@cur_group.superior_id},,pending," %> 
@@ -191,7 +191,7 @@ end
   </dd>
 </dl>
 
-<% if @cur_group.superior_id %>
+<% if @cur_group.superior.present? %>
   <%= jquery do %>
     $('table.approvers').removeAttr('style');
   <% end %>

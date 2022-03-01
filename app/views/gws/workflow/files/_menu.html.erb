@@ -40,9 +40,8 @@
   <% end %>
 </nav>
 
-
 <%= jquery do %>
   $('.work-flow-dropdown-link .dropdown-toggle').on('click', function() {
-    alert('<%= I18n.t("gws/workflow.alert.create_workflow_with_cur_group", name: @cur_group.name, locale: @cur_user.lang) %>')
+    alert('<%= I18n.t("gws/workflow.alert.create_workflow_with_cur_group", name: @cur_group.i18n_name, locale: @cur_user.lang) %>')
   })
 <% end %>
