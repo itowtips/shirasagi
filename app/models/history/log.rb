@@ -84,7 +84,44 @@ class History::Log
       log.target_class = item.class    if item
       log.target_id    = item.try(:id) if item.respond_to?(:new_record?) && !item.try(:new_record?)
 
-      log.save!
+      result = log.save!
+      write_to_app_log(log) if result
+      result
+    end
+
+    # syslog 連携用として操作履歴を production.log へ出力する
+    # production.log へ出力された操作履歴は、ログファイルの tail 監視などを通じて syslog サーバーへ送られる
+    def write_to_app_log(log)
+      Rails.logger.unknown do
+        # LTSV format
+        terms = [ "oplog:true" ]
+
+        I18n.with_locale(I18n.default_locale) do
+          terms << "log_class:#{log.class.name}"
+          terms << "target:#{log.target_label}"
+          terms << "action:#{log.action}"
+          terms << "created:#{log.created.iso8601}"
+          terms << "url:#{log.url}"
+          terms << "user_id:#{log.user_id}"
+          if log.user
+            terms << "user_email:#{log.user.email}"
+          end
+          if log.group_ids
+            terms << "group:#{log.group_label}"
+          end
+          if log.session_id
+            terms << "session_id:#{log.session_id}"
+          end
+          if log.request_id
+            terms << "request_id:#{log.request_id}"
+          end
+        rescue => e
+          terms << "exception_class:#{e.class}"
+          terms << "exception_message:#{e.message}"
+        end
+
+        terms.join("\t")
+      end
     end
 
     def enum_csv(options)
