@@ -9,4 +9,5 @@
 
   <dt><%= @model.t :notice_slack_channels %><%= @model.tt :notice_slack_channels %></dt>
   <dd><%= f.text_field :notice_slack_channels %></dd>
+  <dd><%= button_tag t("riken.ldap.test_connection"), type: "button", class: "btn btn-ldap-test", data: { url: gws_riken_apis_slack_test_notice_slack_channels_path } %></dd>
 </dl>

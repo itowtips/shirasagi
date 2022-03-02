@@ -23,4 +23,5 @@
 
   <dt><%= @model.t :circular_slack_channels %><%= @model.tt :circular_slack_channels %></dt>
   <dd><%= f.text_field :circular_slack_channels %></dd>
+  <dd><%= button_tag t("riken.ldap.test_connection"), type: "button", class: "btn btn-ldap-test", data: { url: gws_riken_apis_slack_test_circular_slack_channels_path } %></dd>
 </dl>

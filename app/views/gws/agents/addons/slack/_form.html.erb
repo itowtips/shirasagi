@@ -1,4 +1,9 @@
 <dl class="see addon-gws-slack-setting">
   <dt><%= @model.t :slack_oauth_token %><%= @model.tt :slack_oauth_token %></dt>
   <dd><%= f.text_field :slack_oauth_token %></dd>
+  <dd><%= button_tag t("riken.ldap.test_connection"), type: "button", class: "btn btn-ldap-test", data: { url: gws_riken_apis_slack_test_oauth_token_path } %></dd>
 </dl>
+
+<%= jquery do %>
+  Riken_LdapTest.render();
+<% end %>

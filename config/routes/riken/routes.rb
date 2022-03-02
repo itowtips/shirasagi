@@ -49,6 +49,11 @@ Rails.application.routes.draw do
         post "test_user_search" => "test#user_search"
         post "test_custom_group_search" => "test#custom_group_search"
       end
+      namespace "slack" do
+        post "test_oauth_token" => "test#oauth_token"
+        post "test_circular_slack_channels" => "test#circular_slack_channels"
+        post "test_notice_slack_channels" => "test#notice_slack_channels"
+      end
     end
   end
 end
