@@ -142,12 +142,16 @@ class Gws::History
           if item.path.present?
             terms << "path:#{item.path}"
           end
-          terms << "user_id:#{item.user_id}"
-          if item.user
-            terms << "user_email:#{item.user.email}"
+          if item.respond_to?(:user_id)
+            terms << "user_id:#{item.user_id}"
+            if item.try(:user)
+              terms << "user_email:#{item.user.email}"
+            end
           end
-          if (names = item.updated_field_names).present?
-            terms << "updated_field_names:#{names.join(',')}"
+          if item.respond_to?(:updated_field_names)
+            if (names = item.updated_field_names).present?
+              terms << "updated_field_names:#{names.join(',')}"
+            end
           end
           if item.session_id
             terms << "session_id:#{item.session_id}"
