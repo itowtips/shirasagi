@@ -1,5 +1,5 @@
 <div class="main-box">
   <div class="portlet-title"><%= @portlet.name %></div>
 
-  <%== @portlet.html %>
+  <%== sanitize(@portlet.html) %>
 </div>
