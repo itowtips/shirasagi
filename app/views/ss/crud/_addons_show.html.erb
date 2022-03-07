@@ -4,7 +4,7 @@
 <% css_classes ||= [] %>
 <% css_classes = Array(css_classes).flatten.compact %>
 <% addons.each do |addon| %>
-  <% addon_options = { id: "addon-#{addon.id}", head: addon.name, class: css_classes.dup, toggle: true, display_body: display_body } %>
+  <% addon_options = { id: "addon-#{addon.id}", head: addon.name, class: css_classes.dup, toggle: true, type: addon.type, display_body: display_body } %>
 
   <% buf = render addon.show_partial_path, addon: addon_options if addon.show_partial_path %>
   <% next if buf.blank? %>

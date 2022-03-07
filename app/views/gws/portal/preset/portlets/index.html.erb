@@ -1,0 +1,7 @@
+<% @index_meta = proc do |item| %>
+  <span class="datetime"><%= I18n.l(item.updated, format: :picker) %></span>
+  <span class="model"><%= item.label :portlet_model %></span>
+  <span class="managed"><%= item.managed_label %></span>
+<% end %>
+
+<%= render template: "gws/crud/index" %>

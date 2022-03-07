@@ -1,0 +1,10 @@
+<dl class="see">
+  <dt><%= @model.t :name %><%= @model.tt :name %></dt>
+  <dd><%= f.text_field :name %></dd>
+
+  <dt><%= @model.t :portal_type %><%= @model.tt :portal_type %></dt>
+  <dd><%= f.select :portal_type, @item.portal_type_options %></dd>
+
+  <dt><%= @model.t :order %><%= @model.tt :order %></dt>
+  <dd><%= f.number_field :order %></dd>
+</dl>

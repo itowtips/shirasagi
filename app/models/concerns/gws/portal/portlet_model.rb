@@ -2,6 +2,7 @@ module Gws::Portal::PortletModel
   extend ActiveSupport::Concern
   extend SS::Translation
   include Gws::Addon::Portal::Portlet::Free
+  include Gws::Addon::Portal::Portlet::FreeFile
   include Gws::Addon::Portal::Portlet::Link
   include Gws::Addon::Portal::Portlet::Schedule
   include Gws::Addon::Portal::Portlet::Todo
@@ -23,7 +24,7 @@ module Gws::Portal::PortletModel
   include Gws::Addon::Portal::Portlet::AdFile
 
   PORTLETS = {
-    free:       { size_x: 2, size_y: 2, addons: [Gws::Addon::Portal::Portlet::Free] },
+    free:       { size_x: 2, size_y: 2, addons: [Gws::Addon::Portal::Portlet::Free, Gws::Addon::Portal::Portlet::FreeFile] },
     links:      { size_x: 2, size_y: 3, addons: [Gws::Addon::Portal::Portlet::Link] },
     reminder:   { size_x: 2, size_y: 3, addons: [Gws::Addon::Portal::Portlet::Reminder] },
     schedule:   { size_x: 4, size_y: 2, addons: [Gws::Addon::Portal::Portlet::Schedule] },
@@ -49,6 +50,9 @@ module Gws::Portal::PortletModel
     field :portlet_model, type: String
     field :grid_data, type: Hash
     field :limit, type: Integer, default: 5
+
+    # user in gws file addon
+    field :state, type: String, default: "public"
 
     permit_params :name, :portlet_model, :limit
 
@@ -146,6 +150,11 @@ module Gws::Portal::PortletModel
       self.addons.select do |addon|
         addon.type.nil? || addons.include?(addon.klass)
       end
+    end
+
+    def preset_addons(preset_portlet)
+      return [] if preset_portlet.managed?
+      portlet_addons(preset_portlet.portlet_model)
     end
   end
 end

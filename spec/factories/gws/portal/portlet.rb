@@ -39,4 +39,8 @@ FactoryBot.define do
   factory :gws_portal_group_portlet, class: Gws::Portal::GroupPortlet, traits: [:gws_portal_portlet_base] do
     portlet_model { '' }
   end
+
+  factory :gws_portal_preset_portlet, class: Gws::Portal::PresetPortlet, traits: [:gws_portal_portlet_base] do
+    portlet_model { '' }
+  end
 end

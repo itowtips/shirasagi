@@ -7,6 +7,7 @@ class Gws::Portal::User::PortalController < ApplicationController
   model Gws::Portal::UserSetting
 
   before_action :set_portal_setting
+  before_action :save_portal_setting
 
   navi_view "gws/portal/main/navi"
 

@@ -3,6 +3,7 @@ module Gws::Portal::PortletFilter
 
   included do
     menu_view 'gws/portal/common/portlets/menu'
+    before_action :set_preset_portlet
     before_action :set_portlet_addons
   end
 
@@ -16,18 +17,37 @@ module Gws::Portal::PortletFilter
     { readable_group_ids: @portal.group_ids, group_ids: @portal.group_ids, user_ids: @portal.user_ids }
   end
 
+  def set_preset_portlet
+    @preset_portlet ||= begin
+      if params[:preset_portlet_id]
+        @preset_setting.portlets.find(params[:preset_portlet_id]) rescue nil
+      elsif @item
+        @item.preset_portlet
+      end
+    end
+  end
+
   def set_portlet_addons
-    portlet_model = params[:portlet_model].presence
-    portlet_model = @item.portlet_model if @item
-    @addons = @model.portlet_addons(portlet_model) if portlet_model
+    @addons ||= begin
+      if @preset_portlet
+        @model.preset_addons(@preset_portlet)
+      elsif @item
+        @model.portlet_addons(@item.portlet_model)
+      end
+    end
+  end
+
+  def prevent_modify_required_portlet
+    return if @item.nil?
+    return if !@item.required_by_preset?
+    redirect_to({ action: :show })
   end
 
   def new_portlet
     @item = @model.new pre_params.merge(fix_params)
-    @item.portlet_model = params[:portlet_model]
-    raise "403" unless @item.allowed?(:edit, @cur_user, site: @cur_site)
+    @item.initialize_by_preset(@preset_portlet) if @preset_portlet
 
-    @item.name = @item.label(:portlet_model)
+    raise "403" unless @item.allowed?(:edit, @cur_user, site: @cur_site)
     render template: 'gws/portal/common/portlets/select_model' unless @item.portlet_model_enabled?
 
     if params[:group].present?
@@ -47,20 +67,27 @@ module Gws::Portal::PortletFilter
 
   def index
     @items = @portal.portlets.
-      search(params[:s])
+      search(params[:s]).
+      order_by("grid_data.row" => 1, "grid_data.col" => 1)
   end
 
   def new
     new_portlet
   end
 
+  def sync
+    raise '403' unless @portal.allowed?(:edit, @cur_user, site: @cur_site)
+    return render(template: 'gws/portal/common/portlets/sync') unless request.post?
+
+    @portal.synchronize_portal(@preset_setting)
+    redirect_to({ action: :index }, { notice: I18n.t('ss.notice.synced') })
+  end
+
   def reset
     raise '403' unless @portal.allowed?(:edit, @cur_user, site: @cur_site)
     return render(template: 'gws/portal/common/portlets/reset') unless request.post?
 
-    @portal.portlets.destroy_all
-    @portal.save_default_portlets
-
+    @portal.reset_portal(@preset_setting)
     redirect_to({ action: :index }, { notice: I18n.t('ss.notice.initialized') })
   end
 end

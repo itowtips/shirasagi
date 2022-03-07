@@ -14,10 +14,15 @@ this.Gws_Schedule_View = (function ($) {
     return null;
   };
 
-  Gws_Schedule_View.getCalendarDate = function () {
+  Gws_Schedule_View.getCalendarDate = function (selector) {
     var cal;
-    cal = Gws_Schedule_View.getCalendar();
+    if (selector) {
+      cal = $(selector);
+    } else {
+      cal = Gws_Schedule_View.getCalendar();
+    }
     if (cal) {
+      console.log(cal);
       return cal.fullCalendar('getDate').format('YYYY-MM-DD');
     }
     return null;
@@ -43,7 +48,7 @@ this.Gws_Schedule_View = (function ($) {
     return $(selector).find('.fc-toolbar h2').on("click", function () {
       var date, name;
       name = "gws-schedule-tool-calendars";
-      date = Gws_Schedule_View.getCalendarDate();
+      date = Gws_Schedule_View.getCalendarDate(selector);
       date = $.fullCalendar.moment(date);
       if ($("." + name).is(':hidden')) {
         $("." + name).remove();

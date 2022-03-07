@@ -2,9 +2,9 @@
   <% if params[:action] =~ /index/ %>
     <% if @portal.allowed?(:edit, @cur_user, site: @cur_site) %>
       <%= link_to t('ss.links.new'), action: :new %>
-      <%= link_to t('ss.links.initialize'), action: :reset %>
+      <%= link_to t("gws/portal.sync_preset"), action: :sync if @preset %>
     <% end %>
-  <% elsif params[:action] =~ /new|create|lock|reset|destroy_all/ %>
+  <% elsif params[:action] =~ /new|create|lock|sync|reset|destroy_all/ %>
     <%= link_to t('ss.links.back_to_index'), action: :index %>
   <% elsif params[:action] =~ /edit|update|delete|move/ %>
     <% if @item.allowed?(:read, @cur_user, site: @cur_site) %>

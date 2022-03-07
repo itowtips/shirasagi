@@ -6,10 +6,15 @@ module Gws::Portal::GroupExtension
       foreign_key: :portal_group_id, dependent: :destroy, inverse_of: :portal_group
   end
 
+  def find_portal_preset(overwrite_params = {})
+    site = overwrite_params[:cur_site]
+    Gws::Portal::Preset.find_portal_preset(site, self)
+  end
+
   def find_portal_setting(overwrite_params = {})
     site = overwrite_params[:cur_site]
     portal = portal_setting.site(site).first_or_initialize(
-      name: organization? ? I18n.t("gws/portal.tabs.root_portal") : trailing_name.truncate(20),
+      name: organization? ? I18n.t("gws/portal.tabs.root_portal") : trailing_name,
       readable_setting_range: organization? ? "public" : "select",
       readable_group_ids: organization? ? [] : [id],
       group_ids: [id]

@@ -54,6 +54,9 @@ namespace :ss do
     end
 
     if ::SS.config.gws.disable.blank?
+      # ポータル設定の同期
+      ::Tasks::SS.invoke_task("gws:portal:sync_portal")
+
       # ゴミ箱の掃除
       ::Tasks::SS.invoke_task("gws:trash:purge")
 

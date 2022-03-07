@@ -81,6 +81,7 @@ en:
       input: Enter
       delete: Delete
       import: Import
+      sync: Synchronize
       reply: Reply
       back: Go back
       back_to_show: Back to details
@@ -152,6 +153,8 @@ en:
       import: Import
       restore_message: Restore
       importing: Importing
+      syncing: Synchronizing
+      initializing: Initializing
       restoring_message: Restoring
       convert: Convert
       unlock_and_edit_forcibly: Unlock forcibly and edit
@@ -196,6 +199,7 @@ en:
       redirect: You are trying to access an external site.
       export: Are you sure you want to start exporting?
       import: Are you sure you want to start importing?
+      sync: Are you sure you want to start synchronizing?
       download: Are you sure you want to download it?
       set_tag: Are you sure you want to tag it?
       reset_tag: Are you sure you want to remove the tag?
@@ -219,9 +223,12 @@ en:
       unable_to_delete: ! '%{items} could not be deleted.'
       copied: Duplicated.
       started_import: Importing started.
+      started_sync: Synchronizing started.
+      started_initialize: Initialize started.
       sent: Sent.
       posted: Posted.
       initialized: Initialized.
+      synced: Synchronized.
       file_droppable: You can upload a file by dropping.
       uploading: Uploading.
       lock_user_all: Usage suspended.

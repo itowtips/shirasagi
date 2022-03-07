@@ -31,11 +31,13 @@ this.SS_Clipboard = (function () {
 
   SS_Clipboard.renderCopy = function () {
     $('.js-clipboard-copy').each(function () {
-      var label, text;
+      var label, text, rendered;
       text = $(this).text();
-      if (!text) {
+      rendered = $(this).hasClass("rendered-copy");
+      if (!text || rendered) {
         return true;
       }
+      $(this).addClass("rendered-copy");
       label = i18next.t("ss.buttons.copy");
       return $(this).append("<a href='#' class='clipboard-copy-button' data-text='" + text + "'>" + label + "</a>");
     });

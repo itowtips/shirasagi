@@ -4,9 +4,14 @@ module Gws::Portal::PortalFilter
   included do
     helper Gws::Schedule::PlanHelper
     menu_view "gws/portal/common/portal/menu"
+    before_action :set_preset
   end
 
   private
+
+  def fix_params
+    { cur_user: @cur_user, cur_site: @cur_site }
+  end
 
   # override Gws::BaseFilter#set_gws_assets
   def set_gws_assets
@@ -14,8 +19,9 @@ module Gws::Portal::PortalFilter
     javascript("gws/calendar")
   end
 
-  def fix_params
-    { cur_user: @cur_user, cur_site: @cur_site }
+  # must be overridden by sub-class
+  def set_preset
+    raise NotImplementedError
   end
 
   # must be overridden by sub-class
@@ -28,7 +34,9 @@ module Gws::Portal::PortalFilter
 
     raise '403' unless @portal.allowed?(:edit, @cur_user, site: @cur_site, strict: true)
     raise '403' unless @portal.save
-    @portal.save_default_portlets
+
+    set_preset
+    @portal.reset_portal(@preset_setting) if @preset_setting
   end
 
   public
@@ -41,11 +49,12 @@ module Gws::Portal::PortalFilter
 
     raise '403' unless @portal.portal_readable?(@cur_user, site: @cur_site)
 
-    @items = @portal.portlets.presence || @portal.default_portlets
+    @items = @portal.portlets.to_a
     @items.select! do |item|
       @cur_site.menu_visible?(item.portlet_model) && Gws.module_usable?(item.portlet_model, @cur_site, @cur_user)
     end
 
+    @notices = Gws::Notice::Post.none
     if @portal.show_portal_notice?
       @sys_notices = Sys::Notice.and_public.gw_admin_notice.reorder(notice_severity: 1, released: -1).page(1).per(5)
 
@@ -64,19 +73,16 @@ module Gws::Portal::PortalFilter
 
         @notices = @notices.reorder(severity: -1, released: -1)
         @notices = @notices.page(1).per(5)
-      else
-        @notices = Gws::Notice::Post.none
       end
     end
 
+    @monitors = Gws::Monitor::Topic.none
     if Gws.module_usable?(:monitor, @cur_site, @cur_user) && @portal.show_portal_monitor?
       @monitors = Gws::Monitor::Topic.site(@cur_site).topic.
         and_public.
         and_attended(@cur_user, site: @cur_site, group: @cur_group).
         and_unanswered(@cur_group).
         and_noticed
-    else
-      @monitors = Gws::Monitor::Topic.none
     end
 
     if @portal.show_portal_link?

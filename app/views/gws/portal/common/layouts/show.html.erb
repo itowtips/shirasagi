@@ -10,7 +10,9 @@
 
   <% @items.each do |item| %>
   <div class="portlet-html portlet-model-<%= item.portlet_model %>" data-id="<%= item.id %>">
-    <% if @portal_user.present? %>
+    <% if @portal.is_a?(Gws::Portal::PresetSetting) %>
+      <%= link_to t('ss.links.edit'), gws_portal_preset_portlet_path(id: item), class: 'edit-portlet' %>
+    <% elsif @portal_user.present? %>
       <%= link_to t('ss.links.edit'), gws_portal_user_portlet_path(id: item), class: 'edit-portlet' %>
     <% else %>
       <%= link_to t('ss.links.edit'), gws_portal_group_portlet_path(id: item), class: 'edit-portlet' %>

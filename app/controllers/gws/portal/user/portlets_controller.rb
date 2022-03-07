@@ -13,6 +13,7 @@ class Gws::Portal::User::PortletsController < ApplicationController
   before_action :set_portal_setting
   before_action :check_portal_permission, except: %i[delete destroy]
   before_action :save_portal_setting
+  before_action :prevent_modify_required_portlet, only: [:new, :create, :edit, :update, :delete, :destroy]
 
   private
 

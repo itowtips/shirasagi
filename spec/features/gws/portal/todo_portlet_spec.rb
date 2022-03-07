@@ -6,6 +6,7 @@ describe "gws_portal_portlet", type: :feature, dbscope: :example, js: true do
   let!(:todo) { create :gws_schedule_todo, cur_site: site, cur_user: user }
 
   before do
+    create_default_portal
     login_gws_user
   end
 

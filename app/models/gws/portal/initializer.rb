@@ -20,5 +20,7 @@ module Gws::Portal
     Gws::Role.permission :edit_private_gws_portal_group_settings, module_name: 'gws/portal'
     Gws::Role.permission :delete_other_gws_portal_group_settings, module_name: 'gws/portal'
     Gws::Role.permission :delete_private_gws_portal_group_settings, module_name: 'gws/portal'
+
+    Gws::Role.permission :manage_gws_portal_preset, module_name: 'gws/portal'
   end
 end
