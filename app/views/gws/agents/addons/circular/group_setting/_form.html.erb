@@ -3,6 +3,18 @@
   addon[:display_body] = "hide"
 %>
 
+<% render_slack_channel = proc do |index, channel| %>
+  <tr class="slack-channel" data-index="<%= index %>">
+    <td><%= text_field_tag "#{f.object_name}[circular_slack_channels][]", channel, id: nil %></td>
+    <td>
+      <%= button_tag t("ss.buttons.delete"), type: "button", class: "btn btn-slack-channel-delete" %>
+      <%= button_tag t("riken.slack.test_channel"), type: "button", class: "btn btn-slack-channel-test", data: { url: gws_riken_apis_slack_test_circular_slack_channel_path } %>
+      <%= button_tag t("riken.slack.join_channel"), type: "button", class: "btn btn-slack-channel-join", data: { url: gws_riken_apis_slack_join_circular_slack_channel_path } %>
+      <%= button_tag t("riken.slack.test_post"), type: "button", class: "btn btn-slack-channel-test-post", data: { url: gws_riken_apis_slack_test_post_circular_slack_channel_path } %>
+    </td>
+  </tr>
+<% end %>
+
 <dl class="see addon-gws-circular-group-setting">
   <dt><%= @model.t :circular_default_due_date %><%= @model.tt :circular_default_due_date %></dt>
   <dd class="short"><%= f.number_field :circular_default_due_date %> <span class="postfix"><%= t('datetime.prompts.day') %></span></dd>
@@ -22,6 +34,33 @@
   <dd class="short"><%= f.number_field :circular_new_days %> <span class="postfix"><%= t("datetime.prompts.day") %></span></dd>
 
   <dt><%= @model.t :circular_slack_channels %><%= @model.tt :circular_slack_channels %></dt>
-  <dd><%= f.text_field :circular_slack_channels %></dd>
-  <dd><%= button_tag t("riken.ldap.test_connection"), type: "button", class: "btn btn-ldap-test", data: { url: gws_riken_apis_slack_test_circular_slack_channels_path } %></dd>
+  <dd>
+    <table class="index">
+      <thead>
+      <tr>
+        <th>Channel Id</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @item.circular_slack_channels.each_with_index do |channel, index| %>
+        <% render_slack_channel.call(index, channel) %>
+      <% end %>
+      <% render_slack_channel.call(@item.circular_slack_channels.length, nil) %>
+      <tr class="operations">
+        <td colspan="2">
+          <%= button_tag t("ss.buttons.add"), type: "button", class: "btn btn-slack-channel-add" %>
+          <script type="text/html">
+            <% render_slack_channel.call(nil, nil) %>
+          </script>
+          <span><%= t("riken.ldap.max_custom_groups_notice", count: Gws::Addon::Circular::GroupSetting::MAX_CIRCULAR_SLACK_CHANNELS.to_s(:delimited)) %></span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </dd>
 </dl>
+
+<%= jquery do %>
+  new Riken_SlackChannelForm(<%== "##{addon[:id]}".to_json %>)
+<% end %>

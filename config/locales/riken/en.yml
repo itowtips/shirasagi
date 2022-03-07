@@ -26,6 +26,10 @@ en:
       login_failed:
         head: Failed to login
         body: "Failed to login. Please consult your system administrator."
+    slack:
+      test_channel: Test
+      join_channel: Join
+      test_post: Test Post
 
   modules:
     riken: Riken

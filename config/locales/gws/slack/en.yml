@@ -1,4 +1,4 @@
-ja:
+en:
   modules:
     gws/slack: Slack
     addons:
@@ -14,4 +14,4 @@ ja:
   tooltip:
     gws/addon/slack:
       slack_oauth_token:
-        - Slack APIを利用したメッセージの送信時に必要なトークンを設定します。
+        - Set the tokens required when sending messages using the Slack API.

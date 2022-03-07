@@ -122,7 +122,7 @@ ja:
         notice_id: お知らせ
       gws/addon/notice/group_setting:
         notice_new_days: 新着表示期間
-        notice_slack_channels: slackチャンネル
+        notice_slack_channels: Slackチャンネル
 
   tooltip:
     gws/notice/post:

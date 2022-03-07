@@ -5,6 +5,8 @@ module Gws::Addon::Circular::GroupSetting
 
   set_addon_type :organization
 
+  MAX_CIRCULAR_SLACK_CHANNELS = 10
+
   included do
     field :circular_default_due_date, type: Integer, default: 7
     field :circular_max_member, type: Integer
@@ -16,13 +18,12 @@ module Gws::Addon::Circular::GroupSetting
 
     permit_params :circular_default_due_date, :circular_max_member,
       :circular_filesize_limit, :circular_delete_threshold,
-      :circular_files_break, :circular_new_days, :circular_slack_channels
+      :circular_files_break, :circular_new_days, circular_slack_channels: []
 
     validates :circular_default_due_date, numericality: true
     validates :circular_delete_threshold, numericality: true
     validates :circular_files_break, inclusion: { in: %w(vertically horizontal), allow_blank: true }
-
-    after_save :join_bot_to_slack_channels
+    validates :circular_slack_channels, length: { maximum: MAX_CIRCULAR_SLACK_CHANNELS }
 
     alias_method :circular_files_break_options, :break_options
   end
@@ -48,24 +49,4 @@ module Gws::Addon::Circular::GroupSetting
     self[:circular_new_days].presence || 7
   end
 
-  private
-
-  def join_bot_to_slack_channels
-    return if circular_slack_channels.blank?
-
-    client = slack_client
-    return if client.nil?
-
-    bot_user_id = client.auth_test.user_id rescue nil
-    return if bot_user_id.nil?
-
-    client.conversations_list.channels.each do |channel|
-      next if !self.circular_slack_channels.include?("##{channel.name}")
-
-      users_in_channel = client.conversations_members(channel: channel.id).members
-      next if users_in_channel.include?(bot_user_id)
-
-      client.conversations_join(channel: channel.id)
-    end
-  end
 end

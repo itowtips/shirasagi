@@ -122,6 +122,7 @@ en:
         notice_id: Announcements
       gws/addon/notice/group_setting:
         notice_new_days: Display period for new items
+        notice_slack_channels: Slack channels
 
   tooltip:
     gws/notice/post:
@@ -147,6 +148,8 @@ en:
     gws/addon/notice/group_setting:
       notice_new_days:
         - Enter the display period for new items.
+      notice_slack_channels:
+        - Multiple channels can be set with blank separators.
 
   job:
     models:

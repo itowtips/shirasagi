@@ -131,7 +131,7 @@ ja:
         circular_delete_threshold: 回覧復旧可能期間
         circular_files_break: ファイル表示の並び
         circular_new_days: 新着表示期間
-        circular_slack_channels: slackチャンネル
+        circular_slack_channels: Slackチャンネル
       gws/addon/circular/category:
         category_ids: カテゴリー
   tooltip:
@@ -171,11 +171,6 @@ ja:
         - 新着表示期間を入力します。
       circular_slack_channels:
         - 空白区切りで複数のチャンネルの設定が可能です。
-    gws/circular/comment:
-      name: タイトルです
-      text: コメントです
-      browsing_authority:
-        - コメントを公開する範囲を設定します。
 
   job:
     models:

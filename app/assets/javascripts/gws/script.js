@@ -33,6 +33,7 @@
 //= require gws/share/folder_toolbar
 //= require riken/ldap_test
 //= require riken/ldap_custom_group_form
+//= require riken/slack_channel_form
 
 $(function () {
   // external link

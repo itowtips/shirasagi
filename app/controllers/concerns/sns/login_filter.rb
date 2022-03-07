@@ -88,6 +88,9 @@ module Sns::LoginFilter
   public
 
   def logout
+    # SSO ユーザーはログアウトできない（ログアウトするには、グローバルログアウトが必要だが対応していない）
+    raise "404" if @cur_user.type == SS::User::TYPE_SSO
+
     put_history_log
     # discard all session info
     reset_session

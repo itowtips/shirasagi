@@ -133,6 +133,7 @@ en:
         circular_delete_threshold: Period circulation can be restored
         circular_files_break: File display order
         circular_new_days: Display period for new items
+        circular_slack_channels: Slack channels
       gws/addon/circular/category:
         category_ids: Category
   tooltip:
@@ -170,6 +171,8 @@ en:
         - Select the display order of attachments.
       circular_new_days:
         - Enter the display period for new items.
+      circular_slack_channels:
+        - Multiple channels can be set with blank separators.
 
   job:
     models:

@@ -51,8 +51,12 @@ Rails.application.routes.draw do
       end
       namespace "slack" do
         post "test_oauth_token" => "test#oauth_token"
-        post "test_circular_slack_channels" => "test#circular_slack_channels"
-        post "test_notice_slack_channels" => "test#notice_slack_channels"
+        post "test_circular_slack_channel" => "test#circular_slack_channel"
+        post "join_circular_slack_channel" => "test#circular_slack_channel_join"
+        post "test_post_circular_slack_channel" => "test#circular_slack_channel_post"
+        post "test_notice_slack_channel" => "test#notice_slack_channel"
+        post "join_notice_slack_channel" => "test#notice_slack_channel_join"
+        post "test_post_notice_slack_channel" => "test#notice_slack_channel_post"
       end
     end
   end
