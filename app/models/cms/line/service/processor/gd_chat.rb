@@ -3,7 +3,7 @@ class Cms::Line::Service::Processor::GdChat < Cms::Line::Service::Processor::Bas
     Pippi::GdChat.logger
   end
 
-  def call
+  def post_events
     url = SS.config.pippi.dig("gd_chat", "webhook_url")
     path = URI.parse(url).path
     base_url = url.sub(path, "")
@@ -22,5 +22,13 @@ class Cms::Line::Service::Processor::GdChat < Cms::Line::Service::Processor::Bas
     logger.info "response status: #{res.status}"
     logger.info "response body: #{res.body}"
     logger.info ""
+  end
+
+  def start_messages
+    post_events
+  end
+
+  def call
+    post_events
   end
 end
