@@ -41,7 +41,7 @@ en:
       riken/auth/shibboleth: Shibboleth Auth
     attributes:
       riken/addon/shibboleth_setting:
-        login_url: Login URL
+        diagnosis_state: Diagnosis
       riken/ldap/group_setting:
         riken_ldap_url: LDAP URL
         riken_ldap_bind_dn: LDAP Account
@@ -57,11 +57,6 @@ en:
         riken_ms365_tenant_id: Tenant ID
         riken_ms365_client_id: Client ID
         riken_ms365_client_secret: Client Secret
-
-  tooltip:
-    riken/addon/shibboleth_setting:
-      login_url:
-        - Set the login url for Shibboleth login
 
   job:
     models:

@@ -41,7 +41,7 @@ ja:
       riken/auth/shibboleth: シボレス認証
     attributes:
       riken/addon/shibboleth_setting:
-        login_url: ログインURL
+        diagnosis_state: 診断情報
       riken/ldap/group_setting:
         riken_ldap_url: LDAP URL
         riken_ldap_bind_dn: LDAP アカウント
@@ -57,11 +57,6 @@ ja:
         riken_ms365_tenant_id: テナントID
         riken_ms365_client_id: クライアントID
         riken_ms365_client_secret: クライアントシークレット
-
-  tooltip:
-    riken/addon/shibboleth_setting:
-      login_url:
-        - シボレス認証のためのログインURLを設定してください。
 
   job:
     models:

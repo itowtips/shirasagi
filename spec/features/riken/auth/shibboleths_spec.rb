@@ -8,7 +8,8 @@ describe Riken::Auth::ShibbolethsController, type: :feature, dbscope: :example, 
     let(:name2) { "name-#{unique_id}" }
     let(:filename) { "filename-#{unique_id}" }
     let(:key) { "key-#{unique_id}" }
-    let(:login_url) { unique_url }
+    let(:diagnosis_state) { %w(hide show).sample }
+    let(:diagnosis_state_label) { I18n.t("ss.options.state.#{diagnosis_state}") }
 
     it do
       #
@@ -23,7 +24,7 @@ describe Riken::Auth::ShibbolethsController, type: :feature, dbscope: :example, 
         fill_in "item[name]", with: name
         fill_in "item[filename]", with: filename
         fill_in "item[keys]", with: key
-        fill_in "item[login_url]", with: login_url
+        select diagnosis_state_label, from: "item[diagnosis_state]"
 
         click_on I18n.t("ss.buttons.save")
       end
@@ -39,7 +40,7 @@ describe Riken::Auth::ShibbolethsController, type: :feature, dbscope: :example, 
         expect(auth.state).to eq "enabled"
         expect(auth.keys.length).to eq 1
         expect(auth.keys).to include(key)
-        expect(auth.login_url).to eq login_url
+        expect(auth.diagnosis_state).to eq diagnosis_state
       end
 
       #

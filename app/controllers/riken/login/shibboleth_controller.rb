@@ -2,7 +2,6 @@ class Riken::Login::ShibbolethController < ApplicationController
   include Sns::BaseFilter
   include Sns::LoginFilter
 
-  skip_before_action :verify_authenticity_token, raise: false, only: :consume
   skip_before_action :logged_in?
   before_action :set_item
 
@@ -27,16 +26,11 @@ class Riken::Login::ShibbolethController < ApplicationController
       session.delete(:riken_shibboleth)
 
       params[:ref] = riken_shibboleth_params[:ref] if riken_shibboleth_params && riken_shibboleth_params.key?(:ref)
-      render_login user, nil, session: true, login_path: @item.login_url
+      render_login user, nil, session: true, login_path: riken_login_env_path(id: @item.filename)
       return nil
     end
 
     render template: "riken/login/shibboleth/login_failed"
-  end
-
-  def redirect_to_login_url
-    session[:riken_shibboleth] = request.query_parameters
-    redirect_to @item.login_url
   end
 
   public
@@ -47,6 +41,6 @@ class Riken::Login::ShibbolethController < ApplicationController
       return
     end
 
-    redirect_to_login_url
+    render template: "riken/login/shibboleth/login_failed"
   end
 end

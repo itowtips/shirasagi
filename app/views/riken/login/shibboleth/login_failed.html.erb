@@ -4,4 +4,37 @@
       <%== t("riken.shibboleth.login_failed.body") %>
     </div>
   <% end %>
+
+  <% if @item.diagnosis_state == "show" %>
+    <%= render "ss/crud/addon", addon: { id: "environments", head: "[Diagnosis] Environments", toggle: true } do %>
+      <dl class="see">
+        <% request.env.keys.sort.each do |key| %>
+          <dt><%= key %></dt>
+          <dd><%= request.env[key].inspect %></dd>
+        <% end %>
+      </dl>
+    <% end %>
+
+    <% if request.query_parameters.present? %>
+      <%= render "ss/crud/addon", addon: { id: "query-parameters", head: "[Diagnosis] Query Parameters", toggle: true } do %>
+        <dl class="see">
+          <% request.query_parameters.each do |key, value| %>
+            <dt><%= key %></dt>
+            <dd><%= value.inspect %></dd>
+          <% end %>
+        </dl>
+      <% end %>
+    <% end %>
+
+    <% if request.request_parameters.present? %>
+      <%= render "ss/crud/addon", addon: { id: "request-parameters", head: "[Diagnosis] Request Parameters", toggle: true } do %>
+        <dl class="see">
+          <% request.request_parameters.each do |key, value| %>
+            <dt><%= key %></dt>
+            <dd><%= value.inspect %></dd>
+          <% end %>
+        </dl>
+      <% end %>
+    <% end %>
+  <% end %>
 </div>

@@ -1,4 +1,7 @@
 <dl class="see">
-  <dt><%= @model.t :login_url %><%= @model.tt :login_url %></dt>
-  <dd><%= f.text_field :login_url %></dd>
+  <dt><%= @model.t :diagnosis_state %></dt>
+  <dd>
+    <%= f.select :diagnosis_state, @item.diagnosis_state_options, include_blank: true %>
+    (Be sure to show diagnosis only on test phase)
+  </dd>
 </dl>

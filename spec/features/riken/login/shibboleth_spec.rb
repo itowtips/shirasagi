@@ -4,7 +4,7 @@ describe Riken::Login::ShibbolethController, type: :feature, dbscope: :example, 
   let!(:auth) do
     Riken::Auth::Shibboleth.create!(
       name: "name-#{unique_id}", filename: "filename-#{unique_id}", keys: "key-#{unique_id}".upcase,
-      login_url: unique_url + "?shibboleth-login"
+      diagnosis_state: %w(hide show).sample
     )
   end
 
@@ -15,7 +15,8 @@ describe Riken::Login::ShibbolethController, type: :feature, dbscope: :example, 
       visit sns_login_path(ref: gws_portal_path(site: site))
       click_on auth.name
 
-      expect(page.current_url).to end_with("?shibboleth-login")
+      text = I18n.t("riken.shibboleth.login_failed.head", locale: I18n.default_locale)
+      expect(page).to have_css("#addon-basic h2", text: text)
     end
   end
 
