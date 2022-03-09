@@ -78,7 +78,8 @@ gem 'omniauth-github'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'omniauth-yahoojp'
-gem 'omniauth-line'
+#gem 'omniauth-line'
+gem 'omniauth-line', git: "https://github.com/gochi-tip/omniauth-line.git", branch: "feature/bot_prompt"
 gem 'omniauth-rails_csrf_protection'
 
 # SNS
