@@ -18,8 +18,7 @@ module Gws::Slack::SendNotificationJob
   end
 
   def init_slack_client
-    @ja_slack_ids = []
-    @en_slack_ids = []
+    @slack_ids = []
     @client = site.slack_client
   end
 
@@ -27,7 +26,7 @@ module Gws::Slack::SendNotificationJob
     if notice_post_class?
       site.notice_slack_channels.each do |channel|
         begin
-          slack_post_msg(channel, "both_lang")
+          slack_post_msg(channel)
           @channel_success_count += 1
         rescue => e
           @channel_error_count += 1
@@ -37,7 +36,7 @@ module Gws::Slack::SendNotificationJob
     elsif site.circular_slack_channels.present?
       site.circular_slack_channels.each do |channel|
         begin
-          slack_post_msg(channel, "both_lang")
+          slack_post_msg(channel)
           @channel_success_count += 1
         rescue => e
           @channel_error_count += 1
@@ -49,19 +48,9 @@ module Gws::Slack::SendNotificationJob
 
   def send_to_dm
     set_notify_slack_ids
-    @ja_slack_ids.each do |slack_id|
+    @slack_ids.each do |slack_id|
       begin
-        slack_post_msg(slack_id, "ja")
-        @dm_success_count += 1
-      rescue => e
-        @dm_error_count += 1
-        Rails.logger.error { "#{e.class} (#{e.message}):\n  #{e.backtrace.join("\n  ")}" }
-      end
-    end
-
-    @en_slack_ids.each do |slack_id|
-      begin
-        slack_post_msg(slack_id, "en")
+        slack_post_msg(slack_id)
         @dm_success_count += 1
       rescue => e
         @dm_error_count += 1
@@ -70,9 +59,9 @@ module Gws::Slack::SendNotificationJob
     end
   end
 
-  def slack_post_msg(slack_id, lang)
+  def slack_post_msg(slack_id)
     Retriable.retriable(on_retry: method(:on_each_retry), base_interval: 1, multiplier: 1) do
-      @client.chat_postMessage(channel: slack_id, blocks: block_opts(lang))
+      @client.chat_postMessage(channel: slack_id, blocks: block_opts)
     end
   end
 
@@ -93,10 +82,9 @@ module Gws::Slack::SendNotificationJob
 
     Gws::CustomGroup.in(id: @item.member_custom_group_ids).each do |group|
       group.users.notify_slack_users.each do |user|
-        next if @ja_slack_ids.include?(user.send_notice_slack_id)
-        next if @en_slack_ids.include?(user.send_notice_slack_id)
+        next if @slack_ids.include?(user.send_notice_slack_id)
 
-        separate_slack_id_by_lang(user)
+        @slack_ids << user.send_notice_slack_id
       end
     end
   end
@@ -106,10 +94,9 @@ module Gws::Slack::SendNotificationJob
 
     Gws::Group.in(id: @item.member_group_ids).each do |group|
       group.users.notify_slack_users.each do |user|
-        next if @ja_slack_ids.include?(user.send_notice_slack_id)
-        next if @en_slack_ids.include?(user.send_notice_slack_id)
+        next if @slack_ids.include?(user.send_notice_slack_id)
 
-        separate_slack_id_by_lang(user)
+        @slack_ids << user.send_notice_slack_id
       end
     end
   end
@@ -118,61 +105,36 @@ module Gws::Slack::SendNotificationJob
     return if @item.member_ids.blank?
 
     Gws::User.in(id: @item.member_ids).notify_slack_users.each do |user|
-      next if @ja_slack_ids.include?(user.send_notice_slack_id)
-      next if @en_slack_ids.include?(user.send_notice_slack_id)
+      next if @slack_ids.include?(user.send_notice_slack_id)
 
-      separate_slack_id_by_lang(user)
+      @slack_ids << user.send_notice_slack_id
     end
   end
 
-  def separate_slack_id_by_lang(user)
-    if user.lang == "ja"
-      @ja_slack_ids << user.send_notice_slack_id
-    else
-      @en_slack_ids << user.send_notice_slack_id
-    end
-  end
-
-  def block_opts(lang)
-    slack_blocks_array(lang).map do |opt|
-      case opt
-      when "divider"
-        { type: "divider" }
-      when "header"
+  def block_opts
+    [
         {
           type: "header",
           text: {
             type: "plain_text",
             text: header_text,
           }
-        }
-      else #"ja" || "en"
+        },
         {
           type: "section",
           text: {
             type: "plain_text",
-            text: section_text(opt)
-          },
-          fields: [
-            {
-              type: "mrkdwn",
-              text: "<#{show_page_url}|#{show_page_url}>"
-            }
-          ]
+            text: section_text
+          }
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: "<#{show_page_url}>"
+          }
         }
-      end
-    end
-  end
-
-  def slack_blocks_array(lang)
-    case lang
-    when "ja"
-      %w(header ja)
-    when "en"
-      %w(header en)
-    else # both_lang
-      %w(header ja divider en)
-    end
+    ]
   end
 
   def header_text
@@ -183,11 +145,11 @@ module Gws::Slack::SendNotificationJob
     end
   end
 
-  def section_text(lang)
+  def section_text
     if notice_post_class?
-      I18n.t("gws/notice.slack", name: @item.name, locale: lang)
+      I18n.t("gws/notice.slack", name: @item.name, locale: "en")
     else
-      I18n.t("gws/circular.slack", name: @item.name, locale: lang)
+      I18n.t("gws/circular.slack", name: @item.name, locale: "en")
     end
   end
 
