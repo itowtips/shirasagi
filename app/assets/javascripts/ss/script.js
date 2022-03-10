@@ -20,6 +20,8 @@
 //= require mdn-polyfills/Array.prototype.findIndex.js
 //= require mdn-polyfills/Array.prototype.forEach.js
 //= require mdn-polyfills/Array.prototype.includes.js
+//= require mdn-polyfills/Number.isInteger.js
+//= require mdn-polyfills/Number.isNaN.js
 //= require mdn-polyfills/Object.assign.js
 //= require mdn-polyfills/Object.values.js
 //= require mdn-polyfills/String.prototype.endsWith.js
