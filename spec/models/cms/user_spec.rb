@@ -65,11 +65,11 @@ describe Cms::User do
     let!(:user) { create(:cms_user_base, :cms_user_rand_name, :cms_user_email, group: group2, cms_role_ids: [ role.id ]) }
 
     before do
-      @save_current_permission_mask = SS.current_permission_mask
+      @save_current_token = SS.current_token
     end
 
     after do
-      SS.current_permission_mask = @save_current_permission_mask
+      SS.current_token = @save_current_token
     end
 
     it do
@@ -77,7 +77,7 @@ describe Cms::User do
       expect(user.cms_role_permissions).to include("#{permission}_#{site2.id}")
 
       # for oauth2's scope
-      SS.current_permission_mask = [ (Cms::Role.permission_names - [ permission ]).sample ]
+      SS.current_token = OpenStruct.new(scopes: [ (Cms::Role.permission_names - [ permission ]).sample ])
       user1 = Cms::User.find(user.id)
       expect(user1.cms_role_permissions.length).to eq 0
     end

@@ -68,19 +68,21 @@ module SS
     cattr_accessor(:private_root, instance_accessor: false) { "#{Rails.root}/private" }
     cattr_accessor(:request_interceptor, instance_accessor: false)
 
+    THREAD_LOCAL_VARIABLES = %w(ss.env ss.request ss.site ss.user ss.token ss.organization).freeze
+
     def call(*args, &block)
-      save_current_env = Thread.current["ss.env"]
-      save_current_request = Thread.current["ss.request"]
+      save_context = {}
+      THREAD_LOCAL_VARIABLES.each do |variable_name|
+        save_context[variable_name] = Thread.current[variable_name]
+      end
       Thread.current["ss.env"] = args.first
       Thread.current["ss.request"] = nil
       self.class.request_interceptor.call(*args) if self.class.request_interceptor
       super
     ensure
-      Thread.current["ss.env"] = save_current_env
-      Thread.current["ss.request"] = save_current_request
-      Thread.current["ss.site"] = nil
-      Thread.current["ss.user"] = nil
-      Thread.current["ss.organization"] = nil
+      THREAD_LOCAL_VARIABLES.each do |variable_name|
+        Thread.current[variable_name] = save_context[variable_name]
+      end
     end
 
     def current_env
@@ -170,12 +172,12 @@ module SS
     Thread.current["ss.user"] = user
   end
 
-  def self.current_permission_mask
-    Thread.current["ss.permission_mask"]
+  def self.current_token
+    Thread.current["ss.token"]
   end
 
-  def self.current_permission_mask=(mask)
-    Thread.current["ss.permission_mask"] = mask
+  def self.current_token=(token)
+    Thread.current["ss.token"] = token
   end
 
   def self.current_organization
