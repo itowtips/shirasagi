@@ -1,0 +1,58 @@
+<dl class="see">
+  <dt><%= @model.t :api_url %><%= @model.tt :api_url %></dt>
+  <dd><%= f.text_field :api_url %></dd>
+
+  <dt><%= @model.t :request_title %><%= @model.tt :request_title %></dt>
+  <dd><%= f.text_field :request_title %></dd>
+
+  <dt><%= @model.t :remand_title %><%= @model.tt :remand_title %></dt>
+  <dd><%= f.text_field :remand_title %></dd>
+</dl>
+<dl class="see" style="padding-top: 10px;">
+  <dt>
+    <%= @model.t :circular_owner_id %>
+    <%= @model.tt :circular_owner_id %></dt>
+  <dd>
+    <%= f.hidden_field "circular_owner_id", value: "", class: "hidden-ids" %>
+    <%= link_to t("ss.apis.users.index"), gws_apis_users_path(single: 1), class: "btn ajax-box" %>
+  </dd>
+  <dd>
+    <table class="index ajax-selected">
+      <thead><tr><th class="name"><%= Gws::User.t :name %></th><th class="deselect"></th></tr></thead>
+      <tbody>
+        <% if @item.circular_owner %>
+        <tr data-id="<%= @item.circular_owner.id %>">
+          <td>
+            <%= f.hidden_field "circular_owner_id", value: @item.circular_owner.id %>
+            <%= gws_public_user_long_name(@item.circular_owner.long_name) %>
+          </td>
+          <td><%= link_to t("ss.buttons.delete"), "#", class: "deselect btn" %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>
+<dl class="see" style="padding-top: 10px;">
+  <dt><%= @model.t :circular_category_id %><%= @model.tt :circular_category_id %></dt>
+  <dd>
+    <%= f.hidden_field 'circular_category_id', value: '', class: 'hidden-ids' %>
+    <%= link_to t('gws.apis.categories.index'), gws_circular_apis_categories_path(single: 1), class: 'ajax-box' %>
+  </dd>
+  <dd>
+    <table class="index ajax-selected">
+      <thead><tr><th class="name"><%= Gws::Circular::Category.t :name %></th><th class="deselect"></th></tr></thead>
+      <tbody>
+        <% if @item.circular_category %>
+        <tr data-id="<%= @item.circular_category_id %>">
+          <td>
+            <%= f.hidden_field 'circular_category_id', value: @item.circular_category.id %>
+            <%= @item.circular_category.name %>
+          </td>
+          <td><%= link_to t('ss.buttons.delete'), '#', class: 'deselect btn' %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </dd>
+</dl>

@@ -30,11 +30,39 @@ ja:
       test_channel: テスト
       join_channel: 参加
       test_post: 投稿テスト
+    payment:
+      main: 決済システム連携
+      setting: 設定
+      workflow_sample: 通知（APIテスト）
+      request_message: |-
+        代理決裁申請の承認依頼が届いています。<br>
+        You have received an application for approval-by-proxy.<br>
+        <br>
+        委任開始日（Delegation start date）：%{delegation_start_date}<br>
+        委任終了日（Delegation end date）：%{delegation_end_date}<br>
+        申請者（Applicant）：%{create_name}<br>
+        代理者（Proxy）：%{proxy_name}<br>
+        承認者（Authorizer）：%{authorizer_name}<br>
+        <br>
+        <a href=\"%{url}\">%{url}</a>
+      remand_message: |-
+        代理決裁申請の差し戻しが届いています。<br>
+        You have received a send back for approval-by-proxy.<br>
+        <br>
+        委任開始日（Delegation start date）：%{delegation_start_date}<br>
+        委任終了日（Delegation end date）：%{delegation_end_date}<br>
+        申請者（Applicant）：%{create_name}<br>
+        代理者（Proxy）：%{proxy_name}<br>
+        承認者（Authorizer）：%{authorizer_name}<br>
+        <br>
+        <a href=\"%{url}\">%{url}</a>
 
   modules:
     riken: 理研
     addons:
       riken/shibboleth_setting: シボレス設定
+      riken/workflow_sample: API項目
+      riken/payment/service_setting: 認証設定
 
   mongoid:
     models:
@@ -57,7 +85,54 @@ ja:
         riken_ms365_tenant_id: テナントID
         riken_ms365_client_id: クライアントID
         riken_ms365_client_secret: クライアントシークレット
+      riken/payment/importer_setting:
+        api_url: API URL
+        request_title: 承認依頼通知タイトル
+        remand_title: 差し戻し通知タイトル
+        circular_owner_id: 回覧板作成者
+        circular_category_id: 回覧板カテゴリー
+      riken/addon/payment/service_setting:
+        token_url: トークンURL
+        client_id: クライアントID
+        private_key: 秘密鍵
+        sub: sub
+        scope: scope
+        aud: aud
+      riken/payment/workflow_sample:
+        name: 管理タイトル
+        workflow_id: id (API)
+        status: status
+        url: url
+        update_time: update_time
+        delegation_start_date: delegation_start_date
+        delegation_end_date: delegation_end_date
+        proxy_id: proxy_id
+        proxy_name: proxy_name
+        proxy_lab: proxy_lab
+        proxy_position: proxy_position
+        authorizer_id: authorizer_id
+        authorizer_name: authorizer_name
+        authorizer_lab: authorizer_lab
+        authorizer_position: authorizer_position
+        delegation_1: delegation_1
+        delegation_2: delegation_2
+        delegation_3: delegation_3
+        note: note
+        create_time: create_time
+        create_id: create_id
+        create_name: create_name
+        create_lab: create_lab
+        create_position: create_position
+
+  activemodel:
+    attributes:
+      riken/payment/workflow:
+        site: サイト
+        user: 回覧板作成者
+        request_title: 承認依頼通知タイトル
+        remand_title: 差し戻し通知タイトル
 
   job:
     models:
       riken/ldap/import_job: RIKEN LDAP インポート
+      riken/payment/import_job: 決済システム インポート

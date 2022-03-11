@@ -42,6 +42,14 @@ Rails.application.routes.draw do
         resources :events, only: %i[index new create]
       end
     end
+    namespace "payment" do
+      get "/" => redirect { |p, req| "#{req.path}/setting" }, as: :main
+      resource :setting, only: %i[show edit update]
+      resources :workflow_samples, concerns: :deletion do
+        get :api_index, on: :collection
+        post :api_index, on: :collection
+      end
+    end
     namespace "apis" do
       namespace "ldap" do
         post "test_connection" => "test#connection"

@@ -1,0 +1,24 @@
+<dl class="see">
+  <dt><%= @model.t :api_url %></dt>
+  <dd><%= @item.api_url %></dd>
+
+  <dt><%= @model.t :request_title %></dt>
+  <dd><%= @item.request_title %></dd>
+
+  <dt><%= @model.t :remand_title %></dt>
+  <dd><%= @item.remand_title %></dd>
+
+  <dt><%= @model.t :circular_owner_id %></dt>
+  <dd>
+    <% if @item.circular_owner %>
+    <%= gws_public_user_long_name(@item.circular_owner.long_name) %>
+    <% end %>
+  </dd>
+
+  <dt><%= @model.t :circular_category_id %></dt>
+  <dd>
+    <% if @item.circular_category %>
+    <%= @item.circular_category.name %>
+    <% end %>
+  </dd>
+</dl>

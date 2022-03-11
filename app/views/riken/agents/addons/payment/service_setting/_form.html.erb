@@ -1,0 +1,19 @@
+<dl class="see">
+  <dt><%= @item.t :token_url %></dt>
+  <dd><%= f.text_field :token_url %></dd>
+
+  <dt><%= @item.t :client_id %></dt>
+  <dd><%= f.text_field :client_id %></dd>
+
+  <dt><%= @model.t :private_key %></dt>
+  <dd><%= f.text_area :in_private_key %></dd>
+
+  <dt><%= @item.t :sub %></dt>
+  <dd><%= f.text_field :sub %></dd>
+
+  <dt><%= @item.t :scope %></dt>
+  <dd><%= f.text_field :scope %></dd>
+
+  <dt><%= @item.t :aud %></dt>
+  <dd><%= f.text_field :aud %></dd>
+</dl>
