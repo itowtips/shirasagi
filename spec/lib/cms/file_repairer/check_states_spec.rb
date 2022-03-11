@@ -1,20 +1,21 @@
 require 'spec_helper'
 
 describe 'file_repairer:check_states', dbscope: :example do
+  let!(:user) { cms_user }
   let!(:site1) { cms_site }
   let!(:site2) { create :cms_site, name: "site2", host: "site2", domains: "site2.example.jp" }
 
   # default form
   let!(:node1) { create(:article_node_page, filename: "docs1") }
-  let!(:item1) { create(:article_page, name: "item1", cur_node: node1) }
-  let!(:item2) { create(:article_page, name: "item2", cur_node: node1) }
+  let!(:item1) { create(:article_page, name: "item1", cur_user: user, cur_node: node1) }
+  let!(:item2) { create(:article_page, name: "item2", cur_user: user, cur_node: node1) }
 
   # cms form
   let!(:node2) { create(:article_node_page, filename: "docs2", st_form_ids: [form.id]) }
   let!(:form) { create(:cms_form, cur_site: site1, state: 'public', sub_type: 'entry', html: nil) }
   let!(:column) { create(:cms_column_free, cur_form: form, required: "optional") }
 
-  let!(:item3) { create(:article_page, name: "item3", cur_node: node2, form: form, column_values: [column_value1]) }
+  let!(:item3) { create(:article_page, name: "item3", cur_user: user, cur_node: node2, form: form, column_values: [column_value1]) }
   let(:column_value1) { column.value_type.new(column: column) }
 
   # another site
@@ -22,12 +23,12 @@ describe 'file_repairer:check_states', dbscope: :example do
   let!(:item_site2) { create(:article_page, cur_node: node_site2, cur_site: site2) }
 
   # files
-  let(:ss_file1) { create :ss_file, site: site1, owner_item: item1, state: "public" }
-  let(:ss_file2) { create :ss_file, site: site1, owner_item: item1, state: "public" }
-  let(:ss_file3) { create :ss_file, site: site1, owner_item: item2, state: "public" }
-  let(:ss_file4) { create :ss_file, site: site1, owner_item: item2, state: "public" }
-  let(:ss_file5) { create :ss_file, site: site1, owner_item: item3, state: "public" }
-  let(:ss_file6) { create :ss_file, site: site1, owner_item: item3, state: "public" }
+  let(:ss_file1) { create :ss_file, site: site1, user: user, owner_item: item1, state: "public" }
+  let(:ss_file2) { create :ss_file, site: site1, user: user, owner_item: item1, state: "public" }
+  let(:ss_file3) { create :ss_file, site: site1, user: user, owner_item: item2, state: "public" }
+  let(:ss_file4) { create :ss_file, site: site1, user: user, owner_item: item2, state: "public" }
+  let(:ss_file5) { create :ss_file, site: site1, user: user, owner_item: item3, state: "public" }
+  let(:ss_file6) { create :ss_file, site: site1, user: user, owner_item: item3, state: "public" }
 
   let(:csv_header1) { %w(ID タイトル ステータス 公開画面 管理画面 ファイルID ファイルURL エラー) }
   let(:csv_header2) { %w(ID タイトル ステータス 公開画面 管理画面 ファイルID ファイルURL 修復) }
@@ -54,6 +55,10 @@ describe 'file_repairer:check_states', dbscope: :example do
     value.file_ids = [ss_file5.id, ss_file6.id]
     item3.update!
     item3.reload
+
+    expect(item1.file_ids).to match_array [ss_file1.id, ss_file2.id]
+    expect(item2.file_ids).to match_array [ss_file3.id, ss_file4.id]
+    expect(item3.column_values[0].file_ids).to match_array [ss_file5.id, ss_file6.id]
   end
 
   context "no errors" do
