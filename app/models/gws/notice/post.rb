@@ -60,6 +60,7 @@ class Gws::Notice::Post
 
     def search_severity(params)
       return all if params.blank? || params[:severity].blank?
+      return all if params[:severity] == "all"
       all.where(severity: params[:severity])
     end
 
@@ -85,6 +86,8 @@ class Gws::Notice::Post
       return all if params.blank? || params[:browsed_state].blank?
 
       case params[:browsed_state]
+      when 'both'
+        all
       when 'read'
         all.exists("browsed_users_hash.#{params[:user].id}" => 1)
       when 'unread'
