@@ -79,6 +79,7 @@ Rails.application.routes.draw do
       resources :user_form_columns, concerns: :deletion, path: '/columns'
     end
     resources :contrasts, concerns: [:deletion]
+    resources :image_resizes, concerns: :deletion
 
     namespace "apis" do
       get "groups" => "groups#index"
@@ -99,6 +100,9 @@ Rails.application.routes.draw do
       get "cke_config" => "cke_config#index"
 
       resources :files, concerns: [:deletion, :file_api]
+      resources :temp_files, concerns: [:deletion, :file_api] do
+        get :contrast_ratio, on: :collection
+      end
     end
   end
 

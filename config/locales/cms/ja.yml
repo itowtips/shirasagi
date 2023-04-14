@@ -719,10 +719,6 @@ ja:
     read_other_cms_check_links_errors: リンクチェックエラーの閲覧（全て）
     read_private_cms_check_links_errors: リンクチェックエラーの閲覧（所有）
     edit_cms_check_links_ignore_urls: リンクチェックエラー例外の管理
-    read_cms_image_resizes: 画像リサイズの閲覧
-    edit_cms_image_resizes: 画像リサイズの編集
-    delete_cms_image_resizes: 画像リサイズの削除
-    disable_cms_image_resizes: 画像リサイズの無効化
     use_other_cms_line_messages: LINEメッセージの利用（全て）
     use_private_cms_line_messages: LINEメッセージの利用（所有）
     use_cms_line_deliver_categories: LINE配信カテゴリーの管理

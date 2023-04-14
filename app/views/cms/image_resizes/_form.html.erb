@@ -1,0 +1,16 @@
+<dl class="see">
+  <dt><%= @model.t :name %><%= @model.tt :name %></dt>
+  <dd><%= f.text_field :name %></dd>
+
+  <dt><%= @model.t :max_width %><%= @model.tt :max_width %></dt>
+  <dd><%= f.number_field :max_width %></dd>
+
+  <dt><%= @model.t :max_height %><%= @model.tt :max_height %></dt>
+  <dd><%= f.number_field :max_height %></dd>
+
+  <dt><%= @model.t :order %><%= @model.tt :order %></dt>
+  <dd><%= f.number_field :order %></dd>
+
+  <dt><%= @model.t :default_selected %><%= @model.tt :default_selected %></dt>
+  <dd><%= f.select :default_selected, @item.default_selected_options %></dd>
+</dl>

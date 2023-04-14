@@ -1,0 +1,13 @@
+<% @index_meta = proc do |item| %>
+  <span class="id">#<%= item.id %></span>
+  <span class="datetime"><%= ss_time_tag item.updated %></span>
+  <span class="order"><%= item.order %></span>
+  <span class="filename">
+    <%= "#{item.max_width}x#{item.max_height}" %>
+    <% if item.default_selected? %>
+      <%= "(#{t("ss.default")})" %>
+    <% end %>
+  </span>
+<% end %>
+
+<%= render template: 'gws/crud/index' %>

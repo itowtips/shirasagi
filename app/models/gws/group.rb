@@ -46,6 +46,10 @@ class Gws::Group
 
   scope :site, ->(site) { self.and name: /^#{::Regexp.escape(site.name)}(\/|$)/ }
 
+  def image_resizes
+    Gws::ImageResize.site(self)
+  end
+
   private
 
   def validate_parent_name

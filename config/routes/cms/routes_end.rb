@@ -268,6 +268,7 @@ Rails.application.routes.draw do
     get "search_contents/:id/download" => "page_search_contents#download", as: "download_page_search_contents"
     delete "search_contents/:id" => "page_search_contents#destroy_all"
     resource :generate_lock
+    resources :image_resizes, concerns: :deletion
 
     namespace "check_links" do
       resources :reports, concerns: [:deletion], only: [:show, :index] do

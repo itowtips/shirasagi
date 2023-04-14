@@ -6,37 +6,11 @@ this.SS_AjaxFile = (function () {
     this.render();
   }
 
-  SS_AjaxFile.additionalFileResizings = [];
   SS_AjaxFile.firesEvents = false;
 
   SS_AjaxFile.errors = {
     entityTooLarge: "request entity is too large"
   }
-
-  SS_AjaxFile.addFileResizing = function() {
-    for (var i = 0; i < arguments.length; i++) {
-      var argument = arguments[i];
-      if (argument.default) {
-        for (var j = 0; j < SS_AjaxFile.additionalFileResizings.length; j++) {
-          if (SS_AjaxFile.additionalFileResizings[j].default) {
-            SS_AjaxFile.additionalFileResizings[j].default = false;
-          }
-        }
-      }
-
-      SS_AjaxFile.additionalFileResizings.push(argument);
-    }
-  }
-
-  SS_AjaxFile.defaultFileResizing = function () {
-    for (var i = 0; i < SS_AjaxFile.additionalFileResizings.length; i++) {
-      if (SS_AjaxFile.additionalFileResizings[i].default) {
-        return SS_AjaxFile.additionalFileResizings[i].value;
-      }
-    }
-
-    return null;
-  };
 
   SS_AjaxFile.defaultFileSelectHandler = function() {
     var promisses = [];
@@ -122,16 +96,6 @@ this.SS_AjaxFile = (function () {
       ev.preventDefault();
       return false;
     });
-
-    for (var i = 0; i < SS_AjaxFile.additionalFileResizings.length; i++) {
-      var fileResizing = SS_AjaxFile.additionalFileResizings[i];
-      var option = $('<option />').val(fileResizing.value).text(fileResizing.label);
-      if (fileResizing.default) {
-        option.prop('selected', true)
-      }
-
-      self.$el.find('form.user-file .image-size').append(option);
-    }
   };
 
   SS_AjaxFile.prototype.submitSuccess = function(submitted, data) {
@@ -157,16 +121,6 @@ this.SS_AjaxFile = (function () {
       }
 
       self.$el.find("form.user-file [type='file']").val(null).trigger("change");
-
-      var defaultImageSize = null;
-      for (var i = 0; i < SS_AjaxFile.additionalFileResizings.length; i++) {
-        var fileResizing = SS_AjaxFile.additionalFileResizings[i];
-        if (fileResizing.default) {
-          defaultImageSize = fileResizing.value;
-          break;
-        }
-      }
-      self.$el.find("form.user-file .image-size").val(defaultImageSize).trigger("change");
 
       if (submitted === "attach") {
         self.attachFiles(data);

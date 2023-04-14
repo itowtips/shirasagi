@@ -49,7 +49,6 @@ ja:
     broken_link: リンク切れ
     auto_reload: 自動更新
     quality: 画質
-    resize_image_auto: 画像リサイズ(自動)
     input_example: 記入例
     csv_file: CSVファイル
     large_file_upload: 大容量アップロード
@@ -63,6 +62,7 @@ ja:
     after: 後
     time: 時間
     fiscal_year: 年度
+    default: 既定
 
     views:
       login/login:
@@ -854,10 +854,6 @@ ja:
         site_twitter_auto_post: Twitter自動投稿
         site_edit_auto_post: 編集時に自動投稿
       ss/addon/file_setting:
-        file_resizing: 添付ファイルリサイズ
-        file_resizing_width: 幅
-        file_resizing_height: 高さ
-        file_resizing_label: "%{size}（サイト設定）"
         multibyte_filename_state: 日本語ファイル名
         file_fs_access_restriction_state: /fs のアクセス制限
         file_fs_access_restriction_allowed_ip_addresses: 許可IPアドレス
@@ -888,9 +884,11 @@ ja:
         order: 並び順
         state: 状態
       ss/model/image_resize:
+        name: 名前
         max_width: 横幅
         max_height: 縦幅
-        quality: 画質
+        order: 並び順
+        default_selected: 既定
       ss/model/postal_code:
         code: 郵便番号
         prefecture: 都道府県
@@ -1346,9 +1344,6 @@ ja:
         - Lineのチャネルアクセストークンを設定します。
         - Lineとの連携に必須です。
     ss/addon/file_setting:
-      file_resizing:
-        - ページの添付ファイル（アップロード）のリサイズにてデフォルトサイズを設定できます。
-        - 幅、高さ共に200が最小値になります。
       multibyte_filename_state:
         - 日本語ファイルのアップロードを設定できます。
         -
@@ -1401,14 +1396,18 @@ ja:
       state:
         - 制限の有効/無効を設定します
     ss/model/image_resize:
+      name:
+        - 設定名を入力します
       max_width:
-        - 画像ファイルの横幅を設定可能です
+        - 画像ファイルの最大横幅を入力します。
+        - 200が最小値になります。
       max_height:
-        - 画像ファイルの縦幅を設定可能です
-      quality:
-        - 画像ファイルの画質を0から100の間で設定可能です
-        - 最大ファイルサイズを超過した場合、画質に基づいて画像を圧縮します
-        - 画質が高い程劣化が少ないです
+        - 画像ファイルの最大縦幅を入力します。
+        - 200が最小値になります。
+      order:
+        - 並び順を設定します
+      default_selected:
+        - 有効にするとファイルアップロード時の選択肢にて、この設定が選ばれた状態になります。
     ss/model/editor_setting:
       color_button:
         - 文字色変更ボタンの表示を設定します。

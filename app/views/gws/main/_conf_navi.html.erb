@@ -27,6 +27,9 @@
   <% if Gws::Contrast.allowed?(:read, @cur_user, site: @cur_site) %>
     <h3><%= link_to t('mongoid.models.gws/contrast'), gws_contrasts_path %></h3>
   <% end %>
+  <% if Gws::ImageResize.allowed?(:read, @cur_user, site: @cur_site) %>
+    <h3><%= link_to t('cms.image_resize'), gws_image_resizes_path %></h3>
+  <% end %>
   <% if Gws::Chorg::Revision.allowed?(:read, @cur_user, site: @cur_site) %>
     <h3><%= link_to t('modules.gws/chorg'), gws_chorg_main_path %></h3>
   <% end %>

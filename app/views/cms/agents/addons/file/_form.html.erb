@@ -65,15 +65,5 @@
     }
   %>
   SS_FileView.renderFileView($el, <%== file_view_options.to_json %>);
-
-  <% if @cur_site.file_resizing.present? %>
-    <%
-      label = @cur_site.t(:file_resizing_label, size: @cur_site.file_resizing.join("x"))
-      value = @cur_site.file_resizing.join(",")
-      opts = { label: label, value: value, default: true }
-    %>
-    SS_AjaxFile.addFileResizing(<%== opts.to_json %>);
-  <% end %>
-
   new Cms_UploadFileOrder('file', '.file-order-btn');
 <% end %>

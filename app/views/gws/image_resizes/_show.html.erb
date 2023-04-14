@@ -1,0 +1,16 @@
+<dl class="see">
+  <dt><%= @model.t :name %></dt>
+  <dd><%= @item.name %></dd>
+
+  <dt><%= @model.t :max_width %></dt>
+  <dd><%= @item.max_width %></dd>
+
+  <dt><%= @model.t :max_height %></dt>
+  <dd><%= @item.max_height %></dd>
+
+  <dt><%= @model.t :order %></dt>
+  <dd><%=br @item.order %></dd>
+
+  <dt><%= @model.t :default_selected %></dt>
+  <dd><%= @item.label :default_selected %></dd>
+</dl>

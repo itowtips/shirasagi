@@ -49,7 +49,6 @@ en:
     broken_link: Broken link
     auto_reload: Automatic updates
     quality: Quality
-    resize_image_auto: Resize image (automatic)
     input_example: Entry Example
     csv_file: CSV File
     large_file_upload: Large File Upload
@@ -853,10 +852,6 @@ en:
         site_twitter_auto_post: Twitter auto-post
         site_edit_auto_post: Auto-post when editing
       ss/addon/file_setting:
-        file_resizing: Resize attached file
-        file_resizing_width: Width
-        file_resizing_height: Height
-        file_resizing_label: ! '%{size} (Site settings)'
         multibyte_filename_state: Japanese-language file name
         file_fs_access_restriction_state: /fs access restrictions
         file_fs_access_restriction_allowed_ip_addresses: Allowed IP addresses
@@ -1345,9 +1340,6 @@ en:
         - Set Line channel access token.
         - Required for linking with Line.
     ss/addon/file_setting:
-      file_resizing:
-        - The default size can be set by resizing the attached file (upload) of the page.
-        - 200 is the minimum value for both width and height.
       multibyte_filename_state:
         - You can set uploads of Japanese-language files.
         -

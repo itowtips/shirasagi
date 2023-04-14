@@ -141,6 +141,10 @@ module SS::Model::Site
       SS.config.cms.generate_segments["page"][host] rescue nil
     end
 
+    def image_resizes
+      Cms::ImageResize.site(self)
+    end
+
     private
 
     def validate_domains

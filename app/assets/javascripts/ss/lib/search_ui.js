@@ -142,6 +142,7 @@ this.SS_SearchUI = (function () {
         $(this).ajaxSubmit({
           url: $(this).attr("action"),
           success: function (data) {
+            console.log(data);
             var $data = $("<div />").html(data);
             $.colorbox.prep($data.contents());
           },
