@@ -454,6 +454,7 @@ ja:
         facility_search: 施設検索
         image_map: イメージマップ
         json_template: JSONテンプレート
+        account_link: アカウント連携
       line_deliver_condition_state:
         multicast_with_no_condition: 登録メンバー全員に配信する
         multicast_with_registered_condition: 登録メンバーに条件配信する（配信条件を設定）

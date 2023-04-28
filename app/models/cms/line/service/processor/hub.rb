@@ -10,6 +10,11 @@ class Cms::Line::Service::Processor::Hub < Cms::Line::Service::Processor::Base
       next if user_id.blank?
       next if richmenu_switched?(event)
 
+      if account_link?(event)
+        create_member_from_nonce(event)
+        next
+      end
+
       Cms::Line::EventSession.lock(site, user_id) do |event_session|
         begin
           self.event_session = event_session

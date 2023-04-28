@@ -50,6 +50,17 @@ class Cms::Line::Service::Processor::Base
     params["newRichMenuAliasId"].present?
   end
 
+  def account_link?(event)
+    return false if event["type"] != "accountLink"
+    return false if event["link"]["result"] != "ok"
+    event["link"]["nonce"].present?
+  end
+
+  def create_member_from_nonce(event)
+    nonce = event["link"]["nonce"]
+    # create member
+  end
+
   def call
   end
 end
