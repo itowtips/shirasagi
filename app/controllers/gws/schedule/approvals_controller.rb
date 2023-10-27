@@ -13,35 +13,17 @@ class Gws::Schedule::ApprovalsController < ApplicationController
     @cur_schedule ||= Gws::Schedule::Plan.find(params[:plan_id])
   end
 
-  def set_target_user
-    set_cur_schedule
-
-    @target_user = @cur_schedule.members.where(id: params[:user_id]).first
-    @target_user ||= begin
-      member_ids = @cur_schedule.member_custom_groups.pluck(:member_ids).flatten
-      Gws::User.in(id: member_ids).where(id: params[:user_id]).first
-    end
-
-    raise '404' unless @target_user
-
-    @target_user.cur_site = @cur_site
-  end
-
   def fix_params
     set_cur_schedule
-    set_target_user
-
-    ret = { cur_user: @target_user }
+    ret = { cur_user: @cur_user }
     ret[:approval_state] = params.dig(:item, :approval_state) if params[:item].present?
     ret
   end
 
   def set_item
     set_cur_schedule
-    set_target_user
 
-    cond = { user_id: @target_user.id, facility_id: get_params[:facility_id].to_s.presence }
-
+    cond = { user_id: @cur_user.id, facility_id: get_params[:facility_id].to_s.presence }
     @item = @cur_schedule.approvals.where(cond).first_or_create
     @item.attributes = fix_params
   rescue Mongoid::Errors::DocumentNotFound => e
@@ -56,7 +38,7 @@ class Gws::Schedule::ApprovalsController < ApplicationController
     return if safe_params[:text].blank?
 
     safe_params.reverse_merge!(
-      cur_site: @cur_site, cur_user: @target_user, cur_schedule: @cur_schedule, text_type: 'plain'
+      cur_site: @cur_site, cur_user: @cur_user, cur_schedule: @cur_schedule, text_type: 'plain'
     )
     Gws::Schedule::Comment.create(safe_params)
   end
