@@ -62,8 +62,8 @@
     <tr>
       <td><%= item.name %></td>
       <td>
-        <% approval = @item.approval_member(@cur_user, facility_id: item.id) %>
         <% if item.user_ids.include?(@cur_user.id) %>
+          <% approval = @item.approval_member(@cur_user, facility_id: item.id) %>
           <%= content_tag 'span', class: 'approvals',
                           data: { schedule_id: @item.id.to_s, member_id: @cur_user.id, facility_id: item.id, init_value: approval.approval_state || '' } do %>
             <% %w(unknown approve deny).each do |value| %>

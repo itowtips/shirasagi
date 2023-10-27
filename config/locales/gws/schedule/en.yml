@@ -49,6 +49,7 @@ en:
       create_report: Create a report
       back_to_todo: Back to to-do
       back_to_calendar: Back to calendar
+      approve_plan: Person asked for approval
     buttons:
       delete_one: This time only
       delete_later: All since
