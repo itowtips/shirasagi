@@ -1,0 +1,11 @@
+<!-- https://static.line-scdn.net/liff/edge/2/sdk.js -->
+<%= javascript_include_tag "line", defer: true %>
+<%= jquery do %>
+liff.init({
+  liffId: '1234567890-AbcdEfgh', // Use own liffId
+}).then(() => {
+  // start to use LIFF's api
+}).catch((err) => {
+  console.log(err);
+});
+<% end %>

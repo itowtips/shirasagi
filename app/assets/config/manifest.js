@@ -6,6 +6,7 @@
 //= link colorbox.css
 //= link jplayer.js
 //= link jplayer.css
+//= link line.js
 
 // ビルドするアセット一覧（アルファベット順）
 // 次のコマンドで、一覧を生成することができる
