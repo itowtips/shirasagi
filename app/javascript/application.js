@@ -13,3 +13,4 @@ Initializer.ready(() => {
   SS.doneReady()
   TurboFullRedirect.start()
 })
+import "./channels"

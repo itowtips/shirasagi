@@ -1,0 +1,45 @@
+<style type="text/css">
+.messages .message-wrap {
+  padding: 5px;
+  margin-bottom: 2px;
+  background: #fff;
+  border: 1px solid #dcdcdc;
+}
+.messages .message-wrap[data-user="<%= @cur_user.id %>"] {
+  background: #eef0ff
+}
+.messages .message-wrap header {
+  display: flex;
+}
+.messages .message-wrap header .user {
+  padding-right: 5px;
+}
+</style>
+<%= jquery do %>
+  var $form = $("#item-form")
+  var $message = $form.find('input[name="item[message]"]')
+  $form.on("submit", function() {
+    var message = $message.val();
+    if (!message) {
+      return false;
+    }
+
+    try {
+      appRoom.speak(message);
+      $message.val("");
+    } catch (error) {
+      console.error(error);
+    }
+    return false;
+  })
+<% end %>
+
+<div class="messages">
+  <% Gws::Chat::Message.each do |item| %>
+    <%= item.html %>
+  <% end %>
+</div>
+
+<%= form_for :item, url: "", html: { id: "item-form" } do |f| %>
+  <%= f.text_field :message, placeholder: "メッセージを入力" %>
+<% end %>

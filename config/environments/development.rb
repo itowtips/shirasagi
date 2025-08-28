@@ -70,6 +70,9 @@ Rails.application.configure do
   # ActiveJob Queue Adapter
   config.active_job.queue_adapter = :shirasagi
 
+  #config.action_cable.allowed_request_origins = ['http://rubyonrails.com', %r{http://ruby.*}]
+  config.action_cable.disable_request_forgery_protection = true
+
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.

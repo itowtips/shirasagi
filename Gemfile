@@ -87,6 +87,7 @@ gem 'thinreports'
 gem 'ungarbled'
 gem 'view_component'
 gem 'wareki'
+gem 'redis'
 
 # OAuth
 gem 'oauth2'

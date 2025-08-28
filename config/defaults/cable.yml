@@ -1,0 +1,14 @@
+development:
+  adapter: async
+  #adapter: redis
+  #url: redis://127.0.0.1:6379
+  #channel_prefix: ss_chat
+
+test:
+  adapter: test
+
+production:
+  adapter: redis
+  url: redis://127.0.0.1:6379
+  channel_prefix: ss_chat
+
