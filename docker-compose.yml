@@ -1,0 +1,24 @@
+services:
+  web:
+    build: .
+    volumes:
+      - .:/var/www/shirasagi
+    depends_on:
+      - db
+    ports:
+      - "8080:3000"
+    #command: bundle exec rails s -b 0.0.0.0
+    command: tail -f /dev/null
+
+  db:
+    image: mongo:4.4
+    platform: linux/amd64
+    restart: always
+    volumes:
+      - db_data:/data/db
+
+    ports:
+      - 27017:27017
+
+volumes:
+  db_data:
