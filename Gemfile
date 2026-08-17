@@ -4,7 +4,8 @@ gem 'rails', '~> 5.2.0'
 gem 'sassc-rails'
 gem 'uglifier'
 gem 'coffee-rails'
-gem 'therubyracer', platforms: :ruby
+#gem 'therubyracer', platforms: :ruby
+gem 'mini_racer', platforms: :ruby
 gem 'jbuilder'
 gem 'sdoc', group: :doc
 
@@ -60,7 +61,7 @@ gem 'roo'
 #gem 'roo-xls', git: "https://github.com/roo-rb/roo-xls.git"
 gem 'liquid'
 gem 'http_accept_language'
-gem 'google-cloud-translate', '2.0.0'
+#gem 'google-cloud-translate', '2.0.0'
 gem 'retriable'
 
 # OAuth
